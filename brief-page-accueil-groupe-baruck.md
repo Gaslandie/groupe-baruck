@@ -33,8 +33,7 @@ Cette première version doit permettre au client de visualiser :
 - JECA : **Jeunes Entrepreneurs Chrétiens Africains**  
   *Libellé officiel à confirmer avant la mise en ligne définitive.*
 - Engagement associé : **ONG Espoir de Vie**
-- Expérience à valoriser : **agent de l’ONU en 2016 dans le domaine de la protection de l’enfant**  
-  *Cette formulation provient des informations initiales fournies et devra être validée par le client avant publication.*
+- Expérience validée : **expérience dans la protection de l’enfant au sein de l’ONU en 2016**
 
 ### Coordonnées provisoires
 
@@ -355,7 +354,7 @@ Présenter :
 - son nom complet ;
 - ses principales fonctions ;
 - une courte présentation de sa vision ;
-- son expérience de 2016 dans la protection de l’enfant au sein de l’ONU, après validation du client.
+- son expérience de 2016 dans la protection de l’enfant au sein de l’ONU.
 
 Texte provisoire :
 
