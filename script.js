@@ -81,25 +81,34 @@ const count = document.querySelector("#slide-count");
 const activityNumber = document.querySelector("#activity-number");
 const progressBar = document.querySelector("#carousel-progress-bar");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const SLIDE_DURATION = 4000;
 let activeIndex = 0;
 let carouselTimer;
 let isPaused = false;
+let remainingTime = SLIDE_DURATION;
+let slideStartedAt = 0;
 let touchStartX = 0;
 
 function formatNumber(value) {
   return String(value).padStart(2, "0");
 }
 
-function restartProgress() {
+function restartSlideMotion() {
   progressBar.classList.remove("running");
-  void progressBar.offsetWidth;
-  if (!isPaused && !reducedMotion) progressBar.classList.add("running");
+  stage.classList.remove("is-zooming");
+  void stage.offsetWidth;
+  if (!reducedMotion) {
+    progressBar.classList.add("running");
+    stage.classList.add("is-zooming");
+  }
 }
 
 function scheduleNext() {
   clearTimeout(carouselTimer);
-  restartProgress();
-  if (!isPaused && !reducedMotion) carouselTimer = setTimeout(() => showSlide(activeIndex + 1), 4000);
+  remainingTime = SLIDE_DURATION;
+  slideStartedAt = performance.now();
+  restartSlideMotion();
+  if (!isPaused && !reducedMotion) carouselTimer = setTimeout(() => showSlide(activeIndex + 1), remainingTime);
 }
 
 function showSlide(index, immediate = false) {
@@ -121,10 +130,20 @@ function showSlide(index, immediate = false) {
 }
 
 function setCarouselPause(paused) {
+  if (paused === isPaused) return;
+
+  if (paused) {
+    remainingTime = Math.max(0, remainingTime - (performance.now() - slideStartedAt));
+    clearTimeout(carouselTimer);
+    carousel.classList.add("is-paused");
+    isPaused = true;
+    return;
+  }
+
   isPaused = paused;
-  clearTimeout(carouselTimer);
-  progressBar.classList.remove("running");
-  if (!paused) scheduleNext();
+  carousel.classList.remove("is-paused");
+  slideStartedAt = performance.now();
+  if (!reducedMotion) carouselTimer = setTimeout(() => showSlide(activeIndex + 1), remainingTime);
 }
 
 document.querySelector("#prev-slide").addEventListener("click", () => showSlide(activeIndex - 1));

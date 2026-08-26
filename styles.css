@@ -84,10 +84,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .activity-carousel { border-left: 1px solid rgba(255,255,255,.16); background: #101317; }
 .carousel-stage, .carousel-stage::before, .carousel-stage::after { position: absolute; inset: 0; }
 .carousel-stage { background: var(--slide-bg, radial-gradient(circle at 70% 25%, #9f7651, #171615 65%)); transition: opacity .5s ease; overflow: hidden; }
-.carousel-stage::before { content: ""; background-image: linear-gradient(135deg, rgba(8,9,10,.12), rgba(8,9,10,.04)), var(--slide-image), var(--slide-art, linear-gradient(135deg, transparent 10%, rgba(255,255,255,.15))); background-size: cover, cover, cover; background-position: center; transform: scale(1.04); animation: heroZoom 4s linear infinite; }
+.carousel-stage::before { content: ""; background-image: linear-gradient(135deg, rgba(8,9,10,.12), rgba(8,9,10,.04)), var(--slide-image), var(--slide-art, linear-gradient(135deg, transparent 10%, rgba(255,255,255,.15))); background-size: cover, cover, cover; background-position: center; transform: scale(1.02); will-change: transform; }
+.carousel-stage.is-zooming::before { animation: heroZoomOut 4s linear forwards; }
 .carousel-stage::after { content: ""; background: linear-gradient(180deg, rgba(7,8,9,.15), rgba(7,8,9,.25) 42%, rgba(7,8,9,.92) 100%); }
 .activity-carousel.is-changing .carousel-stage { opacity: .15; }
-@keyframes heroZoom { from { transform: scale(1.035); } to { transform: scale(1.1); } }
+@keyframes heroZoomOut { from { transform: scale(1.11); } to { transform: scale(1.02); } }
 .carousel-topline { position: absolute; z-index: 2; top: 115px; left: clamp(1.5rem, 4vw, 4rem); right: clamp(1.5rem, 4vw, 4rem); display: flex; align-items: center; justify-content: space-between; }
 .slide-count { font: italic .88rem var(--display); color: rgba(255,255,255,.65); }
 .carousel-copy { position: absolute; z-index: 2; left: clamp(1.5rem, 4vw, 4rem); right: clamp(1.5rem, 4vw, 6rem); bottom: clamp(5rem, 11vh, 9rem); transition: opacity .25s, transform .25s; }
@@ -104,6 +105,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .carousel-progress { position: absolute; z-index: 3; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.15); }
 .carousel-progress i { height: 100%; display: block; width: 0; background: var(--accent); }
 .carousel-progress i.running { animation: progress 4s linear forwards; }
+.activity-carousel.is-paused .carousel-stage::before,
+.activity-carousel.is-paused .carousel-progress i { animation-play-state: paused; }
 @keyframes progress { from { width: 0; } to { width: 100%; } }
 .provisional-note { position: absolute; z-index: 3; right: 1.2rem; bottom: 1rem; margin: 0; color: rgba(255,255,255,.42); text-transform: uppercase; letter-spacing: .12em; font-size: .48rem; }
 
