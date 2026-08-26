@@ -22,6 +22,12 @@ Cette première version doit permettre au client de visualiser :
 
 **Groupe Baruck**
 
+### Présence régionale validée
+
+- **Guinée**
+- **Sénégal**
+- **Côte d’Ivoire**
+
 ### Président
 
 **Djoro Joël Shaloom Krasso**
