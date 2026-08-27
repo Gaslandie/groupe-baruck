@@ -28,23 +28,26 @@ Cette première version doit permettre au client de visualiser :
 - **Sénégal**
 - **Côte d’Ivoire**
 
-### Président
+### PDG
 
-**Djoro Joël Shaloom Krasso**
+**MR Djoro Joël Shaloom Krasso**
 
 - Nom : **Krasso**
 - Prénoms : **Djoro Joël Shaloom**
-- Fonction principale : **Président du Groupe Baruck**
+- Fonction principale : **PDG du Groupe Baruck**
 - Autre fonction : **Président de la JECA**
 - JECA : **Jeunes Entrepreneurs Chrétiens Africains**  
   *Libellé officiel à confirmer avant la mise en ligne définitive.*
-- Engagement associé : **ONG Espoir de Vie**
+- Autre fonction : **Président de l’ONG Espoir de Vie**
 - Expérience validée : **expérience dans la protection de l’enfant au sein de l’ONU en 2016**
 
-### Coordonnées provisoires
+### Coordonnées validées
 
-- Téléphone 1 : **+224 664 02 69 11**
-- Téléphone 2 : **+224 656 26 03 56**
+- Téléphone mobile 1 : **+224 664 02 69 11**
+- Téléphone mobile 2 : **+224 623 54 66 57**
+- Téléphone fixe en Guinée : **+224 625 19 72 58**
+- WhatsApp principal du site — Guinée : **+224 623 72 04 27**
+- WhatsApp du PDG — numéro français : **+33 7 55 42 37 54**
 - E-mail : **jokrasso2@gmail.com**
 
 ---
@@ -184,18 +187,20 @@ Sur ordinateur, utiliser approximativement une répartition 45/55 ou 50/50.
 
 ---
 
-### 6.1. Partie gauche — Président
+### 6.1. Partie gauche — PDG
 
 Cette partie doit présenter une grande photo professionnelle du président.
 
 #### Contenu principal
 
-**Djoro Joël Shaloom Krasso**
+**MR Djoro Joël Shaloom Krasso**
 
 Sous le nom, afficher les fonctions :
 
-- **Président du Groupe Baruck**
-- **Président de la JECA**
+- **PDG du Groupe Baruck**
+- **Président de la JECA (Jeunes Entrepreneurs Chrétiens Africains)**
+- **Président de l’ONG Espoir de Vie**
+- **Expérience dans la protection de l’enfant au sein de l’ONU en 2016**
 
 Ajouter éventuellement une ligne secondaire plus discrète :
 
@@ -440,7 +445,7 @@ Texte :
 Boutons :
 
 - **Contacter le Groupe**
-- **Appeler maintenant**
+- **WhatsApp principal**
 
 ---
 
@@ -449,7 +454,10 @@ Boutons :
 Afficher :
 
 - **+224 664 02 69 11**
-- **+224 656 26 03 56**
+- **+224 623 54 66 57**
+- **+224 625 19 72 58** — téléphone fixe en Guinée
+- **+224 623 72 04 27** — WhatsApp principal du site en Guinée
+- **+33 7 55 42 37 54** — WhatsApp du PDG, numéro français
 - **jokrasso2@gmail.com**
 
 Prévoir un formulaire simple :
@@ -634,10 +642,10 @@ Le carrousel ne doit pas empêcher l’utilisateur de lire le contenu. Les texte
 
 1. Concevoir en priorité une **page d’accueil de démonstration très professionnelle**.
 2. Ne pas inventer de chiffres, dates, partenaires, adresses ou réalisations.
-3. Ne pas attribuer au président un titre qui n’a pas été fourni.
+3. Utiliser le titre validé **PDG du Groupe Baruck**.
 4. Ne pas présenter un texte provisoire comme une déclaration officielle.
 5. Prévoir des emplacements simples pour remplacer les logos et images.
-6. Conserver le nom avec l’orthographe exacte : **Djoro Joël Shaloom Krasso**.
+6. Afficher la civilité et conserver le nom avec l’orthographe exacte : **MR Djoro Joël Shaloom Krasso**.
 7. Afficher les coordonnées exactement comme fournies.
 8. Utiliser un menu hamburger latéral sur tous les écrans.
 9. Faire du Hero la section la plus travaillée de la page.
@@ -655,7 +663,7 @@ Le carrousel ne doit pas empêcher l’utilisateur de lire le contenu. Les texte
 La première proposition sera considérée comme réussie si :
 
 - le président est immédiatement identifiable ;
-- son nom et ses deux fonctions principales sont lisibles ;
+- son nom et ses fonctions principales sont lisibles ;
 - le Groupe Baruck reste l’identité dominante du site ;
 - le carrousel des activités fonctionne correctement ;
 - chaque visuel change environ toutes les quatre secondes ;
