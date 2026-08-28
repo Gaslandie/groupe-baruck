@@ -43,10 +43,9 @@ Cette première version doit permettre au client de visualiser :
 
 ### Coordonnées validées
 
-- Téléphone mobile 1 : **+224 664 02 69 11**
-- Téléphone mobile 2 : **+224 623 54 66 57**
-- Téléphone fixe en Guinée : **+224 625 19 72 58**
-- WhatsApp principal du site — Guinée : **+224 623 72 04 27**
+- Téléphone fixe Baruck Siège Guinée : **+224 625 19 72 58**
+- Téléphone mobile : **+224 623 54 66 57**
+- WhatsApp Baruck Siège Guinée : **+224 623 72 04 27**
 - WhatsApp PDG : **+33 7 55 42 37 54**
 - E-mail : **jokrasso2@gmail.com**
 
@@ -445,7 +444,7 @@ Texte :
 Boutons :
 
 - **Contacter le Groupe**
-- **WhatsApp principal**
+- **WhatsApp Baruck Siège Guinée**
 
 ---
 
@@ -453,10 +452,9 @@ Boutons :
 
 Afficher :
 
-- **+224 664 02 69 11**
-- **+224 623 54 66 57**
-- **+224 625 19 72 58** — téléphone fixe en Guinée
-- **+224 623 72 04 27** — WhatsApp principal du site en Guinée
+- **+224 625 19 72 58** — téléphone fixe Baruck Siège Guinée
+- **+224 623 54 66 57** — téléphone mobile
+- **+224 623 72 04 27** — WhatsApp Baruck Siège Guinée
 - **+33 7 55 42 37 54** — WhatsApp PDG
 - **jokrasso2@gmail.com**
 
