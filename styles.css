@@ -33,6 +33,17 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .brand-image-frame img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .brand-image-label { display: flex; align-items: center; justify-content: center; gap: .55rem; font-size: .47rem; line-height: 1; letter-spacing: .24em; white-space: nowrap; }
 .brand-image-label i { display: block; width: 27px; height: 1px; background: currentColor; opacity: .58; }
+.desktop-nav { display: none; align-items: center; gap: clamp(.8rem, 1.25vw, 1.4rem); font-size: .64rem; letter-spacing: .085em; text-transform: uppercase; }
+.desktop-nav > a, .desktop-nav-group > a { position: relative; padding: 1rem 0; white-space: nowrap; }
+.desktop-nav > a::after, .desktop-nav-group > a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: .65rem; height: 1px; background: var(--accent); transition: right .25s; }
+.desktop-nav > a:hover::after, .desktop-nav > a:focus-visible::after, .desktop-nav-group > a:hover::after, .desktop-nav-group > a:focus-visible::after { right: 0; }
+.desktop-nav-group { position: relative; }
+.desktop-nav-group > a { display: flex; align-items: center; gap: .4rem; }
+.desktop-nav-group > a span { color: var(--accent); font-size: .8rem; }
+.desktop-subnav { position: absolute; top: calc(100% - .2rem); left: 50%; width: 220px; padding: .7rem; background: rgba(11,12,14,.96); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 20px 50px rgba(0,0,0,.24); opacity: 0; visibility: hidden; transform: translate(-50%, 10px); transition: opacity .25s, visibility .25s, transform .25s; }
+.desktop-subnav a { display: block; padding: .75rem .8rem; color: rgba(255,255,255,.72); letter-spacing: .06em; text-transform: none; font-size: .72rem; }
+.desktop-subnav a:hover, .desktop-subnav a:focus-visible { color: var(--white); background: rgba(255,255,255,.06); }
+.desktop-nav-group:hover .desktop-subnav, .desktop-nav-group:focus-within .desktop-subnav { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 .header-end { display: flex; align-items: center; gap: 2rem; }
 .header-contact { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,.3); padding-bottom: .3rem; }
 .header-contact span { color: var(--accent); margin-left: .4rem; }
@@ -54,6 +65,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .nav-links a { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 3.15rem); line-height: 1.06; padding: .34rem 0; transition: color .25s, transform .25s; }
 .nav-links a span { display: inline-block; width: 2.3rem; font-family: var(--sans); font-size: .55rem; letter-spacing: .1em; color: var(--accent); vertical-align: middle; }
 .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); transform: translateX(.4rem); }
+.side-subnav { display: grid; gap: .15rem; margin: .15rem 0 .55rem 2.3rem; padding-left: 1rem; border-left: 1px solid var(--line); }
+.side-subnav a { padding: .18rem 0; font: 500 .72rem/1.35 var(--sans); letter-spacing: .05em; color: #6f6f6b; }
 .side-contact { border-top: 1px solid var(--line); padding-top: 1.3rem; display: grid; grid-template-columns: 105px 1fr; gap: 1rem; font-size: .76rem; }
 .side-contact > p { margin: 0; color: #6f6f6b; }
 .side-contact-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem 1.2rem; }
@@ -74,8 +87,11 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .president-content h1 em, .section h2 em, .vision-copy h2 em, .contact-cta h2 em, .contact-details h2 em { font-weight: 400; color: var(--accent); }
 .name-prefix { color: #d8c8aa; }
 .roles { display: grid; gap: .5rem; margin: 1.3rem 0 .8rem; font-size: .78rem; line-height: 1.35; text-transform: uppercase; letter-spacing: .06em; }
-.roles span { display: flex; align-items: center; gap: .65rem; }
-.roles span::before { content: ""; width: 4px; height: 4px; background: var(--accent); border-radius: 50%; }
+.roles a { display: flex; align-items: center; gap: .65rem; width: fit-content; transition: color .22s, transform .22s; }
+.roles a::before { content: ""; width: 4px; height: 4px; flex: 0 0 auto; background: var(--accent); border-radius: 50%; }
+.roles a::after { content: "↗"; color: var(--accent); opacity: .55; transition: opacity .22s, transform .22s; }
+.roles a:hover, .roles a:focus-visible { color: var(--accent); transform: translateX(5px); }
+.roles a:hover::after, .roles a:focus-visible::after { opacity: 1; transform: translate(2px, -2px); }
 .roles small { color: rgba(255,255,255,.6); font-size: inherit; }
 .hero-statement { max-width: 500px; color: rgba(255,255,255,.68); font: italic 1rem/1.5 var(--display); margin: 0 0 1.7rem; }
 .hero-actions, .cta-actions { display: flex; align-items: center; gap: .8rem; flex-wrap: wrap; }
@@ -89,8 +105,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .activity-carousel { border-left: 1px solid rgba(255,255,255,.16); background: #101317; }
 .carousel-stage, .carousel-stage::before, .carousel-stage::after { position: absolute; inset: 0; }
 .carousel-stage { background: var(--slide-bg, radial-gradient(circle at 70% 25%, #9f7651, #171615 65%)); transition: opacity .5s ease; overflow: hidden; }
-.carousel-stage::before { content: ""; background-image: linear-gradient(135deg, rgba(8,9,10,.12), rgba(8,9,10,.04)), var(--slide-image), var(--slide-art, linear-gradient(135deg, transparent 10%, rgba(255,255,255,.15))); background-size: cover, cover, cover; background-position: center; transform: scale(1.02); will-change: transform; }
-.carousel-stage.is-zooming::before { animation: heroZoomOut 4s linear forwards; }
+.carousel-stage::before { content: ""; background-image: linear-gradient(135deg, rgba(8,9,10,.12), rgba(8,9,10,.04)), var(--slide-image), var(--slide-art, linear-gradient(135deg, transparent 10%, rgba(255,255,255,.15))); background-size: cover, cover, cover; background-position: center, var(--slide-position, center), center; transform: scale(1.02); will-change: transform; }
+.carousel-stage.is-zooming::before { animation: heroZoomOut 5s linear forwards; }
 .carousel-stage::after { content: ""; background: linear-gradient(180deg, rgba(7,8,9,.15), rgba(7,8,9,.25) 42%, rgba(7,8,9,.92) 100%); }
 .activity-carousel.is-changing .carousel-stage { opacity: .15; }
 @keyframes heroZoomOut { from { transform: scale(1.11); } to { transform: scale(1.02); } }
@@ -103,13 +119,15 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .carousel-copy p { color: rgba(255,255,255,.7); max-width: 490px; font-size: clamp(.85rem, 1.1vw, 1.05rem); line-height: 1.6; margin: 0 0 1.7rem; }
 .discover-link, .text-link { font-size: .65rem; text-transform: uppercase; letter-spacing: .13em; display: inline-flex; gap: 1rem; align-items: center; border-bottom: 1px solid currentColor; padding-bottom: .45rem; }
 .discover-link span, .text-link span { color: var(--accent); }
+.carousel-actions { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; }
+.discover-link-secondary { color: rgba(255,255,255,.62); }
 .carousel-controls { z-index: 3; position: absolute; right: clamp(1.5rem, 4vw, 4rem); bottom: clamp(5.2rem, 11vh, 9.2rem); display: flex; }
 .carousel-controls button { width: 48px; height: 48px; border: 1px solid rgba(255,255,255,.3); color: var(--white); background: rgba(0,0,0,.12); cursor: pointer; transition: .25s; }
 .carousel-controls button + button { border-left: 0; }
 .carousel-controls button:hover { background: var(--white); color: var(--ink); }
 .carousel-progress { position: absolute; z-index: 3; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,.15); }
 .carousel-progress i { height: 100%; display: block; width: 0; background: var(--accent); }
-.carousel-progress i.running { animation: progress 4s linear forwards; }
+.carousel-progress i.running { animation: progress 5s linear forwards; }
 .activity-carousel.is-paused .carousel-stage::before,
 .activity-carousel.is-paused .carousel-progress i { animation-play-state: paused; }
 @keyframes progress { from { width: 0; } to { width: 100%; } }
@@ -171,9 +189,12 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .vision-copy { background: var(--white); padding: clamp(4rem, 8vw, 9rem); display: flex; flex-direction: column; justify-content: center; }
 .vision-copy .lead { max-width: 670px; margin: 2.2rem 0 3rem; }
 .role-list { border-top: 1px solid var(--line); }
-.role-list > div { display: grid; grid-template-columns: 42px 1fr; gap: 1rem; border-bottom: 1px solid var(--line); padding: 1rem 0; align-items: baseline; }
+.role-list > a, .role-list > div { display: grid; grid-template-columns: 42px 1fr auto; gap: 1rem; border-bottom: 1px solid var(--line); padding: 1rem 0; align-items: baseline; transition: color .22s, padding .22s, background .22s; }
+.role-list > a:hover, .role-list > a:focus-visible { color: var(--accent); padding-inline: .65rem; background: #f6f2eb; }
+.role-list > div:target { background: #f6f2eb; padding-inline: .65rem; scroll-margin-top: 120px; }
 .role-list span { color: var(--accent); font-size: .58rem; }
 .role-list p { margin: 0; font-size: .85rem; }
+.role-list i { color: var(--accent); font: normal .85rem var(--sans); }
 .role-list small { display: inline-block; margin-left: .5rem; padding: .23rem .4rem; background: #e8e1d4; color: #6d675c; text-transform: uppercase; font-size: .46rem; letter-spacing: .08em; }
 blockquote { margin: 3.4rem 0 0; border-left: 2px solid var(--accent); padding-left: 1.5rem; }
 blockquote p { font: italic clamp(1.25rem, 2vw, 1.8rem)/1.4 var(--display); margin: 0 0 .7rem; }
@@ -192,8 +213,8 @@ blockquote cite { font-style: normal; text-transform: uppercase; letter-spacing:
 .organization-copy > span { text-transform: uppercase; letter-spacing: .14em; font-size: .54rem; color: var(--accent); }
 .organization-copy h3 { font: 400 2.3rem var(--display); margin: 1.25rem 0 .8rem; }
 .organization-copy p { color: #676661; line-height: 1.65; font-size: .82rem; max-width: 340px; }
-.organization-copy a { position: absolute; width: 42px; height: 42px; border: 1px solid var(--line); display: grid; place-items: center; right: 1.6rem; bottom: 1.6rem; transition: .25s; }
-.organization-copy a:hover { background: var(--ink); color: var(--white); }
+.organization-arrow { position: absolute; width: 42px; height: 42px; border: 1px solid var(--line); display: grid; place-items: center; right: 1.6rem; bottom: 1.6rem; font-style: normal; transition: .25s; }
+.organization-card:hover .organization-arrow, .organization-card:focus-visible .organization-arrow { background: var(--ink); color: var(--white); }
 .content-disclaimer { margin: 1.3rem 0 0; font-size: .6rem; color: #77756f; font-style: italic; }
 
 .projects-section { background: #111315; }
@@ -263,6 +284,11 @@ blockquote cite { font-style: normal; text-transform: uppercase; letter-spacing:
   .vision-copy { padding: 4rem; }
 }
 
+@media (min-width: 1200px) {
+  .desktop-nav { display: flex; }
+  .header-contact { display: none; }
+}
+
 @media (max-width: 760px) {
   .site-header { height: 72px; padding: 0 1.15rem; }
   .header-contact, .menu-label { display: none; }
@@ -283,8 +309,8 @@ blockquote cite { font-style: normal; text-transform: uppercase; letter-spacing:
   .hero-statement { display: none; }
   .president-content .eyebrow { font-size: .66rem; }
   .roles { font-size: .66rem; max-width: 390px; gap: .4rem; }
-  .roles span { align-items: flex-start; }
-  .roles span::before { flex: 0 0 auto; margin-top: .35em; }
+  .roles a { align-items: flex-start; }
+  .roles a::before { margin-top: .35em; }
   .hero-actions { gap: .5rem; }
   .button { min-height: 44px; padding: 0 .85rem; font-size: .56rem; gap: .8rem; }
   .portrait-caption { display: none; }
@@ -292,6 +318,8 @@ blockquote cite { font-style: normal; text-transform: uppercase; letter-spacing:
   .carousel-copy { left: 1.3rem; right: 1.3rem; bottom: 4.8rem; }
   .carousel-copy h2 { font-size: clamp(3.2rem, 15vw, 5.4rem); }
   .carousel-copy p { max-width: calc(100% - 105px); font-size: .8rem; }
+  .carousel-actions { max-width: calc(100% - 90px); gap: .7rem 1rem; }
+  .carousel-actions .discover-link { font-size: .55rem; }
   .carousel-controls { right: 1.3rem; bottom: 5rem; }
   .carousel-controls button { width: 42px; height: 42px; }
   .section { padding: 5rem 1.3rem; }

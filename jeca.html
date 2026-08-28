@@ -1,15 +1,93 @@
 <!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="JECA — page en cours de construction." />
-    <title>JECA — Groupe Baruck</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="construction.css" />
-  </head>
-  <body class="construction-body">
-    <header class="site-header construction-header"><a class="brand brand-image" href="index.html" aria-label="Groupe Baruck — Accueil"><span class="brand-image-frame"><img src="baruck.jpg" alt="" /></span><span class="brand-image-label"><i aria-hidden="true"></i>Groupe Baruck</span></a><a class="construction-home-link" href="index.html">Retour à l’accueil <span>↗</span></a></header>
-    <main class="construction-main"><div class="construction-grid" aria-hidden="true"></div><div class="construction-content"><span class="construction-index">03 / 07</span><p class="eyebrow">JECA</p><h1>Page en cours<em>de construction.</em></h1><p>Le contenu consacré à la JECA sera publié prochainement. Merci pour votre patience.</p><a class="construction-button" href="index.html">Retourner à l’accueil <span>↖</span></a></div><div class="construction-footer"><span>Groupe Baruck</span><span>Entrepreneuriat · Réseau · Vision</span></div></main>
-  </body>
+<html lang="fr" class="jeca-document">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Découvrez la JECA — Jeunes Entrepreneurs Chrétiens Africains — ses activités agricoles, sa vision et ses objectifs pour la jeunesse africaine." />
+  <meta name="theme-color" content="#071f64" />
+  <title>JECA — Jeunes Entrepreneurs Chrétiens Africains</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="jeca.css" />
+  <script src="jeca.js" defer></script>
+</head>
+<body class="jeca-page">
+  <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+  <header class="site-header jeca-header" id="site-header">
+    <a class="brand brand-image" href="index.html" aria-label="Groupe Baruck — Accueil"><span class="brand-image-frame"><img src="baruck.jpg" alt="" /></span><span class="brand-image-label"><i aria-hidden="true"></i>Groupe Baruck</span></a>
+    <nav class="desktop-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <div class="desktop-nav-group"><a href="groupe.html">Le Groupe <span aria-hidden="true">⌄</span></a><div class="desktop-subnav"><a href="groupe.html">À propos</a><a href="studio-photo.html">Studio photo</a><a href="hotesses-evenementielles.html">Hôtesses événementielles</a></div></div>
+      <a class="is-current" href="jeca.html" aria-current="page">JECA</a><a href="espoir-de-vie.html">Espoir de Vie</a><a href="activites.html">Activités</a><a href="projets-realisations.html">Projets</a><a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-end"><a class="header-contact" href="contact.html">Parler avec nous <span>↗</span></a><button class="menu-button" id="menu-button" type="button" aria-label="Ouvrir le menu" aria-controls="side-nav" aria-expanded="false"><span class="menu-label">Menu</span><span class="hamburger" aria-hidden="true"><i></i><i></i></span></button></div>
+  </header>
+  <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+  <aside class="side-nav" id="side-nav" aria-hidden="true" aria-label="Navigation principale">
+    <div class="side-nav-top"><span class="side-kicker">Groupe Baruck</span><button class="close-menu" id="close-menu" type="button" aria-label="Fermer le menu"><span>Fermer</span><i aria-hidden="true">×</i></button></div>
+    <nav class="nav-links" aria-label="Menu principal">
+      <a href="index.html"><span>01</span>Accueil</a><a href="groupe.html"><span>02</span>Le Groupe</a>
+      <div class="side-subnav"><a href="groupe.html">À propos</a><a href="studio-photo.html">Studio photo</a><a href="hotesses-evenementielles.html">Hôtesses événementielles</a></div>
+      <a class="is-current" href="jeca.html" aria-current="page"><span>03</span>JECA</a><a href="espoir-de-vie.html"><span>04</span>Espoir de Vie</a><a href="activites.html"><span>05</span>Activités</a><a href="projets-realisations.html"><span>06</span>Projets &amp; Réalisations</a><a href="contact.html"><span>07</span>Contact</a>
+    </nav>
+    <div class="side-contact"><p>Restons en contact</p><div class="side-contact-list"><a href="tel:+224625197258"><small>Téléphone fixe Baruck Siège Guinée :</small>+224 625 19 72 58</a><a href="https://wa.me/224623720427" target="_blank" rel="noreferrer"><small>WhatsApp Baruck Siège Guinée :</small>+224 623 72 04 27</a><a href="https://wa.me/33755423754" target="_blank" rel="noreferrer"><small>WhatsApp PDG</small>+33 7 55 42 37 54</a><a href="mailto:jokrasso2@gmail.com"><small>E-mail</small>jokrasso2@gmail.com</a></div></div>
+  </aside>
+
+  <main id="main-content">
+    <section class="jeca-hero" id="accueil">
+      <div class="jeca-hero-copy">
+        <p class="jeca-kicker"><span>Jeunes Entrepreneurs</span> Chrétiens Africains</p>
+        <h1>Cultiver aujourd’hui<br />l’avenir de <em>l’Afrique.</em></h1>
+        <p class="jeca-hero-lead">La JECA porte une ambition concrète : entreprendre dans l’agriculture et créer des perspectives durables pour la jeunesse africaine.</p>
+        <div class="jeca-actions"><a class="jeca-button jeca-button-primary" href="#activites">Découvrir nos activités <span>↓</span></a><a class="jeca-button jeca-button-line" href="#vision">Notre vision <span>↘</span></a></div>
+        <dl class="jeca-facts"><div><dt>03</dt><dd>Filières agricoles</dd></div><div><dt>Akiekié</dt><dd>Dérivé du manioc</dd></div><div><dt>Afrique</dt><dd>Territoire d’ambition</dd></div></dl>
+      </div>
+      <div class="jeca-hero-visual" aria-label="Identité de la JECA">
+        <div class="jeca-logo-card"><img src="jeca.png" alt="Logo JECA — Jeunes Entrepreneurs Chrétiens Africains" width="1536" height="1024" fetchpriority="high" /></div>
+        <p class="hero-side-note">Entrepreneuriat · Agriculture · Production</p><span class="hero-scroll">Défiler <i aria-hidden="true">↓</i></span>
+      </div>
+    </section>
+
+    <section class="jeca-marquee" aria-label="Valeurs de la JECA"><div class="jeca-marquee-track"><span>Entreprendre</span><i>◆</i><span>Cultiver</span><i>◆</i><span>Fabriquer l’Akiekié</span><i>◆</i><span>Employer</span><i>◆</i><span>Investir en Afrique</span><i>◆</i><span aria-hidden="true">Entreprendre</span><i aria-hidden="true">◆</i><span aria-hidden="true">Cultiver</span><i aria-hidden="true">◆</i><span aria-hidden="true">Fabriquer l’Akiekié</span><i aria-hidden="true">◆</i><span aria-hidden="true">Employer</span><i aria-hidden="true">◆</i><span aria-hidden="true">Investir en Afrique</span><i aria-hidden="true">◆</i></div></section>
+
+    <section class="jeca-intro jeca-section" id="vision">
+      <div class="jeca-section-label reveal"><span>01</span><p>Notre raison d’être</p></div>
+      <div class="jeca-intro-heading reveal"><p class="jeca-kicker">De la terre à l’impact</p><h2>Une jeunesse qui ne se contente pas d’espérer : <em>elle entreprend.</em></h2></div>
+      <div class="jeca-intro-copy reveal"><p class="jeca-lead">JECA signifie « Jeunes Entrepreneurs Chrétiens Africains ».</p><p>L’initiative place l’agriculture au cœur d’une vision économique tournée vers l’Afrique. Elle développe actuellement trois cultures — le piment, l’oignon et le manioc — avec la volonté de créer de la valeur et de l’emploi sur le continent.</p></div>
+    </section>
+
+    <section class="jeca-activities jeca-section" id="activites">
+      <div class="jeca-activities-head reveal"><div><p class="jeca-kicker light"><span class="section-no">02</span>Nos domaines d’activité</p><h2>Trois cultures,<br /><em>une même vision.</em></h2></div><p>Développer la culture du piment, de l’oignon et du manioc avec une vision entrepreneuriale tournée vers l’Afrique.</p></div>
+      <div class="crop-grid">
+        <article class="crop-card crop-pepper reveal"><div class="crop-visual" role="img" aria-label="Culture du piment présentée sur le visuel de la JECA"></div><div class="crop-copy"><span>01 — Culture maraîchère</span><h3>Le piment</h3><p>Une production agricole à forte valeur, cultivée dans une logique de développement local.</p></div></article>
+        <article class="crop-card crop-onion reveal"><div class="crop-visual" role="img" aria-label="Culture de l’oignon présentée sur le visuel de la JECA"></div><div class="crop-copy"><span>02 — Culture maraîchère</span><h3>L’oignon</h3><p>Une filière essentielle portée par l’ambition de produire et de créer de la valeur en Afrique.</p></div></article>
+        <article class="crop-card crop-cassava reveal"><div class="crop-visual" role="img" aria-label="Culture du manioc"></div><div class="crop-copy"><span>03 — Culture vivrière</span><h3>Le manioc</h3><p>Une culture destinée notamment à la production d’Akiekié, un aliment très consommé en Afrique de l’Ouest.</p></div></article>
+      </div><p class="visual-source">Illustrations agricoles créées pour la présentation numérique de la JECA.</p>
+    </section>
+
+    <section class="transformation-section">
+      <div class="transformation-map reveal" aria-hidden="true"><span class="map-eyebrow">Produit dérivé du manioc</span><span class="map-word">Akiekié</span><p>Très consommé en Afrique de l’Ouest</p></div>
+      <div class="transformation-copy reveal"><p class="jeca-kicker"><span class="section-no">03</span>Du manioc à l’Akiekié</p><span class="large-index">03</span><h2>Cultiver le manioc pour fabriquer <em>l’Akiekié.</em></h2><p>L’Akiekié est un produit dérivé du manioc très consommé en Afrique de l’Ouest. La JECA cultive le manioc pour la fabrication de l’Akiekié.</p><div class="process-line"><span><b>01</b>Cultiver le manioc</span><i>→</i><span><b>02</b>Fabriquer l’Akiekié</span></div></div>
+    </section>
+
+    <section class="president-section" id="presidence">
+      <div class="president-image reveal"><img src="president.jpg" alt="Portrait de Djoro Joël Shaloom Krasso, président de la JECA" width="683" height="1024" loading="lazy" /><div class="president-badge"><span>Président</span><strong>de la JECA</strong></div></div>
+      <div class="president-copy reveal"><p class="jeca-kicker light"><span class="section-no">04</span>Leadership</p><h2>Djoro Joël<br /><em>Shaloom Krasso</em></h2><p class="jeca-lead">Un engagement entrepreneurial tourné vers l’action et la jeunesse africaine.</p><blockquote>« Investir en Afrique, lutter contre l’immigration clandestine et créer de l’emploi pour la jeunesse africaine. »</blockquote><p class="quote-source">Objectifs présentés dans le document de la JECA fourni par le client.</p></div>
+    </section>
+
+    <section class="objectives-section jeca-section">
+      <div class="objectives-title reveal"><div><p class="jeca-kicker"><span class="section-no">05</span>Objectif principal</p><h2>Créer ici les raisons<br /><em>de construire demain.</em></h2></div></div>
+      <div class="objectives-grid"><article class="reveal"><span>01</span><h3>Investir en Afrique</h3><p>Orienter l’énergie entrepreneuriale vers des projets productifs sur le continent.</p></article><article class="reveal"><span>02</span><h3>Créer de l’emploi</h3><p>Ouvrir des perspectives professionnelles concrètes pour la jeunesse africaine.</p></article><article class="reveal"><span>03</span><h3>Offrir une alternative</h3><p>Contribuer à la lutte contre l’immigration clandestine par l’activité économique locale.</p></article></div>
+    </section>
+
+    <section class="jeca-cta"><p class="jeca-kicker light"><span class="section-no">06</span>Entreprendre ensemble</p><h2>Une idée, un partenariat<br />ou une volonté d’<em>agir ?</em></h2><p>Échangeons autour des activités et des ambitions de la JECA.</p><div class="jeca-actions"><a class="jeca-button jeca-button-white" href="contact.html">Nous contacter <span>↗</span></a><a class="jeca-button jeca-button-outline" href="https://wa.me/224623720427" target="_blank" rel="noreferrer">Écrire sur WhatsApp</a></div></section>
+  </main>
+
+  <footer class="site-footer jeca-footer">
+    <div class="footer-brand"><a class="brand brand-image brand-light" href="index.html" aria-label="Groupe Baruck — Accueil"><span class="brand-image-frame"><img src="baruck.jpg" alt="" /></span><span class="brand-image-label"><i aria-hidden="true"></i>Groupe Baruck</span></a><p>La JECA, Jeunes Entrepreneurs Chrétiens Africains, développe des initiatives agricoles au service de la production locale et de l’emploi.</p></div>
+    <div class="footer-links"><span>Navigation</span><a href="index.html">Accueil</a><a href="#vision">Notre vision</a><a href="#activites">Nos activités</a><a href="#presidence">La présidence</a></div>
+    <div class="footer-links"><span>Groupe Baruck</span><a href="groupe.html">Le Groupe</a><a href="espoir-de-vie.html">Espoir de Vie</a><a href="projets-realisations.html">Projets &amp; Réalisations</a></div>
+    <div class="footer-links"><span>Contact direct</span><a href="tel:+224625197258">+224 625 19 72 58</a><a href="https://wa.me/224623720427" target="_blank" rel="noreferrer">WhatsApp Baruck Guinée</a><a href="mailto:jokrasso2@gmail.com">jokrasso2@gmail.com</a></div>
+    <div class="footer-bottom"><p>© <span id="current-year"></span> Groupe Baruck. Tous droits réservés.</p><span>Site web conçu par GassTech Solutions</span><a href="#accueil">Retour en haut ↑</a></div>
+  </footer>
+</body>
 </html>

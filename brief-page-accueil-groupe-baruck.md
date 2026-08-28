@@ -39,7 +39,7 @@ Cette première version doit permettre au client de visualiser :
 - JECA : **Jeunes Entrepreneurs Chrétiens Africains**  
   *Libellé officiel à confirmer avant la mise en ligne définitive.*
 - Autre fonction : **Président de l’ONG Espoir de Vie**
-- Expérience validée : **expérience dans la protection de l’enfant au sein de l’ONU en 2016**
+- Fonction validée : **Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016**
 
 ### Coordonnées validées
 
@@ -48,6 +48,13 @@ Cette première version doit permettre au client de visualiser :
 - WhatsApp Baruck Siège Guinée : **+224 623 72 04 27**
 - WhatsApp PDG : **+33 7 55 42 37 54**
 - E-mail : **jokrasso2@gmail.com**
+- Adresse en Guinée : **Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage**
+
+### Services mis en avant en Guinée
+
+- **Studio Photo Baruck** : mariage, baptême, anniversaire, conférence, shooting photo, photo d’identité et spot publicitaire.
+- **Hôtesses événementielles Baruck Communication Guinée** : concerts géants, rencontres, mariages, buffets, conférences, lancements et événements privés ou publics.
+- Positionnement des hôtesses : **une équipe élégante, professionnelle et dynamique à votre service**.
 
 ---
 
@@ -133,12 +140,13 @@ Autoriser uniquement des effets maîtrisés :
 
 ## 5. Navigation
 
-La navigation doit fonctionner avec un **menu hamburger sur tous les écrans**, y compris sur ordinateur.
+Sur ordinateur et grand écran, les liens principaux doivent être **directement visibles dans la barre de navigation**. Le menu hamburger reste disponible comme navigation complémentaire et devient la navigation principale sur mobile.
 
 ### Comportement souhaité
 
 - Afficher le logo du Groupe Baruck dans une zone fixe et visible.
-- Afficher un bouton hamburger permanent.
+- Afficher les liens principaux directement dans l’en-tête sur ordinateur.
+- Afficher un bouton hamburger permanent en complément.
 - Au clic, ouvrir un panneau de navigation latéral.
 - Le panneau peut glisser depuis la gauche.
 - Sur ordinateur, il peut occuper environ 35 à 45 % de la largeur.
@@ -153,6 +161,9 @@ La navigation doit fonctionner avec un **menu hamburger sur tous les écrans**, 
 
 1. **Accueil**
 2. **Le Groupe**
+   - **À propos**
+   - **Studio photo**
+   - **Hôtesses événementielles**
 3. **JECA**
 4. **Espoir de Vie**
 5. **Activités**
@@ -180,7 +191,7 @@ La première section doit être le point fort de la maquette.
 Créer une section plein écran ou presque plein écran, divisée en deux parties :
 
 - **partie gauche : présentation du président ;**
-- **partie droite : carrousel des activités du Groupe Baruck.**
+- **partie droite : carrousel de trois priorités du Groupe Baruck en Guinée.**
 
 Sur ordinateur, utiliser approximativement une répartition 45/55 ou 50/50.
 
@@ -199,7 +210,11 @@ Sous le nom, afficher les fonctions :
 - **PDG du Groupe Baruck**
 - **Président de la JECA (Jeunes Entrepreneurs Chrétiens Africains)**
 - **Président de l’ONG Espoir de Vie**
-- **Expérience dans la protection de l’enfant au sein de l’ONU en 2016**
+- **Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016**
+
+Chaque fonction doit être cliquable : Groupe/À propos pour le rôle de PDG, page JECA, page Espoir de Vie et section détaillée sur l’expérience ONU.
+
+Cette logique de navigation doit se prolonger après le Hero : les lignes de fonctions détaillées, les cartes d’activités, les cartes des entités et les cartes de projets doivent mener vers les pages correspondantes.
 
 Ajouter éventuellement une ligne secondaire plus discrète :
 
@@ -229,43 +244,37 @@ La photo du président doit être valorisée de manière naturelle et profession
 
 ---
 
-### 6.2. Partie droite — Carrousel des activités
+### 6.2. Partie droite — Carrousel des priorités en Guinée
 
 Créer un carrousel visuel intégré directement dans la section Hero.
 
 Chaque diapositive doit contenir :
 
 - une grande image représentative d’une activité ;
-- un petit label, par exemple **Nos activités** ;
+- un petit label, par exemple **À la une en Guinée** ;
 - le nom de l’activité ;
 - une courte phrase descriptive ;
-- éventuellement un lien **Découvrir**.
+- des appels à l’action adaptés : **Découvrir**, **Connaître les prix**, **Réserver une équipe** ou **Voir les détails**.
 
 ### Fonctionnement
 
-- Changement automatique toutes les **4 secondes**.
+- Changement automatique toutes les **5 secondes**.
 - Transition fluide entre les images.
 - Effet de fondu ou léger déplacement horizontal.
 - Léger zoom progressif sur l’image active.
 - Barre de progression ou indicateur visuel du temps restant.
-- Numéro de diapositive possible : `01 / 09`.
+- Numéro de diapositive : `01 / 03`.
 - Contrôles précédent et suivant discrets.
 - Pause automatique lorsque l’utilisateur survole le carrousel.
 - Pause lorsque le carrousel reçoit le focus au clavier.
 - Navigation tactile par glissement sur mobile.
 - Respect de la préférence système `prefers-reduced-motion`.
 
-### Activités à présenter
+### Slides à présenter
 
-1. **Hôtellerie**
-2. **Restauration**
-3. **Agro-business**
-4. **Studio d’enregistrement**
-5. **Cinéma**
-6. **Location de voitures de luxe**
-7. **Communication digitale des entreprises**
-8. **Production d’artistes**
-9. **Production de clips vidéo**
+1. **Le Groupe Baruck en Guinée** — présenter la Guinée comme point d’ancrage actuel du Groupe.
+2. **Studio Photo Baruck** — mariage, baptême, anniversaire, conférence, shooting photo et photo d’identité ; boutons **Connaître les prix** et **Voir les détails**.
+3. **Hôtesses événementielles** — Baruck Communication Guinée pour les concerts, rencontres, mariages, buffets et autres événements ; boutons **Réserver une équipe** et **Voir les détails**.
 
 ### Textes provisoires pour les diapositives
 
@@ -364,7 +373,7 @@ Présenter :
 - son nom complet ;
 - ses principales fonctions ;
 - une courte présentation de sa vision ;
-- son expérience de 2016 dans la protection de l’enfant au sein de l’ONU.
+- sa fonction d’Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016.
 
 Texte provisoire :
 
@@ -510,7 +519,7 @@ Ne pas afficher une année fixe si elle n’est pas générée automatiquement.
 Sur mobile, empiler les deux parties du Hero :
 
 1. présentation du président ;
-2. carrousel des activités.
+2. carrousel des trois priorités en Guinée.
 
 Le portrait du président doit rester visible immédiatement.
 
@@ -602,7 +611,7 @@ Les activités doivent être stockées dans un tableau ou un fichier de données
 Exemple de structure :
 
 ```ts
-type ActivitySlide = {
+type HeroSlide = {
   id: string;
   title: string;
   description: string;
@@ -611,7 +620,7 @@ type ActivitySlide = {
 };
 ```
 
-Ne pas coder les neuf diapositives directement dans le composant si cela rend leur modification difficile.
+Ne pas coder les trois diapositives directement dans le composant si cela rend leur modification difficile.
 
 ---
 
@@ -632,7 +641,7 @@ Prévoir :
 - chargement rapide ;
 - absence de décalage visuel important pendant le chargement.
 
-Le carrousel ne doit pas empêcher l’utilisateur de lire le contenu. Les textes doivent rester courts et stables pendant chaque intervalle de quatre secondes.
+Le carrousel ne doit pas empêcher l’utilisateur de lire le contenu. Les textes doivent rester courts et stables pendant chaque intervalle de cinq secondes.
 
 ---
 
@@ -645,9 +654,9 @@ Le carrousel ne doit pas empêcher l’utilisateur de lire le contenu. Les texte
 5. Prévoir des emplacements simples pour remplacer les logos et images.
 6. Afficher la civilité et conserver le nom avec l’orthographe exacte : **MR Djoro Joël Shaloom Krasso**.
 7. Afficher les coordonnées exactement comme fournies.
-8. Utiliser un menu hamburger latéral sur tous les écrans.
+8. Afficher les liens de navigation dans l’en-tête sur ordinateur et conserver le menu hamburger latéral comme navigation complémentaire et mobile.
 9. Faire du Hero la section la plus travaillée de la page.
-10. Programmer le changement automatique des visuels toutes les quatre secondes.
+10. Programmer le changement automatique des visuels toutes les cinq secondes.
 11. Garder un bon équilibre entre l’image personnelle du président et l’identité du Groupe Baruck.
 12. Ne pas surcharger la page d’animations.
 13. Créer un résultat suffisamment qualitatif pour être présenté directement au client.
@@ -663,10 +672,10 @@ La première proposition sera considérée comme réussie si :
 - le président est immédiatement identifiable ;
 - son nom et ses fonctions principales sont lisibles ;
 - le Groupe Baruck reste l’identité dominante du site ;
-- le carrousel des activités fonctionne correctement ;
-- chaque visuel change environ toutes les quatre secondes ;
+- le carrousel des trois priorités en Guinée fonctionne correctement ;
+- chaque visuel change environ toutes les cinq secondes ;
 - les neuf domaines d’activité sont représentés ;
-- le menu hamburger fonctionne sur ordinateur et mobile ;
+- les liens de navigation sont directement visibles sur ordinateur et le menu hamburger fonctionne sur ordinateur et mobile ;
 - la page paraît premium sans être surchargée ;
 - les coordonnées sont visibles ;
 - les contenus provisoires sont faciles à remplacer ;
@@ -679,6 +688,6 @@ La première proposition sera considérée comme réussie si :
 
 La page d’accueil doit donner l’impression d’entrer dans l’univers d’un groupe multisectoriel dirigé par une personnalité forte.
 
-La première moitié du Hero valorise **Djoro Joël Shaloom Krasso**, tandis que la seconde moitié montre, par un carrousel visuel, l’étendue des activités du **Groupe Baruck**.
+La première moitié du Hero valorise **Djoro Joël Shaloom Krasso**, tandis que la seconde moitié met en avant la Guinée, le **Studio Photo Baruck** et les **hôtesses événementielles de Baruck Communication Guinée**.
 
 Le reste de la page transforme cette première impression en une présentation structurée du groupe, de ses activités, de son leadership, de ses engagements et de ses futures réalisations.

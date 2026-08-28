@@ -1,3 +1,39 @@
+const heroSlides = [
+  {
+    id: "guinee",
+    title: "Le Groupe Baruck en Guinée",
+    description: "La Guinée est notre point d’ancrage : nous y développons le Studio Photo Baruck, nos services d’hôtesses événementielles et nos activités de communication, avec une vision entrepreneuriale tournée vers l’impact.",
+    image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1800&q=82",
+    position: "center",
+    bg: "linear-gradient(145deg, #101820, #263b48 58%, #72563d)",
+    art: "linear-gradient(125deg, transparent 45%, rgba(255,255,255,.08) 45.4% 46%, transparent 46.4%)",
+    primary: { label: "Découvrir le Groupe", href: "groupe.html" },
+    secondary: { label: "Nous contacter", href: "contact.html" }
+  },
+  {
+    id: "studio-photo",
+    title: "Studio Photo Baruck",
+    description: "Mariage, baptême, anniversaire, conférence, shooting photo et photo d’identité. Retrouvez-nous à Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.",
+    image: "studio-photo-hero.png",
+    position: "center",
+    bg: "linear-gradient(145deg, #161211, #633329 58%, #b3492e)",
+    art: "linear-gradient(140deg, transparent 55%, rgba(151,24,18,.14))",
+    primary: { label: "Connaître les prix", href: "https://wa.me/224623720427?text=Bonjour%2C%20je%20souhaite%20conna%C3%AEtre%20les%20tarifs%20du%20Studio%20Photo%20Baruck.", external: true },
+    secondary: { label: "Voir les détails", href: "studio-photo.html" }
+  },
+  {
+    id: "hotesses",
+    title: "Hôtesses événementielles",
+    description: "Concerts géants, rencontres, mariages, buffets et autres événements : une équipe élégante, professionnelle et dynamique à votre service en Guinée.",
+    image: "hotesses-evenementielles-hero.png",
+    position: "center 42%",
+    bg: "linear-gradient(145deg, #170e13, #6f1934 58%, #a73a4d)",
+    art: "linear-gradient(145deg, transparent 48%, rgba(122,5,42,.16))",
+    primary: { label: "Réserver une équipe", href: "https://wa.me/224623720427?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20les%20h%C3%B4tesses%20%C3%A9v%C3%A9nementielles%20Baruck.", external: true },
+    secondary: { label: "Voir les détails", href: "hotesses-evenementielles.html" }
+  }
+];
+
 const activities = [
   {
     id: "hotellerie",
@@ -80,8 +116,10 @@ const description = document.querySelector("#slide-description");
 const count = document.querySelector("#slide-count");
 const activityNumber = document.querySelector("#activity-number");
 const progressBar = document.querySelector("#carousel-progress-bar");
+const slidePrimary = document.querySelector("#slide-primary");
+const slideSecondary = document.querySelector("#slide-secondary");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const SLIDE_DURATION = 4000;
+const SLIDE_DURATION = 5000;
 let activeIndex = 0;
 let carouselTimer;
 let isPaused = false;
@@ -112,21 +150,36 @@ function scheduleNext() {
 }
 
 function showSlide(index, immediate = false) {
-  activeIndex = (index + activities.length) % activities.length;
-  const activity = activities[activeIndex];
+  activeIndex = (index + heroSlides.length) % heroSlides.length;
+  const activity = heroSlides[activeIndex];
   if (!immediate) carousel.classList.add("is-changing");
 
   setTimeout(() => {
     stage.style.setProperty("--slide-bg", activity.bg);
     stage.style.setProperty("--slide-image", `url("${activity.image}")`);
     stage.style.setProperty("--slide-art", activity.art);
+    stage.style.setProperty("--slide-position", activity.position);
     title.textContent = activity.title;
     description.textContent = activity.description;
-    count.textContent = `${formatNumber(activeIndex + 1)} / ${formatNumber(activities.length)}`;
+    count.textContent = `${formatNumber(activeIndex + 1)} / ${formatNumber(heroSlides.length)}`;
     activityNumber.textContent = formatNumber(activeIndex + 1);
+    setSlideAction(slidePrimary, activity.primary);
+    setSlideAction(slideSecondary, activity.secondary);
     carousel.classList.remove("is-changing");
     scheduleNext();
   }, immediate ? 0 : 260);
+}
+
+function setSlideAction(element, action) {
+  element.firstChild.textContent = `${action.label} `;
+  element.href = action.href;
+  if (action.external) {
+    element.target = "_blank";
+    element.rel = "noreferrer";
+  } else {
+    element.removeAttribute("target");
+    element.removeAttribute("rel");
+  }
 }
 
 function setCarouselPause(paused) {
@@ -166,14 +219,14 @@ carousel.addEventListener("touchend", (event) => {
 
 const activityGrid = document.querySelector("#activities-grid");
 activityGrid.innerHTML = activities.map((activity, index) => `
-  <article class="activity-card reveal" style="--card-bg:${activity.bg}; --card-art:${activity.art}; --card-image:url('${activity.image}')">
+  <a class="activity-card reveal" href="activites.html" aria-label="Découvrir l’activité ${activity.title}" style="--card-bg:${activity.bg}; --card-art:${activity.art}; --card-image:url('${activity.image}')">
     <div class="card-top"><span>${formatNumber(index + 1)} / ${formatNumber(activities.length)}</span><i aria-hidden="true">↗</i></div>
     <div>
       <h3>${activity.title}</h3>
       <p>${activity.description}</p>
       <span class="visual-note">Photo d’ambiance · Unsplash</span>
     </div>
-  </article>
+  </a>
 `).join("");
 
 const menuButton = document.querySelector("#menu-button");
