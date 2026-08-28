@@ -67,6 +67,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .president-content { position: absolute; z-index: 2; left: clamp(1.5rem, 4vw, 4.8rem); right: clamp(1.2rem, 3vw, 3rem); bottom: clamp(4rem, 8vh, 7rem); }
 .eyebrow { margin: 0 0 1.2rem; text-transform: uppercase; font-size: .63rem; font-weight: 700; letter-spacing: .23em; color: var(--accent); display: flex; align-items: center; gap: .75rem; }
 .eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+.eyebrow .section-index { color: var(--accent); font: italic 1rem/1 var(--display); letter-spacing: 0; }
 .eyebrow.light { color: #d8c8aa; }
 .president-content .eyebrow { font-size: .72rem; }
 .president-content h1 { font: 400 clamp(2.7rem, 4.4vw, 5.2rem)/.88 var(--display); letter-spacing: -.045em; margin: 0; max-width: 760px; text-wrap: balance; }
@@ -122,7 +123,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .section { padding: clamp(5rem, 10vw, 10rem) clamp(1.3rem, 6vw, 7.5rem); }
 .group-intro { display: grid; grid-template-columns: 10% 42% 1fr; gap: 2.4rem; background: var(--paper); }
-.section-number { font: italic 1rem var(--display); color: var(--accent); padding-top: .3rem; }
+.intro-heading { grid-column: 2; }
+.intro-body { grid-column: 3; }
 .intro-heading h2, .section-head h2, .vision-copy h2, .contact-details h2 { font: 400 clamp(3rem, 5.6vw, 6.6rem)/.92 var(--display); letter-spacing: -.05em; margin: 0; text-wrap: balance; }
 .intro-body { max-width: 520px; align-self: end; padding-bottom: .4rem; }
 .lead { font: 400 clamp(1.15rem, 1.6vw, 1.55rem)/1.5 var(--display); }
@@ -294,7 +296,7 @@ blockquote cite { font-style: normal; text-transform: uppercase; letter-spacing:
   .carousel-controls button { width: 42px; height: 42px; }
   .section { padding: 5rem 1.3rem; }
   .group-intro { grid-template-columns: 1fr; gap: 1.5rem; }
-  .section-number { display: none; }
+  .intro-heading, .intro-body { grid-column: auto; }
   .intro-heading h2, .section-head h2, .vision-copy h2, .contact-details h2 { font-size: clamp(2.8rem, 13vw, 4.2rem); }
   .values { grid-column: auto; grid-template-columns: 1fr; margin-top: 2.5rem; }
   .values article, .values article:first-child { padding: 1.4rem 0; border-right: 0; border-bottom: 1px solid var(--line); }
