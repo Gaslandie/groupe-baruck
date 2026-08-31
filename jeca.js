@@ -58,4 +58,47 @@ if ("IntersectionObserver" in window) {
   document.querySelectorAll(".reveal").forEach((element) => element.classList.add("is-visible"));
 }
 
-document.querySelector("#current-year").textContent = new Date().getFullYear();
+const year = document.querySelector("#current-year");
+if (year) year.textContent = new Date().getFullYear();
+
+const lightbox = document.querySelector("#photo-lightbox");
+const lightboxImage = lightbox?.querySelector("figure img");
+const lightboxCaption = lightbox?.querySelector(".lightbox-caption-text");
+const lightboxCount = lightbox?.querySelector(".lightbox-count");
+const lightboxClose = lightbox?.querySelector(".lightbox-close");
+const lightboxPrevious = lightbox?.querySelector(".lightbox-prev");
+const lightboxNext = lightbox?.querySelector(".lightbox-next");
+const galleryButtons = [...document.querySelectorAll(".gallery-photo")];
+let currentPhotoIndex = 0;
+
+if (lightbox && lightboxImage && lightboxCaption && lightboxCount && lightboxClose && lightboxPrevious && lightboxNext) {
+  const showPhoto = (index) => {
+    currentPhotoIndex = (index + galleryButtons.length) % galleryButtons.length;
+    const button = galleryButtons[currentPhotoIndex];
+    const sourceImage = button.querySelector("img");
+    if (!sourceImage) return;
+    lightboxImage.src = sourceImage.currentSrc || sourceImage.src;
+    lightboxImage.alt = sourceImage.alt;
+    lightboxCaption.textContent = button.dataset.caption || "";
+    lightboxCount.textContent = `${currentPhotoIndex + 1} / ${galleryButtons.length}`;
+  };
+
+  galleryButtons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+      showPhoto(index);
+      lightbox.showModal();
+    });
+  });
+
+  const closeLightbox = () => lightbox.close();
+  lightboxClose.addEventListener("click", closeLightbox);
+  lightboxPrevious.addEventListener("click", () => showPhoto(currentPhotoIndex - 1));
+  lightboxNext.addEventListener("click", () => showPhoto(currentPhotoIndex + 1));
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  lightbox.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") showPhoto(currentPhotoIndex - 1);
+    if (event.key === "ArrowRight") showPhoto(currentPhotoIndex + 1);
+  });
+}
