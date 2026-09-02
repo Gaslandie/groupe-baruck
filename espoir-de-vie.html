@@ -3,13 +3,131 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Espoir de Vie — page en cours de construction." />
-    <title>Espoir de Vie — Groupe Baruck</title>
+    <meta name="description" content="Découvrez Espoir de Vie, ses actions en faveur des enfants, des familles et des personnes vulnérables en Côte d’Ivoire, en Guinée et au Burkina Faso." />
+    <meta name="theme-color" content="#1a100b" />
+    <title>Espoir de Vie — Protéger, accompagner, redonner espoir</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="construction.css" />
+    <link rel="stylesheet" href="espoir-de-vie.css" />
+    <script src="nav.js" defer></script>
+    <script src="espoir-de-vie.js" defer></script>
   </head>
-  <body class="construction-body">
-    <header class="site-header construction-header"><a class="brand brand-image" href="index.html" aria-label="Groupe Baruck — Accueil"><span class="brand-image-frame"><img src="baruck.jpg" alt="" /></span><span class="brand-image-label"><i aria-hidden="true"></i>Groupe Baruck</span></a><a class="construction-home-link" href="index.html">Retour à l’accueil <span>↗</span></a></header>
-    <main class="construction-main"><div class="construction-grid" aria-hidden="true"></div><div class="construction-content"><span class="construction-index">04 / 07</span><p class="eyebrow">Espoir de Vie</p><h1>Page en cours<em>de construction.</em></h1><p>Cette page présentera bientôt les engagements et les actions d’Espoir de Vie.</p><a class="construction-button" href="index.html">Retourner à l’accueil <span>↖</span></a></div><div class="construction-footer"><span>Groupe Baruck</span><span>Engagement · Espoir · Impact</span></div></main>
+  <body class="edv-page" id="top">
+    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+    <header class="site-header edv-header" id="site-header">
+      <a class="brand brand-image" href="index.html" aria-label="Groupe Baruck — Accueil">
+        <span class="brand-image-frame"><img src="baruck.jpg" alt="" /></span>
+        <span class="brand-image-label"><i aria-hidden="true"></i>Groupe Baruck</span>
+      </a>
+      <nav class="desktop-nav" aria-label="Navigation principale">
+        <a href="index.html">Accueil</a>
+        <div class="desktop-nav-group">
+          <a href="groupe.html">Le Groupe <span aria-hidden="true">⌄</span></a>
+          <div class="desktop-subnav"><a href="a-propos.html">À propos</a><a href="studio-photo.html">Studio photo</a><a href="hotesses-evenementielles.html">Hôtesses événementielles</a></div>
+        </div>
+        <a href="jeca.html">JECA</a><a class="is-current" href="espoir-de-vie.html" aria-current="page">Espoir de Vie</a><a href="activites.html">Activités</a><a href="projets-realisations.html">Projets</a><a href="contact.html">Contact</a>
+      </nav>
+      <div class="header-end"><a class="header-contact" href="contact.html">Parler avec nous <span>↗</span></a><button class="menu-button" id="menu-button" type="button" aria-label="Ouvrir le menu" aria-controls="side-nav" aria-expanded="false"><span class="menu-label">Menu</span><span class="hamburger" aria-hidden="true"><i></i><i></i></span></button></div>
+    </header>
+
+    <div class="nav-overlay" id="nav-overlay" aria-hidden="true"></div>
+    <aside class="side-nav" id="side-nav" aria-hidden="true" aria-label="Navigation principale">
+      <div class="side-nav-top"><span class="side-kicker">Groupe Baruck</span><button class="close-menu" id="close-menu" type="button" aria-label="Fermer le menu"><span>Fermer</span><i aria-hidden="true">×</i></button></div>
+      <nav class="nav-links" aria-label="Menu principal">
+        <a href="index.html"><span>01</span>Accueil</a><a href="groupe.html"><span>02</span>Le Groupe</a>
+        <div class="side-subnav"><a href="a-propos.html">À propos</a><a href="studio-photo.html">Studio photo</a><a href="hotesses-evenementielles.html">Hôtesses événementielles</a></div>
+        <a href="jeca.html"><span>03</span>JECA</a><a class="is-current" href="espoir-de-vie.html" aria-current="page"><span>04</span>Espoir de Vie</a><a href="activites.html"><span>05</span>Activités</a><a href="projets-realisations.html"><span>06</span>Projets &amp; Réalisations</a><a href="contact.html"><span>07</span>Contact</a>
+      </nav>
+      <div class="side-contact"><p>Restons en contact</p><div class="side-contact-list"><a href="tel:+224625197258"><small>Téléphone fixe Baruck Siège Guinée :</small>+224 625 19 72 58</a><a href="https://wa.me/224623720427" target="_blank" rel="noreferrer"><small>WhatsApp Baruck Siège Guinée :</small>+224 623 72 04 27</a><a href="https://wa.me/33755423754" target="_blank" rel="noreferrer"><small>WhatsApp PDG</small>+33 7 55 42 37 54</a><a href="mailto:jokrasso2@gmail.com"><small>E-mail</small>jokrasso2@gmail.com</a></div></div>
+    </aside>
+
+    <main id="main-content">
+      <section class="edv-hero" id="accueil" aria-label="Présentation d’Espoir de Vie">
+        <div class="edv-hero-copy">
+          <p class="edv-kicker edv-kicker-light">Engagement humanitaire · Afrique de l’Ouest</p>
+          <h1>Espoir de Vie.<br /><em>Agir pour les plus vulnérables.</em></h1>
+          <p class="edv-hero-lead">Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire.</p>
+          <blockquote>« Avec Dieu, nous ferons des exploits. »</blockquote>
+          <div class="edv-actions"><a class="edv-button edv-button-primary" href="#actions">Découvrir les actions <span>↓</span></a><a class="edv-button edv-button-line" href="#orphelinat">L’orphelinat <span>↘</span></a></div>
+        </div>
+        <div class="edv-hero-visual">
+          <img class="edv-founder" src="president.jpg" alt="Djoro Joël Shaloom Krasso, président fondateur d’Espoir de Vie" width="683" height="1024" fetchpriority="high" />
+          <div class="edv-hero-shade"></div>
+          <img class="edv-logo" src="espoirvie.png" alt="Logo Espoir de Vie" width="1346" height="1169" fetchpriority="high" />
+          <p><span>Président fondateur</span>Djoro Joël Shaloom Krasso</p>
+        </div>
+      </section>
+
+      <nav class="edv-section-nav" aria-label="Accès direct au contenu">
+        <a href="#mission"><span>01</span><strong>Notre mission</strong><small>Protéger et accompagner</small></a><a href="#orphelinat"><span>02</span><strong>L’orphelinat</strong><small>Une histoire depuis 2017</small></a><a href="#actions"><span>03</span><strong>Nos actions</strong><small>Des engagements concrets</small></a><a href="#presence"><span>04</span><strong>Notre présence</strong><small>Trois pays d’engagement</small></a>
+      </nav>
+
+      <section class="edv-mission" id="mission">
+        <div class="edv-heading reveal"><p class="edv-kicker">Notre mission</p><h2>Chaque enfant mérite<br /><em>protection et avenir.</em></h2></div>
+        <div class="edv-mission-copy reveal">
+          <p class="edv-lead">Espoir de Vie s’engage auprès des enfants orphelins, des familles fragilisées, des femmes et des personnes sans-abri.</p>
+          <p>L’action de la fondation s’inscrit dans l’esprit de la Déclaration des droits de l’enfant : le droit à la vie, à l’éducation, à la santé, à une alimentation suffisante et à la protection.</p>
+          <aside><span>Notre conviction</span><p>Répondre aux besoins immédiats tout en créant les conditions d’un avenir plus digne.</p></aside>
+        </div>
+        <div class="edv-pillars" aria-label="Les cinq piliers d’Espoir de Vie">
+          <article class="reveal"><span>01</span><h3>Protéger</h3><p>Offrir un cadre sûr aux enfants orphelins et vulnérables.</p></article><article class="reveal"><span>02</span><h3>Éduquer</h3><p>Faciliter la scolarisation par la remise de fournitures et de kits scolaires.</p></article><article class="reveal"><span>03</span><h3>Nourrir &amp; soigner</h3><p>Apporter une aide alimentaire et soutenir l’accès aux soins.</p></article><article class="reveal"><span>04</span><h3>Accompagner</h3><p>Soutenir les veuves, les mères et les familles confrontées à la précarité.</p></article><article class="reveal"><span>05</span><h3>Agir</h3><p>Aller sur le terrain et fédérer les bonnes volontés autour d’actions concrètes.</p></article>
+        </div>
+      </section>
+
+      <section class="edv-impact" aria-label="Quelques repères sur nos actions">
+        <div class="edv-impact-intro reveal"><p class="edv-kicker edv-kicker-light">Nos actions en chiffres</p><h2>Des gestes concrets,<br /><em>des vies accompagnées.</em></h2></div>
+        <dl class="edv-impact-grid"><div class="reveal"><dt>2015</dt><dd>Premières actions de solidarité</dd></div><div class="reveal"><dt>100</dt><dd>Jouets remis aux enfants de Grôh</dd></div><div class="reveal"><dt>200</dt><dd>Orphelins accompagnés à la rentrée 2016–2017</dd></div><div class="reveal"><dt>2017</dt><dd>Accueil des premiers pensionnaires</dd></div><div class="reveal"><dt>03</dt><dd>Pays marqués par nos actions</dd></div></dl>
+      </section>
+
+      <section class="edv-orphanage" id="orphelinat">
+        <div class="edv-orphanage-intro reveal">
+          <p class="edv-kicker">Un projet fondateur</p><h2>Construire un lieu<br /><em>où grandir en sécurité.</em></h2><p>De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple : offrir protection, stabilité et attention.</p>
+          <div class="edv-orphanage-mark" aria-hidden="true"><img src="espoirvie.png" alt="" width="1346" height="1169" loading="lazy" /></div>
+        </div>
+        <ol class="edv-timeline">
+          <li class="reveal"><time>Étape 01</time><div><h3>Construction</h3><p>Édification du bâtiment destiné à accueillir et accompagner les enfants.</p></div></li><li class="reveal"><time>Étape 02</time><div><h3>Aménagement</h3><p>Préparation des dortoirs, des berceaux, de la cuisine et des espaces de vie.</p></div></li><li class="reveal"><time datetime="2017-02-11">11 février 2017</time><div><h3>Premiers pensionnaires</h3><p>Accueil des premiers enfants avant l’ouverture officielle de l’établissement.</p></div></li><li class="reveal"><time datetime="2017-02-15">15 février 2017</time><div><h3>Inauguration</h3><p>Ouverture officielle en présence des communautés et des autorités invitées.</p></div></li><li class="reveal"><time datetime="2017-03-04">04 mars 2017</time><div><h3>Un repas partagé</h3><p>Le président fondateur partage un moment de convivialité avec les enfants accueillis.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="edv-actions-section" id="actions">
+        <header class="edv-section-head reveal"><div><p class="edv-kicker">Agir sur le terrain</p><h2>Une solidarité<br /><em>qui prend plusieurs formes.</em></h2></div><p>Au fil des années, Espoir de Vie a multiplié les initiatives en faveur des enfants, des familles et des communautés les plus fragiles.</p></header>
+        <div class="edv-action-grid">
+          <article class="edv-action-card edv-action-card-featured reveal"><div class="edv-action-meta"><span>01</span><time datetime="2015-12-23">23 décembre 2015</time></div><p class="edv-action-place">Grôh · Département d’Hiré · Côte d’Ivoire</p><h3>Un Noël pour les enfants</h3><p>Cent jouets remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.</p><strong>100 jouets</strong></article>
+          <article class="edv-action-card reveal"><div class="edv-action-meta"><span>02</span><time>Rentrées scolaires</time></div><p class="edv-action-place">Zaroko et Divo · Côte d’Ivoire</p><h3>Favoriser l’accès à l’école</h3><p>Distribution de cartables, cahiers, fournitures et vivres aux enfants orphelins, dont 200 bénéficiaires au quartier Dialogue de Divo pour la rentrée 2016–2017.</p></article>
+          <article class="edv-action-card reveal"><div class="edv-action-meta"><span>03</span><time>Actions communautaires</time></div><p class="edv-action-place">Côte d’Ivoire</p><h3>Soutenir les femmes et les familles</h3><p>Dons aux mères, aide alimentaire aux veuves et accompagnement de petites initiatives génératrices de revenus.</p></article>
+          <article class="edv-action-card reveal"><div class="edv-action-meta"><span>04</span><time datetime="2017-06-03">03 juin 2017</time></div><p class="edv-action-place">Divo et Zaroko · Côte d’Ivoire</p><h3>Vêtir et chausser dignement</h3><p>Des vêtements et des chaussures ont été distribués aux enfants de l’orphelinat et des communautés environnantes.</p></article>
+          <article class="edv-action-card reveal"><div class="edv-action-meta"><span>05</span><time>Solidarité associative</time></div><p class="edv-action-place">Fondation Marie Rose Guiro</p><h3>Unir les forces</h3><p>Remise de vivres et de produits non alimentaires, ainsi qu’accueil d’organisations venues rencontrer les enfants et les équipes.</p></article>
+          <article class="edv-action-card edv-action-card-dark reveal"><div class="edv-action-meta"><span>06</span><time>Rayonnement africain</time></div><p class="edv-action-place">Guinée et Burkina Faso</p><h3>Porter l’espoir au-delà des frontières</h3><p>Soutien aux enfants de la rue, partage avec des personnes sans-abri et actions en faveur de la santé, de l’alimentation et de l’éducation.</p></article>
+        </div>
+      </section>
+
+      <section class="edv-presence" id="presence">
+        <header class="edv-section-head edv-section-head-light reveal"><div><p class="edv-kicker edv-kicker-light">Notre présence</p><h2>Trois territoires,<br /><em>un même engagement.</em></h2></div><p>De la Côte d’Ivoire à la Guinée et au Burkina Faso, nos actions portent une même volonté de protection et de solidarité.</p></header>
+        <div class="edv-country-grid"><article class="reveal"><span>CI</span><small>01</small><h3>Côte d’Ivoire</h3><p>Grôh, Hiré, Zaroko et Divo : jouets, kits scolaires, aide aux familles, vêtements, chaussures et construction de l’orphelinat.</p></article><article class="reveal"><span>GN</span><small>02</small><h3>Guinée</h3><p>Des actions autour du droit à la santé, à une alimentation équilibrée, à la protection et à l’éducation.</p></article><article class="reveal"><span>BF</span><small>03</small><h3>Burkina Faso</h3><p>Soutien aux enfants de la rue et moments de partage avec des personnes sans-abri pendant une tournée africaine.</p></article></div>
+      </section>
+
+      <section class="edv-archives">
+        <div class="edv-archives-copy reveal"><p class="edv-kicker">Mémoire d’actions</p><h2>Une histoire écrite<br /><em>sur le terrain.</em></h2><p>Chaque initiative est une rencontre : un enfant qui retrouve le chemin de l’école, une famille soutenue, une communauté rassemblée autour d’un même élan.</p></div>
+        <div class="edv-archives-note reveal"><span aria-hidden="true">↗</span><p>De Grôh à N’Zérékoré, chaque action rappelle qu’un geste concret peut rendre confiance et ouvrir de nouvelles perspectives.</p></div>
+      </section>
+
+      <section class="edv-collaborations">
+        <header class="edv-section-head reveal"><div><p class="edv-kicker">À nos côtés</p><h2>Faire ensemble,<br /><em>pour aller plus loin.</em></h2></div><p>Espoir de Vie crée des liens avec des fondations, des communautés religieuses et des organisations associatives qui partagent son engagement.</p></header>
+        <div class="edv-collaboration-grid"><article class="reveal"><span>01</span><h3>Fondation Marie Rose Guiro</h3><p>Des vivres et des produits non alimentaires ont été remis pour accompagner ses bénéficiaires.</p></article><article class="reveal"><span>02</span><h3>Église M.C.A</h3><p>Des actions de solidarité ont été menées auprès des mamans à l’occasion de la fête des Mères.</p></article><article class="reveal"><span>03</span><h3>Ouverture associative</h3><p>L’orphelinat a reçu la visite d’une organisation française venue rencontrer les enfants et les équipes.</p></article></div>
+      </section>
+
+      <section class="edv-cta">
+        <img src="espoirvie.png" alt="" width="1346" height="1169" loading="lazy" /><p class="edv-kicker edv-kicker-light">Espoir de Vie</p><h2>Chaque soutien peut<br /><em>ouvrir un nouvel avenir.</em></h2><p>Vous souhaitez connaître les actions de la fondation, proposer un partenariat ou contribuer à une initiative ? Échangeons.</p>
+        <div class="edv-actions edv-actions-center"><a class="edv-button edv-button-white" href="contact.html">Nous contacter <span>↗</span></a><a class="edv-button edv-button-outline" href="https://wa.me/224623720427" target="_blank" rel="noreferrer">Écrire sur WhatsApp</a></div>
+      </section>
+    </main>
+
+    <footer class="site-footer edv-footer">
+      <div class="footer-brand"><a class="brand brand-image brand-light" href="index.html" aria-label="Groupe Baruck — Accueil"><span class="brand-image-frame"><img src="baruck.jpg" alt="" /></span><span class="brand-image-label"><i aria-hidden="true"></i>Groupe Baruck</span></a><p>Espoir de Vie agit en faveur des enfants, des familles et des personnes vulnérables en Afrique de l’Ouest.</p></div>
+      <div class="footer-links"><span>Espoir de Vie</span><a href="#mission">Notre mission</a><a href="#orphelinat">L’orphelinat</a><a href="#actions">Nos actions</a><a href="#presence">Notre présence</a></div>
+      <div class="footer-links"><span>Groupe Baruck</span><a href="groupe.html">Le Groupe</a><a href="jeca.html">JECA</a><a href="projets-realisations.html">Projets &amp; Réalisations</a></div>
+      <div class="footer-links"><span>Contact direct</span><a href="tel:+224625197258">+224 625 19 72 58</a><a href="https://wa.me/224623720427" target="_blank" rel="noreferrer">WhatsApp Baruck Guinée</a><a href="mailto:jokrasso2@gmail.com">jokrasso2@gmail.com</a></div>
+      <div class="footer-bottom"><p>© <span id="current-year"></span> Groupe Baruck. Tous droits réservés.</p><span>Site web conçu par GassTech Solutions</span><a href="#top">Retour en haut ↑</a></div>
+    </footer>
   </body>
 </html>
