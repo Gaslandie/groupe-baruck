@@ -180,11 +180,13 @@
 .edv-orphanage-intro h2 em { color: var(--edv-gold); }
 .edv-orphanage-intro > p:not(.edv-kicker) { max-width: 600px; margin: 2rem 0 0; color: rgba(255, 255, 255, .7); font-size: .9rem; line-height: 1.8; }
 .edv-orphanage-mark { position: absolute; z-index: -1; right: -12%; bottom: -18%; width: min(33vw, 500px); opacity: .1; transform: rotate(-8deg); }
+.edv-orphanage-mark img { mix-blend-mode: screen; }
 .edv-timeline { margin: 0; padding: clamp(4rem, 7vw, 7rem); list-style: none; counter-reset: orphanage-step; }
 .edv-timeline li { position: relative; display: grid; grid-template-columns: 145px 1fr; gap: 2rem; min-height: 150px; padding: 0 0 2.8rem 2.2rem; border-left: 1px solid var(--edv-line); }
 .edv-timeline li:last-child { min-height: 0; padding-bottom: 0; }
 .edv-timeline li::before { content: ""; position: absolute; width: 11px; height: 11px; left: -6px; top: 4px; border-radius: 50%; background: var(--edv-ember); box-shadow: 0 0 0 7px var(--edv-cream); }
-.edv-timeline time { color: var(--edv-ember); font-size: .56rem; font-weight: 800; letter-spacing: .12em; line-height: 1.5; text-transform: uppercase; }
+.edv-timeline time,
+.edv-timeline .edv-time { color: var(--edv-ember); font-size: .56rem; font-weight: 800; letter-spacing: .12em; line-height: 1.5; text-transform: uppercase; }
 .edv-timeline h3 { margin: 0 0 .65rem; font: 400 clamp(1.55rem, 2.3vw, 2.5rem)/1 var(--display); }
 .edv-timeline p { max-width: 520px; margin: 0; color: var(--edv-muted); font-size: .8rem; line-height: 1.7; }
 
@@ -198,6 +200,8 @@
 .edv-action-card-featured { color: #fff; background: var(--edv-ember); }
 .edv-action-card-dark { color: #fff; background: var(--edv-ink); }
 .edv-action-meta { display: flex; justify-content: space-between; gap: 1rem; color: var(--edv-ember); font-size: .51rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.edv-action-meta time,
+.edv-action-meta .edv-time { color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; }
 .edv-action-card-featured .edv-action-meta,
 .edv-action-card-dark .edv-action-meta { color: var(--edv-gold); }
 .edv-action-place { margin: auto 0 .9rem !important; color: var(--edv-ember) !important; font-size: .53rem !important; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
@@ -237,7 +241,7 @@
 .edv-collaboration-grid p { max-width: 400px; margin: 0; color: var(--edv-muted); font-size: .8rem; line-height: 1.7; }
 
 .edv-cta { position: relative; isolation: isolate; min-height: 620px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 7rem 1.5rem; overflow: hidden; color: #fff; background: radial-gradient(circle at 50% 115%, #6b260c, transparent 45%), var(--edv-ink); text-align: center; }
-.edv-cta > img { position: absolute; z-index: -1; width: min(44vw, 620px); opacity: .09; }
+.edv-cta > img { position: absolute; z-index: -1; width: min(44vw, 620px); opacity: .09; mix-blend-mode: screen; }
 .edv-cta .edv-kicker::before { display: none; }
 .edv-cta h2 em { color: var(--edv-gold); }
 .edv-cta > p:not(.edv-kicker) { max-width: 650px; margin: 2rem auto 2.4rem; color: rgba(255, 255, 255, .65); font-size: .9rem; line-height: 1.75; }
