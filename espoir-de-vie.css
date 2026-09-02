@@ -179,8 +179,7 @@
 .edv-orphanage-intro { position: relative; isolation: isolate; min-height: 760px; display: flex; flex-direction: column; justify-content: center; padding: clamp(5rem, 8vw, 9rem) clamp(1.3rem, 6vw, 7.5rem); overflow: hidden; color: #fff; background: linear-gradient(145deg, #24130b, #4a1e0d); }
 .edv-orphanage-intro h2 em { color: var(--edv-gold); }
 .edv-orphanage-intro > p:not(.edv-kicker) { max-width: 600px; margin: 2rem 0 0; color: rgba(255, 255, 255, .7); font-size: .9rem; line-height: 1.8; }
-.edv-orphanage-mark { position: absolute; z-index: -1; right: -12%; bottom: -18%; width: min(33vw, 500px); opacity: .1; transform: rotate(-8deg); }
-.edv-orphanage-mark img { mix-blend-mode: screen; }
+.edv-orphanage-mark { position: absolute; z-index: -1; right: -12%; bottom: -18%; width: min(33vw, 500px); opacity: .1; transform: rotate(-8deg); mix-blend-mode: screen; }
 .edv-timeline { margin: 0; padding: clamp(4rem, 7vw, 7rem); list-style: none; counter-reset: orphanage-step; }
 .edv-timeline li { position: relative; display: grid; grid-template-columns: 145px 1fr; gap: 2rem; min-height: 150px; padding: 0 0 2.8rem 2.2rem; border-left: 1px solid var(--edv-line); }
 .edv-timeline li:last-child { min-height: 0; padding-bottom: 0; }
