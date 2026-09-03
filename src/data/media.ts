@@ -48,14 +48,14 @@ export const presidentOnu2: ImageAsset = {
 };
 
 export const studioHero: ImageAsset = {
-  src: "/images/services/studio-photo-hero.png",
+  src: "/images/services/studio-photo-hero.webp",
   alt: "Studio Photo Baruck la Prospérité",
   width: 1254,
   height: 1254,
 };
 
 export const hostessesHero: ImageAsset = {
-  src: "/images/services/hotesses-hero.png",
+  src: "/images/services/hotesses-hero.webp",
   alt: "Hôtesses événementielles Baruck Communication Guinée",
   width: 941,
   height: 1672,

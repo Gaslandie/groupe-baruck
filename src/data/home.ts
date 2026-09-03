@@ -46,7 +46,7 @@ export const heroSlides: HeroSlide[] = [
     title: "Studio Photo Baruck",
     description:
       "Mariage, baptême, anniversaire, conférence, shooting photo et photo d’identité. Retrouvez-nous à Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.",
-    image: "/images/services/studio-photo-hero.png",
+    image: "/images/services/studio-photo-hero.webp",
     position: "center",
     bg: "linear-gradient(145deg, #161211, #633329 58%, #b3492e)",
     art: "linear-gradient(140deg, transparent 55%, rgba(151,24,18,.14))",
@@ -62,7 +62,7 @@ export const heroSlides: HeroSlide[] = [
     title: "Hôtesses événementielles",
     description:
       "Concerts géants, rencontres, mariages, buffets et autres événements : une équipe élégante, professionnelle et dynamique à votre service en Guinée.",
-    image: "/images/services/hotesses-hero.png",
+    image: "/images/services/hotesses-hero.webp",
     position: "center 42%",
     bg: "linear-gradient(145deg, #170e13, #6f1934 58%, #a73a4d)",
     art: "linear-gradient(145deg, transparent 48%, rgba(122,5,42,.16))",
