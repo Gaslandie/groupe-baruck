@@ -35,29 +35,25 @@ export function EdvHero() {
         </div>
       </div>
       <div className="relative min-h-svh min-w-0 overflow-hidden bg-[#22130d] max-tablet:order-[-1] max-tablet:h-[min(68svh,670px)] max-tablet:min-h-0">
-        <picture>
-          <img
-            src={asset(presidentPortrait.src)}
-            alt="Djoro Joël Shaloom Krasso, président fondateur d’Espoir de Vie"
-            width={presidentPortrait.width}
-            height={presidentPortrait.height}
-            fetchPriority="high"
-            className="absolute inset-0 h-full w-full object-cover object-[center_24%] saturate-[.75] contrast-[1.05] max-tablet:object-[center_25%]"
-          />
-        </picture>
+        <img
+          src={asset(presidentPortrait.src)}
+          alt="Djoro Joël Shaloom Krasso, président fondateur d’Espoir de Vie"
+          width={presidentPortrait.width}
+          height={presidentPortrait.height}
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[center_24%] saturate-[.75] contrast-[1.05] max-tablet:object-[center_25%]"
+        />
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,10,5,.06)_35%,rgba(20,10,5,.4)_66%,rgba(20,10,5,.94)_100%),linear-gradient(90deg,rgba(26,16,11,.26),transparent_45%)]"
         />
-        <picture>
-          <img
-            src={asset(edvLogo.src)}
-            alt="Logo Espoir de Vie"
-            width={edvLogo.width}
-            height={edvLogo.height}
-            className="absolute bottom-[clamp(5.5rem,9vh,8rem)] right-[clamp(1rem,3vw,3.5rem)] h-auto w-[clamp(130px,15vw,245px)] mix-blend-screen drop-shadow-[0_18px_30px_rgba(0,0,0,.35)] max-tablet:bottom-[4.5rem] max-tablet:right-4 max-tablet:w-[130px]"
-          />
-        </picture>
+        <img
+          src={asset(edvLogo.src)}
+          alt="Logo Espoir de Vie"
+          width={edvLogo.width}
+          height={edvLogo.height}
+          className="absolute bottom-[clamp(5.5rem,9vh,8rem)] right-[clamp(1rem,3vw,3.5rem)] h-auto w-[clamp(130px,15vw,245px)] mix-blend-screen drop-shadow-[0_18px_30px_rgba(0,0,0,.35)] max-tablet:bottom-[4.5rem] max-tablet:right-4 max-tablet:w-[130px]"
+        />
         <p className="absolute bottom-[clamp(2rem,4vw,4rem)] left-[clamp(1.4rem,3vw,3.5rem)] m-0 font-display text-[clamp(1.1rem,1.7vw,1.65rem)] italic leading-[1.15] max-tablet:bottom-[1.6rem] max-tablet:left-[1.3rem] max-tablet:max-w-[58%] max-tablet:text-[1.05rem]">
           <span className="mb-[.45rem] block font-sans text-[.5rem] font-bold uppercase leading-none tracking-[.18em] text-edv-gold">
             Président fondateur
