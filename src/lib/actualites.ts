@@ -2,12 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 
 import matter from "gray-matter";
+import { imageSize } from "image-size";
 import { marked } from "marked";
 
 import {
   categoryLabels,
   type Article,
   type NewsCategory,
+  type NewsImage,
 } from "@/data/actualites";
 import { asset } from "@/lib/asset";
 
@@ -56,6 +58,47 @@ function parseCategory(value: unknown, filename: string): NewsCategory {
   return category as NewsCategory;
 }
 
+export function resolveImage(src: string, alt: string, filename: string): NewsImage {
+  if (!src.startsWith("/images/")) {
+    error(filename, `le chemin d’image "${src}" doit commencer par "/images/".`);
+  }
+
+  const file = path.join(process.cwd(), "public", src.slice(1));
+  if (!fs.existsSync(file)) {
+    error(filename, `le fichier image "${src}" n’existe pas.`);
+  }
+
+  const { width, height } = imageSize(fs.readFileSync(file));
+  if (!width || !height) {
+    error(filename, `les dimensions de l’image "${src}" sont introuvables.`);
+  }
+
+  return { src, alt, width, height };
+}
+
+function parseGallery(value: unknown, filename: string): NewsImage[] {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) {
+    error(filename, 'le champ "gallery" doit être une liste.');
+  }
+
+  return value.map((item, index) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) {
+      error(filename, `l’image gallery[${index}] est invalide.`);
+    }
+
+    const image = item as Record<string, unknown>;
+    const src = requiredString(image.src, `gallery[${index}].src`, filename);
+    const alt = requiredString(image.alt, `gallery[${index}].alt`, filename);
+    const caption =
+      image.caption === undefined
+        ? undefined
+        : requiredString(image.caption, `gallery[${index}].caption`, filename);
+
+    return { ...resolveImage(src, alt, filename), ...(caption ? { caption } : {}) };
+  });
+}
+
 function parseArticle(filename: string): Article {
   const slug = filename.slice(0, -3);
   if (!slugPattern.test(slug)) {
@@ -67,16 +110,14 @@ function parseArticle(filename: string): Article {
 
   const source = fs.readFileSync(path.join(articlesDirectory, filename), "utf8");
   const { data, content } = matter(source);
-  const cover = data.cover === undefined ? undefined : requiredString(data.cover, "cover", filename);
+  const coverSrc =
+    data.cover === undefined ? undefined : requiredString(data.cover, "cover", filename);
   const coverAlt =
     data.coverAlt === undefined
       ? undefined
       : requiredString(data.coverAlt, "coverAlt", filename);
 
-  if (cover && !cover.startsWith("/images/actualites/")) {
-    error(filename, 'le champ "cover" doit commencer par "/images/actualites/".');
-  }
-  if (cover && !coverAlt) {
+  if (coverSrc && !coverAlt) {
     error(filename, 'le champ requis "coverAlt" est manquant pour cette cover.');
   }
   if (data.draft !== undefined && typeof data.draft !== "boolean") {
@@ -84,7 +125,9 @@ function parseArticle(filename: string): Article {
   }
 
   const rendered = marked.parse(content, { gfm: true, async: false });
-  const html = rendered.replaceAll('src="/images/', `src="${asset("/images/")}`);
+  const html = rendered
+    .replaceAll('src="/images/', `src="${asset("/images/")}`)
+    .replaceAll('href="/', `href="${asset("/")}`);
 
   return {
     slug,
@@ -92,8 +135,8 @@ function parseArticle(filename: string): Article {
     date: parseDate(data.date, filename),
     category: parseCategory(data.category, filename),
     excerpt: requiredString(data.excerpt, "excerpt", filename),
-    cover,
-    coverAlt,
+    cover: coverSrc && coverAlt ? resolveImage(coverSrc, coverAlt, filename) : undefined,
+    gallery: parseGallery(data.gallery, filename),
     draft: data.draft ?? false,
     html,
   };

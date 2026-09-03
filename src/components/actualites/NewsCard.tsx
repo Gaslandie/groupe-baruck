@@ -17,7 +17,7 @@ export function NewsCard({ article }: NewsCardProps) {
       className="group reveal flex flex-col"
     >
       <div className="mb-5 aspect-[4/3] overflow-hidden bg-[#cac5bb]">
-        <NewsImage cover={article.cover} coverAlt={article.coverAlt} />
+        <NewsImage cover={article.cover} category={article.category} />
       </div>
       <NewsMeta category={article.category} date={article.date} />
       <h3 className="mt-4 font-display text-[clamp(1.5rem,2vw,2rem)] font-normal leading-[1.05] tracking-[-.035em]">

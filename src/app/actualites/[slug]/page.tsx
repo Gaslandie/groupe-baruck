@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArticleBody } from "@/components/actualites/ArticleBody";
 import { ArticleCover } from "@/components/actualites/ArticleCover";
 import { ArticleHeader } from "@/components/actualites/ArticleHeader";
+import { NewsCarousel } from "@/components/actualites/NewsCarousel";
 import { NewsEmpty } from "@/components/actualites/NewsEmpty";
 import { NewsHero } from "@/components/actualites/NewsHero";
 import { PageShell } from "@/components/layout/PageShell";
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     title: article.title,
     description: article.excerpt,
     openGraph: article.cover
-      ? { images: [asset(article.cover as `/${string}`)] }
+      ? { images: [asset(article.cover.src as `/${string}`)] }
       : undefined,
   };
 }
@@ -69,8 +70,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   return (
     <PageShell variant="about" current="news" footer="about">
       <ArticleHeader article={article} />
-      <ArticleCover cover={article.cover} coverAlt={article.coverAlt} />
-      <ArticleBody html={article.html} />
+      <ArticleCover cover={article.cover} />
+      <section className="bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(3rem,6vw,6rem)]">
+        <ArticleBody html={article.html} />
+        <NewsCarousel gallery={article.gallery} />
+      </section>
     </PageShell>
   );
 }

@@ -17,7 +17,7 @@ export function NewsFeature({ article }: NewsFeatureProps) {
       className="group reveal mb-[clamp(4rem,7vw,7rem)] grid grid-cols-[1.1fr_.9fr] items-center gap-10 max-tablet:grid-cols-1"
     >
       <div className="aspect-[4/3] overflow-hidden bg-[#cac5bb]">
-        <NewsImage cover={article.cover} coverAlt={article.coverAlt} />
+        <NewsImage cover={article.cover} category={article.category} />
       </div>
       <div>
         <NewsMeta category={article.category} date={article.date} />

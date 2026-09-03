@@ -1,24 +1,20 @@
+import type { NewsImage } from "@/data/actualites";
 import { asset } from "@/lib/asset";
 
-import { getNewsCoverDimensions } from "./NewsImage";
-
 type ArticleCoverProps = {
-  cover?: string;
-  coverAlt?: string;
+  cover?: NewsImage;
 };
 
-export function ArticleCover({ cover, coverAlt }: ArticleCoverProps) {
+export function ArticleCover({ cover }: ArticleCoverProps) {
   if (!cover) return null;
-
-  const { width, height } = getNewsCoverDimensions(cover);
 
   return (
     <figure className="m-0 mx-auto mt-[-3rem] max-w-[1100px] px-[clamp(1.3rem,6vw,7.5rem)] max-tablet:mt-0">
       <img
-        src={asset(cover as `/${string}`)}
-        alt={coverAlt ?? ""}
-        width={width}
-        height={height}
+        src={asset(cover.src as `/${string}`)}
+        alt={cover.alt}
+        width={cover.width}
+        height={cover.height}
         loading="eager"
         fetchPriority="high"
         className="h-auto w-full"
