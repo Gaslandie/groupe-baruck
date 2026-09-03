@@ -24,7 +24,6 @@ export function Brand({ className = "" }: BrandProps) {
           alt={brandLogo.alt}
           width={brandLogo.width}
           height={brandLogo.height}
-          loading="lazy"
           className="h-full w-full object-cover object-center"
         />
       </span>

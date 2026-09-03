@@ -60,7 +60,7 @@ export const variantStyles: Record<HeaderVariant, VariantStyle> = {
     header: "bg-[rgba(4,16,49,.88)] backdrop-blur-[14px] max-tablet:h-[72px]",
     scrolled: "bg-[rgba(4,16,49,.96)]",
     underline: "after:bg-jeca-red",
-    currentDesktop: "after:right-0!",
+    currentDesktop: "",
     contactArrow: "text-jeca-yellow",
     sideNav: "bg-jeca-paper text-jeca-ink",
     sideCurrent: "text-jeca-blue-bright hover:text-jeca-blue-bright focus-visible:text-jeca-blue-bright",
@@ -258,8 +258,6 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           isOpen ? "visible opacity-100" : "invisible opacity-0",
         ].join(" ")}
       />
-
-      {"\n"}
 
       <aside
         id="side-nav"
