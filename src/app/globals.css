@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@theme {
+  /* Palette globale — maquette/styles.css :root ; --white de la maquette devient --color-ivory
+     pour ne pas écraser le white de Tailwind */
+  --color-ink: #0b0c0e;
+  --color-ink-soft: #161719;
+  --color-paper: #f1eee7;
+  --color-paper-deep: #e5e0d5;
+  --color-ivory: #fffdf8;
+  --color-muted: #96958f;
+  --color-accent: #dc5b2b;
+  --color-gold: #c7a765;
+  --color-line: rgba(11, 12, 14, 0.15);
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Palette JECA — maquette/jeca.css :root */
+  --color-jeca-blue: #061b53;
+  --color-jeca-blue-bright: #0b3da4;
+  --color-jeca-green: #087a3e;
+  --color-jeca-yellow: #f2bd00;
+  --color-jeca-red: #d71920;
+  --color-jeca-paper: #f5f2e9;
+  --color-jeca-ink: #071537;
+  --color-jeca-muted: #687083;
+  --color-jeca-line: rgba(7, 21, 55, .15);
+
+  /* Palette Espoir de Vie — maquette/espoir-de-vie.css :root */
+  --color-edv-ember: #c7461c;
+  --color-edv-ember-deep: #8f260d;
+  --color-edv-gold: #f0a51d;
+  --color-edv-ink: #1a100b;
+  --color-edv-ink-soft: #2b1910;
+  --color-edv-paper: #f7f1e8;
+  --color-edv-paper-deep: #eadfd0;
+  --color-edv-cream: #fffaf3;
+  --color-edv-muted: #73665d;
+  --color-edv-line: rgba(54, 30, 18, .16);
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-paper text-ink font-sans overflow-x-hidden; }
+  button, input, textarea { font: inherit; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 4px; }
+}
