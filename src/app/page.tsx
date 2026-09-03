@@ -1,14 +1,26 @@
 import { PageShell } from "@/components/layout/PageShell";
+import { ActivitiesSection } from "@/components/home/ActivitiesSection";
+import { ContactCta } from "@/components/home/ContactCta";
+import { ContactSection } from "@/components/home/ContactSection";
+import { GroupIntro } from "@/components/home/GroupIntro";
+import { HeroSection } from "@/components/home/HeroSection";
+import { Marquee } from "@/components/home/Marquee";
+import { OrganizationsSection } from "@/components/home/OrganizationsSection";
+import { ProjectsSection } from "@/components/home/ProjectsSection";
+import { VisionSection } from "@/components/home/VisionSection";
 
 export default function Home() {
   return (
     <PageShell variant="home" current="home" footer="home">
-      <section id="accueil" className="grid min-h-svh place-items-center bg-ink px-6 text-ivory">
-        <div className="text-center">
-          <h1 className="font-display text-5xl">Groupe Baruck</h1>
-          <p>Accueil en cours de migration (étape 4).</p>
-        </div>
-      </section>
+      <HeroSection />
+      <Marquee />
+      <GroupIntro />
+      <ActivitiesSection />
+      <VisionSection />
+      <OrganizationsSection />
+      <ProjectsSection />
+      <ContactCta />
+      <ContactSection />
     </PageShell>
   );
 }

@@ -14,6 +14,23 @@
   --color-line: rgba(11, 12, 14, 0.15);
   --font-display: Georgia, "Times New Roman", serif;
   --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-hero-zoom: heroZoomOut 5s linear forwards;
+  --animate-progress: progress 5s linear forwards;
+
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes heroZoomOut {
+    from { transform: scale(1.11); }
+    to { transform: scale(1.02); }
+  }
+
+  @keyframes progress {
+    from { width: 0; }
+    to { width: 100%; }
+  }
 
   --breakpoint-*: initial;
   --breakpoint-tablet: 761px;
@@ -91,4 +108,40 @@
   }
 
   .reveal.is-visible { opacity: 1; transform: none; }
+
+  .button {
+    min-height: 48px;
+    padding: 0 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    border: 1px solid rgba(255,255,255,.32);
+    font-size: .66rem;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    transition: background .25s, color .25s, border-color .25s, transform .25s;
+  }
+
+  .button:hover { transform: translateY(-2px); }
+  .button-primary { background: var(--color-ivory); color: var(--color-ink); border-color: var(--color-ivory); }
+  .button-primary:hover, .button-accent { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-ivory); }
+  .button-ghost:hover { background: var(--color-ivory); color: var(--color-ink); }
+
+  .text-link {
+    font-size: .65rem;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    display: inline-flex;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: .45rem;
+  }
+
+  .text-link span { color: var(--color-accent); }
+
+  @media (max-width: 760px) {
+    .button { min-height: 44px; padding: 0 .85rem; font-size: .56rem; gap: .8rem; }
+  }
 }
