@@ -1,21 +1,19 @@
-import { contacts } from "@/data/site";
-import { ContactForm } from "@/components/contact/ContactForm";
+import { contacts, hqAddress } from "@/data/site";
 
-export function ContactSection() {
+import { ContactForm } from "./ContactForm";
+
+export function ContactDetails() {
   return (
-    <section id="contact" className="grid grid-cols-[42%_58%] bg-paper max-tablet:grid-cols-1">
+    <section id="coordonnees" className="grid grid-cols-[42%_58%] bg-paper max-tablet:grid-cols-1">
       <div className="reveal border-r border-line px-[clamp(2rem,6vw,7rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:border-r-0 max-tablet:px-[1.3rem] max-tablet:py-20">
-        <p className="eyebrow">Contact</p>
+        <p className="eyebrow">Coordonnées</p>
         <h2 className="m-0 text-balance font-display text-[clamp(3rem,5.6vw,6.6rem)] font-normal leading-[.92] tracking-[-.05em] max-tablet:text-[clamp(2.8rem,13vw,4.2rem)]">
-          Parlons de votre
+          Toutes nos
           <br />
-          <em className="font-normal text-accent">prochain projet.</em>
+          <em className="font-normal text-accent">lignes directes.</em>
         </h2>
-        <p className="mb-14 mt-8 max-w-[470px] text-[.88rem] leading-[1.7] text-[#686762]">
-          Notre équipe est à votre écoute pour répondre à vos questions et étudier vos propositions.
-        </p>
 
-        <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
+        <div className="mt-14 flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
           <span className="mb-[.35rem] text-[.52rem] uppercase tracking-[.15em] text-accent">
             Téléphones · Guinée
           </span>
@@ -74,8 +72,20 @@ export function ContactSection() {
             {contacts.email.value}
           </a>
         </div>
+
+        <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
+          <span className="mb-[.35rem] text-[.52rem] uppercase tracking-[.15em] text-accent">Siège</span>
+          <p className="m-0 max-w-[470px] text-[.86rem] leading-[1.7] text-[#686762]">{hqAddress}</p>
+        </div>
+
+        <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
+          <span className="mb-[.35rem] text-[.52rem] uppercase tracking-[.15em] text-accent">Présence</span>
+          <p className="m-0 font-display text-[clamp(1.2rem,1.8vw,1.65rem)] font-normal">
+            Guinée · Sénégal · Côte d’Ivoire
+          </p>
+        </div>
       </div>
-      <ContactForm />
+      <ContactForm id="formulaire" showTitle className="scroll-mt-[92px]" />
     </section>
   );
 }

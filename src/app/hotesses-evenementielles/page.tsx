@@ -7,7 +7,7 @@ import { ServiceHero } from "@/components/services/ServiceHero";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { hostessesHero } from "@/data/media";
 import { hostessTags } from "@/data/services";
-import { contacts, whatsappRequests } from "@/data/site";
+import { contacts, hqAddress, whatsappRequests } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Hôtesses événementielles",
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const contactDetails = [
   {
     label: "Adresse",
-    text: "Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.",
+    text: hqAddress,
   },
   {
     label: "Téléphone fixe Baruck Siège Guinée",

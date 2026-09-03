@@ -80,6 +80,8 @@ export const site = {
     "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
 };
 
+export const hqAddress = "Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.";
+
 export const contacts: Record<ContactId, ContactLink> = {
   landline: {
     label: "Téléphone fixe Baruck Siège Guinée",

@@ -1,23 +1,20 @@
 import type { Metadata } from "next";
 
-import { ConstructionPage } from "@/components/ui/ConstructionPage";
+import { ContactDetails } from "@/components/contact/ContactDetails";
+import { ContactHero } from "@/components/contact/ContactHero";
+import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Contact du Groupe Baruck — page en cours de construction.",
+  description:
+    "Contactez le Groupe Baruck — WhatsApp, téléphone, e-mail et formulaire : Studio photo, Hôtesses événementielles, JECA, Espoir de Vie, partenariats.",
 };
 
 export default function ContactPage() {
   return (
-    <ConstructionPage
-      index="06 / 06"
-      eyebrow="Contact"
-      text="La page de contact complète sera disponible prochainement. Les coordonnées restent accessibles sur la page d’accueil."
-      footerItems={[
-        "Groupe Baruck",
-        "Téléphone fixe Baruck Siège Guinée : +224 625 19 72 58",
-        "WhatsApp Baruck Siège Guinée : +224 623 72 04 27",
-      ]}
-    />
+    <PageShell variant="about" current="contact" footer="about">
+      <ContactHero />
+      <ContactDetails />
+    </PageShell>
   );
 }

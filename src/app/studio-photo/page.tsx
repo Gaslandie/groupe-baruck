@@ -10,7 +10,7 @@ import { StudioPrices } from "@/components/services/StudioPrices";
 import { StudioSpaces } from "@/components/services/StudioSpaces";
 import { studioHero } from "@/data/media";
 import { studioTags } from "@/data/services";
-import { contacts } from "@/data/site";
+import { contacts, hqAddress } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Studio Photo Baruck la Prospérité",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const contactDetails = [
   {
     label: "Adresse",
-    text: "Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.",
+    text: hqAddress,
   },
   {
     label: "Ouverture",
