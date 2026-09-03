@@ -17,6 +17,7 @@ Site vitrine du Groupe Baruck (client : Djoro Joël Shaloom Krasso), réalisé p
 - Liens internes : `next/link` vers des routes (`/jeca/`), jamais `*.html`. Liens externes, `tel:`, `mailto:` : `<a>` natif avec `target="_blank" rel="noreferrer"` quand la maquette le fait.
 - Images : `<img>` natif, `src={asset("/images/…")}`, `width`/`height`, `loading="lazy"` sauf image LCP, `alt` en français. Jamais `/images/…` sans `asset()`. Noms de fichiers kebab-case ASCII.
 - `"use client"` uniquement pour l'interactivité (menu, carrousel, reveal, lightbox, formulaire). `window`, `document`, `matchMedia` seulement dans `useEffect`.
+- Reveal : poser la classe `reveal` sur l'élément ; `RevealObserver` ajoute `is-visible` lorsqu'il entre dans le viewport.
 - Chaque page exporte `metadata` (title, description) et `viewport.themeColor` si la maquette a un `theme-color`.
 - Contenus : aucun chiffre, date, nom ou dénomination absent de la maquette. Ne pas harmoniser ONG/Fondation ni les coordonnées : décisions client en attente. Pas de bouton de don, pas de backend de formulaire, pas d'analytics.
 
