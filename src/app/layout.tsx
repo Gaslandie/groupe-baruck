@@ -1,8 +1,17 @@
 import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 
 import { site } from "@/data/site";
 
 import "./globals.css";
+
+const inter = localFont({
+  src: "./fonts/inter-latin.woff2",
+  weight: "100 900",
+  style: "normal",
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gaslandie.github.io/groupe-baruck/"),
@@ -37,7 +46,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={inter.variable}>
       <body>{children}</body>
     </html>
   );

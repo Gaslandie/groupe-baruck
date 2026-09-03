@@ -13,7 +13,7 @@
   --color-gold: #c7a765;
   --color-line: rgba(11, 12, 14, 0.15);
   --font-display: Georgia, "Times New Roman", serif;
-  --font-sans: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --animate-marquee: marquee 30s linear infinite;
   --animate-hero-zoom: heroZoomOut 5s linear forwards;
   --animate-progress: progress 5s linear forwards;
