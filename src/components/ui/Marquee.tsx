@@ -1,15 +1,11 @@
 import { Fragment } from "react";
 
-const items = [
-  "Guinée",
-  "Studio Photo",
-  "Hôtesses événementielles",
-  "Communication",
-  "Entrepreneuriat",
-  "Impact social",
-];
+type MarqueeProps = {
+  items: string[];
+  label: string;
+};
 
-function MarqueeItems({ hidden = false }: { hidden?: boolean }) {
+function MarqueeItems({ items, hidden = false }: { items: string[]; hidden?: boolean }) {
   return items.map((item) => (
     <Fragment key={item}>
       <span
@@ -28,12 +24,12 @@ function MarqueeItems({ hidden = false }: { hidden?: boolean }) {
   ));
 }
 
-export function Marquee() {
+export function Marquee({ items, label }: MarqueeProps) {
   return (
-    <section aria-label="Domaines d’activité" className="overflow-hidden bg-accent py-[.86rem] text-ivory">
+    <section aria-label={label} className="overflow-hidden bg-accent py-[.86rem] text-ivory">
       <div className="flex w-max animate-marquee items-center">
-        <MarqueeItems />
-        <MarqueeItems hidden />
+        <MarqueeItems items={items} />
+        <MarqueeItems items={items} hidden />
       </div>
     </section>
   );

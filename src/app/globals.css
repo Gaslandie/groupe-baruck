@@ -141,6 +141,17 @@
 
   .text-link span { color: var(--color-accent); }
 
+  .lead {
+    font: 400 clamp(1.15rem, 1.6vw, 1.55rem)/1.5 var(--font-display);
+  }
+
+  .content-disclaimer {
+    margin: 1.3rem 0 0;
+    font-size: .6rem;
+    color: #77756f;
+    font-style: italic;
+  }
+
   @media (max-width: 760px) {
     .button { min-height: 44px; padding: 0 .85rem; font-size: .56rem; gap: .8rem; }
   }

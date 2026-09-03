@@ -206,15 +206,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       >
         <span className="text-[.65rem] tracking-[.2em] text-accent">{formatNumber(activeIndex + 1)}</span>
         <h2 className="mb-[1.2rem] mt-[.8rem] max-w-[830px] text-balance font-display text-[clamp(3.3rem,6vw,7rem)] font-normal leading-[.88] tracking-[-.05em] max-desktop:text-[clamp(3rem,6vw,5.2rem)] max-tablet:text-[clamp(3.2rem,15vw,5.4rem)]">
-          {slide.id === "guinee" ? (
-            <>
-              Le Groupe Baruck
-              <br />
-              en Guinée
-            </>
-          ) : (
-            slide.title
-          )}
+          {slide.title}
         </h2>
         <p className="mb-[1.7rem] max-w-[490px] text-[clamp(.85rem,1.1vw,1.05rem)] leading-[1.6] text-[rgba(255,255,255,.7)] max-tablet:max-w-[calc(100%-105px)] max-tablet:text-[.8rem]">
           {slide.description}

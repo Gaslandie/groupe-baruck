@@ -54,7 +54,7 @@ export function VisionSection() {
           <br />
           <em className="font-normal text-accent">tourné vers l’action.</em>
         </h2>
-        <p className="mb-12 mt-[2.2rem] max-w-[670px] font-display text-[clamp(1.15rem,1.6vw,1.55rem)] font-normal leading-[1.5] max-tablet:mb-10 max-tablet:mt-[1.6rem]">
+        <p className="lead mb-12 mt-[2.2rem] max-w-[670px] max-tablet:mb-10 max-tablet:mt-[1.6rem]">
           À la tête du Groupe Baruck, MR Djoro Joël Shaloom Krasso porte une vision fondée sur l’entrepreneuriat,
           la création de valeur et l’engagement au service de la société.
         </p>

@@ -23,7 +23,7 @@ export function GroupIntro() {
         </h2>
       </div>
       <div className="reveal col-start-3 max-w-[520px] self-end pb-[.4rem] max-tablet:col-auto">
-        <p className="font-display text-[clamp(1.15rem,1.6vw,1.55rem)] font-normal leading-[1.5]">
+        <p className="lead">
           Le Groupe Baruck développe des activités complémentaires dans l’hôtellerie, la restauration,
           l’agro-business, la mobilité, la communication digitale et les industries créatives.
         </p>
