@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { ContactDetails } from "@/components/contact/ContactDetails";
 import { ContactHero } from "@/components/contact/ContactHero";
+import { ContactMap } from "@/components/contact/ContactMap";
 import { PageShell } from "@/components/layout/PageShell";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function ContactPage() {
     <PageShell variant="about" current="contact" footer="about">
       <ContactHero />
       <ContactDetails />
+      <ContactMap />
     </PageShell>
   );
 }

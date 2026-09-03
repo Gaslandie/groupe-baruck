@@ -43,3 +43,17 @@ export const contactNeeds = [
     href: "#formulaire",
   },
 ] as const;
+
+export const hqHours = [
+  { days: "Lundi – Vendredi", hours: "9h – 18h" },
+  { days: "Samedi", hours: "9h – 13h" },
+  { days: "Dimanche", hours: "Fermé" },
+] as const;
+
+export const socialNetworks = ["Facebook", "Instagram", "LinkedIn", "YouTube"] as const;
+
+export const hqMap = {
+  query: "Kobayah, Conakry, Guinée",
+  embedUrl: "https://www.google.com/maps?q=Kobayah%2C+Conakry%2C+Guin%C3%A9e&z=15&output=embed",
+  directionsUrl: "https://www.google.com/maps/search/?api=1&query=Kobayah%2C+Conakry%2C+Guin%C3%A9e",
+} as const;

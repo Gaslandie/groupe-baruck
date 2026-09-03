@@ -1,4 +1,6 @@
+import { hqHours, hqMap, socialNetworks } from "@/data/contact";
 import { contacts, hqAddress } from "@/data/site";
+import { ClientNote } from "@/components/ui/ClientNote";
 
 import { ContactForm } from "./ContactForm";
 
@@ -76,6 +78,22 @@ export function ContactDetails() {
         <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
           <span className="mb-[.35rem] text-[.52rem] uppercase tracking-[.15em] text-accent">Siège</span>
           <p className="m-0 max-w-[470px] text-[.86rem] leading-[1.7] text-[#686762]">{hqAddress}</p>
+          <a href={hqMap.directionsUrl} target="_blank" rel="noreferrer" className="text-link mt-4 w-fit">
+            Ouvrir dans Google Maps <span>↗</span>
+          </a>
+        </div>
+
+        <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
+          <span className="mb-[.35rem] text-[.52rem] uppercase tracking-[.15em] text-accent">Horaires · Siège</span>
+          <dl className="m-0">
+            {hqHours.map(({ days, hours }) => (
+              <div key={days} className="grid grid-cols-[150px_1fr] gap-4 py-[.3rem]">
+                <dt className="text-[.6rem] uppercase tracking-[.12em] text-[#77746e]">{days}</dt>
+                <dd className="m-0 font-display text-[clamp(1.05rem,1.4vw,1.3rem)]">{hours}</dd>
+              </div>
+            ))}
+          </dl>
+          <ClientNote>Horaires provisoires, à valider avec le client.</ClientNote>
         </div>
 
         <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
@@ -83,6 +101,14 @@ export function ContactDetails() {
           <p className="m-0 font-display text-[clamp(1.2rem,1.8vw,1.65rem)] font-normal">
             Guinée · Sénégal · Côte d’Ivoire
           </p>
+        </div>
+
+        <div className="flex flex-col gap-[.35rem] border-t border-line py-[1.2rem]">
+          <span className="mb-[.35rem] text-[.52rem] uppercase tracking-[.15em] text-accent">Réseaux</span>
+          <p className="m-0 font-display text-[clamp(1.2rem,1.8vw,1.65rem)] font-normal">
+            {socialNetworks.join(" · ")}
+          </p>
+          <ClientNote>Liens à valider avec le client.</ClientNote>
         </div>
       </div>
       <ContactForm id="formulaire" showTitle className="scroll-mt-[92px]" />
