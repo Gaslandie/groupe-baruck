@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <ConstructionPage
-      index="06 / 07"
+      index="À venir"
       eyebrow="Projets & Réalisations"
       text="Nos projets, productions et collaborations seront présentés ici prochainement."
       footerItems={["Groupe Baruck", "Imaginer · Construire · Réaliser"]}

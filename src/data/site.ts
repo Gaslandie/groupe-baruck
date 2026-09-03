@@ -6,7 +6,7 @@ export type RouteKey =
   | "hostesses"
   | "jeca"
   | "edv"
-  | "activities"
+  | "news"
   | "projects"
   | "contact";
 
@@ -59,7 +59,7 @@ export const routes: Record<RouteKey, string> = {
   hostesses: "/hotesses-evenementielles/",
   jeca: "/jeca/",
   edv: "/espoir-de-vie/",
-  activities: "/activites/",
+  news: "/actualites/",
   projects: "/projets-realisations/",
   contact: "/contact/",
 };
@@ -131,14 +131,8 @@ export const mainNav: NavItem[] = [
   },
   { number: "03", label: "JECA", href: routes.jeca },
   { number: "04", label: "Espoir de Vie", href: routes.edv },
-  { number: "05", label: "Activités", href: routes.activities },
-  {
-    number: "06",
-    label: "Projets & Réalisations",
-    href: routes.projects,
-    shortLabel: "Projets",
-  },
-  { number: "07", label: "Contact", href: routes.contact },
+  { number: "05", label: "Actualités", href: routes.news },
+  { number: "06", label: "Contact", href: routes.contact },
 ];
 
 export const sideNavContacts: ContactLink[] = [
@@ -161,7 +155,7 @@ export const footers = {
           { label: "Studio photo", href: routes.studio },
           { label: "Hôtesses événementielles", href: routes.hostesses },
           { label: "Le PDG", href: "#president" },
-          { label: "Projets & Réalisations", href: routes.projects },
+          { label: "Actualités", href: routes.news },
         ],
       },
       {
@@ -203,7 +197,7 @@ export const footers = {
           { label: "À propos", href: routes.about },
           { label: "Studio photo", href: routes.studio },
           { label: "Hôtesses événementielles", href: routes.hostesses },
-          { label: "Projets & Réalisations", href: routes.projects },
+          { label: "Actualités", href: routes.news },
         ],
       },
       {
@@ -245,7 +239,7 @@ export const footers = {
           { label: "Le Groupe", href: routes.group },
           { label: "Studio photo", href: routes.studio },
           { label: "Hôtesses événementielles", href: routes.hostesses },
-          { label: "Projets & Réalisations", href: routes.projects },
+          { label: "Actualités", href: routes.news },
         ],
       },
       {
@@ -294,7 +288,7 @@ export const footers = {
         links: [
           { label: "Le Groupe", href: routes.group },
           { label: "Espoir de Vie", href: routes.edv },
-          { label: "Projets & Réalisations", href: routes.projects },
+          { label: "Actualités", href: routes.news },
         ],
       },
       {
@@ -330,7 +324,7 @@ export const footers = {
         links: [
           { label: "Le Groupe", href: routes.group },
           { label: "JECA", href: routes.jeca },
-          { label: "Projets & Réalisations", href: routes.projects },
+          { label: "Actualités", href: routes.news },
         ],
       },
       {

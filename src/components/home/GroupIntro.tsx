@@ -42,7 +42,7 @@ export function GroupIntro() {
             <i className="mx-[.55rem] font-sans text-[.34rem] not-italic text-accent">◆</i> Côte d’Ivoire
           </p>
         </div>
-        <Link href={routes.activities} className="text-link">
+        <Link href={`${routes.home}#activites`} className="text-link">
           Explorer nos domaines <span>↘</span>
         </Link>
       </div>

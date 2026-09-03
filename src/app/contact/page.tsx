@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <ConstructionPage
-      index="07 / 07"
+      index="06 / 06"
       eyebrow="Contact"
       text="La page de contact complète sera disponible prochainement. Les coordonnées restent accessibles sur la page d’accueil."
       footerItems={[

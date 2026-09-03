@@ -26,7 +26,7 @@ export function ActivitiesSection() {
         {activities.map((activity, index) => (
           <Link
             key={activity.id}
-            href={routes.activities}
+            href={`${routes.home}#activites`}
             aria-label={`Découvrir l’activité ${activity.title}`}
             className="group reveal relative isolate flex min-h-[390px] flex-col justify-between overflow-hidden p-[1.6rem] max-tablet:min-h-[440px]"
             style={{ background: activity.bg }}
