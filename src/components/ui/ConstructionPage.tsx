@@ -7,11 +7,20 @@ import { Brand } from "../layout/Brand";
 type ConstructionPageProps = {
   index: string;
   eyebrow: string;
+  title?: string;
+  emphasis?: string;
   text: string;
   footerItems: string[];
 };
 
-export function ConstructionPage({ index, eyebrow, text, footerItems }: ConstructionPageProps) {
+export function ConstructionPage({
+  index,
+  eyebrow,
+  title = "Page en cours",
+  emphasis = "de construction.",
+  text,
+  footerItems,
+}: ConstructionPageProps) {
   return (
     <div className="min-h-svh bg-[#0b0c0e] text-[#fffdf8]">
       <header className="absolute inset-x-0 top-0 z-50 flex h-[92px] items-center justify-between px-[clamp(1.2rem,3.4vw,4rem)] max-tablet:h-[72px] max-tablet:px-[1.15rem]">
@@ -49,8 +58,8 @@ export function ConstructionPage({ index, eyebrow, text, footerItems }: Construc
           <span className="mb-8 block font-display text-[.8rem] italic text-accent">{index}</span>
           <p className="eyebrow justify-center text-[#d8c8aa] before:hidden">{eyebrow}</p>
           <h1 className="m-0 font-display text-[clamp(3.4rem,8vw,8.5rem)] font-normal leading-[.88] tracking-[-.055em] [text-wrap:balance] max-tablet:text-[clamp(3.2rem,17vw,5.2rem)]">
-            Page en cours
-            <em className="block font-normal text-accent">de construction.</em>
+            {title}
+            <em className="block font-normal text-accent">{emphasis}</em>
           </h1>
           <p className="mx-auto mb-[2.4rem] mt-8 max-w-[530px] text-[.88rem] leading-[1.75] text-[rgba(255,255,255,.58)] max-tablet:text-[.8rem]">
             {text}

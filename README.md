@@ -1,10 +1,25 @@
 # Groupe Baruck
 Migration du site vitrine Groupe Baruck vers Next.js 16.
 Stack : App Router, TypeScript strict, Tailwind CSS v4 et export statique.
-La maquette HTML de référence vit dans `maquette/`.
+
+## Structure
+
+- `src/app` : routes, metadata et styles globaux.
+- `src/components` : composants par page et composants partagés.
+- `src/data` : contenus et données typées du site.
+- `src/lib` : fonctions utilitaires, notamment les chemins d’assets.
+- `public/images` : médias publics normalisés.
+
+## Maintenance
+
+Modifier en priorité les contenus dans `src/data`. Les tarifs du studio photo sont dans `src/data/services.ts`.
+Les fichiers `public/*.html` redirigent les anciennes URL vers les routes Next.js.
+Le dossier `maquette/` reste la référence visuelle et disparaîtra lors de la bascule finale.
+
+## Commandes
+
 `npm run dev` lance le serveur local.
 `npm run build` génère l’export statique dans `out/`.
 `npm run lint` contrôle ESLint.
 `npm run typecheck` contrôle TypeScript.
-Le site reste hébergé sur GitHub Pages.
 En production, `NEXT_PUBLIC_BASE_PATH=/groupe-baruck` préfixe les assets.

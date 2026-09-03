@@ -1,4 +1,7 @@
 import type { Metadata, Viewport } from "next";
+
+import { site } from "@/data/site";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -9,6 +12,19 @@ export const metadata: Metadata = {
   },
   description:
     "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: "Groupe Baruck",
+    images: [
+      {
+        url: site.url + "images/brand/baruck-logo.jpg",
+        width: 1170,
+        height: 634,
+        alt: "Groupe Baruck",
+      },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
