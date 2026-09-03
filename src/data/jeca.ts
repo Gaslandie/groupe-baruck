@@ -15,6 +15,32 @@ export type JecaGallery = {
   photos: GalleryPhoto[];
 };
 
+export type JecaEdition = {
+  edition: 1 | 2 | 3;
+  id: "edition-1" | "edition-2" | "edition-3";
+  place: "Dakar · Sénégal" | "Conakry · Guinée";
+  title: string;
+  date: {
+    iso: "2022-08-04" | "2023-12-02" | "2026-07-30";
+    label: string;
+  };
+  tone: "paper" | "dark" | "white";
+  grid: "seven" | "six";
+  story?: {
+    lead: string;
+    paragraphs: string[];
+    theme: string;
+  };
+  simpleLead?: string;
+};
+
+export type JecaEditionNavItem = {
+  href: "#edition-1" | "#edition-2" | "#edition-3";
+  number: "01" | "02" | "03";
+  city: "Dakar" | "Conakry";
+  dates: string;
+};
+
 export const jecaPortrait: ImageAsset = {
   src: "/images/jeca/president-fondateur.webp",
   alt: "Djoro Joël Shaloom Krasso, président fondateur de la JECA",
@@ -28,6 +54,53 @@ export const goreeImage: ImageAsset = {
   width: 640,
   height: 480,
 };
+
+export const jecaEditions: JecaEdition[] = [
+  {
+    edition: 1,
+    id: "edition-1",
+    place: "Dakar · Sénégal",
+    title: "La première rencontre",
+    date: { iso: "2022-08-04", label: "Du 04 au 14 août 2022" },
+    tone: "paper",
+    grid: "seven",
+    story: {
+      lead: "Environ 50 personnes réunies autour de l’entrepreneuriat et de l’investissement en Afrique.",
+      paragraphs: [
+        "Les participants sont venus du Canada, des États-Unis, de la Côte d’Ivoire, du Togo, du Bénin, de France, d’Angleterre et d’Australie.",
+        "Les échanges ont porté sur l’investissement en Afrique, avec des interventions consacrées à ce sujet.",
+      ],
+      theme: "Entrepreneuriat et investissement en Afrique",
+    },
+  },
+  {
+    edition: 2,
+    id: "edition-2",
+    place: "Dakar · Sénégal",
+    title: "Deuxième édition",
+    date: { iso: "2023-12-02", label: "Du 02 au 08 décembre 2023" },
+    tone: "dark",
+    grid: "seven",
+    simpleLead: "La deuxième édition de la JECA s’est tenue une nouvelle fois à Dakar.",
+  },
+  {
+    edition: 3,
+    id: "edition-3",
+    place: "Conakry · Guinée",
+    title: "La JECA à Conakry",
+    date: { iso: "2026-07-30", label: "Du 30 juillet au 04 août 2026" },
+    tone: "white",
+    grid: "six",
+    simpleLead:
+      "La troisième édition s’est tenue à Conakry. Les images présentent principalement le président et le vice-président.",
+  },
+];
+
+export const jecaEditionNav: JecaEditionNavItem[] = [
+  { href: "#edition-1", number: "01", city: "Dakar", dates: "04—14 août 2022" },
+  { href: "#edition-2", number: "02", city: "Dakar", dates: "02—08 décembre 2023" },
+  { href: "#edition-3", number: "03", city: "Conakry", dates: "30 juillet—04 août 2026" },
+];
 
 export const jecaGalleries: JecaGallery[] = [
   {

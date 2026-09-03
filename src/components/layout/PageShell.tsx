@@ -16,7 +16,7 @@ const pageStyles: Record<HeaderVariant, string> = {
   home: "bg-paper text-ink",
   about: "bg-paper text-ink",
   service: "bg-paper text-ink",
-  jeca: "bg-jeca-paper text-jeca-ink",
+  jeca: "bg-jeca-paper text-jeca-ink [&_:focus-visible]:outline-jeca-red",
   edv: "bg-edv-paper text-edv-ink",
 };
 
