@@ -1,2 +1,11 @@
 .agents/
 .codex/
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.env*.local
+tools/
+brief-*.md
+plan-migration-nextjs.md
