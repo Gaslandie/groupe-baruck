@@ -26,4 +26,4 @@ Application Next.js du Groupe Baruck (client : Djoro Joël Shaloom Krasso), réa
 `npm run lint` · `npm run typecheck` · `npm run build` · et, dès que des assets ou des liens sont touchés, `NEXT_PUBLIC_BASE_PATH=/groupe-baruck npm run build` puis `grep -rn 'src="/images' out/` (doit être vide). Commits en anglais avec préfixe conventionnel.
 
 ## Ne pas faire
-- Modifier ou commiter `tools/`, les briefs `*.md` de la racine, `.agents/`, `.codex/`.
+- Modifier `docs/`, `tools/`, `.agents/`, `.codex/` sans brief explicite. `docs/passation.md` décrit l'état du projet et la méthode de travail.
