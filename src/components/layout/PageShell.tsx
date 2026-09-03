@@ -9,6 +9,7 @@ type PageShellProps = {
   variant: HeaderVariant;
   current?: RouteKey;
   footer: FooterVariant;
+  mainClassName?: string;
   children: React.ReactNode;
 };
 
@@ -20,12 +21,14 @@ const pageStyles: Record<HeaderVariant, string> = {
   edv: "bg-edv-paper text-edv-ink",
 };
 
-export function PageShell({ variant, current, footer, children }: PageShellProps) {
+export function PageShell({ variant, current, footer, mainClassName, children }: PageShellProps) {
   return (
     <div id="top" className={pageStyles[variant]}>
       <SkipLink />
       <SiteHeader variant={variant} current={current} />
-      <main id="main-content">{children}</main>
+      <main id="main-content" className={mainClassName}>
+        {children}
+      </main>
       <SiteFooter variant={footer} />
       <RevealObserver />
     </div>

@@ -201,15 +201,70 @@
   .jeca-button-outline { color: #fff; border: 1px solid rgba(255,255,255,.48); }
   .jeca-button-outline:hover { color: var(--color-jeca-blue); background: #fff; }
 
+  .edv-kicker {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin: 0 0 1.25rem;
+    color: var(--color-edv-ember);
+    font-size: .58rem;
+    font-weight: 800;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .edv-kicker::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .edv-kicker-light { color: var(--color-edv-gold); }
+
+  .edv-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; }
+  .edv-actions-center { justify-content: center; }
+
+  .edv-button {
+    min-height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 0 1.25rem;
+    border: 1px solid rgba(255,255,255,.35);
+    font-size: .59rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    transition: color .25s, background .25s, border-color .25s, transform .25s;
+  }
+
+  .edv-button:hover { transform: translateY(-2px); }
+  .edv-button-primary { color: var(--color-edv-ink); background: var(--color-edv-gold); border-color: var(--color-edv-gold); }
+  .edv-button-primary:hover { color: #fff; background: var(--color-edv-ember); border-color: var(--color-edv-ember); }
+  .edv-button-line { color: #fff; }
+  .edv-button-line:hover { color: var(--color-edv-ink); background: #fff; border-color: #fff; }
+  .edv-button-white { color: var(--color-edv-ink); background: #fff; border-color: #fff; }
+  .edv-button-white:hover { background: var(--color-edv-gold); border-color: var(--color-edv-gold); }
+  .edv-button-outline { color: #fff; }
+  .edv-button-outline:hover { color: var(--color-edv-ink); background: #fff; border-color: #fff; }
+
   @media (max-width: 760px) {
     .button { min-height: 44px; padding: 0 .85rem; font-size: .56rem; gap: .8rem; }
     .jeca-button { min-height: 44px; padding-inline: 1rem; gap: 1rem; font-size: .56rem; }
     .jeca-button-primary { color: var(--color-jeca-blue); background: var(--color-jeca-yellow); border-color: var(--color-jeca-yellow); }
     .jeca-button-line { color: #fff; border-color: rgba(255,255,255,.38); }
+    .edv-button { min-height: 46px; padding-inline: .9rem; gap: .7rem; font-size: .53rem; }
   }
 
   @media (max-width: 420px) {
     .jeca-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .5rem; }
     .jeca-button { width: 100%; }
+  }
+
+  @media (max-width: 430px) {
+    .edv-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .edv-button { width: 100%; padding-inline: .65rem; }
   }
 }
