@@ -200,7 +200,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
       <div
         className={[
-          "absolute bottom-[clamp(5rem,11vh,9rem)] left-[clamp(1.5rem,4vw,4rem)] right-[clamp(1.5rem,4vw,6rem)] z-[2] transition-[opacity,transform] duration-[250ms] max-tablet:bottom-[4.8rem] max-tablet:left-[1.3rem] max-tablet:right-[1.3rem]",
+          "absolute bottom-[clamp(5rem,11vh,9rem)] left-[clamp(1.5rem,4vw,4rem)] right-[clamp(1.5rem,4vw,6rem)] z-[2] transition-[opacity,transform] duration-[250ms] max-tablet:static max-tablet:px-[1.3rem] max-tablet:pt-[5.6rem] max-tablet:pb-[4.8rem]",
           isChanging ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100",
         ].join(" ")}
       >
