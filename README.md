@@ -14,7 +14,7 @@ Stack : App Router, TypeScript strict, Tailwind CSS v4 et export statique.
 
 Modifier en priorité les contenus dans `src/data`. Les tarifs du studio photo sont dans `src/data/services.ts`.
 Les fichiers `public/*.html` redirigent les anciennes URL vers les routes Next.js.
-Le dossier `maquette/` reste la référence visuelle et disparaîtra lors de la bascule finale.
+L’ancienne maquette HTML reste accessible dans l’historique Git, notamment au commit `7450343` (`chore: move HTML mockup to maquette/`).
 
 ## Commandes
 
