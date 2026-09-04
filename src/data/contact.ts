@@ -45,8 +45,7 @@ export const contactNeeds = [
 ] as const;
 
 export const hqHours = [
-  { days: "Lundi – Vendredi", hours: "9h – 18h" },
-  { days: "Samedi", hours: "9h – 13h" },
+  { days: "Lundi – Samedi", hours: "8h – 17h" },
   { days: "Dimanche", hours: "Fermé" },
 ] as const;
 

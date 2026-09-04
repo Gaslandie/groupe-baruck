@@ -28,7 +28,6 @@ export function ContactMap() {
             </div>
           ))}
         </dl>
-        <ClientNote>Horaires provisoires, à valider avec le client.</ClientNote>
         <a
           href={hqMap.directionsUrl}
           target="_blank"
