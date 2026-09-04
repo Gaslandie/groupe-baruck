@@ -9,7 +9,7 @@ const roleClassName =
 
 export function PresidentPanel() {
   return (
-    <div className="relative min-h-svh overflow-hidden max-tablet:min-h-[84svh]">
+    <div id="president" className="relative min-h-svh overflow-hidden max-tablet:min-h-[84svh]">
       <img
         src={asset(presidentPortrait.src)}
         alt={presidentPortrait.alt}

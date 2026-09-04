@@ -1,3 +1,13 @@
+import type { ReactNode } from "react";
+
+import { jecaGalleries } from "./jeca";
+import {
+  edvLogo,
+  hostessesHero,
+  presidentOnu1,
+  studioHero,
+  type ImageAsset,
+} from "./media";
 import { routes, whatsappRequests } from "./site";
 
 export type HeroAction = {
@@ -25,6 +35,20 @@ export type Activity = {
   image: string;
   bg: string;
   art: string;
+};
+
+export type PageTeaser = {
+  id: string;
+  tone: "paper" | "ink" | "jeca" | "edv";
+  reverse?: boolean;
+  eyebrow: string;
+  title: ReactNode;
+  emphasis: string;
+  text: string;
+  href: string;
+  linkLabel: string;
+  image?: ImageAsset & { position?: string };
+  logo?: ImageAsset;
 };
 
 export const heroSlides: HeroSlide[] = [
@@ -164,5 +188,65 @@ export const activities: Activity[] = [
       "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1800&q=82",
     bg: "linear-gradient(135deg, #0b1316, #194653 54%, #914b36)",
     art: "linear-gradient(35deg, transparent 0 34%, rgba(255,255,255,.13) 34.3% 35%, transparent 35.3%), linear-gradient(125deg, transparent 0 67%, rgba(255,255,255,.09) 67.3% 68%, transparent 68.3%)",
+  },
+];
+
+export const pageTeasers: PageTeaser[] = [
+  {
+    id: "about",
+    tone: "ink",
+    image: { ...presidentOnu1, position: "center 30%" },
+    eyebrow: "À propos · Groupe Baruck",
+    title: "Un homme, une vision,",
+    emphasis: "un groupe.",
+    text: "À la tête du Groupe Baruck, il porte une vision fondée sur l’entrepreneuriat, la création de valeur et l’engagement au service de la société.",
+    href: routes.about,
+    linkLabel: "Découvrir le Groupe",
+  },
+  {
+    id: "studio",
+    tone: "paper",
+    reverse: true,
+    image: { ...studioHero, position: "center" },
+    eyebrow: "Baruck Communication · Guinée",
+    title: "Studio Photo Baruck",
+    emphasis: "la Prospérité.",
+    text: "Ouvert à tout le monde, à Kobayah (Conakry). Deux studios équipés et une équipe qui se déplace : nous réalisons vos photos au studio comme en extérieur, à toute heure.",
+    href: routes.studio,
+    linkLabel: "Découvrir le studio",
+  },
+  {
+    id: "hostesses",
+    tone: "ink",
+    image: { ...hostessesHero, position: "center 38%" },
+    eyebrow: "Baruck Communication · Guinée",
+    title: "Hôtesses",
+    emphasis: "événementielles.",
+    text: "Une équipe élégante, professionnelle et dynamique à votre service pour la couverture de vos différents événements.",
+    href: routes.hostesses,
+    linkLabel: "Réserver une équipe",
+  },
+  {
+    id: "jeca",
+    tone: "jeca",
+    reverse: true,
+    image: jecaGalleries[2].photos[0],
+    eyebrow: "JECA · Jeunes Entrepreneurs Chrétiens Africains",
+    title: "Réunir la diaspora.",
+    emphasis: "Investir en Afrique.",
+    text: "La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique.",
+    href: routes.jeca,
+    linkLabel: "Voir les éditions",
+  },
+  {
+    id: "edv",
+    tone: "edv",
+    logo: edvLogo,
+    eyebrow: "Engagement humanitaire · Afrique de l’Ouest",
+    title: "Espoir de Vie.",
+    emphasis: "Agir pour les plus vulnérables.",
+    text: "Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire.",
+    href: routes.edv,
+    linkLabel: "Découvrir les actions",
   },
 ];
