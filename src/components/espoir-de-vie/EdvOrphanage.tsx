@@ -1,6 +1,4 @@
 import { edvTimeline } from "@/data/espoir-de-vie";
-import { edvLogo } from "@/data/media";
-import { asset } from "@/lib/asset";
 
 export function EdvOrphanage() {
   return (
@@ -19,18 +17,6 @@ export function EdvOrphanage() {
           De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple
           : offrir protection, stabilité et attention.
         </p>
-        <div
-          aria-hidden="true"
-          className="absolute bottom-[-18%] right-[-12%] z-[-1] w-[min(33vw,500px)] rotate-[-8deg] opacity-10 mix-blend-screen max-tablet:w-[75vw]"
-        >
-          <img
-            src={asset(edvLogo.src)}
-            alt=""
-            width={edvLogo.width}
-            height={edvLogo.height}
-            loading="lazy"
-          />
-        </div>
       </div>
       <ol className="m-0 list-none p-[clamp(4rem,7vw,7rem)] max-[1100px]:px-12 max-tablet:px-[1.3rem] max-tablet:pb-16 max-tablet:pl-8 max-tablet:pt-16">
         {edvTimeline.map((item) => (

@@ -27,8 +27,7 @@ export function EdvActions() {
           return (
             <article
               key={action.number}
-              data-number={action.number}
-              className={`reveal relative flex min-h-[420px] flex-col overflow-hidden border-b border-r border-edv-line p-[clamp(1.5rem,3vw,3rem)] after:absolute after:bottom-[-2.2rem] after:right-[-.2rem] after:font-display after:text-[9rem] after:italic after:leading-none after:text-[rgba(199,70,28,.055)] after:content-[attr(data-number)] max-[1100px]:min-h-[390px] max-tablet:min-h-[370px] max-tablet:p-[1.7rem] ${action.tone ? cardTones[action.tone] : "bg-edv-cream"}`}
+              className={`reveal relative flex min-h-[420px] flex-col overflow-hidden border-b border-r border-edv-line p-[clamp(1.5rem,3vw,3rem)] max-[1100px]:min-h-[390px] max-tablet:min-h-[370px] max-tablet:p-[1.7rem] ${action.tone ? cardTones[action.tone] : "bg-edv-cream"}`}
             >
               <div
                 className={`flex justify-between gap-4 text-[.51rem] font-extrabold uppercase tracking-[.12em] ${isColored ? "text-edv-gold" : "text-edv-ember"}`}
