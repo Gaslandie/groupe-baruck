@@ -15,7 +15,7 @@ export function JecaHero() {
           width={jecaPortrait.width}
           height={jecaPortrait.height}
           fetchPriority="high"
-          className="h-full w-full object-cover object-[center_26%] saturate-[.98] contrast-[1.01] max-tablet:absolute max-tablet:inset-0 max-tablet:object-[center_38%] max-tablet:opacity-100"
+          className="absolute inset-0 h-full w-full object-cover object-[center_26%] saturate-[.98] contrast-[1.01] max-tablet:object-[center_38%] max-tablet:opacity-100"
         />
         <div
           aria-hidden="true"
