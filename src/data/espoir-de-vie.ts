@@ -1,3 +1,5 @@
+import { placeholderPhotos, type RemotePhoto } from "./media";
+
 type EdvSectionNavItem = {
   href: `#${string}`;
   number: string;
@@ -44,6 +46,7 @@ type EdvCountry = {
   number: string;
   title: string;
   text: string;
+  photo: RemotePhoto;
 };
 
 type EdvCollaboration = {
@@ -170,18 +173,21 @@ export const edvCountries = [
     number: "01",
     title: "Côte d’Ivoire",
     text: "Grôh, Hiré, Zaroko et Divo : jouets, kits scolaires, aide aux familles, vêtements, chaussures et construction de l’orphelinat.",
+    photo: placeholderPhotos.divo,
   },
   {
     code: "GN",
     number: "02",
     title: "Guinée",
     text: "Des actions autour du droit à la santé, à une alimentation équilibrée, à la protection et à l’éducation.",
+    photo: placeholderPhotos.conakryBay,
   },
   {
     code: "BF",
     number: "03",
     title: "Burkina Faso",
     text: "Soutien aux enfants de la rue et moments de partage avec des personnes sans-abri pendant une tournée africaine.",
+    photo: placeholderPhotos.ouagadougou,
   },
 ] satisfies EdvCountry[];
 

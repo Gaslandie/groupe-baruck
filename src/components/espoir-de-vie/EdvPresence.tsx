@@ -1,4 +1,5 @@
 import { edvCountries } from "@/data/espoir-de-vie";
+import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 import { EdvSectionHead } from "./EdvSectionHead";
 
@@ -19,8 +20,20 @@ export function EdvPresence() {
         {edvCountries.map((country) => (
           <article
             key={country.code}
-            className="reveal flex min-h-[430px] flex-col justify-end border-r border-[rgba(255,255,255,.15)] bg-[linear-gradient(145deg,rgba(255,255,255,.025),transparent)] p-[clamp(1.7rem,3.5vw,4rem)] last:border-r-0 max-tablet:min-h-[350px] max-tablet:border-b max-tablet:border-r-0 max-tablet:last:border-b-0"
+            className="group reveal relative isolate flex min-h-[430px] flex-col justify-end overflow-hidden border-r border-[rgba(255,255,255,.15)] p-[clamp(1.7rem,3.5vw,4rem)] last:border-r-0 max-tablet:min-h-[350px] max-tablet:border-b max-tablet:border-r-0 max-tablet:last:border-b-0"
           >
+            <span
+              aria-hidden="true"
+              style={{
+                backgroundImage: `url("${country.photo.src}")`,
+                backgroundPosition: country.photo.position,
+              }}
+              className="absolute inset-0 z-[-2] bg-cover saturate-[.6] transition-transform duration-[600ms] group-hover:scale-[1.04]"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute inset-0 z-[-1] bg-[linear-gradient(180deg,rgba(24,14,9,.3),rgba(24,14,9,.93)_70%)]"
+            />
             <small className="text-[.55rem] font-extrabold tracking-[.15em] text-edv-gold">{country.number}</small>
             <h3 className="mb-4 mt-[1.1rem] font-display text-[clamp(2.5rem,4vw,4.6rem)] font-normal leading-[.9] tracking-[-.05em]">
               {country.title}
@@ -31,6 +44,7 @@ export function EdvPresence() {
           </article>
         ))}
       </div>
+      <PhotoCredits photos={edvCountries.map((country) => country.photo)} tone="light" className="mt-4" />
     </section>
   );
 }
