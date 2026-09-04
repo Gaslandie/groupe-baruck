@@ -196,11 +196,11 @@ export const pageTeasers: PageTeaser[] = [
     id: "apercu-about",
     tone: "ink",
     image: { ...presidentOnu1, position: "center 30%" },
-    eyebrow: "À propos · Groupe Baruck",
+    eyebrow: "Le Groupe",
     title: "Un homme, une vision,",
     emphasis: "un groupe.",
     text: "À la tête du Groupe Baruck, il porte une vision fondée sur l’entrepreneuriat, la création de valeur et l’engagement au service de la société.",
-    href: routes.about,
+    href: routes.group,
     linkLabel: "Découvrir le Groupe",
   },
   {

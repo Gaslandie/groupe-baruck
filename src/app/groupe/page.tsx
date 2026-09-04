@@ -1,19 +1,43 @@
 import type { Metadata } from "next";
 
-import { ConstructionPage } from "@/components/ui/ConstructionPage";
+import { AboutCommitments } from "@/components/about/AboutCommitments";
+import { AboutCta } from "@/components/about/AboutCta";
+import { AboutHero } from "@/components/about/AboutHero";
+import { AboutIntro } from "@/components/about/AboutIntro";
+import { AboutOnu } from "@/components/about/AboutOnu";
+import { AboutPresence } from "@/components/about/AboutPresence";
+import { AboutQuote } from "@/components/about/AboutQuote";
+import { AboutRoles } from "@/components/about/AboutRoles";
+import { PageShell } from "@/components/layout/PageShell";
+import { Marquee } from "@/components/ui/Marquee";
 
 export const metadata: Metadata = {
   title: "Le Groupe",
-  description: "Présentation du Groupe Baruck — page en cours de construction.",
+  description:
+    "Le Groupe Baruck — la direction, les fonctions et les engagements de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, président de la JECA et de l’ONG Espoir de Vie.",
 };
+
+const marqueeItems = [
+  "Leadership",
+  "Entrepreneuriat",
+  "Impact social",
+  "Guinée",
+  "Sénégal",
+  "Côte d’Ivoire",
+];
 
 export default function GroupPage() {
   return (
-    <ConstructionPage
-      index="02 / 07"
-      eyebrow="Le Groupe"
-      text="Nous préparons actuellement cette page afin de vous présenter plus en détail la vision et les activités du Groupe Baruck."
-      footerItems={["Groupe Baruck", "Vision · Excellence · Impact"]}
-    />
+    <PageShell variant="about" current="group" footer="about">
+      <AboutHero />
+      <Marquee items={marqueeItems} label="Repères du Groupe Baruck" />
+      <AboutIntro />
+      <AboutRoles />
+      <AboutOnu />
+      <AboutQuote />
+      <AboutPresence />
+      <AboutCommitments />
+      <AboutCta />
+    </PageShell>
   );
 }

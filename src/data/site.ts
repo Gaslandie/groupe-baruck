@@ -1,7 +1,6 @@
 export type RouteKey =
   | "home"
   | "group"
-  | "about"
   | "services"
   | "studio"
   | "hostesses"
@@ -55,7 +54,6 @@ export type FooterVariant = "home" | "about" | "service" | "jeca" | "edv";
 export const routes: Record<RouteKey, string> = {
   home: "/",
   group: "/groupe/",
-  about: "/a-propos/",
   services: "/#activites",
   studio: "/studio-photo/",
   hostesses: "/hotesses-evenementielles/",
@@ -123,12 +121,7 @@ export const whatsappRequests = {
 
 export const mainNav: NavItem[] = [
   { number: "01", label: "Accueil", href: routes.home },
-  {
-    number: "02",
-    label: "Le Groupe",
-    href: routes.group,
-    children: [{ label: "À propos", href: routes.about }],
-  },
+  { number: "02", label: "Le Groupe", href: routes.group },
   {
     number: "03",
     label: "Nos services",
@@ -213,7 +206,7 @@ export const footers = {
         title: "Navigation",
         links: [
           { label: "Accueil", href: routes.home },
-          { label: "À propos", href: routes.about },
+          { label: "Le Groupe", href: routes.group },
           { label: "Studio photo", href: routes.studio },
           { label: "Hôtesses événementielles", href: routes.hostesses },
           { label: "Actualités", href: routes.news },
