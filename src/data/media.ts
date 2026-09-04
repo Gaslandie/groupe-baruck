@@ -64,6 +64,13 @@ export const placeholderPhotos = {
     licence: "CC BY-SA 3.0",
     href: "https://commons.wikimedia.org/wiki/File:Ouagadougou_city_centre.JPG",
   },
+  dakarHorizon: {
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Gor%C3%A9e_2024_-_Vue_de_Dakar_-_17.jpg/1920px-Gor%C3%A9e_2024_-_Vue_de_Dakar_-_17.jpg",
+    position: "center 62%",
+    author: "Fawaz.tairou",
+    licence: "CC BY 4.0",
+    href: "https://commons.wikimedia.org/wiki/File:Gor%C3%A9e_2024_-_Vue_de_Dakar_-_17.jpg",
+  },
 } as const satisfies Record<string, RemotePhoto>;
 
 export const brandLogo: ImageAsset = {
