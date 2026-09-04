@@ -50,7 +50,11 @@ export const hqHours = [
   { days: "Dimanche", hours: "Fermé" },
 ] as const;
 
-export const socialNetworks = ["Facebook", "Instagram", "LinkedIn", "YouTube"] as const;
+export const facebookPages = [
+  { country: "Guinée", href: "https://www.facebook.com/profile.php?id=61583266386159" },
+  { country: "Sénégal", href: "https://www.facebook.com/Baruckcommunicationsenegal" },
+  { country: "Côte d’Ivoire", href: "https://www.facebook.com/BaruckCommunication" },
+] as const;
 
 export const hqMap = {
   query: "Kobayah, Conakry, Guinée",

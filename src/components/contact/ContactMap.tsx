@@ -1,4 +1,4 @@
-import { hqHours, hqMap, socialNetworks } from "@/data/contact";
+import { facebookPages, hqHours, hqMap } from "@/data/contact";
 import { hqAddress } from "@/data/site";
 import { ClientNote } from "@/components/ui/ClientNote";
 
@@ -40,8 +40,20 @@ export function ContactMap() {
         </div>
         <div className="mt-6">
           <span className="mb-[.35rem] block text-[.52rem] uppercase tracking-[.15em] text-accent">Réseaux</span>
-          <p className="m-0 font-display text-[clamp(1.05rem,1.4vw,1.25rem)]">{socialNetworks.join(" · ")}</p>
-          <ClientNote>Liens à valider avec le client.</ClientNote>
+          <ul className="m-0 flex list-none flex-col gap-[.35rem] p-0">
+            {facebookPages.map(({ country, href }) => (
+              <li key={country}>
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-[.6rem] font-display text-[clamp(1.05rem,1.4vw,1.25rem)] transition-colors duration-[220ms] hover:text-accent focus-visible:text-accent"
+                >
+                  Facebook · {country} <span className="text-accent">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <div className="h-full min-h-[460px] bg-[#cac5bb] max-tablet:min-h-[340px]">
