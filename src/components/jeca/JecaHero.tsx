@@ -6,7 +6,7 @@ export function JecaHero() {
   return (
     <section
       id="accueil"
-      className="grid h-[clamp(640px,82svh,800px)] scroll-mt-[74px] grid-cols-[58%_42%] overflow-hidden bg-jeca-paper text-jeca-ink max-[1080px]:grid-cols-[55%_45%] max-tablet:relative max-tablet:flex max-tablet:h-auto max-tablet:min-h-0 max-tablet:flex-col max-tablet:bg-jeca-blue max-tablet:text-white"
+      className="grid min-h-[clamp(640px,82svh,800px)] scroll-mt-[74px] grid-cols-[58%_42%] overflow-hidden bg-jeca-paper text-jeca-ink max-[1080px]:grid-cols-[55%_45%] max-tablet:relative max-tablet:flex max-tablet:h-auto max-tablet:min-h-0 max-tablet:flex-col max-tablet:bg-jeca-blue max-tablet:text-white"
     >
       <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-[#111a2f] max-tablet:relative max-tablet:h-[clamp(600px,100svh,860px)] max-tablet:min-h-0 max-tablet:w-full max-tablet:flex-none">
         <img

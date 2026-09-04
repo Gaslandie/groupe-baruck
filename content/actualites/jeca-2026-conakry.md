@@ -2,7 +2,7 @@
 title: "JECA 2026 : la troisième édition à Conakry"
 date: 2026-07-30
 category: jeca
-excerpt: "La troisième édition de la JECA s'est tenue à Conakry, du 30 juillet au 04 août 2026."
+excerpt: "La troisième édition de la JECA s’est tenue à Conakry, du 30 juillet au 04 août 2026."
 cover: "/images/jeca/edition-3/01.jpeg"
 coverAlt: "Le président et le vice-président lors de la troisième édition à Conakry"
 gallery:
@@ -26,6 +26,6 @@ gallery:
     caption: "Troisième édition · Conakry · 2026"
 ---
 
-La troisième édition s'est tenue à Conakry. Les images présentent principalement le président et le vice-président.
+La troisième édition s’est tenue à Conakry. Les images présentent principalement le président et le vice-président.
 
 [Retrouver cette édition sur la page JECA](/jeca/#edition-3)

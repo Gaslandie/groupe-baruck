@@ -158,7 +158,7 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         if (Math.abs(distance) > 45) showSlide(activeIndexRef.current + (distance < 0 ? 1 : -1));
       }}
       className={[
-        "relative min-h-svh overflow-hidden border-l border-[rgba(255,255,255,.16)] bg-[#101317] max-tablet:min-h-[72svh] max-tablet:border-l-0 max-tablet:border-t",
+        "relative min-h-[max(100svh,760px)] overflow-hidden border-l border-[rgba(255,255,255,.16)] bg-[#101317] max-tablet:min-h-[72svh] max-tablet:border-l-0 max-tablet:border-t",
         isChanging ? "is-changing" : "",
         isPaused ? "is-paused" : "",
       ].join(" ")}

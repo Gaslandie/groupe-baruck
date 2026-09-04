@@ -193,7 +193,7 @@ export const activities: Activity[] = [
 
 export const pageTeasers: PageTeaser[] = [
   {
-    id: "about",
+    id: "apercu-about",
     tone: "ink",
     image: { ...presidentOnu1, position: "center 30%" },
     eyebrow: "À propos · Groupe Baruck",
@@ -204,7 +204,7 @@ export const pageTeasers: PageTeaser[] = [
     linkLabel: "Découvrir le Groupe",
   },
   {
-    id: "studio",
+    id: "apercu-studio",
     tone: "paper",
     reverse: true,
     image: { ...studioHero, position: "center" },
@@ -216,7 +216,7 @@ export const pageTeasers: PageTeaser[] = [
     linkLabel: "Découvrir le studio",
   },
   {
-    id: "hostesses",
+    id: "apercu-hostesses",
     tone: "ink",
     image: { ...hostessesHero, position: "center 38%" },
     eyebrow: "Baruck Communication · Guinée",
@@ -227,7 +227,7 @@ export const pageTeasers: PageTeaser[] = [
     linkLabel: "Réserver une équipe",
   },
   {
-    id: "jeca",
+    id: "apercu-jeca",
     tone: "jeca",
     reverse: true,
     image: jecaGalleries[2].photos[0],
@@ -239,7 +239,7 @@ export const pageTeasers: PageTeaser[] = [
     linkLabel: "Voir les éditions",
   },
   {
-    id: "edv",
+    id: "apercu-edv",
     tone: "edv",
     logo: edvLogo,
     eyebrow: "Engagement humanitaire · Afrique de l’Ouest",

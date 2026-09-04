@@ -2,7 +2,7 @@
 title: "JECA 2023 : deuxième édition à Dakar"
 date: 2023-12-02
 category: jeca
-excerpt: "La deuxième édition de la JECA s'est tenue une nouvelle fois à Dakar, du 02 au 08 décembre 2023."
+excerpt: "La deuxième édition de la JECA s’est tenue une nouvelle fois à Dakar, du 02 au 08 décembre 2023."
 cover: "/images/jeca/edition-2/01.jpeg"
 coverAlt: "Assemblée de la deuxième édition de la JECA à Dakar"
 gallery:
@@ -29,6 +29,6 @@ gallery:
     caption: "Deuxième édition · Dakar · 2023"
 ---
 
-La deuxième édition de la JECA s'est tenue une nouvelle fois à Dakar.
+La deuxième édition de la JECA s’est tenue une nouvelle fois à Dakar.
 
 [Retrouver cette édition sur la page JECA](/jeca/#edition-2)

@@ -62,6 +62,9 @@ export function resolveImage(src: string, alt: string, filename: string): NewsIm
   if (!src.startsWith("/images/")) {
     error(filename, `le chemin d’image "${src}" doit commencer par "/images/".`);
   }
+  if (!/\.(?:jpe?g|png|webp)$/i.test(src)) {
+    error(filename, `l’extension de l’image "${src}" doit être .jpg, .jpeg, .png ou .webp.`);
+  }
 
   const file = path.join(process.cwd(), "public", src.slice(1));
   if (!fs.existsSync(file)) {

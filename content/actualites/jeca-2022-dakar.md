@@ -2,7 +2,7 @@
 title: "JECA 2022 : la première rencontre à Dakar"
 date: 2022-08-04
 category: jeca
-excerpt: "Environ 50 personnes réunies autour de l'entrepreneuriat et de l'investissement en Afrique, du 04 au 14 août 2022."
+excerpt: "Environ 50 personnes réunies autour de l’entrepreneuriat et de l’investissement en Afrique, du 04 au 14 août 2022."
 cover: "/images/jeca/edition-1/01.jpeg"
 coverAlt: "Participants réunis lors de la première édition du forum JECA à Dakar"
 gallery:
@@ -29,9 +29,9 @@ gallery:
     caption: "Première édition · Dakar · 2022"
 ---
 
-Les participants sont venus du Canada, des États-Unis, de la Côte d'Ivoire, du Togo, du Bénin, de France, d'Angleterre et d'Australie.
+Les participants sont venus du Canada, des États-Unis, de la Côte d’Ivoire, du Togo, du Bénin, de France, d’Angleterre et d’Australie.
 
-Les échanges ont porté sur l'investissement en Afrique, avec des interventions consacrées à ce sujet.
+Les échanges ont porté sur l’investissement en Afrique, avec des interventions consacrées à ce sujet.
 
 Thème : Entrepreneuriat et investissement en Afrique.
 
