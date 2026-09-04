@@ -168,6 +168,12 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             const itemCurrent = currentAttributes(item.href);
 
             if (item.children) {
+              const featuredChildren = item.children.filter((child) => child.featured);
+              const otherChildren = item.children.filter((child) => !child.featured);
+              const hasFeaturedChildren = featuredChildren.length > 0;
+              const primaryChildren = hasFeaturedChildren ? featuredChildren : item.children;
+              const hasOtherChildren = hasFeaturedChildren && otherChildren.length > 0;
+
               return (
                 <div key={item.href} className="group relative">
                   <Link
@@ -186,8 +192,13 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                       ⌄
                     </span>
                   </Link>
-                  <div className="invisible absolute left-1/2 top-[calc(100%-.2rem)] w-[220px] translate-x-[-50%] translate-y-[10px] border border-[rgba(255,255,255,.14)] bg-[rgba(11,12,14,.96)] p-[.7rem] opacity-0 shadow-[0_20px_50px_rgba(0,0,0,.24)] transition-[opacity,visibility,transform] duration-[250ms] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                    {item.children.map((child) => {
+                  <div
+                    className={[
+                      "invisible absolute left-1/2 top-[calc(100%-.2rem)] translate-x-[-50%] translate-y-[10px] border border-[rgba(255,255,255,.14)] bg-[rgba(11,12,14,.96)] p-[.7rem] opacity-0 shadow-[0_20px_50px_rgba(0,0,0,.24)] transition-[opacity,visibility,transform] duration-[250ms] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100",
+                      hasOtherChildren ? "w-[320px]" : "w-[220px]",
+                    ].join(" ")}
+                  >
+                    {primaryChildren.map((child) => {
                       const childCurrent = currentAttributes(child.href);
                       return (
                         <Link
@@ -195,12 +206,38 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                           href={child.href}
                           aria-current={childCurrent["aria-current"]}
                           data-current={childCurrent["data-current"]}
-                          className="block px-[.8rem] py-[.75rem] text-[.72rem] normal-case tracking-[.06em] text-[rgba(255,255,255,.72)] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory"
+                          className={[
+                            "block px-[.8rem] py-[.75rem] text-[.72rem] normal-case tracking-[.06em] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory",
+                            hasFeaturedChildren ? "font-medium text-ivory" : "text-[rgba(255,255,255,.72)]",
+                          ].join(" ")}
                         >
                           {child.label}
                         </Link>
                       );
                     })}
+                    {hasOtherChildren ? (
+                      <>
+                        <span className="mt-[.4rem] block border-t border-[rgba(255,255,255,.14)] px-[.8rem] pb-[.2rem] pt-[.7rem] text-[.5rem] uppercase tracking-[.16em] text-[rgba(255,255,255,.4)]">
+                          Autres domaines
+                        </span>
+                        <div className="grid grid-cols-2">
+                          {otherChildren.map((child) => {
+                            const childCurrent = currentAttributes(child.href);
+                            return (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                aria-current={childCurrent["aria-current"]}
+                                data-current={childCurrent["data-current"]}
+                                className="block px-[.8rem] py-[.75rem] text-[.68rem] normal-case tracking-[.06em] text-[rgba(255,255,255,.72)] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory"
+                              >
+                                {child.label}
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : null}
                   </div>
                 </div>
               );
@@ -289,6 +326,11 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         <nav aria-label="Menu principal" className="my-auto flex flex-col">
           {mainNav.map((item) => {
             const itemCurrent = currentAttributes(item.href);
+            const featuredChildren = item.children?.filter((child) => child.featured) ?? [];
+            const hasFeaturedChildren = featuredChildren.length > 0;
+            const visibleChildren = hasFeaturedChildren ? featuredChildren : item.children;
+            const hasOtherChildren = hasFeaturedChildren && item.children?.some((child) => !child.featured);
+
             return (
               <div key={item.href} className="contents">
                 <Link
@@ -312,9 +354,9 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                   {item.label}
                 </Link>
 
-                {item.children ? (
+                {visibleChildren ? (
                   <div className="ml-[2.3rem] mb-[.55rem] mt-[.15rem] grid gap-[.15rem] border-l border-line pl-4">
-                    {item.children.map((child) => {
+                    {visibleChildren.map((child) => {
                       const childCurrent = currentAttributes(child.href);
                       return (
                         <Link
@@ -332,6 +374,20 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                         </Link>
                       );
                     })}
+                    {hasOtherChildren ? (
+                      <Link
+                        href={item.href}
+                        aria-current={itemCurrent["aria-current"]}
+                        data-current={itemCurrent["data-current"]}
+                        onClick={() => setIsOpen(false)}
+                        className={[
+                          "py-[.18rem] font-sans text-[.72rem] font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
+                          itemCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]",
+                        ].join(" ")}
+                      >
+                        Tous nos domaines
+                      </Link>
+                    ) : null}
                   </div>
                 ) : null}
               </div>

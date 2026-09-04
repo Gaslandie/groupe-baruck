@@ -32,9 +32,6 @@ export function PresidentPanel() {
           </Link>
           <Link href={routes.jeca} className={roleClassName}>
             Président de la JECA
-            <small className="text-[rgba(255,255,255,.6)]">
-              (Jeunes Entrepreneurs Chrétiens Africains)
-            </small>
           </Link>
           <Link href={routes.edv} className={roleClassName}>
             Président de l’ONG Espoir de Vie
@@ -43,9 +40,6 @@ export function PresidentPanel() {
             Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016
           </a>
         </div>
-        <p className="mb-[1.7rem] max-w-[500px] font-display text-base italic leading-[1.5] text-[rgba(255,255,255,.68)] max-tablet:hidden">
-          Une vision entrepreneuriale au service du développement et de l’impact.
-        </p>
         <div className="flex flex-wrap items-center gap-[.8rem] max-tablet:gap-2">
           <Link href={routes.group} className="button button-primary">
             Découvrir le Groupe <span>↘</span>

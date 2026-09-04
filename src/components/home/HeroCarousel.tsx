@@ -9,10 +9,6 @@ import { imageUrl } from "@/lib/asset";
 const SLIDE_DURATION = 5000;
 const CHANGE_DURATION = 260;
 
-function formatNumber(value: number) {
-  return String(value).padStart(2, "0");
-}
-
 function SlideAction({ action, secondary = false }: { action: HeroAction; secondary?: boolean }) {
   const className = [
     "inline-flex items-center gap-4 border-b border-current pb-[.45rem] text-[.65rem] uppercase tracking-[.13em] max-tablet:text-[.55rem]",
@@ -136,7 +132,6 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   };
 
   const slide = slides[activeIndex];
-  const count = `${formatNumber(activeIndex + 1)} / ${formatNumber(slides.length)}`;
   const animationState = isPaused ? "[animation-play-state:paused]" : "";
 
   return (
@@ -193,18 +188,12 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,8,9,.15),rgba(7,8,9,.25)_42%,rgba(7,8,9,.92)_100%)]" />
       </div>
 
-      <div className="absolute left-[clamp(1.5rem,4vw,4rem)] right-[clamp(1.5rem,4vw,4rem)] top-[115px] z-[2] flex items-center justify-between max-tablet:left-[1.3rem] max-tablet:right-[1.3rem] max-tablet:top-[2.2rem]">
-        <span className="eyebrow light">À la une en Guinée</span>
-        <span className="font-display text-[.88rem] italic text-[rgba(255,255,255,.65)]">{count}</span>
-      </div>
-
       <div
         className={[
-          "absolute bottom-[clamp(5rem,11vh,9rem)] left-[clamp(1.5rem,4vw,4rem)] right-[clamp(1.5rem,4vw,6rem)] z-[2] transition-[opacity,transform] duration-[250ms] max-tablet:static max-tablet:px-[1.3rem] max-tablet:pt-[5.6rem] max-tablet:pb-[4.8rem]",
+          "absolute bottom-[clamp(5rem,11vh,9rem)] left-[clamp(1.5rem,4vw,4rem)] right-[clamp(1.5rem,4vw,6rem)] z-[2] transition-[opacity,transform] duration-[250ms] max-tablet:static max-tablet:px-[1.3rem] max-tablet:pt-[3.5rem] max-tablet:pb-[4.8rem]",
           isChanging ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100",
         ].join(" ")}
       >
-        <span className="text-[.65rem] tracking-[.2em] text-accent">{formatNumber(activeIndex + 1)}</span>
         <h2 className="mb-[1.2rem] mt-[.8rem] max-w-[830px] text-balance font-display text-[clamp(3.3rem,6vw,7rem)] font-normal leading-[.88] tracking-[-.05em] max-desktop:text-[clamp(3rem,6vw,5.2rem)] max-tablet:text-[clamp(3.2rem,15vw,5.4rem)]">
           {slide.title}
         </h2>
@@ -246,9 +235,6 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           ].join(" ")}
         />
       </div>
-      <p className="absolute bottom-4 right-[1.2rem] z-[3] m-0 text-[.48rem] uppercase tracking-[.12em] text-[rgba(255,255,255,.42)]">
-        Baruck Communication · Guinée
-      </p>
     </div>
   );
 }

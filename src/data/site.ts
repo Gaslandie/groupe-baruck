@@ -2,6 +2,7 @@ export type RouteKey =
   | "home"
   | "group"
   | "about"
+  | "services"
   | "studio"
   | "hostesses"
   | "jeca"
@@ -29,7 +30,7 @@ export type NavItem = {
   label: string;
   href: string;
   shortLabel?: string;
-  children?: Omit<NavItem, "number" | "children">[];
+  children?: (Omit<NavItem, "number" | "children"> & { featured?: boolean })[];
 };
 
 export type FooterLink = {
@@ -55,6 +56,7 @@ export const routes: Record<RouteKey, string> = {
   home: "/",
   group: "/groupe/",
   about: "/a-propos/",
+  services: "/#activites",
   studio: "/studio-photo/",
   hostesses: "/hotesses-evenementielles/",
   jeca: "/jeca/",
@@ -125,16 +127,31 @@ export const mainNav: NavItem[] = [
     number: "02",
     label: "Le Groupe",
     href: routes.group,
+    children: [{ label: "À propos", href: routes.about }],
+  },
+  {
+    number: "03",
+    label: "Nos services",
+    shortLabel: "Services",
+    href: routes.services,
     children: [
-      { label: "À propos", href: routes.about },
-      { label: "Studio photo", href: routes.studio },
-      { label: "Hôtesses événementielles", href: routes.hostesses },
+      { label: "Studio photo", href: routes.studio, featured: true },
+      { label: "Hôtesses événementielles", href: routes.hostesses, featured: true },
+      { label: "Hôtellerie", href: "/#hotellerie" },
+      { label: "Restauration", href: "/#restauration" },
+      { label: "Agro-business", href: "/#agrobusiness" },
+      { label: "Studio d’enregistrement", href: "/#studio" },
+      { label: "Cinéma", href: "/#cinema" },
+      { label: "Voitures de luxe", href: "/#mobilite" },
+      { label: "Communication digitale", href: "/#communication" },
+      { label: "Production d’artistes", href: "/#artistes" },
+      { label: "Clips vidéo", href: "/#clips" },
     ],
   },
-  { number: "03", label: "JECA", href: routes.jeca },
-  { number: "04", label: "Espoir de Vie", href: routes.edv },
-  { number: "05", label: "Actualités", href: routes.news },
-  { number: "06", label: "Contact", href: routes.contact },
+  { number: "04", label: "JECA", href: routes.jeca },
+  { number: "05", label: "Espoir de Vie", href: routes.edv },
+  { number: "06", label: "Actualités", href: routes.news },
+  { number: "07", label: "Contact", href: routes.contact },
 ];
 
 export const sideNavContacts: ContactLink[] = [
