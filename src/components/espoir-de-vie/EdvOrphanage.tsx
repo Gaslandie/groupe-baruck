@@ -18,7 +18,7 @@ export function EdvOrphanage() {
           : offrir protection, stabilité et attention.
         </p>
       </div>
-      <ol className="m-0 list-none p-[clamp(4rem,7vw,7rem)] max-[1100px]:px-12 max-tablet:px-[1.3rem] max-tablet:pb-16 max-tablet:pl-8 max-tablet:pt-16">
+      <ol className="reveal-stagger m-0 list-none p-[clamp(4rem,7vw,7rem)] max-[1100px]:px-12 max-tablet:px-[1.3rem] max-tablet:pb-16 max-tablet:pl-8 max-tablet:pt-16">
         {edvTimeline.map((item) => (
           <li
             key={item.title}

@@ -7,7 +7,7 @@ export function EdvMission() {
   return (
     <section
       id="mission"
-      className="grid scroll-mt-[72px] grid-cols-[1fr_.8fr] gap-[clamp(3rem,7vw,8rem)] bg-edv-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(6rem,10vw,11rem)] max-[1100px]:grid-cols-[1fr_.9fr] max-[1100px]:gap-12 max-tablet:block max-tablet:px-[1.3rem] max-tablet:py-20"
+      className="reveal-stagger grid scroll-mt-[72px] grid-cols-[1fr_.8fr] gap-[clamp(3rem,7vw,8rem)] bg-edv-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(6rem,10vw,11rem)] max-[1100px]:grid-cols-[1fr_.9fr] max-[1100px]:gap-12 max-tablet:block max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <div className="reveal">
         <p className="edv-kicker">Notre mission</p>
@@ -37,7 +37,7 @@ export function EdvMission() {
       </div>
       <div
         aria-label="Les cinq piliers d’Espoir de Vie"
-        className="col-span-full mt-12 grid grid-cols-5 border-t border-edv-line max-[1100px]:grid-cols-3 max-[1100px]:[&>article:nth-child(3)]:border-r-0 max-[1100px]:[&>article:nth-child(n+4)]:border-t max-[1100px]:[&>article:nth-child(n+4)]:border-edv-line max-tablet:mt-12 max-tablet:grid-cols-1 max-tablet:[&>article:nth-child(n+4)]:border-t-0"
+        className="reveal-stagger col-span-full mt-12 grid grid-cols-5 border-t border-edv-line max-[1100px]:grid-cols-3 max-[1100px]:[&>article:nth-child(3)]:border-r-0 max-[1100px]:[&>article:nth-child(n+4)]:border-t max-[1100px]:[&>article:nth-child(n+4)]:border-edv-line max-tablet:mt-12 max-tablet:grid-cols-1 max-tablet:[&>article:nth-child(n+4)]:border-t-0"
       >
         {edvPillars.map((pillar) => (
           <article

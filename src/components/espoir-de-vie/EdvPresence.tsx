@@ -15,7 +15,7 @@ export function EdvPresence() {
         text="De la Côte d’Ivoire à la Guinée et au Burkina Faso, nos actions portent une même volonté de protection et de solidarité."
         tone="light"
       />
-      <div className="grid grid-cols-3 border border-[rgba(255,255,255,.15)] max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-3 border border-[rgba(255,255,255,.15)] max-tablet:grid-cols-1">
         {edvCountries.map((country) => (
           <article
             key={country.code}

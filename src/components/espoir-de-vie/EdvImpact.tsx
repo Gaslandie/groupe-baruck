@@ -18,7 +18,7 @@ export function EdvImpact() {
           <em className="font-[inherit] text-edv-gold">des vies accompagnées.</em>
         </h2>
       </div>
-      <dl className="m-0 grid grid-cols-2 max-[430px]:grid-cols-1">
+      <dl className="reveal-stagger m-0 grid grid-cols-2 max-[430px]:grid-cols-1">
         {edvImpact.map((item) => (
           <div
             key={item.value + item.label}

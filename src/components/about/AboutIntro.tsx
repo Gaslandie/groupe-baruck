@@ -10,7 +10,7 @@ export function AboutIntro() {
   return (
     <section
       id="identite"
-      className="grid grid-cols-[minmax(260px,.85fr)_1.15fr] gap-x-[clamp(3rem,8vw,9rem)] gap-y-[clamp(2.5rem,6vw,6rem)] px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-[1080px]:grid-cols-1"
+      className="reveal-stagger grid grid-cols-[minmax(260px,.85fr)_1.15fr] gap-x-[clamp(3rem,8vw,9rem)] gap-y-[clamp(2.5rem,6vw,6rem)] px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-[1080px]:grid-cols-1"
     >
       <div className="reveal">
         <p className="eyebrow">Notre identité</p>
@@ -40,7 +40,7 @@ export function AboutIntro() {
       </div>
       <div
         aria-label="Valeurs du Groupe Baruck"
-        className="col-span-full grid grid-cols-3 border-t border-line max-tablet:grid-cols-1"
+        className="reveal-stagger col-span-full grid grid-cols-3 border-t border-line max-tablet:grid-cols-1"
       >
         {values.map((value) => (
           <article

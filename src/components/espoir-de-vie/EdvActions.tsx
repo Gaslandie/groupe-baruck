@@ -20,7 +20,7 @@ export function EdvActions() {
         text="Au fil des années, Espoir de Vie a multiplié les initiatives en faveur des enfants, des familles et des communautés les plus fragiles."
         tone="dark"
       />
-      <div className="grid grid-cols-3 border-l border-t border-edv-line max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-3 border-l border-t border-edv-line max-tablet:grid-cols-1">
         {edvActions.map((action) => {
           const isColored = action.tone !== undefined;
 

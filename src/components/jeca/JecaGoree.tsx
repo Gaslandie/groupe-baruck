@@ -7,7 +7,7 @@ export function JecaGoree() {
       id="senegal"
       className="grid min-h-[620px] scroll-mt-[74px] grid-cols-[38%_62%] overflow-hidden bg-white max-tablet:block max-tablet:min-h-0"
     >
-      <figure className="group relative m-0 min-h-[620px] min-w-0 overflow-hidden bg-jeca-blue after:absolute after:inset-0 after:bg-[linear-gradient(180deg,rgba(4,16,49,.03)_38%,rgba(4,16,49,.82))] after:content-[''] max-tablet:h-[44svh] max-tablet:min-h-[340px] max-tablet:max-h-[460px]">
+      <figure className="group reveal-media relative m-0 min-h-[620px] min-w-0 overflow-hidden bg-jeca-blue after:absolute after:inset-0 after:bg-[linear-gradient(180deg,rgba(4,16,49,.03)_38%,rgba(4,16,49,.82))] after:content-[''] max-tablet:h-[44svh] max-tablet:min-h-[340px] max-tablet:max-h-[460px]">
         <img
           src={asset(goreeImage.src)}
           alt={goreeImage.alt}

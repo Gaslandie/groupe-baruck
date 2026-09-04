@@ -22,7 +22,7 @@ export function ActivitiesSection() {
         text="Des domaines complémentaires réunis autour de l’hospitalité, de la création, de la production et du développement."
         tone="light"
       />
-      <div className="grid grid-cols-3 gap-px border border-[rgba(255,255,255,.15)] bg-[rgba(255,255,255,.15)] max-desktop:grid-cols-2 max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-3 gap-px border border-[rgba(255,255,255,.15)] bg-[rgba(255,255,255,.15)] max-desktop:grid-cols-2 max-tablet:grid-cols-1">
         {activities.map((activity, index) => (
           <Link
             key={activity.id}

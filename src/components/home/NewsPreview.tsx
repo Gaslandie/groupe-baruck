@@ -21,7 +21,7 @@ export function NewsPreview() {
         text="Annonces, événements et communiqués du Groupe Baruck, de la JECA et d’Espoir de Vie."
         tone="dark"
       />
-      <div className="grid grid-cols-3 gap-x-6 gap-y-14 max-desktop:grid-cols-2 max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-3 gap-x-6 gap-y-14 max-desktop:grid-cols-2 max-tablet:grid-cols-1">
         {articles.map((article) => (
           <NewsCard key={article.slug} article={article} />
         ))}

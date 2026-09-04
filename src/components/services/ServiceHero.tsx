@@ -45,7 +45,7 @@ export function ServiceHero({
         aria-hidden="true"
         className="absolute inset-0 z-[-1] bg-[linear-gradient(90deg,rgba(5,6,7,.94),rgba(5,6,7,.58)_48%,rgba(5,6,7,.16)),linear-gradient(180deg,rgba(5,6,7,.1),rgba(5,6,7,.78))] max-tablet:bg-[linear-gradient(180deg,rgba(5,6,7,.12),rgba(5,6,7,.92)_70%)]"
       />
-      <div className="max-w-[830px]">
+      <div className="hero-in max-w-[830px]">
         <p className="eyebrow light">{eyebrow}</p>
         <h1
           className={`${titleSize} mb-6 mt-[.7rem] text-balance font-display font-normal leading-[.85] tracking-[-.055em]`}

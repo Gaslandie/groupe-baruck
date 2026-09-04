@@ -13,7 +13,7 @@ export function EdvHero() {
         className="absolute right-[-18%] top-[-10%] z-[-1] aspect-square w-[min(52vw,760px)] rounded-full border border-[rgba(240,165,29,.15)] shadow-[0_0_0_85px_rgba(240,165,29,.025),0_0_0_170px_rgba(240,165,29,.018)] max-tablet:right-[-50%] max-tablet:w-[90vw]"
       />
       <div className="grid grid-cols-[minmax(0,900px)_auto] items-center justify-between gap-[clamp(2rem,6vw,6rem)] max-[1100px]:grid-cols-1 max-[1100px]:justify-items-start">
-        <div>
+        <div className="hero-in">
           <p className="edv-kicker edv-kicker-light">Engagement humanitaire · Afrique de l’Ouest</p>
           <h1 className="m-0 max-w-[900px] text-balance font-display text-[clamp(3.4rem,6.2vw,7.4rem)] font-normal leading-[.88] tracking-[-.055em] max-tablet:text-[clamp(3rem,14vw,4.7rem)]">
             Espoir de Vie.

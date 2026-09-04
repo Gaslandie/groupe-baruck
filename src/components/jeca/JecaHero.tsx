@@ -28,7 +28,7 @@ export function JecaHero() {
           Djoro Joël Shaloom Krasso
         </p>
       </div>
-      <div className="relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(2rem,6vw,7.5rem)] pr-[clamp(2rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1080px]:px-10 max-tablet:z-[2] max-tablet:h-auto max-tablet:min-h-0 max-tablet:w-full max-tablet:px-[1.3rem] max-tablet:pb-14 max-tablet:pt-16">
+      <div className="hero-in relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(2rem,6vw,7.5rem)] pr-[clamp(2rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1080px]:px-10 max-tablet:z-[2] max-tablet:h-auto max-tablet:min-h-0 max-tablet:w-full max-tablet:px-[1.3rem] max-tablet:pb-14 max-tablet:pt-16">
         <span
           aria-hidden="true"
           className="absolute inset-0 z-[-1] bg-[linear-gradient(rgba(7,21,55,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(7,21,55,.06)_1px,transparent_1px)] bg-[size:70px_70px] opacity-[.38] [mask-image:linear-gradient(135deg,#000,transparent_75%)] max-tablet:hidden"

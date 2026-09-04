@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export function RevealObserver() {
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLElement>(".reveal");
+    const elements = document.querySelectorAll<HTMLElement>(".reveal, .reveal-media");
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       elements.forEach((element) => element.classList.add("is-visible"));

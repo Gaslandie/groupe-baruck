@@ -16,7 +16,7 @@ export function NewsList({ articles }: NewsListProps) {
       ) : (
         <>
           <NewsFeature article={articles[0]} />
-          <div className="grid grid-cols-3 gap-x-6 gap-y-14 max-desktop:grid-cols-2 max-tablet:grid-cols-1">
+          <div className="reveal-stagger grid grid-cols-3 gap-x-6 gap-y-14 max-desktop:grid-cols-2 max-tablet:grid-cols-1">
             {articles.slice(1).map((article) => (
               <NewsCard key={article.slug} article={article} />
             ))}

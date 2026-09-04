@@ -12,7 +12,7 @@ export function EdvCollaborations() {
         text="Espoir de Vie crée des liens avec des fondations, des communautés religieuses et des organisations associatives qui partagent son engagement."
         tone="dark"
       />
-      <div className="grid grid-cols-3 border-t border-edv-line max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-3 border-t border-edv-line max-tablet:grid-cols-1">
         {edvCollaborations.map((collaboration) => (
           <article
             key={collaboration.number}

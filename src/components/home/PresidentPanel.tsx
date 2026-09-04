@@ -19,7 +19,7 @@ export function PresidentPanel() {
         className="absolute inset-0 h-full w-full object-cover object-[52%_28%] saturate-[.8] contrast-[1.04]"
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,9,10,.08)_20%,rgba(8,9,10,.32)_56%,rgba(8,9,10,.94)_100%),linear-gradient(90deg,rgba(5,6,7,.18),transparent_65%)]" />
-      <div className="absolute bottom-[clamp(4rem,8vh,7rem)] left-[clamp(1.5rem,4vw,4.8rem)] right-[clamp(1.2rem,3vw,3rem)] z-[2] max-tablet:bottom-[2.2rem] max-tablet:left-[1.3rem]">
+      <div className="hero-in absolute bottom-[clamp(4rem,8vh,7rem)] left-[clamp(1.5rem,4vw,4.8rem)] right-[clamp(1.2rem,3vw,3rem)] z-[2] max-tablet:bottom-[2.2rem] max-tablet:left-[1.3rem]">
         <p className="eyebrow light text-[.72rem] max-tablet:text-[.66rem]">Direction du Groupe Baruck</p>
         <h1 className="m-0 max-w-[760px] text-balance font-display text-[clamp(2.7rem,4.4vw,5.2rem)] font-normal leading-[.88] tracking-[-.045em] max-desktop:text-[clamp(2.5rem,5vw,4.2rem)] max-tablet:text-[clamp(2.55rem,11vw,4rem)]">
           <span className="text-[#d8c8aa]">MR</span> Djoro Joël

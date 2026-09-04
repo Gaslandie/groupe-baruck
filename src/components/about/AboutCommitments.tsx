@@ -16,7 +16,7 @@ export function AboutCommitments() {
         text="Deux structures présidées par le dirigeant du Groupe Baruck, chacune avec sa propre page."
         tone="dark"
       />
-      <div className="grid grid-cols-2 gap-[1.2rem] max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-2 gap-[1.2rem] max-tablet:grid-cols-1">
         <Link href={routes.jeca} className="group reveal flex flex-col border border-line bg-ivory transition-[transform,box-shadow] duration-[350ms] hover:translate-y-[-8px] hover:shadow-[0_24px_60px_rgba(23,21,16,.12)]">
           <div className="flex h-[300px] items-center justify-center overflow-hidden p-6 max-tablet:h-[240px]">
             <img src={asset(jecaLogo.src)} alt="Logo de la JECA, Jeunes Entrepreneurs Chrétiens Africains" width={jecaLogo.width} height={jecaLogo.height} loading="lazy" className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply" />

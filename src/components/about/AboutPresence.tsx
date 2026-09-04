@@ -14,7 +14,7 @@ export function AboutPresence() {
         text="La Guinée comme point d’ancrage, le Sénégal et la Côte d’Ivoire comme horizon de développement."
         tone="light"
       />
-      <div className="grid grid-cols-3 gap-px border border-[rgba(255,255,255,.16)] bg-[rgba(255,255,255,.16)] max-[1080px]:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-3 gap-px border border-[rgba(255,255,255,.16)] bg-[rgba(255,255,255,.16)] max-[1080px]:grid-cols-1">
         <article className="reveal flex min-h-[300px] flex-col bg-ink p-[clamp(1.8rem,2.6vw,2.6rem)] transition-colors duration-300 hover:bg-[#131518]">
           <span className="text-[.56rem] tracking-[.15em] text-accent">01</span>
           <h3 className="mb-4 mt-6 font-display text-[clamp(1.8rem,2.6vw,2.4rem)] font-normal">Guinée</h3>

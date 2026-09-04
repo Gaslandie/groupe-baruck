@@ -33,7 +33,7 @@ function ChannelRow({ label, value, href, external = false, withBorderBottom = f
 
 export function ContactDetails() {
   return (
-    <section id="coordonnees" className="grid grid-cols-[40%_60%] bg-paper max-tablet:grid-cols-1">
+    <section id="coordonnees" className="reveal-stagger grid grid-cols-[40%_60%] bg-paper max-tablet:grid-cols-1">
       <div className="reveal flex flex-col justify-center border-r border-line px-[clamp(2rem,5vw,6rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:border-r-0 max-tablet:px-[1.3rem] max-tablet:py-16">
         <p className="eyebrow">Nous joindre</p>
         <h2 className="m-0 text-balance font-display text-[clamp(3rem,5.6vw,6.6rem)] font-normal leading-[.92] tracking-[-.05em] max-tablet:text-[clamp(2.8rem,13vw,4.2rem)]">

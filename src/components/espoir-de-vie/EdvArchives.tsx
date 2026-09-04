@@ -1,6 +1,6 @@
 export function EdvArchives() {
   return (
-    <section className="grid grid-cols-[1.35fr_.65fr] bg-edv-cream max-tablet:block">
+    <section className="reveal-stagger grid grid-cols-[1.35fr_.65fr] bg-edv-cream max-tablet:block">
       <div className="reveal px-[clamp(1.3rem,7vw,8rem)] py-[clamp(6rem,10vw,10rem)] max-tablet:px-[1.3rem] max-tablet:py-20">
         <p className="edv-kicker">Mémoire d’actions</p>
         <h2 className="m-0 text-balance font-display text-[clamp(3rem,5.3vw,6.2rem)] font-normal leading-[.88] tracking-[-.055em] max-tablet:text-[clamp(2.8rem,13vw,4.25rem)]">

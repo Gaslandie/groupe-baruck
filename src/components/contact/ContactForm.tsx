@@ -193,7 +193,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="col-span-full flex min-h-[58px] w-full cursor-pointer items-center justify-between border-0 bg-ink px-6 text-[.64rem] uppercase tracking-[.13em] text-ivory transition-colors duration-[250ms] hover:bg-accent disabled:cursor-wait disabled:opacity-70 max-tablet:col-auto"
+        className="form-button col-span-full flex min-h-[58px] w-full cursor-pointer items-center justify-between border-0 bg-ink px-6 text-[.64rem] uppercase tracking-[.13em] text-ivory transition-colors duration-[250ms] disabled:cursor-wait disabled:opacity-70 max-tablet:col-auto"
       >
         {isSubmitting ? "Envoi…" : "Envoyer le message"} <span>↗</span>
       </button>

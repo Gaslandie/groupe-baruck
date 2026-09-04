@@ -4,7 +4,7 @@ import { contacts } from "@/data/site";
 export function ContactHero() {
   return (
     <section className="grid min-h-[92svh] grid-cols-[1.05fr_.95fr] bg-ink text-ivory max-[1080px]:grid-cols-1">
-      <div className="flex flex-col justify-center px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pl-[clamp(1.3rem,7vw,8rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:px-[clamp(1.3rem,6vw,4rem)] max-[1080px]:pb-[clamp(3.5rem,7vw,5rem)] max-[1080px]:pt-[clamp(2.5rem,6vw,4rem)]">
+      <div className="hero-in flex flex-col justify-center px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pl-[clamp(1.3rem,7vw,8rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:px-[clamp(1.3rem,6vw,4rem)] max-[1080px]:pb-[clamp(3.5rem,7vw,5rem)] max-[1080px]:pt-[clamp(2.5rem,6vw,4rem)]">
         <p className="eyebrow light">Contact · Groupe Baruck</p>
         <h1 className="mb-[1.6rem] mt-0 text-balance font-display text-[clamp(2.9rem,5.2vw,5.4rem)] font-normal leading-[.92] tracking-[-.05em]">
           Parlons de votre

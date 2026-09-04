@@ -38,9 +38,9 @@ export function PageTeaser({
   logo,
 }: PageTeaserProps) {
   return (
-    <section id={id} className={`grid min-h-[620px] grid-cols-2 max-tablet:grid-cols-1 ${toneClasses[tone]}`}>
+    <section id={id} className={`reveal-stagger grid min-h-[620px] grid-cols-2 max-tablet:grid-cols-1 ${toneClasses[tone]}`}>
       <figure
-        className={`relative m-0 min-h-[620px] overflow-hidden max-tablet:order-first max-tablet:min-h-0 max-tablet:aspect-[4/3] ${
+        className={`reveal-media relative m-0 min-h-[620px] overflow-hidden max-tablet:order-first max-tablet:min-h-0 max-tablet:aspect-[4/3] ${
           logo
             ? "grid place-items-center bg-[radial-gradient(circle_at_10%_88%,rgba(199,70,28,.35),transparent_31%),linear-gradient(135deg,#180e09_0%,#2d160d_52%,#190e09_100%)]"
             : "bg-[#cac5bb]"

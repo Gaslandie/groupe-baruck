@@ -17,7 +17,7 @@ export function AboutRoles() {
         text="Seules les fonctions confirmées par la direction figurent sur cette page. Le parcours détaillé du président sera ajouté après validation."
         tone="dark"
       />
-      <div className="grid grid-cols-4 gap-[1.1rem] max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
+      <div className="reveal-stagger grid grid-cols-4 gap-[1.1rem] max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
         <Link href="/#activites" className={`${sharedCardStyles} border-line bg-ivory`}>
           <span className="text-[.56rem] tracking-[.15em] text-accent">01</span>
           <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-[clamp(1.35rem,1.8vw,1.7rem)] font-normal leading-[1.15]">PDG du Groupe Baruck</h3>

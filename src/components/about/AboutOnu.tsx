@@ -6,7 +6,7 @@ export function AboutOnu() {
     <section
       id="experience-onu"
       tabIndex={-1}
-      className="grid scroll-mt-[110px] grid-cols-[.95fr_1.05fr] items-center gap-[clamp(3rem,7vw,7rem)] bg-ivory px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] focus:outline-none max-[1080px]:grid-cols-1"
+      className="reveal-stagger grid scroll-mt-[110px] grid-cols-[.95fr_1.05fr] items-center gap-[clamp(3rem,7vw,7rem)] bg-ivory px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] focus:outline-none max-[1080px]:grid-cols-1"
     >
       <div className="reveal relative isolate h-[clamp(420px,44vw,600px)] max-[1080px]:h-[clamp(400px,70vw,540px)]">
         <figure className="absolute inset-[0_14%_34%_0] z-[1] m-0 overflow-hidden bg-[#cac5bb] shadow-[0_22px_55px_rgba(25,22,16,.16)]">
