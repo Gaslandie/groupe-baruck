@@ -43,9 +43,14 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     title: article.title,
     description: article.excerpt,
     // URL absolue : site.url porte déjà le basePath, ne pas repasser par asset().
-    openGraph: article.cover
-      ? { images: [site.url + article.cover.src.slice(1)] }
-      : undefined,
+    // Clé omise sans couverture, pour ne pas écraser l’héritage du layout.
+    ...(article.cover
+      ? {
+          openGraph: {
+            images: [site.url + article.cover.src.slice(1)],
+          },
+        }
+      : {}),
   };
 }
 
