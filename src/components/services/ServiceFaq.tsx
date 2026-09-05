@@ -5,13 +5,15 @@ import type { ServiceFaqItem } from "@/data/services";
 import { StructuredData } from "../ui/StructuredData";
 
 type ServiceFaqProps = {
+  /** Id de la section (ancre). Défaut : "questions", valeur historique du studio. */
+  id?: string;
   eyebrow: string;
   title: ReactNode;
   emphasis: string;
   items: ServiceFaqItem[];
 };
 
-export function ServiceFaq({ eyebrow, title, emphasis, items }: ServiceFaqProps) {
+export function ServiceFaq({ id = "questions", eyebrow, title, emphasis, items }: ServiceFaqProps) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -26,7 +28,7 @@ export function ServiceFaq({ eyebrow, title, emphasis, items }: ServiceFaqProps)
   };
 
   return (
-    <section id="questions" className="scroll-mt-[100px] bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
+    <section id={id} className="scroll-mt-[100px] bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
       <div className="mb-[clamp(2.5rem,5vw,3.5rem)] grid grid-cols-[minmax(280px,.8fr)_1.2fr] items-end gap-[clamp(3rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:gap-10">
         <div>
           <p className="eyebrow">{eyebrow}</p>
