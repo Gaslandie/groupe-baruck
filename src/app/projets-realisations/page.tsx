@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 
 import { ConstructionPage } from "@/components/ui/ConstructionPage";
 import { routes, site } from "@/data/site";
+import { pageAlternates } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: "Projets & Réalisations",
   description: "Projets et réalisations du Groupe Baruck — page en cours de construction.",
-  alternates: { canonical: site.url + routes.projects.slice(1) },
+  alternates: pageAlternates(site.url + routes.projects.slice(1)),
 };
 
 export default function ProjectsPage() {

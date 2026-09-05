@@ -12,13 +12,13 @@ import { JecaVision } from "@/components/jeca/JecaVision";
 import { PageShell } from "@/components/layout/PageShell";
 import { jecaEditions, jecaGalleries } from "@/data/jeca";
 import { routes, site } from "@/data/site";
-import { socialMetadata } from "@/lib/metadata";
+import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: { absolute: "JECA — Vision, engagement et forums" },
   description:
     "Découvrez la JECA, créée en 2019, sa vision pour l’investissement en Afrique et les trois éditions de son forum.",
-  alternates: { canonical: site.url + routes.jeca.slice(1) },
+  alternates: pageAlternates(site.url + routes.jeca.slice(1)),
   openGraph: socialMetadata(jecaGalleries[0].photos[0]),
 };
 

@@ -14,7 +14,7 @@ import { PageShell } from "@/components/layout/PageShell";
 import { edvLogo } from "@/data/media";
 import { routes, site } from "@/data/site";
 import { StructuredData } from "@/components/ui/StructuredData";
-import { socialMetadata } from "@/lib/metadata";
+import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { espoirDeVieSchema } from "@/lib/structured-data";
 
 const description =
@@ -23,7 +23,7 @@ const description =
 export const metadata: Metadata = {
   title: { absolute: "Espoir de Vie — Protéger, accompagner, redonner espoir" },
   description,
-  alternates: { canonical: site.url + routes.edv.slice(1) },
+  alternates: pageAlternates(site.url + routes.edv.slice(1)),
   openGraph: socialMetadata(edvLogo),
 };
 

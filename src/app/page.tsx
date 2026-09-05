@@ -11,11 +11,11 @@ import { pageTeasers } from "@/data/home";
 import { presidentPortrait } from "@/data/media";
 import { site } from "@/data/site";
 import { StructuredData } from "@/components/ui/StructuredData";
-import { socialMetadata } from "@/lib/metadata";
+import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { organizationSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
-  alternates: { canonical: site.url },
+  alternates: pageAlternates(site.url),
   openGraph: socialMetadata(presidentPortrait),
 };
 

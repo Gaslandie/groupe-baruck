@@ -8,6 +8,7 @@ import { NewsCarousel } from "@/components/actualites/NewsCarousel";
 import { NewsEmpty } from "@/components/actualites/NewsEmpty";
 import { NewsHero } from "@/components/actualites/NewsHero";
 import { PageShell } from "@/components/layout/PageShell";
+import { newsDescription } from "@/data/actualites";
 import { site } from "@/data/site";
 import {
   getAllArticles,
@@ -15,7 +16,7 @@ import {
   placeholderSlug,
 } from "@/lib/actualites";
 import { StructuredData } from "@/components/ui/StructuredData";
-import { socialMetadata } from "@/lib/metadata";
+import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { articleSchema } from "@/lib/structured-data";
 
 type ArticlePageProps = {
@@ -34,9 +35,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   if (slug === placeholderSlug) {
     return {
       title: "Actualités",
-      description:
-        "Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.",
-      alternates: { canonical: site.url + "actualites/" },
+      description: newsDescription,
+      alternates: pageAlternates(site.url + "actualites/"),
     };
   }
 
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   return {
     title: article.title,
     description: article.excerpt,
-    alternates: { canonical: `${site.url}actualites/${article.slug}/` },
+    alternates: pageAlternates(`${site.url}actualites/${article.slug}/`),
     // Clé omise sans couverture, pour ne pas écraser l’héritage du layout.
     ...(article.cover ? { openGraph: socialMetadata(article.cover) } : {}),
   };

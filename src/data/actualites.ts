@@ -40,3 +40,9 @@ export type Article = {
   draft: boolean;
   html: string;
 };
+
+/** Titre et description du flux et de la page Actualités : source unique. */
+export const newsFeedTitle = "Actualités — Groupe Baruck";
+
+export const newsDescription =
+  "Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.";

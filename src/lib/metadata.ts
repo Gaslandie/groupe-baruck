@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
 
+import { newsFeedTitle } from "@/data/actualites";
 import { site } from "@/data/site";
+
+/** Canonical de la page, plus l'autodécouverte du flux RSS des actualités. */
+export function pageAlternates(canonical: string): Metadata["alternates"] {
+  return {
+    canonical,
+    types: {
+      "application/rss+xml": [{ url: site.url + "feed.xml", title: newsFeedTitle }],
+    },
+  };
+}
 
 /** Toute image locale du site : ImageAsset, GalleryPhoto ou couverture d'article. */
 export type SocialImage = {
