@@ -47,6 +47,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     ...(article.cover
       ? {
           openGraph: {
+            siteName: site.name,
+            locale: "fr_FR",
+            type: "website",
             images: [site.url + article.cover.src.slice(1)],
           },
         }
