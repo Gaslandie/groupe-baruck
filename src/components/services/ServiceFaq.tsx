@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import type { ServiceFaqItem } from "@/data/services";
 
+import { StructuredData } from "../ui/StructuredData";
+
 type ServiceFaqProps = {
   eyebrow: string;
   title: ReactNode;
@@ -45,10 +47,7 @@ export function ServiceFaq({ eyebrow, title, emphasis, items }: ServiceFaqProps)
           </details>
         ))}
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }}
-      />
+      <StructuredData data={schema} />
     </section>
   );
 }

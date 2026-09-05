@@ -22,6 +22,7 @@ export type JecaEdition = {
   title: string;
   date: {
     iso: "2022-08-04" | "2023-12-02" | "2026-07-30";
+    endIso: "2022-08-14" | "2023-12-08" | "2026-08-04";
     label: string;
   };
   tone: "paper" | "dark" | "white";
@@ -61,7 +62,7 @@ export const jecaEditions: JecaEdition[] = [
     id: "edition-1",
     place: "Dakar · Sénégal",
     title: "La première rencontre",
-    date: { iso: "2022-08-04", label: "Du 04 au 14 août 2022" },
+    date: { iso: "2022-08-04", endIso: "2022-08-14", label: "Du 04 au 14 août 2022" },
     tone: "paper",
     grid: "seven",
     story: {
@@ -78,7 +79,7 @@ export const jecaEditions: JecaEdition[] = [
     id: "edition-2",
     place: "Dakar · Sénégal",
     title: "Deuxième édition",
-    date: { iso: "2023-12-02", label: "Du 02 au 08 décembre 2023" },
+    date: { iso: "2023-12-02", endIso: "2023-12-08", label: "Du 02 au 08 décembre 2023" },
     tone: "dark",
     grid: "seven",
     simpleLead: "La deuxième édition de la JECA s’est tenue une nouvelle fois à Dakar.",
@@ -88,7 +89,7 @@ export const jecaEditions: JecaEdition[] = [
     id: "edition-3",
     place: "Conakry · Guinée",
     title: "La JECA à Conakry",
-    date: { iso: "2026-07-30", label: "Du 30 juillet au 04 août 2026" },
+    date: { iso: "2026-07-30", endIso: "2026-08-04", label: "Du 30 juillet au 04 août 2026" },
     tone: "white",
     grid: "six",
     simpleLead:

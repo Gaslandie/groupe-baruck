@@ -14,7 +14,9 @@ import {
   getArticle,
   placeholderSlug,
 } from "@/lib/actualites";
+import { StructuredData } from "@/components/ui/StructuredData";
 import { socialMetadata } from "@/lib/metadata";
+import { articleSchema } from "@/lib/structured-data";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -71,6 +73,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <PageShell variant="about" current="news" footer="about">
+      <StructuredData data={articleSchema(article)} />
       <ArticleHeader article={article} />
       <ArticleCover cover={article.cover} />
       <section className="bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(3rem,6vw,6rem)]">

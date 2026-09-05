@@ -10,7 +10,9 @@ import { Marquee } from "@/components/ui/Marquee";
 import { pageTeasers } from "@/data/home";
 import { presidentPortrait } from "@/data/media";
 import { site } from "@/data/site";
+import { StructuredData } from "@/components/ui/StructuredData";
 import { socialMetadata } from "@/lib/metadata";
+import { organizationSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
   alternates: { canonical: site.url },
@@ -29,6 +31,7 @@ const marqueeItems = [
 export default function Home() {
   return (
     <PageShell variant="home" current="home" footer="home">
+      <StructuredData data={organizationSchema} />
       <HeroSection />
       <Marquee items={marqueeItems} label="Domaines d’activité" />
       <ActivitiesSection />
