@@ -4,6 +4,7 @@ import { AboutCommitments } from "@/components/about/AboutCommitments";
 import { AboutCta } from "@/components/about/AboutCta";
 import { AboutHero } from "@/components/about/AboutHero";
 import { AboutIntro } from "@/components/about/AboutIntro";
+import { AboutMilestones } from "@/components/about/AboutMilestones";
 import { AboutOnu } from "@/components/about/AboutOnu";
 import { AboutPresence } from "@/components/about/AboutPresence";
 import { AboutQuote } from "@/components/about/AboutQuote";
@@ -37,6 +38,7 @@ export default function GroupPage() {
       <AboutHero />
       <Marquee items={marqueeItems} label="Repères du Groupe Baruck" />
       <AboutIntro />
+      <AboutMilestones />
       <AboutRoles />
       <AboutOnu />
       <AboutQuote />
