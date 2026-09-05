@@ -1,3 +1,5 @@
+import { hqAddress } from "./site";
+
 // Les visuels temp-*.jpg sont provisoires et devront être remplacés par les photos réelles du studio.
 
 export type ServiceImage = {
@@ -322,5 +324,42 @@ export const hostessOffers: HostessOffer[] = [
     number: "03",
     title: "Représentation",
     text: "Une présence soignée, dynamique et adaptée à votre image.",
+  },
+];
+
+export type ServiceFaqItem = { question: string; answer: string };
+
+export const studioFaq: ServiceFaqItem[] = [
+  {
+    question: "Faut-il prendre rendez-vous ?",
+    answer: "Le studio classique est ouvert à tous et sans rendez-vous : portraits, photos de famille, photos de groupe et pièces d’identité. Pour les autres formules, contactez l’équipe pour confirmer les disponibilités et les conditions.",
+  },
+  {
+    question: "Quand le studio est-il ouvert ?",
+    answer: "24h/24 et 7j/7 — le studio est ouvert à tout le monde.",
+  },
+  {
+    question: "Où se trouve le studio ?",
+    answer: hqAddress,
+  },
+  {
+    question: "Vous déplacez-vous en dehors du studio ?",
+    answer: "Oui. Les prises de vue se font au studio comme en extérieur : l’équipe se déplace sur vos événements, à Conakry comme à l’intérieur du pays. Déplacement shoot de 2 h : 350 000 GNF. Conférence complète : 1 000 000 GNF, 1 500 000 GNF hors Conakry.",
+  },
+  {
+    question: "Le matériel du studio peut-il venir sur mon événement ?",
+    answer: "Le paraflash peut être déplacé sur votre événement selon l’accord convenu avec le client. Le réflecteur est réservé au studio : il reste sur place et n’est pas déplaçable.",
+  },
+  {
+    question: "Combien coûte une photo d’identité et quand est-elle remise ?",
+    answer: "10 000 GNF les 4 pièces, réalisées et remises rapidement, directement sur place.",
+  },
+  {
+    question: "Que comprennent les formules mannequin ?",
+    answer: "Shoot mannequin 10 photos : 400 000 GNF. Formule 1 jour : photos studio + album 80 photos, 4 000 000 GNF. Formule 2 jours : photos + vidéo + album 100 photos, 4 000 000 GNF. Formule 3 jours : photos + vidéo + album 120 photos, 5 000 000 GNF.",
+  },
+  {
+    question: "Proposez-vous des anniversaires pour enfants ?",
+    answer: "Oui. Un espace dédié aux anniversaires des enfants, avec décors et ballons, jouets et accessoires fournis. Formule 30 photos : 750 000 GNF.",
   },
 ];

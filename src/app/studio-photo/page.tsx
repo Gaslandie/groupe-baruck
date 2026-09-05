@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { PageShell } from "@/components/layout/PageShell";
 import { ServiceContact } from "@/components/services/ServiceContact";
+import { ServiceFaq } from "@/components/services/ServiceFaq";
 import { ServiceHero } from "@/components/services/ServiceHero";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { StudioEvents } from "@/components/services/StudioEvents";
@@ -9,7 +10,7 @@ import { StudioGallery } from "@/components/services/StudioGallery";
 import { StudioPrices } from "@/components/services/StudioPrices";
 import { StudioSpaces } from "@/components/services/StudioSpaces";
 import { studioHero } from "@/data/media";
-import { studioTags } from "@/data/services";
+import { studioFaq, studioTags } from "@/data/services";
 import { contacts, hqAddress } from "@/data/site";
 
 export const metadata: Metadata = {
@@ -79,6 +80,12 @@ export default function StudioPhotoPage() {
       <StudioEvents />
       <StudioGallery />
       <StudioPrices />
+      <ServiceFaq
+        eyebrow="Vos questions"
+        title={<>Les questions<br /></>}
+        emphasis="les plus fréquentes."
+        items={studioFaq}
+      />
       <ServiceContact
         eyebrow="Nous trouver"
         title={
