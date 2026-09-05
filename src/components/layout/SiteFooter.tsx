@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { facebookPages } from "@/data/contact";
-import { footers, hqAddress, site, type FooterLink, type FooterVariant } from "@/data/site";
+import { footers, hqAddress, routes, site, type FooterLink, type FooterVariant } from "@/data/site";
 
 import { Brand } from "./Brand";
 
@@ -94,9 +94,12 @@ export function SiteFooter({ variant }: SiteFooterProps) {
         </div>
       ))}
 
-      <div className="col-span-full flex justify-between gap-6 border-t border-[rgba(255,255,255,.12)] pt-[1.6rem] text-[.72rem] uppercase tracking-[.1em] text-[rgba(255,255,255,.6)] max-tablet:flex-col max-tablet:gap-[.6rem]">
+      <div className="col-span-full flex flex-wrap justify-between gap-x-6 gap-y-[.6rem] border-t border-[rgba(255,255,255,.12)] pt-[1.6rem] text-[.72rem] uppercase tracking-[.1em] text-[rgba(255,255,255,.6)] max-tablet:flex-col">
         <p>© {year} Groupe Baruck. Tous droits réservés.</p>
         <span>Site web conçu par {site.designer}</span>
+        <Link href={routes.legal} className="hover:text-accent">
+          Mentions légales
+        </Link>
         <a href={content.backToTop}>Retour en haut ↑</a>
       </div>
     </footer>

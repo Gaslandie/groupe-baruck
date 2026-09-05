@@ -8,7 +8,8 @@ export type RouteKey =
   | "edv"
   | "news"
   | "projects"
-  | "contact";
+  | "contact"
+  | "legal";
 
 export type ContactId =
   | "landline"
@@ -62,6 +63,7 @@ export const routes: Record<RouteKey, string> = {
   news: "/actualites/",
   projects: "/projets-realisations/",
   contact: "/contact/",
+  legal: "/mentions-legales/",
 };
 
 const contactHrefs: Record<ContactId, string> = {
