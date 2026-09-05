@@ -12,12 +12,14 @@ import { StudioSpaces } from "@/components/services/StudioSpaces";
 import { studioHero } from "@/data/media";
 import { studioFaq, studioTags } from "@/data/services";
 import { contacts, hqAddress, routes, site } from "@/data/site";
+import { socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: "Studio Photo Baruck la Prospérité",
   description:
     "Studio Photo Baruck la Prospérité à Kobayah, Conakry — deux studios équipés, ouverts à tous 24h/24 et 7j/7 : mariages, baptêmes, anniversaires, conférences, shootings, photos d’identité et spots publicitaires.",
   alternates: { canonical: site.url + routes.studio.slice(1) },
+  openGraph: socialMetadata(studioHero),
 };
 
 const contactDetails = [

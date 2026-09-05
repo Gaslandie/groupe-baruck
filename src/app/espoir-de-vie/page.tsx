@@ -11,13 +11,16 @@ import { EdvOrphanage } from "@/components/espoir-de-vie/EdvOrphanage";
 import { EdvPresence } from "@/components/espoir-de-vie/EdvPresence";
 import { EdvSectionNav } from "@/components/espoir-de-vie/EdvSectionNav";
 import { PageShell } from "@/components/layout/PageShell";
+import { edvLogo } from "@/data/media";
 import { routes, site } from "@/data/site";
+import { socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   title: { absolute: "Espoir de Vie — Protéger, accompagner, redonner espoir" },
   description:
     "Découvrez Espoir de Vie, ses actions en faveur des enfants, des familles et des personnes vulnérables en Côte d’Ivoire, en Guinée et au Burkina Faso.",
   alternates: { canonical: site.url + routes.edv.slice(1) },
+  openGraph: socialMetadata(edvLogo),
 };
 
 export const viewport: Viewport = {

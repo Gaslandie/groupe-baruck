@@ -8,10 +8,13 @@ import { NewsPreview } from "@/components/home/NewsPreview";
 import { PageTeaser } from "@/components/home/PageTeaser";
 import { Marquee } from "@/components/ui/Marquee";
 import { pageTeasers } from "@/data/home";
+import { presidentPortrait } from "@/data/media";
 import { site } from "@/data/site";
+import { socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
   alternates: { canonical: site.url },
+  openGraph: socialMetadata(presidentPortrait),
 };
 
 const marqueeItems = [

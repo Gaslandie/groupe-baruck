@@ -14,6 +14,7 @@ import {
   getArticle,
   placeholderSlug,
 } from "@/lib/actualites";
+import { socialMetadata } from "@/lib/metadata";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -44,25 +45,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     title: article.title,
     description: article.excerpt,
     alternates: { canonical: `${site.url}actualites/${article.slug}/` },
-    // URL absolue : site.url porte déjà le basePath, ne pas repasser par asset().
     // Clé omise sans couverture, pour ne pas écraser l’héritage du layout.
-    ...(article.cover
-      ? {
-          openGraph: {
-            siteName: site.name,
-            locale: "fr_FR",
-            type: "website",
-            images: [
-              {
-                url: site.url + article.cover.src.slice(1),
-                width: article.cover.width,
-                height: article.cover.height,
-                alt: article.cover.alt,
-              },
-            ],
-          },
-        }
-      : {}),
+    ...(article.cover ? { openGraph: socialMetadata(article.cover) } : {}),
   };
 }
 
