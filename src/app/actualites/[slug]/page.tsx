@@ -8,12 +8,12 @@ import { NewsCarousel } from "@/components/actualites/NewsCarousel";
 import { NewsEmpty } from "@/components/actualites/NewsEmpty";
 import { NewsHero } from "@/components/actualites/NewsHero";
 import { PageShell } from "@/components/layout/PageShell";
+import { site } from "@/data/site";
 import {
   getAllArticles,
   getArticle,
   placeholderSlug,
 } from "@/lib/actualites";
-import { asset } from "@/lib/asset";
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
@@ -42,8 +42,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   return {
     title: article.title,
     description: article.excerpt,
+    // URL absolue : site.url porte déjà le basePath, ne pas repasser par asset().
     openGraph: article.cover
-      ? { images: [asset(article.cover.src as `/${string}`)] }
+      ? { images: [site.url + article.cover.src.slice(1)] }
       : undefined,
   };
 }
