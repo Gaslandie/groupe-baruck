@@ -1,5 +1,6 @@
 import { facebookPages, hqHours, hqMap } from "@/data/contact";
 import { hqAddress } from "@/data/site";
+import { ContactMapEmbed } from "@/components/contact/ContactMapEmbed";
 import { ClientNote } from "@/components/ui/ClientNote";
 
 export function ContactMap() {
@@ -62,16 +63,7 @@ export function ContactMap() {
           </div>
         </div>
       </div>
-      <div className="min-h-[420px] border border-line bg-[#cac5bb] max-tablet:min-h-[320px]">
-        <iframe
-          title="Carte Google Maps du siège du Groupe Baruck, Kobayah, Conakry"
-          src={hqMap.embedUrl}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          allowFullScreen
-          className="h-full min-h-[420px] w-full border-0 max-tablet:min-h-[320px]"
-        />
-      </div>
+      <ContactMapEmbed embedUrl={hqMap.embedUrl} />
     </section>
   );
 }
