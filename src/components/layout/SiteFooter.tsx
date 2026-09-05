@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { footers, site, type FooterLink, type FooterVariant } from "@/data/site";
+import { facebookPages } from "@/data/contact";
+import { footers, hqAddress, site, type FooterLink, type FooterVariant } from "@/data/site";
 
 import { Brand } from "./Brand";
 
@@ -56,6 +57,25 @@ export function SiteFooter({ variant }: SiteFooterProps) {
         <p className="mt-6 max-w-[380px] text-[.95rem] leading-[1.75] text-[rgba(255,255,255,.6)]">
           {content.blurb}
         </p>
+        <span
+          className={[
+            "mt-8 block font-sans text-[.7rem] font-normal uppercase tracking-[.16em]",
+            styles.title,
+          ].join(" ")}
+        >
+          Siège du Groupe Baruck · Guinée
+        </span>
+        <p className="mt-[.85rem] max-w-[380px] text-[.95rem] leading-[1.75] text-[rgba(255,255,255,.6)]">
+          {hqAddress}
+        </p>
+        <div className="mt-[.85rem] flex flex-col gap-[.85rem] font-display text-[1.05rem]">
+          {facebookPages.map((page) => (
+            <FooterAnchor
+              key={page.href}
+              link={{ label: `Facebook · ${page.country}`, href: page.href, external: true }}
+            />
+          ))}
+        </div>
       </div>
 
       {content.columns.map((column) => (
