@@ -1,4 +1,4 @@
-# Passation — Site Groupe Baruck (Next.js) — mise à jour 2026-09-04
+# Passation — Site Groupe Baruck (Next.js) — mise à jour 2026-09-05
 
 Notes pour reprendre le travail sur un autre poste. Code sur `https://github.com/Gaslandie/groupe-baruck` (branche `main`), site publié par GitHub Actions à chaque push sur `main` : `https://gaslandie.github.io/groupe-baruck/`.
 
@@ -17,7 +17,7 @@ Prérequis : Node 24, npm 11, Codex CLI (config `~/.codex/config.toml`). Codex l
 Mémoire de Claude Code : locale à chaque poste. Sur le nouveau poste, ouvrir Claude Code dans le dépôt et lui demander de lire ce fichier puis d'enregistrer en mémoire les sections « Méthode de travail », « Décisions client en attente » et « Backlog ».
 
 ## Méthode de travail
-Claude planifie et relit (code et faits), Codex implémente, Mohamed est seul juge du rendu visuel. Une étape = un brief collé dans Codex = un commit = un compte rendu ; Codex s'arrête ; Claude vérifie contre les fichiers réels (et rebuild avec Turbopack + `basePath`, voir ci-dessous) avant d'écrire le brief suivant. Les briefs se donnent dans la conversation, pas dans un fichier. Contrôles au niveau du code uniquement (`lint`, `typecheck`, `build`, greps ciblés), aucun jugement visuel par les agents. Mohamed a autorisé Claude à pousser sur `main` après vérification.
+Claude planifie et relit (code et faits), Codex implémente, Mohamed est seul juge du rendu visuel. **Rôles inversés depuis le 2026-09-05** : Codex relit et rédige les briefs, Claude implémente en vérifiant chaque consigne avant de l'appliquer, Mohamed reste seul juge du rendu. Une étape = un brief collé dans Codex = un commit = un compte rendu ; Codex s'arrête ; Claude vérifie contre les fichiers réels (et rebuild avec Turbopack + `basePath`, voir ci-dessous) avant d'écrire le brief suivant. Les briefs se donnent dans la conversation, pas dans un fichier. Contrôles au niveau du code uniquement (`lint`, `typecheck`, `build`, greps ciblés), aucun jugement visuel par les agents. Mohamed a autorisé Claude à pousser sur `main` après vérification.
 
 Particularités constatées : la sandbox Codex bloque Turbopack (« binding to a port »), il builde avec `--webpack` ; Claude refait le build Turbopack réel. Codex a parfois sauté un brief (le 16 a été recollé trois fois) : à chaque compte rendu, vérifier `git log` et l'état réel des fichiers. Codex a aussi déjà modifié le balisage pour faire tomber juste des comptages : toujours lire ses « écarts techniques ».
 
@@ -28,17 +28,21 @@ Accueil : hero (portrait du PDG + carrousel 3 diapositives, allégé : plus de b
 
 Actualités : un article = `content/actualites/<slug>.md` (frontmatter : `title`, `date` YYYY-MM-DD, `category` ∈ groupe | jeca | espoir-de-vie | studio-photo | hotesses, `excerpt`, `cover` + `coverAlt`, `gallery[{src,alt,caption}]`, `draft`). Chargeur `src/lib/actualites.ts` : gray-matter + marked, dimensions lues au build avec image-size (extensions jpg/jpeg/png/webp seulement), liens et images du corps préfixés par le `basePath`, brouillons visibles en `npm run dev` et exclus du build, slug réservé `a-venir` généré quand aucun article n'est publié (export statique exige au moins une route). 6 articles publiés (3 éditions JECA avec galeries en carrousel, 3 événements Espoir de Vie datés), textes repris tels quels du site. Composants `src/components/actualites/` (dont `NewsCarousel`, scroll-snap).
 
-Contact : hero avec 3 actions directes + liste « Selon votre besoin » · 3 canaux (WhatsApp siège, fixe, e-mail) + dépliant « Autres lignes » · formulaire `src/components/contact/ContactForm.tsx` (uniquement sur `/contact/` depuis que l'accueil a été refait) : Web3Forms via `NEXT_PUBLIC_WEB3FORMS_KEY` (variable GitHub Actions `WEB3FORMS_KEY`, **pas encore créée** — repli `mailto:` tant qu'elle manque) · section carte : iframe Google Maps sans clé centrée sur Kobayah, horaires, présence, réseaux — valeurs **provisoires** signalées par `<ClientNote>` « à valider avec le client ».
+Contact : hero avec 3 actions directes + liste « Selon votre besoin » · 3 canaux (WhatsApp siège, fixe, e-mail) + dépliant « Autres lignes » · formulaire `src/components/contact/ContactForm.tsx` (uniquement sur `/contact/` depuis que l'accueil a été refait) : Web3Forms via `NEXT_PUBLIC_WEB3FORMS_KEY` (variable GitHub Actions `WEB3FORMS_KEY`, **pas encore créée** — repli `mailto:` tant qu'elle manque) · section carte : bloc local avec bouton « Afficher la carte » — l'iframe Google Maps (sans clé, centrée sur Kobayah) n'est montée qu'après activation (`ContactMapEmbed`, 2026-09-05 ; rien n'est chargé chez Google avant le clic, aucune mémorisation du choix), horaires, présence, réseaux — valeurs **provisoires** signalées par `<ClientNote>` « à valider avec le client ».
 
 Espoir de Vie : hero pleine largeur sans photo du président (logo à droite) ; toutes les décorations de fond (codes pays, numéros géants, logos filigranés, anneaux, grilles) retirées sur tout le site le 2026-09-04.
 
 Animations (étape 26, CSS seulement, `globals.css`) : boutons à balayage (`--fill` par variante, `.button`, `.jeca-button`, `.edv-button`, `.form-button`), soulignement des `.text-link` qui se redessine, `reveal-stagger` (cascade), trait des eyebrows, `reveal-media` (dézoom des images, observé par `RevealObserver`), `hero-in` (entrée des heros), cascade du menu latéral. `prefers-reduced-motion` neutralise tout.
 
-Stack : Next.js 16.3 App Router, React 19, TypeScript strict, Tailwind v4, export statique avec `basePath` `/groupe-baruck` injecté par la CI, police Inter auto-hébergée (`next/font/local`, `src/app/fonts/inter-latin.woff2`), heros services en WebP. Dépendances ajoutées : `gray-matter`, `marked`, `image-size` (build uniquement). Composants client : `SiteHeader`, `RevealObserver`, `HeroCarousel`, `ContactForm`, `JecaGallery`, `NewsCarousel`.
+Stack : Next.js 16.3 App Router, React 19, TypeScript strict, Tailwind v4, export statique avec `basePath` `/groupe-baruck` injecté par la CI, police Inter auto-hébergée (`next/font/local`, `src/app/fonts/inter-latin.woff2`), heros services en WebP. Dépendances ajoutées : `gray-matter`, `marked`, `image-size` (build uniquement). Composants client : `SiteHeader`, `RevealObserver`, `HeroCarousel`, `ContactForm`, `JecaGallery`, `NewsCarousel`, `ContactMapEmbed`.
 
 Contrôle de référence avant push : `npm run lint && npm run typecheck && NEXT_PUBLIC_BASE_PATH=/groupe-baruck npm run build && grep -rn 'src="/images' out/` (vide) et `grep -o 'id="[a-z-]*"' out/index.html | sort | uniq -d` (vide).
 
 Maquette HTML d'origine : dans l'historique (`git checkout 33cfd8e -- maquette/`). L'accueil et Contact s'en sont éloignés volontairement depuis.
+
+## Benchmark concurrentiel
+
+`docs/benchmark-2026-09-05.md` : comparaison du site avec 4 groupes africains (Teyliom, Guicopres, Heirs Holdings, G-CORE) et références secondaires par page. Rédigé par Claude, en attente de l'avis de Codex et de l'arbitrage de Mohamed. Rien n'y est appliqué au site pour l'instant.
 
 ## Décisions client en attente (ne pas trancher seul)
 Dénomination ONG / Fondation Espoir de Vie · devise religieuse du hero Espoir de Vie · localisation et statut de l'orphelinat · actions 2018–2026 · monnaie des « 500 000 fr » · « 4000 / 2000 chaussures » · coordonnées à publier et **e-mail de réception du formulaire** (clé Web3Forms) · numéro d'agrément · libellé officiel de la JECA · date de création et chiffres clés du Groupe · photos originales d'Espoir de Vie · **lien Google Maps exact du siège, horaires, réseaux sociaux** (provisoires en ligne avec note) · photo pour le CTA contact de l'accueil. Règles Espoir de Vie : jamais « paires », « FCFA », « créée en 2015 », ni total additionné ; pas de bouton de don.
