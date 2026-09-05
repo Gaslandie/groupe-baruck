@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AboutCommitments } from "@/components/about/AboutCommitments";
+import { AboutCommunication } from "@/components/about/AboutCommunication";
 import { AboutCta } from "@/components/about/AboutCta";
 import { EdvImpactHighlights } from "@/components/espoir-de-vie/EdvImpactHighlights";
 import { AboutHero } from "@/components/about/AboutHero";
@@ -39,6 +40,7 @@ export default function GroupPage() {
       <AboutHero />
       <Marquee items={marqueeItems} label="Repères du Groupe Baruck" />
       <AboutIntro />
+      <AboutCommunication />
       <AboutMilestones />
       <AboutRoles />
       <AboutOnu />

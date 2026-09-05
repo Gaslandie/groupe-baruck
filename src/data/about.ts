@@ -1,3 +1,5 @@
+import { routes } from "./site";
+
 export type Milestone = {
   /** Année affichée. */
   year: string;
@@ -61,3 +63,43 @@ export const milestones: Milestone[] = [
     href: "/jeca/#edition-3",
   },
 ];
+
+export type CommunicationService = {
+  title: string;
+  text: string;
+  href: string;
+  cta: string;
+};
+
+export type BaruckCommunication = {
+  eyebrow: string;
+  name: string;
+  description: string;
+  presence: string;
+  servicesLabel: string;
+  services: CommunicationService[];
+};
+
+/** Pôle opérationnel guinéen : uniquement ce qui est déjà publié sur le site. */
+export const baruckCommunication: BaruckCommunication = {
+  eyebrow: "Pôle opérationnel · Guinée",
+  name: "Baruck Communication",
+  description:
+    "En Guinée, Baruck Communication opère le Studio Photo Baruck la Prospérité ainsi que les services d’hôtesses événementielles présentés sur ce site.",
+  presence: "Guinée",
+  servicesLabel: "Studio photo · Hôtesses événementielles",
+  services: [
+    {
+      title: "Studio Photo Baruck la Prospérité",
+      text: "Deux studios équipés à Kobayah, à Conakry, pour des prises de vue au studio comme en extérieur.",
+      href: routes.studio,
+      cta: "Découvrir le studio",
+    },
+    {
+      title: "Hôtesses événementielles",
+      text: "Une équipe élégante, professionnelle et dynamique pour la couverture de différents événements en Guinée.",
+      href: routes.hostesses,
+      cta: "Découvrir les hôtesses",
+    },
+  ],
+};
