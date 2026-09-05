@@ -7,6 +7,7 @@ import { JecaCta } from "@/components/jeca/JecaCta";
 import { JecaGalleryProvider } from "@/components/jeca/JecaGallery";
 import { JecaGoree } from "@/components/jeca/JecaGoree";
 import { JecaHero } from "@/components/jeca/JecaHero";
+import { JecaNextEdition } from "@/components/jeca/JecaNextEdition";
 import { JecaJourney } from "@/components/jeca/JecaJourney";
 import { JecaVision } from "@/components/jeca/JecaVision";
 import { PageShell } from "@/components/layout/PageShell";
@@ -32,6 +33,7 @@ export default function JecaPage() {
   return (
     <PageShell variant="jeca" current="jeca" footer="jeca">
       <JecaHero />
+      <JecaNextEdition />
       <EditionNav />
       <JecaVision />
       <JecaJourney />

@@ -1,4 +1,5 @@
 import type { ImageAsset } from "./media";
+import { contacts } from "./site";
 
 export type GalleryPhoto = {
   src: `/${string}`;
@@ -283,3 +284,20 @@ export const jecaGalleries: JecaGallery[] = [
     ],
   },
 ];
+
+export type JecaNextEdition = {
+  message: string;
+  whatsappHref: string;
+  emailHref: string;
+};
+
+const nextEditionMessage = "Je souhaite être informé de la prochaine édition de la JECA";
+
+/** Demandes d'information sur la prochaine édition : numéros et adresse jamais recopiés. */
+export const jecaNextEdition: JecaNextEdition = {
+  message: nextEditionMessage,
+  whatsappHref: `${contacts.whatsappHq.href}?text=${encodeURIComponent(nextEditionMessage)}`,
+  emailHref: `${contacts.email.href}?subject=${encodeURIComponent(
+    "Prochaine édition de la JECA",
+  )}&body=${encodeURIComponent(nextEditionMessage)}`,
+};
