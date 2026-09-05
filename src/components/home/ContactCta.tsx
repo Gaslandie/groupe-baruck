@@ -1,10 +1,11 @@
 import Link from "next/link";
 
+import { placeholderImages, unsplashCredit } from "@/data/media";
 import { contacts, routes } from "@/data/site";
 import { imageUrl } from "@/lib/asset";
+import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
-const ctaImage =
-  "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=2000&q=82";
+const ctaImage = placeholderImages.contactEquipe.src;
 
 export function ContactCta() {
   return (
@@ -47,6 +48,11 @@ export function ContactCta() {
           WhatsApp Baruck
         </a>
       </div>
+      <PhotoCredits
+        source={unsplashCredit}
+        tone="light"
+        className="absolute bottom-3 right-[clamp(1.3rem,6vw,7.5rem)] z-[1] max-tablet:static max-tablet:mt-8"
+      />
     </section>
   );
 }

@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { HeroAction, HeroSlide } from "@/data/home";
+import { unsplashCredit } from "@/data/media";
 import { imageUrl } from "@/lib/asset";
+
+import { PhotoCredits } from "../ui/PhotoCredits";
 
 const SLIDE_DURATION = 5000;
 const CHANGE_DURATION = 260;
@@ -224,6 +227,14 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           →
         </button>
       </div>
+
+      {activeIndex === 0 ? (
+        <PhotoCredits
+          source={unsplashCredit}
+          tone="light"
+          className="absolute bottom-4 right-[1.2rem] z-[3]"
+        />
+      ) : null}
 
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 z-[3] h-[3px] bg-[rgba(255,255,255,.15)]">
         <i

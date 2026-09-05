@@ -1,9 +1,11 @@
 import Link from "next/link";
 
 import { activities } from "@/data/home";
+import { unsplashCredit } from "@/data/media";
 import { routes } from "@/data/site";
 import { imageUrl } from "@/lib/asset";
 
+import { PhotoCredits } from "../ui/PhotoCredits";
 import { SectionHead } from "../ui/SectionHead";
 
 function formatNumber(value: number) {
@@ -61,13 +63,11 @@ export function ActivitiesSection() {
               <p className="m-0 max-w-[320px] text-[.78rem] leading-[1.6] text-[rgba(255,255,255,.68)]">
                 {activity.description}
               </p>
-              <span className="mt-[.9rem] block text-[.45rem] uppercase tracking-[.16em] text-[rgba(255,255,255,.4)]">
-                Photo d’ambiance · Unsplash
-              </span>
             </div>
           </Link>
         ))}
       </div>
+      <PhotoCredits source={unsplashCredit} tone="light" className="mt-6" />
     </section>
   );
 }
