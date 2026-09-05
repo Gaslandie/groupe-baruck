@@ -5,6 +5,7 @@ import { routes } from "@/data/site";
 import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 import { AboutSectionHead } from "./AboutSectionHead";
+import { WestAfricaPresenceMap } from "./WestAfricaPresenceMap";
 
 export function AboutPresence() {
   return (
@@ -16,6 +17,7 @@ export function AboutPresence() {
         text="La Guinée comme point d’ancrage, le Sénégal et la Côte d’Ivoire comme horizon de développement."
         tone="light"
       />
+      <WestAfricaPresenceMap />
       <div className="reveal-stagger grid grid-cols-3 gap-px border border-[rgba(255,255,255,.16)] bg-[rgba(255,255,255,.16)] max-[1080px]:grid-cols-1">
         <article className="group reveal relative isolate flex min-h-[380px] flex-col overflow-hidden bg-ink p-[clamp(1.8rem,2.6vw,2.6rem)]">
           <span
