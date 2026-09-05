@@ -363,3 +363,28 @@ export const studioFaq: ServiceFaqItem[] = [
     answer: "Oui. Un espace dédié aux anniversaires des enfants, avec décors et ballons, jouets et accessoires fournis. Formule 30 photos : 750 000 GNF.",
   },
 ];
+
+export type HostessProcessStep = {
+  number: "01" | "02" | "03";
+  title: string;
+  text: string;
+};
+
+/** Parcours de réservation provisoire, en attente de validation client. */
+export const hostessProcess: HostessProcessStep[] = [
+  {
+    number: "01",
+    title: "Votre demande",
+    text: "Vous nous écrivez sur WhatsApp avec la date, le lieu et le nombre d’hôtesses souhaité.",
+  },
+  {
+    number: "02",
+    title: "Notre confirmation",
+    text: "Nous confirmons les disponibilités de l’équipe et les conditions de la prestation.",
+  },
+  {
+    number: "03",
+    title: "Le jour de l’événement",
+    text: "L’équipe est présente le jour J.",
+  },
+];

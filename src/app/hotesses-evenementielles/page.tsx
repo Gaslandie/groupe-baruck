@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { PageShell } from "@/components/layout/PageShell";
 import { HostessOffers } from "@/components/services/HostessOffers";
+import { HostessProcess } from "@/components/services/HostessProcess";
 import { ServiceContact } from "@/components/services/ServiceContact";
 import { ServiceHero } from "@/components/services/ServiceHero";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
@@ -76,6 +77,7 @@ export default function HostessesPage() {
         tags={hostessTags}
       />
       <HostessOffers />
+      <HostessProcess />
       <ServiceContact
         eyebrow="Réservation"
         title={
