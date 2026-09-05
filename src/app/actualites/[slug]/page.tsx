@@ -50,7 +50,14 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
             siteName: site.name,
             locale: "fr_FR",
             type: "website",
-            images: [site.url + article.cover.src.slice(1)],
+            images: [
+              {
+                url: site.url + article.cover.src.slice(1),
+                width: article.cover.width,
+                height: article.cover.height,
+                alt: article.cover.alt,
+              },
+            ],
           },
         }
       : {}),
