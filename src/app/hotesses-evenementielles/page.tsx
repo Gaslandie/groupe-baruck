@@ -7,12 +7,13 @@ import { ServiceHero } from "@/components/services/ServiceHero";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { hostessesHero } from "@/data/media";
 import { hostessTags } from "@/data/services";
-import { contacts, hqAddress, whatsappRequests } from "@/data/site";
+import { contacts, hqAddress, routes, site, whatsappRequests } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Hôtesses événementielles",
   description:
     "Hôtesses événementielles Baruck Communication Guinée — une équipe élégante, professionnelle et dynamique pour vos événements.",
+  alternates: { canonical: site.url + routes.hostesses.slice(1) },
 };
 
 const contactDetails = [

@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       title: "Actualités",
       description:
         "Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.",
+      alternates: { canonical: site.url + "actualites/" },
     };
   }
 
@@ -42,6 +43,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   return {
     title: article.title,
     description: article.excerpt,
+    alternates: { canonical: `${site.url}actualites/${article.slug}/` },
     // URL absolue : site.url porte déjà le basePath, ne pas repasser par asset().
     // Clé omise sans couverture, pour ne pas écraser l’héritage du layout.
     ...(article.cover
