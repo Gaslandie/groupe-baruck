@@ -6,6 +6,7 @@ import { ContactCta } from "@/components/home/ContactCta";
 import { HeroSection } from "@/components/home/HeroSection";
 import { NewsPreview } from "@/components/home/NewsPreview";
 import { PageTeaser } from "@/components/home/PageTeaser";
+import { EdvImpactHighlights } from "@/components/espoir-de-vie/EdvImpactHighlights";
 import { Marquee } from "@/components/ui/Marquee";
 import { pageTeasers } from "@/data/home";
 import { presidentPortrait } from "@/data/media";
@@ -38,6 +39,7 @@ export default function Home() {
       {pageTeasers.map((teaser) => (
         <PageTeaser key={teaser.id} {...teaser} />
       ))}
+      <EdvImpactHighlights />
       <NewsPreview />
       <ContactCta />
     </PageShell>

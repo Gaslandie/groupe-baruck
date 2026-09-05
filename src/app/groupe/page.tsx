@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { AboutCommitments } from "@/components/about/AboutCommitments";
 import { AboutCta } from "@/components/about/AboutCta";
+import { EdvImpactHighlights } from "@/components/espoir-de-vie/EdvImpactHighlights";
 import { AboutHero } from "@/components/about/AboutHero";
 import { AboutIntro } from "@/components/about/AboutIntro";
 import { AboutMilestones } from "@/components/about/AboutMilestones";
@@ -44,6 +45,7 @@ export default function GroupPage() {
       <AboutQuote />
       <AboutPresence />
       <AboutCommitments />
+      <EdvImpactHighlights />
       <AboutCta />
     </PageShell>
   );
