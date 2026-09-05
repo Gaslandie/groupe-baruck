@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { ArticleBody } from "@/components/actualites/ArticleBody";
 import { ArticleCover } from "@/components/actualites/ArticleCover";
 import { ArticleHeader } from "@/components/actualites/ArticleHeader";
+import { ArticleNavigation } from "@/components/actualites/ArticleNavigation";
+import { ArticleShare } from "@/components/actualites/ArticleShare";
 import { NewsCarousel } from "@/components/actualites/NewsCarousel";
 import { NewsEmpty } from "@/components/actualites/NewsEmpty";
 import { NewsHero } from "@/components/actualites/NewsHero";
@@ -11,6 +13,7 @@ import { PageShell } from "@/components/layout/PageShell";
 import { newsDescription } from "@/data/actualites";
 import { site } from "@/data/site";
 import {
+  getAdjacentArticles,
   getAllArticles,
   getArticle,
   placeholderSlug,
@@ -71,6 +74,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
+  const { previous, next } = getAdjacentArticles(article.slug);
+
   return (
     <PageShell variant="about" current="news" footer="about">
       <StructuredData data={articleSchema(article)} />
@@ -79,6 +84,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <section className="bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(3rem,6vw,6rem)]">
         <ArticleBody html={article.html} />
         <NewsCarousel gallery={article.gallery} />
+        <ArticleShare
+          title={article.title}
+          url={`${site.url}actualites/${article.slug}/`}
+        />
+        <ArticleNavigation previous={previous} next={next} />
       </section>
     </PageShell>
   );

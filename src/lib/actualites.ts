@@ -8,6 +8,7 @@ import { marked } from "marked";
 import {
   categoryLabels,
   type Article,
+  type ArticleSummary,
   type NewsCategory,
   type NewsImage,
 } from "@/data/actualites";
@@ -166,10 +167,33 @@ export function getArticle(slug: string): Article | undefined {
   return getAllArticles().find((article) => article.slug === slug);
 }
 
-export function formatDate(iso: string): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(iso));
+/** Ne transmet aux composants client que les champs nécessaires aux cartes. */
+export function toArticleSummary({
+  slug,
+  title,
+  date,
+  category,
+  excerpt,
+  cover,
+}: Article): ArticleSummary {
+  return { slug, title, date, category, excerpt, cover };
+}
+
+export type AdjacentArticles = {
+  /** Article plus récent : index - 1 dans getAllArticles(). */
+  previous?: ArticleSummary;
+  /** Article plus ancien : index + 1 dans getAllArticles(). */
+  next?: ArticleSummary;
+};
+
+/** Voisins d’un article dans l’ordre de getAllArticles() (du plus récent au plus ancien). */
+export function getAdjacentArticles(slug: string): AdjacentArticles {
+  const articles = getAllArticles();
+  const index = articles.findIndex((article) => article.slug === slug);
+  if (index === -1) return {};
+
+  return {
+    previous: index > 0 ? toArticleSummary(articles[index - 1]) : undefined,
+    next: index < articles.length - 1 ? toArticleSummary(articles[index + 1]) : undefined,
+  };
 }

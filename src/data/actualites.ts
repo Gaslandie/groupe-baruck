@@ -41,6 +41,15 @@ export type Article = {
   html: string;
 };
 
+/** Sous-ensemble d’Article transmis aux composants client : ni html, ni gallery, ni draft. */
+export type ArticleSummary = Pick<
+  Article,
+  "slug" | "title" | "date" | "category" | "excerpt" | "cover"
+>;
+
+/** Ancre de la liste filtrable sur /actualites/ (cible des liens de filtre). */
+export const newsListId = "liste-actualites";
+
 /** Titre et description du flux et de la page Actualités : source unique. */
 export const newsFeedTitle = "Actualités — Groupe Baruck";
 

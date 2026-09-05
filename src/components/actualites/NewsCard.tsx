@@ -1,13 +1,13 @@
 import Link from "next/link";
 
-import type { Article } from "@/data/actualites";
+import type { ArticleSummary } from "@/data/actualites";
 import { routes } from "@/data/site";
 
 import { NewsImage } from "./NewsImage";
 import { NewsMeta } from "./NewsMeta";
 
 type NewsCardProps = {
-  article: Article;
+  article: ArticleSummary;
 };
 
 export function NewsCard({ article }: NewsCardProps) {

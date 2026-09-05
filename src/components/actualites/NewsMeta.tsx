@@ -1,5 +1,5 @@
 import { categoryLabels, type NewsCategory } from "@/data/actualites";
-import { formatDate } from "@/lib/actualites";
+import { formatDate } from "@/lib/date";
 
 type NewsMetaProps = {
   category: NewsCategory;
