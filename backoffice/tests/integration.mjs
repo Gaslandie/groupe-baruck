@@ -130,9 +130,29 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.match((await anonymous.request('/?page=image&id=' + imageId)).html, /Connectez-vous/);
     const image = await admin.request('/?page=image&id=' + imageId);
     assert.equal(image.headers.get('content-type'), 'image/png');
-    const imagePath = media.html.match(/value="(\/images\/actualites\/uploads\/[a-f0-9]{32}\.png)"/)?.[1];
+    assert.equal((await anonymous.request('/?page=media_api')).status, 401);
+    const catalog = JSON.parse((await admin.request('/?page=media_api')).html).items;
+    const imagePath = catalog.find(item => item.id === imageId)?.path;
     assert.ok(imagePath);
+    const seed = catalog.find(item => item.id.startsWith('seed-'));
+    assert.ok(seed);
+    assert.equal((await admin.request(seed.preview)).status, 200);
+    assert.equal((await admin.request('/?page=image&id=seed-../../config.php')).status, 404);
+    const download = await admin.request('/?page=image&id=' + imageId + '&download=1');
+    assert.match(download.headers.get('content-disposition'), /^attachment;/);
+    assert.match((await anonymous.request('/?page=image&id=' + imageId + '&download=1')).html, /Connectez-vous/);
+    const apiFile = new FormData(); apiFile.set('image', new Blob([png], { type: 'image/png' }), 'recette.png'); apiFile.set('alt', 'Image API');
+    assert.equal((await editor.request('/?page=media_api', apiFile)).status, 403);
+    apiFile.set('csrf', (await editor.request('/?page=edit')).csrf);
+    assert.equal((await editor.request('/?page=media_api', apiFile, { Origin: 'https://hostile.example' })).status, 403);
+    const imported = await editor.request('/?page=media_api', apiFile);
+    assert.equal(imported.status, 201);
+    assert.ok(JSON.parse(imported.html).item.path.startsWith('/images/actualites/uploads/'));
     assert.equal((await admin.post('/?page=edit&id=' + articleId, { ...fields, id: articleId, version: '2', status: 'ready', cover: imagePath, cover_alt: 'Image de recette' })).status, 303);
+    if (process.env.BARUCK_TEST_CHROME) {
+      const browser = spawnSync(process.execPath, [path.join(directory, 'tests/browser-form.mjs'), origin, 'media'], { input: JSON.stringify({ cookie: editor.cookie, articleId }), encoding: 'utf8', timeout: 30000 });
+      assert.equal(browser.status, 0, browser.stderr || browser.stdout);
+    }
   });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);

@@ -3,7 +3,7 @@ $gallery = is_array($article['gallery'] ?? null) ? $article['gallery'] : [];
 ?>
 <a href="<?= e(url('articles')) ?>" class="mb-6 inline-block text-sm underline underline-offset-4">← Toutes les actualités</a>
 <?php if ($publication): ?><p class="mb-6 rounded-lg bg-paper-deep p-4 text-sm">La version <?= (int) $publication['version'] ?> reste retenue pour la prochaine publication. Vous pouvez préparer un brouillon sans la remplacer.</p><?php endif; ?>
-<form method="post">
+<form method="post" id="article-form">
     <?= csrfField() ?><input type="hidden" name="action" value="save_article"><input type="hidden" name="id" value="<?= e($article['id'] ?? '') ?>"><input type="hidden" name="version" value="<?= e($article['version'] ?? 0) ?>">
     <fieldset class="grid min-w-0 gap-6 wide:grid-cols-[minmax(0,1fr)_300px]">
     <div class="min-w-0 space-y-6">
@@ -13,8 +13,7 @@ $gallery = is_array($article['gallery'] ?? null) ? $article['gallery'] : [];
             <div><label for="excerpt" class="text-sm font-medium">Résumé</label><textarea id="excerpt" name="excerpt" rows="3" maxlength="2000" class="<?= $inputClass ?>"><?= e($article['excerpt'] ?? '') ?></textarea></div>
             <div><label for="body" class="text-sm font-medium">Contenu</label><p id="body-help" class="mt-2 text-xs leading-relaxed text-ink/60">Markdown : ## pour un intertitre, **texte** pour le gras, - pour une liste, [texte](/contact/) pour un lien.</p><textarea id="body" name="body" rows="20" maxlength="200000" aria-describedby="body-help" class="<?= $inputClass ?> leading-relaxed"><?= e($article['body'] ?? '') ?></textarea></div>
         </section>
-        <section class="space-y-5 rounded-xl border border-line bg-ivory p-6"><h2 class="font-display text-2xl">Image de couverture</h2><div><?php field('Chemin de l’image', 'cover', $article['cover'] ?? '', 'text', 'maxlength="255" list="media-paths" placeholder="/images/…"'); ?></div><div><?php field('Description de la couverture', 'cover_alt', $article['cover_alt'] ?? '', 'text', 'maxlength="500"'); ?></div></section>
-        <section class="rounded-xl border border-line bg-ivory p-6"><h2 class="font-display text-2xl">Galerie</h2><p class="mt-2 text-sm text-ink/60">Les images suivent l’ordre des lignes. Effacez un chemin pour retirer l’image de la galerie.</p><div class="mt-5 space-y-4"><?php for ($i = 0; $i < min(30, count($gallery) + 3); $i++): $item = is_array($gallery[$i] ?? null) ? $gallery[$i] : []; ?><fieldset class="rounded-lg border border-line p-4"><legend class="px-2 text-xs font-semibold">Image <?= $i + 1 ?></legend><label for="gallery-src-<?= $i ?>" class="text-xs">Chemin</label><input class="<?= $inputClass ?>" id="gallery-src-<?= $i ?>" name="gallery[<?= $i ?>][src]" maxlength="255" list="media-paths" value="<?= e($item['src'] ?? '') ?>"><label for="gallery-alt-<?= $i ?>" class="mt-3 block text-xs">Description</label><input class="<?= $inputClass ?>" id="gallery-alt-<?= $i ?>" name="gallery[<?= $i ?>][alt]" maxlength="500" value="<?= e($item['alt'] ?? '') ?>"><label for="gallery-caption-<?= $i ?>" class="mt-3 block text-xs">Légende (facultative)</label><input class="<?= $inputClass ?>" id="gallery-caption-<?= $i ?>" name="gallery[<?= $i ?>][caption]" maxlength="500" value="<?= e($item['caption'] ?? '') ?>"></fieldset><?php endfor; ?></div><p class="mt-4 text-xs text-ink/60">Enregistrez pour ajouter des lignes supplémentaires, jusqu’à 30 images.</p></section>
+        <?php require __DIR__ . '/article-media.php'; ?>
     </div>
     <aside class="space-y-5 self-start wide:sticky wide:top-6">
         <section class="space-y-5 rounded-xl border border-line bg-ivory p-6">
@@ -30,8 +29,10 @@ $gallery = is_array($article['gallery'] ?? null) ? $article['gallery'] : [];
         <a href="<?= e(url('media')) ?>" target="_blank" rel="noreferrer" class="<?= $secondaryClass ?> w-full">Ouvrir la médiathèque ↗</a>
     </aside>
     </fieldset>
-    <datalist id="media-paths"><?php foreach (query('SELECT filename,alt FROM media ORDER BY created_at DESC')->fetchAll() as $media): ?><option value="<?= e('/images/actualites/uploads/' . $media['filename']) ?>"><?= e($media['alt']) ?></option><?php endforeach; ?></datalist>
+
 </form>
+<?php require __DIR__ . '/media-dialog.php'; ?>
+<script src="/media-picker.js" defer></script>
 <?php if ($publication && $user['role'] === 'admin'): ?>
 <details class="mt-8 rounded-xl border border-line bg-ivory p-6">
     <summary class="cursor-pointer text-sm font-semibold">Retirer cet article de la prochaine publication</summary>

@@ -21,7 +21,7 @@ function startSession(): void
     // Conserver l’origine en interne ; ne rien transmettre aux sites externes.
     header('Referrer-Policy: same-origin');
     header('X-Robots-Tag: noindex, nofollow');
-    header("Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
+    header("Content-Security-Policy: default-src 'none'; script-src 'self'; connect-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
     if ($settings['environment'] === 'production') header('Strict-Transport-Security: max-age=31536000');
     $sessions = $settings['storage'] . '/sessions';
     if (!is_dir($sessions)) mkdir($sessions, 0700, true);

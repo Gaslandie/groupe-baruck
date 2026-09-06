@@ -10,6 +10,7 @@ backoffice/config.local.php
 backoffice/.local/
 backoffice/storage/
 backoffice/seed.json
+backoffice/seed-media/
 backoffice/public/admin.css
 backoffice/public/inter.woff2
 backoffice/dist/

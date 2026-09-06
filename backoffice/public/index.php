@@ -8,6 +8,7 @@ require dirname(__DIR__) . '/src/bootstrap.php';
 try {
     startSession();
     $user = currentUser();
+    if (($_GET['page'] ?? '') === 'media_api') mediaApi($user);
     $page = is_string($_GET['page'] ?? null) ? $_GET['page'] : 'dashboard';
     $error = '';
     $flash = $_SESSION['flash'] ?? '';
@@ -95,13 +96,7 @@ try {
         header('Allow: GET, HEAD, POST'); http_response_code(405); exit;
     }
 
-    if ($page === 'image' && $user) {
-        $image = query('SELECT * FROM media WHERE id=?', [is_string($_GET['id'] ?? null) ? $_GET['id'] : ''])->fetch();
-        if (!$image) { http_response_code(404); exit; }
-        header('Content-Type: ' . $image['mime']);
-        header('Content-Length: ' . $image['bytes']);
-        readfile(config()['storage'] . '/media/' . $image['filename']); exit;
-    }
+    if ($page === 'image' && $user) serveMedia();
 
     $article = null;
     $publication = null;

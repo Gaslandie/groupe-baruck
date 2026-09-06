@@ -8,11 +8,21 @@ Cette application PHP est distincte de l’export public Next.js. Elle gère les
 
 Le back-office fonctionne localement avec une vraie base MySQL. Les six actualités du dépôt servent d’import initial, sans écrasement lors d’une réinstallation. Les contenus validés peuvent être exportés puis construire le site existant, avec ses URL, son sitemap et son RSS. **Le déploiement Bluehost et le déclenchement automatique de publication ne sont pas raccordés.** Le bouton de téléchargement le dit explicitement.
 
-L’édition du corps utilise Markdown ; l’éditeur visuel, le sélecteur de médias intégré, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. Les articles et médias n’ont pas de suppression définitive dans l’interface.
+L’édition du corps utilise Markdown ; l’éditeur visuel, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. Les articles et médias n’ont pas de suppression définitive dans l’interface.
 
 Chaque enregistrement conserve une révision complète. « Historique et restauration » affiche les 50 versions les plus récentes ; les versions antérieures restent en base. Une restauration crée un nouveau brouillon, avec contrôle des modifications concurrentes. Le rédacteur peut retravailler un article validé : **la dernière version validée reste disponible pour l’export** jusqu’à une nouvelle validation par un administrateur. Le retrait de la prochaine publication est une action distincte, réservée à l’administrateur et soumise à confirmation.
 
 Si la session expire au moment d’envoyer le formulaire d’article, une saisie munie du jeton valide de cette session peut être récupérée pendant une heure après reconnexion au même compte. Elle reste à relire et à enregistrer ; une modification concurrente bloque son écrasement. Cela suppose que la session existe encore côté serveur. Ce mécanisme ne sauvegarde pas automatiquement la frappe et ne couvre pas la fermeture d’un onglet avant envoi ou la disparition du fichier de session. Un autre compte ne peut pas récupérer cette saisie.
+
+## Choisir, importer et télécharger les images
+
+Dans une actualité, « Choisir ou importer une image » ouvre la bibliothèque : les images initiales du site et les nouveaux imports sont proposés avec leurs aperçus et une recherche. Aucun chemin n’est à saisir pour la couverture ou la galerie. « Importer et utiliser cette image » accepte un fichier JPG, PNG ou WebP de 8 Mo maximum et de 40 mégapixels maximum, accompagné d’une description. Les limites et le type réel du fichier sont également vérifiés sur le serveur.
+
+La sélection conserve le texte dans le formulaire. Les boutons Monter, Descendre et Retirer organisent la galerie, limitée à 30 images. Enregistrer le brouillon ou valider reste nécessaire pour conserver ces changements dans l’article. L’import enregistre immédiatement le fichier dans la médiathèque privée, même si l’article n’est pas encore enregistré. Un fichier non référencé par une version validée n’est pas inclus dans l’export public. « Télécharger l’image » dans la médiathèque permet de récupérer le fichier après connexion.
+
+Le sélecteur utilise un script local, sans dépendance supplémentaire. Sans JavaScript, les images déjà enregistrées sont conservées ; leur sélection demande de l’activer. Une erreur d’import laisse le formulaire ouvert. Si la session expire pendant un import, le message demande de copier le texte avant reconnexion et rechargement : il n’y a pas encore de sauvegarde automatique de la frappe.
+
+`backoffice:prepare` copie les images initiales dans `seed-media`, hors de la racine publique. Les aperçus sont servis par un identifiant contrôlé après authentification. Ce dossier fait partie du paquet d’administration ; aucun accès direct à un chemin arbitraire n’est proposé. La recette Chrome vérifie la sélection, le réordonnancement, le retrait et un import réel, sans sauvegarder l’article de recette ni capturer son rendu.
 
 ## Local
 

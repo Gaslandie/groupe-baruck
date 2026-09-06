@@ -82,7 +82,7 @@ function saveArticle(array $input, array $user): string
     }
 }
 
-function uploadMedia(array $file, string $alt, array $user): void
+function uploadMedia(array $file, string $alt, array $user): array
 {
     if (($file['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK || !is_string($file['tmp_name'] ?? null) || !is_uploaded_file($file['tmp_name'])) throw new ValidationError('L’image n’a pas pu être reçue. Vérifiez sa taille et réessayez.');
     $size = filesize($file['tmp_name']);
@@ -104,6 +104,7 @@ function uploadMedia(array $file, string $alt, array $user): void
             audit('Image ajoutée', $alt, $user['id']);
         });
     } catch (\Throwable $error) { unlink($dir . '/' . $filename); throw $error; }
+    return ['id' => $id, 'path' => '/images/actualites/uploads/' . $filename, 'alt' => $alt, 'label' => $alt, 'width' => $dimensions[0], 'height' => $dimensions[1], 'preview' => url('image', ['id' => $id])];
 }
 
 function exportContent(array $user): array

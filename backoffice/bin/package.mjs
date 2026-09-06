@@ -9,7 +9,7 @@ await fs.mkdir(destination, { recursive: true });
 const temporary = await fs.mkdtemp('/tmp/baruck-admin-package-');
 const app = path.join(temporary, 'backoffice');
 await fs.mkdir(app);
-for (const name of ['src', 'public', 'schema.sql', 'seed.json', 'config.example.php', '.htaccess', 'INSTALLATION.md']) {
+for (const name of ['src', 'public', 'schema.sql', 'seed.json', 'seed-media', 'config.example.php', '.htaccess', 'INSTALLATION.md']) {
   await fs.cp(path.join(root, name), path.join(app, name), { recursive: true });
 }
 await fs.mkdir(path.join(app, 'bin'));
