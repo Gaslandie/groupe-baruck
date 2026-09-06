@@ -100,7 +100,7 @@ function password(string $value): string
 function createUser(array $input, ?string $actor = null): string
 {
     $email = strtolower(text($input, 'email', 190));
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new ValidationError('Adresse e-mail invalide.');
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) throw new ValidationError('Saisissez une adresse e-mail complète et valide, par exemple nom@exemple.com.');
     $name = text($input, 'name', 100);
     $role = text($input, 'role', 16);
     if (!in_array($role, ['admin', 'editor'], true)) throw new ValidationError('Rôle invalide.');

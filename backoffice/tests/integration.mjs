@@ -54,7 +54,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   const anonymous = new Browser(origin);
   const password = 'Recette-locale-' + crypto.randomBytes(12).toString('hex');
   const adminEmail = 'admin@example.test';
-  const editorEmail = 'editor@example.test';
+  const editorEmail = 'editor+recette@sous.example.test';
   let articleId;
   const fields = { action: 'save_article', id: '', version: '0', slug: 'recette-mysql', title: 'Recette MySQL', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Texte de recette.', cover: '', cover_alt: '', status: 'draft' };
   await t.test('migration additive et réinstallation conservent les versions initiales', () => {
@@ -66,15 +66,25 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   await t.test('premier compte, cookie HTTPOnly et protection CSRF', async () => {
     const page = await anonymous.request('/?page=articles');
     assert.match(page.html, /Créez votre compte/);
+    assert.ok(page.html.includes('pattern="[^\\s@]+@[^\\s@]+\\.[^\\s@]+"'));
     assert.match(page.headers.get('set-cookie'), /HttpOnly/i);
     assert.match(page.headers.get('set-cookie'), /SameSite=Strict/i);
     assert.match(page.headers.get('content-security-policy'), /frame-ancestors 'none'/);
     assert.equal((await anonymous.request('/', { action: 'setup', email: adminEmail, password, name: 'Recette' })).status, 403);
     assert.equal((await admin.post('/', { action: 'setup', email: adminEmail, password: '😀😀😀😀', name: 'Recette' })).status, 422);
+    for (const email of ['kkkk@dddd', 'kkkk\\@dddd', 'sans-arobase.fr', 'nom@@exemple.fr', 'nom espace@exemple.fr', 'nom..prenom@exemple.fr', 'nom@-exemple.fr']) {
+      const invalid = await admin.post('/', { action: 'setup', email, password, name: 'Recette' });
+      assert.equal(invalid.status, 422, email);
+      assert.match(invalid.html, /adresse e-mail complète et valide/);
+    }
     assert.equal((await admin.post('/', { action: 'setup', email: adminEmail, password, name: 'Administrateur recette' })).status, 303);
     assert.match((await admin.request('/')).html, /Vue d’ensemble/);
     assert.match((await anonymous.request('/?page=articles')).html, /Connectez-vous/);
     assert.equal((await admin.post('/?page=users', { action: 'create_user', email: editorEmail, password, name: 'Rédacteur recette', role: 'editor' })).status, 303);
+    assert.equal((await admin.post('/?page=users', { action: 'create_user', email: 'kkkk@dddd', password, name: 'Recette', role: 'editor' })).status, 422);
+    const duplicate = await admin.post('/?page=users', { action: 'create_user', email: editorEmail.toUpperCase(), password, name: 'Doublon', role: 'editor' });
+    assert.equal(duplicate.status, 422);
+    assert.match(duplicate.html, /Cette adresse possède déjà un compte/);
     assert.equal((await editor.post('/', { action: 'login', email: editorEmail, password })).status, 303);
   });
   await t.test('rédacteur : brouillons autorisés, validation et comptes interdits', async () => {

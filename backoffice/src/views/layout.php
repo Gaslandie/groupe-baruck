@@ -8,7 +8,9 @@ $buttonClass = 'inline-flex items-center justify-center rounded-lg bg-accent px-
 $secondaryClass = 'inline-flex items-center justify-center rounded-lg border border-line px-5 py-3 text-sm font-semibold hover:bg-paper-deep';
 function field(string $label, string $name, mixed $value = '', string $type = 'text', string $extra = ''): void {
     global $inputClass;
+    if ($type === 'email') $extra .= ' pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Utilisez une adresse complète, par exemple nom@exemple.com." autocapitalize="none" spellcheck="false" aria-describedby="' . e($name) . '-help"';
     echo '<label class="block text-sm font-medium" for="' . e($name) . '">' . e($label) . '</label><input class="' . $inputClass . '" id="' . e($name) . '" name="' . e($name) . '" type="' . e($type) . '" value="' . e(is_scalar($value) ? $value : '') . '" ' . $extra . '>';
+    if ($type === 'email') echo '<p id="' . e($name) . '-help" class="mt-2 text-caption text-ink/60">Adresse complète, par exemple nom@exemple.com.</p>';
 }
 ?>
 <!doctype html>
