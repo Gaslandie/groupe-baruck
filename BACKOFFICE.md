@@ -7,7 +7,7 @@
 - Les brouillons et la dernière version validée sont séparés : retravailler un article ne le retire plus du prochain export. Seul l’administrateur valide une nouvelle version ou confirme un retrait.
 - Chaque enregistrement conserve une révision restaurable en brouillon. Les conflits empêchent d’écraser une modification plus récente. La migration ajoute les tables sans remplacer les comptes ou les articles existants.
 - Une saisie envoyée après expiration peut être récupérée pendant une heure après reconnexion au même compte, si la session serveur existe encore. La frappe sans envoi n’est pas sauvegardée automatiquement.
-- Les nouveaux mots de passe exigent 15 caractères visibles ; les limites de tentatives portent sur le compte et l’adresse IP. Les liens Markdown invalides sont refusés dès l’enregistrement sur le corpus testé, avec contrôle final par le chargeur Next au build.
+- Les nouveaux mots de passe exigent 12 caractères visibles ; les limites de tentatives portent sur le compte et l’adresse IP. Les liens Markdown invalides sont refusés dès l’enregistrement sur le corpus testé, avec contrôle final par le chargeur Next au build.
 
 La suite concerne l’éditeur et son aperçu, le choix des images dans le formulaire, la sauvegarde automatique avant fermeture et les contrôles SEO éditoriaux. Une recette des parcours sur mobile, au clavier et avec Mohamed reste nécessaire avant de qualifier l’expérience d’aboutie. La boutique reste hors périmètre.
 

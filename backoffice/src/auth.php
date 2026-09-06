@@ -92,7 +92,7 @@ function password(string $value): string
 {
     // Compter les caractères visibles, pas les octets UTF-8. Aucune troncature.
     if (preg_match('//u', $value) !== 1 || str_contains($value, "\0")) throw new ValidationError('Le mot de passe contient un caractère invalide.');
-    if (preg_match_all('/\X/u', $value) < 15) throw new ValidationError('Choisissez un mot de passe d’au moins 15 caractères. Une phrase de plusieurs mots convient.');
+    if (preg_match_all('/\X/u', $value) < 12) throw new ValidationError('Choisissez un mot de passe d’au moins 12 caractères. Une phrase de plusieurs mots convient.');
     if (strlen($value) > 72) throw new ValidationError('Ce mot de passe est trop long pour être enregistré. Réduisez sa longueur.');
     return password_hash($value, PASSWORD_BCRYPT, ['cost' => 12]);
 }
