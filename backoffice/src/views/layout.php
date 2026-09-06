@@ -39,7 +39,7 @@ function field(string $label, string $name, mixed $value = '', string $type = 't
     <aside class="bg-ink px-6 py-7 text-ivory desktop:sticky desktop:top-0 desktop:h-screen desktop:px-7">
         <a href="/" class="font-display text-3xl">Baruck<span class="text-accent">.</span></a><p class="mt-2 text-[10px] uppercase tracking-[.22em] text-ivory/45">Administration</p>
         <nav aria-label="Administration" class="mt-9 flex flex-wrap gap-2 desktop:flex-col">
-        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'media' => 'Médiathèque', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || ($page === 'edit' && $key === 'articles'); ?>
+        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'media' => 'Médiathèque', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles'); ?>
             <a href="<?= e(url($key)) ?>" <?= $active ? 'aria-current="page"' : '' ?> class="rounded-lg px-4 py-3 text-sm <?= $active ? 'bg-ivory/10 text-ivory' : 'text-ivory/60 hover:bg-ivory/5 hover:text-ivory' ?>"><?= e($label) ?></a>
         <?php endforeach; ?>
         </nav>

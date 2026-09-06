@@ -4,9 +4,15 @@ Cette application PHP est distincte de l’export public Next.js. Elle gère les
 
 ## État et limites de ce lot
 
+**Travail exclusivement local pour le moment.** Les procédures Bluehost ci-dessous sont conservées pour plus tard ; aucun déploiement ne doit être déclenché dans cette étape.
+
 Le back-office fonctionne localement avec une vraie base MySQL. Les six actualités du dépôt servent d’import initial, sans écrasement lors d’une réinstallation. Les contenus validés peuvent être exportés puis construire le site existant, avec ses URL, son sitemap et son RSS. **Le déploiement Bluehost et le déclenchement automatique de publication ne sont pas raccordés.** Le bouton de téléchargement le dit explicitement.
 
-L’édition du corps utilise Markdown ; il n’y a pas encore d’éditeur visuel, de restauration de révisions, de publication planifiée ou de réinitialisation par e-mail. Les articles validés sont verrouillés pour les rédacteurs. Remettre un article en brouillon le retire de la prochaine publication complète, sans retirer immédiatement sa version en ligne. Les articles et médias n’ont pas de suppression définitive dans l’interface de ce lot.
+L’édition du corps utilise Markdown ; l’éditeur visuel, le sélecteur de médias intégré, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. Les articles et médias n’ont pas de suppression définitive dans l’interface.
+
+Chaque enregistrement conserve une révision complète. « Historique et restauration » affiche les 50 versions les plus récentes ; les versions antérieures restent en base. Une restauration crée un nouveau brouillon, avec contrôle des modifications concurrentes. Le rédacteur peut retravailler un article validé : **la dernière version validée reste disponible pour l’export** jusqu’à une nouvelle validation par un administrateur. Le retrait de la prochaine publication est une action distincte, réservée à l’administrateur et soumise à confirmation.
+
+Si la session expire au moment d’envoyer le formulaire d’article, une saisie munie du jeton valide de cette session peut être récupérée pendant une heure après reconnexion au même compte. Elle reste à relire et à enregistrer ; une modification concurrente bloque son écrasement. Cela suppose que la session existe encore côté serveur. Ce mécanisme ne sauvegarde pas automatiquement la frappe et ne couvre pas la fermeture d’un onglet avant envoi ou la disparition du fichier de session. Un autre compte ne peut pas récupérer cette saisie.
 
 ## Local
 
@@ -36,11 +42,11 @@ docker stop baruck-admin-web baruck-admin-mysql
 7. Depuis un terminal privé/SSH, exécuter `php bin/install.php init` depuis le dossier `backoffice`. Créer ensuite le premier administrateur avec `php bin/install.php user`, en fournissant sur l’entrée standard un objet JSON contenant `name`, `email`, `role: "admin"` et `password`. Ne pas placer le mot de passe dans les arguments ou l’historique du terminal. L’installateur n’est pas accessible par HTTP. Si aucun terminal n’est disponible, traiter ce point avec l’accès technique Bluehost avant l’ouverture de l’administration ; ne pas déplacer l’installateur sous `public`.
 8. Vérifier connexion, déconnexion, droits d’un rédacteur, upload, export et absence d’accès HTTP aux fichiers `config.local.php`, `seed.json`, `schema.sql`, `src` et `storage`. La configuration de cookie de production exige HTTPS et le nom d’hôte exact. Ne pas ajouter un domaine de cookie partagé avec les autres sous-domaines.
 
-En cas de perte d’un mot de passe : `php bin/install.php reset-password` avec `email` et le nouveau `password` sur l’entrée standard. Cela invalide les sessions existantes. Une désactivation/réactivation d’utilisateur les invalide aussi. Les sessions expirent après 30 minutes d’inactivité ou 8 heures au total.
+En cas de perte d’un mot de passe : `php bin/install.php reset-password` avec `email` et le nouveau `password` sur l’entrée standard. Cela invalide les sessions existantes. Une désactivation/réactivation d’utilisateur les invalide aussi. Les sessions expirent après 30 minutes d’inactivité ou 8 heures au total. Les nouveaux mots de passe et leurs remplacements exigent 15 caractères visibles minimum, sans troncature (limite technique bcrypt : 72 octets UTF-8). Les anciens mots de passe restent utilisables. Les échecs sont limités sur une fenêtre de quinze minutes : 10 par compte et opération, 50 par adresse IP. Une connexion réussie ne remet pas à zéro le compteur IP partagé. La vérification du mot de passe actuel lors de son remplacement est également limitée.
 
 ## Construire une publication du site
 
-L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient uniquement les articles validés et les images téléversées qu’ils référencent, pas les comptes ni les brouillons. Le traitement est une publication complète : une actualité remise en brouillon disparaît du prochain site construit à partir de cet export.
+L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque article et les images téléversées qu’elle référence, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
 
 Dans le projet Next.js :
 
@@ -64,6 +70,6 @@ npm run lint
 npm run typecheck
 ```
 
-La recette MySQL nécessite le démarrage local précédent. Elle crée sa propre base temporaire, un conteneur PHP et des comptes de test, puis les supprime ; elle ne touche pas les comptes de l’installation locale. Elle vérifie les droits, les sessions, CSRF, les conflits, les validations, un upload réel, l’export et la limitation des connexions. Les images privées sont servies après authentification avec un type MIME contrôlé ; seuls les fichiers inclus dans une publication deviennent publics.
+La recette MySQL nécessite le démarrage local précédent. Elle crée sa propre base temporaire, un conteneur PHP et des comptes de test, puis les supprime ; elle ne touche pas les comptes de l’installation locale. Elle vérifie les droits, les sessions, CSRF, les conflits, les validations, un upload réel, l’export, les migrations répétées, les révisions et retraits, la récupération de saisie et la limitation des connexions. Un corpus commun confronte les liens Markdown au validateur PHP et au chargeur Next. La validation PHP cible les constructions prises en charge ; le build Next reste le contrôle final, pas une équivalence complète avec un parseur CommonMark. Les images privées sont servies après authentification avec un type MIME contrôlé ; seuls les fichiers inclus dans une publication deviennent publics.
 
-Sauvegarder ensemble MySQL et le dossier `storage/media`, avec une procédure de restauration vérifiée. Les sessions et limites de connexion restent dans le stockage privé. Prévoir les mises à jour de PHP/MySQL et la maintenance du code d’authentification. Le journal garde les actions et leurs auteurs, pas l’historique intégral des textes. L’application est un premier lot éditorial ; la boutique nécessite son propre cadrage métier avant extension.
+Sauvegarder ensemble MySQL et le dossier `storage/media`, avec une procédure de restauration vérifiée. Les sessions et limites de connexion restent dans le stockage privé. Prévoir les mises à jour de PHP/MySQL et la maintenance du code d’authentification. Le journal garde les actions et leurs auteurs ; la table des révisions conserve séparément le contenu des versions enregistrées depuis cette migration. Les versions précédant la migration ne peuvent pas être reconstituées. L’application est un premier lot éditorial ; la boutique nécessite son propre cadrage métier avant extension.

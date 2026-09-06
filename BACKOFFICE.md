@@ -1,5 +1,18 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Finalisation locale — protection du travail éditorial
+
+**Le travail reste local, à la demande de Mohamed.** Accès : <http://127.0.0.1:8091/>. Aucun déploiement ni push dans cette étape. La cible Bluehost décrite ensuite reste un projet pour plus tard.
+
+- Les brouillons et la dernière version validée sont séparés : retravailler un article ne le retire plus du prochain export. Seul l’administrateur valide une nouvelle version ou confirme un retrait.
+- Chaque enregistrement conserve une révision restaurable en brouillon. Les conflits empêchent d’écraser une modification plus récente. La migration ajoute les tables sans remplacer les comptes ou les articles existants.
+- Une saisie envoyée après expiration peut être récupérée pendant une heure après reconnexion au même compte, si la session serveur existe encore. La frappe sans envoi n’est pas sauvegardée automatiquement.
+- Les nouveaux mots de passe exigent 15 caractères visibles ; les limites de tentatives portent sur le compte et l’adresse IP. Les liens Markdown invalides sont refusés dès l’enregistrement sur le corpus testé, avec contrôle final par le chargeur Next au build.
+
+La suite concerne l’éditeur et son aperçu, le choix des images dans le formulaire, la sauvegarde automatique avant fermeture et les contrôles SEO éditoriaux. Une recette des parcours sur mobile, au clavier et avec Mohamed reste nécessaire avant de qualifier l’expérience d’aboutie. La boutique reste hors périmètre.
+
+Les tests éditoriaux, d’import/export et de validation PHP passent, ainsi que les dix parcours HTTP/MySQL, dont restauration, retrait, migration répétée et récupération avec conflit ou changement de compte. Lint et TypeScript passent. Trois builds webpack en copie temporaire isolée passent : racine, préfixe `/groupe-baruck`, puis export réel MySQL avec article ajouté et image vérifiée par empreinte. RSS, sitemap, exclusion du brouillon et identifiants de l’accueil sont vérifiés ; les chemins des images sont contrôlés dans le build avec préfixe. Webpack conserve le contournement des limites de compilation en sandbox. La page locale répond HTTP 200. Voir le [guide actualisé](backoffice/INSTALLATION.md).
+
 ## Révision du 6 septembre 2026 — cible Bluehost
 
 **Cette décision remplace le choix Pages CMS décrit dans l’étude historique ci-dessous.** Mohamed confirme un hébergement final Bluehost, MySQL et une boutique à venir. Ses captures montrent `groupebaruck.com` actif et l’accès cPanel, avec plusieurs sites sur le compte ; elles ne donnent ni le Document Root de Baruck, ni la version PHP active, ni la formule exacte. Aucun chemin serveur n’est déduit des noms des dossiers des autres sites.
@@ -16,7 +29,7 @@ La cible est une administration PHP/MySQL à `admin.groupebaruck.com`, avec comp
 | Framework PHP avec administration | Socle plus riche, mais nouvelles dépendances, contraintes de déploiement et maintenance à valider | À réévaluer si l’administration devient une application métier importante |
 | Payload / Strapi / backend Next | Demande un runtime Node et son exploitation, non établis par les captures | Ne pas retenir sur la seule preuve d’un accès cPanel |
 
-Il ne s’agit pas d’une équivalence fonctionnelle avec un CMS mature : l’éditeur visuel, les révisions restaurables, les e-mails de récupération et l’automatisation du déploiement restent à prévoir. La boutique est explicitement hors de ce lot.
+Il ne s’agit pas d’une équivalence fonctionnelle avec un CMS mature : l’éditeur visuel, les e-mails de récupération et l’automatisation du déploiement restent à prévoir. Les révisions restaurables sont désormais présentes dans la finalisation locale décrite plus haut. La boutique est explicitement hors de ce lot.
 
 ### Lot implémenté et suite
 
