@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
+import { NavigationTransitions } from "@/components/layout/NavigationTransitions";
 import { brandLogo } from "@/data/media";
 import { site } from "@/data/site";
 import { socialMetadata } from "@/lib/metadata";
@@ -36,8 +37,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={inter.variable}>
-      <body>{children}</body>
+    <html lang="fr" className={inter.variable} data-scroll-behavior="smooth">
+      <body>
+        <NavigationTransitions />
+        {children}
+      </body>
     </html>
   );
 }
