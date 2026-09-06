@@ -29,7 +29,8 @@ export type StudioEvent = {
 };
 
 export type StudioGalleryItem = {
-  image: ServiceImage;
+  /** Dimensions réelles requises : réutilisées par la médiathèque. */
+  image: ServiceImage & { width: number; height: number };
   caption: string;
   layout: "tall" | "wide" | "standard";
 };
@@ -222,6 +223,8 @@ export const studioGallery: StudioGalleryItem[] = [
     image: {
       src: "/images/services/temp-galerie-portrait.jpg",
       alt: "Portrait d’homme réalisé en studio",
+      width: 1000,
+      height: 1200,
     },
     caption: "Portrait studio",
     layout: "tall",
@@ -230,6 +233,8 @@ export const studioGallery: StudioGalleryItem[] = [
     image: {
       src: "/images/services/temp-galerie-mariage.jpg",
       alt: "Couple de mariés en tenue traditionnelle",
+      width: 1000,
+      height: 800,
     },
     caption: "Mariage",
     layout: "wide",
@@ -238,6 +243,8 @@ export const studioGallery: StudioGalleryItem[] = [
     image: {
       src: "/images/services/temp-galerie-conference.jpg",
       alt: "Public assistant à une conférence",
+      width: 1000,
+      height: 800,
     },
     caption: "Conférence",
     layout: "standard",
@@ -246,6 +253,8 @@ export const studioGallery: StudioGalleryItem[] = [
     image: {
       src: "/images/services/temp-galerie-anniversaire.jpg",
       alt: "Famille réunie autour d’un gâteau d’anniversaire",
+      width: 1000,
+      height: 800,
     },
     caption: "Anniversaire",
     layout: "standard",
@@ -254,6 +263,8 @@ export const studioGallery: StudioGalleryItem[] = [
     image: {
       src: "/images/services/temp-galerie-bapteme.jpg",
       alt: "Cérémonie religieuse célébrée devant un autel fleuri",
+      width: 1000,
+      height: 800,
     },
     caption: "Baptême & cérémonie",
     layout: "standard",
@@ -262,6 +273,8 @@ export const studioGallery: StudioGalleryItem[] = [
     image: {
       src: "/images/services/temp-galerie-shooting.jpg",
       alt: "Shooting studio en noir et blanc",
+      width: 1000,
+      height: 1200,
     },
     caption: "Shooting pro",
     layout: "standard",

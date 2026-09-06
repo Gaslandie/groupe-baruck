@@ -9,7 +9,8 @@ export type RouteKey =
   | "news"
   | "projects"
   | "contact"
-  | "legal";
+  | "legal"
+  | "media";
 
 export type ContactId =
   | "landline"
@@ -64,6 +65,7 @@ export const routes: Record<RouteKey, string> = {
   projects: "/projets-realisations/",
   contact: "/contact/",
   legal: "/mentions-legales/",
+  media: "/mediatheque/",
 };
 
 const contactHrefs: Record<ContactId, string> = {
@@ -145,7 +147,15 @@ export const mainNav: NavItem[] = [
   },
   { number: "04", label: "JECA", href: routes.jeca },
   { number: "05", label: "Espoir de Vie", href: routes.edv },
-  { number: "06", label: "Actualités", href: routes.news },
+  {
+    number: "06",
+    label: "Actualités",
+    href: routes.news,
+    children: [
+      { label: "Toutes les actualités", href: routes.news, featured: true },
+      { label: "Médiathèque", href: routes.media, featured: true },
+    ],
+  },
   { number: "07", label: "Contact", href: routes.contact },
 ];
 

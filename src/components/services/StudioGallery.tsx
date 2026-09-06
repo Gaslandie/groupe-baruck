@@ -9,7 +9,7 @@ const layoutStyles = {
 
 export function StudioGallery() {
   return (
-    <section className="bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
+    <section id="galerie" className="bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
       <div className="mb-[clamp(2.5rem,5vw,3.5rem)] grid grid-cols-[minmax(280px,.8fr)_1.2fr] items-end gap-[clamp(3rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:gap-10">
         <div>
           <p className="eyebrow">En images</p>
@@ -32,6 +32,8 @@ export function StudioGallery() {
             <img
               src={asset(item.image.src)}
               alt={item.image.alt}
+              width={item.image.width}
+              height={item.image.height}
               loading="lazy"
               className="h-full w-full object-cover transition-transform duration-[600ms] ease-[cubic-bezier(.2,.7,.2,1)] group-hover:scale-[1.06]"
             />
