@@ -31,10 +31,36 @@ function startSession(): void
     session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'secure' => $settings['environment'] === 'production', 'httponly' => true, 'samesite' => 'Strict']);
     session_start();
     if (isset($_SESSION['user_id']) && (time() - ($_SESSION['last_seen'] ?? 0) > 1800 || time() - ($_SESSION['started'] ?? 0) > 28800)) {
-        $_SESSION = []; session_regenerate_id(true);
+        $recovery = recoverExpiredSubmission($_SESSION, $_POST, $_SERVER, time());
+        $_SESSION = $recovery ? ['recovery' => $recovery] : [];
+        session_regenerate_id(true);
     }
+    if (isset($_SESSION['recovery']) && $_SESSION['recovery']['expires'] <= time()) unset($_SESSION['recovery']);
     $_SESSION['last_seen'] = time();
     $_SESSION['csrf'] ??= bin2hex(random_bytes(32));
+}
+
+/** Ne conserver qu’une saisie légitime de la session expirée, jamais ses secrets. */
+function recoverExpiredSubmission(array $session, array $post, array $server, int $time): ?array
+{
+    if (($server['REQUEST_METHOD'] ?? '') !== 'POST' || ($post['action'] ?? '') !== 'save_article'
+        || !is_string($post['csrf'] ?? null) || !is_string($session['csrf'] ?? null)
+        || !hash_equals($session['csrf'], $post['csrf']) || !is_string($session['user_id'] ?? null)
+        || (isset($server['HTTP_ORIGIN']) && $server['HTTP_ORIGIN'] !== config()['origin'])) return null;
+    $fields = ['id', 'version', 'slug', 'title', 'category', 'date', 'excerpt', 'body', 'cover', 'cover_alt', 'gallery'];
+    $draft = array_intersect_key($post, array_flip($fields));
+    foreach ($draft as $key => $value) {
+        if ($key === 'gallery' ? !is_array($value) : !is_string($value)) return null;
+    }
+    if (strlen(json_encode($draft, JSON_INVALID_UTF8_SUBSTITUTE)) > 300000) return null;
+    return ['user_id' => $session['user_id'], 'draft' => $draft, 'expires' => $time + 3600, 'token' => bin2hex(random_bytes(16))];
+}
+
+function loginDestination(): never
+{
+    $recovery = $_SESSION['recovery'] ?? null;
+    if ($recovery) redirect('edit', ['id' => $recovery['draft']['id'] ?? '', 'recover' => $recovery['token']]);
+    redirect('dashboard');
 }
 
 function csrfField(): string { return '<input type="hidden" name="csrf" value="' . e($_SESSION['csrf']) . '">'; }
@@ -64,8 +90,10 @@ function requireAdmin(array $user): void
 
 function password(string $value): string
 {
-    // Bcrypt tronque au-delà de 72 octets : refuser explicitement plutôt que tronquer.
-    if (strlen($value) < 12 || strlen($value) > 72 || str_contains($value, "\0")) throw new ValidationError('Le mot de passe doit contenir entre 12 et 72 octets.');
+    // Compter les caractères visibles, pas les octets UTF-8. Aucune troncature.
+    if (preg_match('//u', $value) !== 1 || str_contains($value, "\0")) throw new ValidationError('Le mot de passe contient un caractère invalide.');
+    if (preg_match_all('/\X/u', $value) < 15) throw new ValidationError('Choisissez un mot de passe d’au moins 15 caractères. Une phrase de plusieurs mots convient.');
+    if (strlen($value) > 72) throw new ValidationError('Ce mot de passe est trop long pour être enregistré. Réduisez sa longueur.');
     return password_hash($value, PASSWORD_BCRYPT, ['cost' => 12]);
 }
 
@@ -90,29 +118,56 @@ function createUser(array $input, ?string $actor = null): string
     return $id;
 }
 
+/** Limites distinctes par compte et par IP, partagées entre toutes les sessions. */
+function withAttemptLimit(string $identity, callable $verify, string $scope = 'login'): mixed
+{
+    $dir = config()['storage'] . '/throttle';
+    if (!is_dir($dir)) mkdir($dir, 0700, true);
+    $limits = [
+        'account-' . hash('sha256', $scope . ':' . $identity) => 10,
+        'ip-' . hash('sha256', $_SERVER['REMOTE_ADDR'] ?? 'unknown') => 50,
+    ];
+    $locks = [];
+    $states = [];
+    try {
+        foreach ($limits as $key => $limit) {
+            $lock = fopen($dir . '/' . $key . '.json', 'c+');
+            if (!$lock) throw new \RuntimeException('Compteur de connexion indisponible.');
+            $locks[$key] = $lock;
+            if (!flock($lock, LOCK_EX)) throw new \RuntimeException('Verrou de connexion indisponible.');
+            $state = json_decode(stream_get_contents($lock), true);
+            if (!is_array($state) || !isset($state['start'], $state['count']) || time() - $state['start'] >= 900) $state = ['start' => time(), 'count' => 0];
+            if ($state['count'] >= $limit) throw new ValidationError('Trop de tentatives. Réessayez dans quinze minutes.');
+            $states[$key] = $state;
+        }
+        $result = $verify();
+        foreach ($states as $key => $state) {
+            if (!$result) $state['count']++;
+            // Une connexion valide ne remet pas à zéro le compteur IP global.
+            elseif (str_starts_with($key, 'account-')) $state = ['start' => time(), 'count' => 0];
+            $lock = $locks[$key];
+            rewind($lock); ftruncate($lock, 0); fwrite($lock, json_encode($state)); fflush($lock);
+        }
+        return $result;
+    } finally {
+        foreach (array_reverse($locks) as $lock) { flock($lock, LOCK_UN); fclose($lock); }
+    }
+}
+
 function login(array $input): void
 {
     $email = strtolower(text($input, 'email', 190));
     $value = $input['password'] ?? '';
-    if (!is_string($value) || strlen($value) > 1024) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
-    // Verrou privé et fenêtre par adresse IP, y compris pour les comptes inexistants.
-    $dir = config()['storage'] . '/throttle';
-    if (!is_dir($dir)) mkdir($dir, 0700, true);
-    $file = $dir . '/' . hash('sha256', $_SERVER['REMOTE_ADDR'] ?? 'unknown') . '.json';
-    $lock = fopen($file, 'c+');
-    if (!$lock || !flock($lock, LOCK_EX)) throw new \RuntimeException('Verrou de connexion indisponible.');
-    try {
-        $attempts = json_decode(stream_get_contents($lock), true) ?: ['start' => time(), 'count' => 0];
-        if (time() - $attempts['start'] >= 900) $attempts = ['start' => time(), 'count' => 0];
-        if ($attempts['count'] >= 10) throw new ValidationError('Trop de tentatives. Réessayez dans quinze minutes.');
-        $attempts['count']++;
-        rewind($lock); ftruncate($lock, 0); fwrite($lock, json_encode($attempts)); fflush($lock);
+    if (!is_string($value) || strlen($value) > 72 || str_contains($value, "\0")) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
+    $user = withAttemptLimit($email, function () use ($email, $value) {
         $user = query('SELECT * FROM users WHERE email = ?', [$email])->fetch();
         $dummyHash = '$2y$12$QwErTyUiOpAsDfGhJkLzXuVs5vr9iUkzV/lN/mNVjjkmdm.Qvye/6';
         $verified = password_verify($value, $user['password_hash'] ?? $dummyHash);
-        if (!$user || !$verified || !$user['active']) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
-        rewind($lock); ftruncate($lock, 0); fwrite($lock, json_encode(['start' => time(), 'count' => 0]));
-        session_regenerate_id(true);
-        $_SESSION = ['user_id' => $user['id'], 'session_version' => (int) $user['session_version'], 'started' => time(), 'last_seen' => time(), 'csrf' => bin2hex(random_bytes(32))];
-    } finally { flock($lock, LOCK_UN); fclose($lock); }
+        return $user && $verified && $user['active'] ? $user : null;
+    });
+    if (!$user) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
+    $recovery = $_SESSION['recovery'] ?? null;
+    session_regenerate_id(true);
+    $_SESSION = ['user_id' => $user['id'], 'session_version' => (int) $user['session_version'], 'started' => time(), 'last_seen' => time(), 'csrf' => bin2hex(random_bytes(32))];
+    if (is_array($recovery) && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()) $_SESSION['recovery'] = $recovery;
 }

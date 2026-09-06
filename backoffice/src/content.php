@@ -27,8 +27,7 @@ function validateArticle(array $input, bool $ready): array
     $parsed = \DateTimeImmutable::createFromFormat('!Y-m-d', $date);
     if ($date !== '' && (!$parsed || $parsed->format('Y-m-d') !== $date)) throw new ValidationError('Date invalide.');
     $body = text($input, 'body', 200000, $ready);
-    // Aucun HTML actif. La validation Markdown complète est refaite lors du build.
-    if (preg_match('/<\/?[a-z!][^>]*>/i', $body) || preg_match('/(?:javascript|vbscript|data)\s*:/i', $body)) throw new ValidationError('Utilisez du texte Markdown sans HTML ni lien exécutable.');
+    validateMarkdown($body);
     $cover = text($input, 'cover', 255, false);
     $coverAlt = text($input, 'cover_alt', 500, false);
     if ($cover !== '') {
@@ -64,7 +63,6 @@ function saveArticle(array $input, array $user): string
             $old = $id ? query('SELECT * FROM articles WHERE id = ? FOR UPDATE', [$id])->fetch() : false;
             if ($id && (!$old || $version !== (int) $old['version'])) throw new ConflictError('Cet article a été modifié ailleurs. Rechargez la page avant d’enregistrer. Votre saisie est conservée ci-dessous.');
             if ($old && $old['slug'] !== $article['slug']) throw new ValidationError('L’adresse d’un article existant ne peut pas changer.');
-            if ($old && $old['status'] === 'ready' && $user['role'] !== 'admin') throw new ValidationError('Un administrateur doit remettre cet article en brouillon avant modification.');
             $values = [$article['title'], $article['category'], $article['date'], $article['excerpt'], $article['body'], $article['cover'], $article['cover_alt'], json_encode($article['gallery'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), $status, now(), $user['id']];
             if ($old) {
                 query('UPDATE articles SET title=?,category=?,article_date=?,excerpt=?,body=?,cover=?,cover_alt=?,gallery=?,status=?,updated_at=?,updated_by=?,version=version+1 WHERE id=?', [...$values, $id]);
@@ -72,6 +70,9 @@ function saveArticle(array $input, array $user): string
                 $id = id();
                 query('INSERT INTO articles (title,category,article_date,excerpt,body,cover,cover_alt,gallery,status,updated_at,updated_by,id,slug) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [...$values, $id, $article['slug']]);
             }
+            $nextVersion = $old ? (int) $old['version'] + 1 : 1;
+            recordRevision($id, $nextVersion, $article, $status === 'ready' ? 'Version validée' : 'Brouillon enregistré', $user['id']);
+            if ($status === 'ready') validatePublication($id, $nextVersion, $article);
             audit($status === 'ready' ? 'Article validé' : 'Brouillon enregistré', $article['title'], $user['id']);
             return $id;
         });
@@ -108,10 +109,9 @@ function uploadMedia(array $file, string $alt, array $user): void
 function exportContent(array $user): array
 {
     requireAdmin($user);
-    $articles = query('SELECT * FROM articles WHERE status = ? ORDER BY article_date DESC,slug', ['ready'])->fetchAll();
-    $data = array_map(function ($row) {
-        return ['slug' => $row['slug'], 'title' => $row['title'], 'date' => $row['article_date'], 'category' => $row['category'], 'excerpt' => $row['excerpt'], 'body' => $row['body'], 'cover' => $row['cover'], 'coverAlt' => $row['cover_alt'], 'gallery' => json_decode($row['gallery'], true, 512, JSON_THROW_ON_ERROR)];
-    }, $articles);
+    $articles = query('SELECT payload FROM article_publications')->fetchAll();
+    $data = array_map(fn($row) => json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR), $articles);
+    usort($data, fn($first, $second) => strcmp($second['date'], $first['date']) ?: strcmp($first['slug'], $second['slug']));
     $encoded = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     $media = [];
     $total = 0;

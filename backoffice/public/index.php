@@ -15,12 +15,13 @@ try {
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
     if ($setup) $page = 'setup';
     elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'media', 'users', 'account', 'publication', 'image'], true)) {
+    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'media', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
     if ($user && in_array($page, ['users', 'publication'], true)) requireAdmin($user);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
         requireCsrf();
         try {
             $action = text($_POST, 'action', 32);
@@ -31,17 +32,26 @@ try {
                     if ((int) query('SELECT COUNT(*) FROM users')->fetchColumn() > 0) throw new ConflictError('Le premier compte existe déjà. Rechargez la page.');
                     createUser([...$_POST, 'role' => 'admin']);
                 } finally { query("SELECT RELEASE_LOCK('baruck_setup')"); }
-                login($_POST); redirect('dashboard');
+                login($_POST); loginDestination();
             }
-            if (!$setup && !$user && $action === 'login') { login($_POST); redirect('dashboard'); }
+            if (!$setup && !$user && $action === 'login') { login($_POST); loginDestination(); }
             if (!$user) throw new ValidationError('Connectez-vous pour continuer.');
             switch ($action) {
                 case 'logout':
                     $_SESSION = []; session_regenerate_id(true); redirect('login');
                 case 'save_article':
                     $id = saveArticle($_POST, $user);
-                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article validé. Il sera inclus dans la prochaine publication du site.' : 'Brouillon enregistré.';
+                    unset($_SESSION['recovery']);
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Nouvelle version validée pour la prochaine publication.' : 'Brouillon enregistré. La dernière version validée est conservée.';
                     redirect('edit', ['id' => $id]);
+                case 'restore_revision':
+                    $id = restoreRevision($_POST, $user);
+                    $_SESSION['flash'] = 'Version restaurée en brouillon. La dernière version validée est conservée.';
+                    redirect('edit', ['id' => $id]);
+                case 'withdraw_publication':
+                    withdrawPublication($_POST, $user);
+                    $_SESSION['flash'] = 'Article retiré de la prochaine publication. Son brouillon et son historique sont conservés.';
+                    redirect('edit', ['id' => text($_POST, 'id', 32)]);
                 case 'upload':
                     uploadMedia($_FILES['image'] ?? [], text($_POST, 'alt', 500), $user);
                     $_SESSION['flash'] = 'Image ajoutée à la médiathèque.'; redirect('media');
@@ -62,7 +72,8 @@ try {
                 case 'change_password':
                     $old = is_string($_POST['current_password'] ?? null) ? $_POST['current_password'] : '';
                     $hash = query('SELECT password_hash FROM users WHERE id=?', [$user['id']])->fetchColumn();
-                    if (!password_verify($old, $hash)) throw new ValidationError('Le mot de passe actuel est incorrect.');
+                    $verified = withAttemptLimit($user['id'], fn() => strlen($old) <= 72 && password_verify($old, $hash), 'password-change');
+                    if (!$verified) throw new ValidationError('Le mot de passe actuel est incorrect.');
                     $newHash = password(is_string($_POST['password'] ?? null) ? $_POST['password'] : '');
                     transaction(function () use ($newHash, $user) {
                         query('UPDATE users SET password_hash=?,session_version=session_version+1 WHERE id=?', [$newHash, $user['id']]);
@@ -93,15 +104,24 @@ try {
     }
 
     $article = null;
-    if ($page === 'edit') {
+    $publication = null;
+    if (in_array($page, ['edit', 'history'], true)) {
         $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
         $article = $id ? query('SELECT * FROM articles WHERE id=?', [$id])->fetch() : null;
-        if ($id && !$article) { http_response_code(404); $page = 'missing'; }
+        if (($id || $page === 'history') && !$article) { http_response_code(404); $page = 'missing'; }
         if ($article) {
+            $publication = query('SELECT version,validated_at FROM article_publications WHERE article_id=?', [$id])->fetch() ?: null;
             $article['date'] = $article['article_date'];
             $article['gallery'] = json_decode($article['gallery'], true, 512, JSON_THROW_ON_ERROR);
         }
         if ($error && ($_POST['action'] ?? '') === 'save_article') $article = $_POST;
+        $recovery = $_SESSION['recovery'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $page === 'edit' && $recovery
+            && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()
+            && ($_GET['recover'] ?? '') === $recovery['token'] && ($recovery['draft']['id'] ?? '') === $id) {
+            $article = [...($article ?: []), ...$recovery['draft'], 'status' => 'draft'];
+            $flash = 'Votre saisie a été récupérée. Relisez-la puis enregistrez votre brouillon. Elle n’a pas remplacé la version validée.';
+        }
         $article ??= ['id' => '', 'version' => 0, 'title' => '', 'slug' => '', 'category' => 'groupe', 'date' => '', 'excerpt' => '', 'body' => '', 'cover' => '', 'cover_alt' => '', 'gallery' => [], 'status' => 'draft'];
     }
     require dirname(__DIR__) . '/src/views/layout.php';

@@ -45,3 +45,26 @@ CREATE TABLE IF NOT EXISTS audit_log (
     subject VARCHAR(240) NOT NULL,
     created_at VARCHAR(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS article_publications (
+    article_id CHAR(32) PRIMARY KEY,
+    version INT NOT NULL,
+    payload MEDIUMTEXT NOT NULL,
+    validated_at VARCHAR(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS article_revisions (
+    id CHAR(32) PRIMARY KEY,
+    article_id CHAR(32) NOT NULL,
+    version INT NOT NULL,
+    payload MEDIUMTEXT NOT NULL,
+    action VARCHAR(64) NOT NULL,
+    user_id CHAR(32) NULL,
+    created_at VARCHAR(25) NOT NULL,
+    UNIQUE KEY article_version (article_id, version)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS schema_migrations (
+    name VARCHAR(100) PRIMARY KEY,
+    applied_at VARCHAR(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

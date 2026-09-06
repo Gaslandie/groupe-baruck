@@ -10,13 +10,21 @@ try {
     if ($command === 'init') {
         db()->exec(file_get_contents(dirname(__DIR__) . '/schema.sql'));
         $seed = json_decode(file_get_contents(dirname(__DIR__) . '/seed.json'), true, 512, JSON_THROW_ON_ERROR);
-        transaction(function () use ($seed) {
+        $migrated = (bool) query('SELECT name FROM schema_migrations WHERE name=?', ['editorial-snapshots-v1'])->fetch();
+        transaction(function () use ($seed, $migrated) {
             foreach ($seed['articles'] as $article) {
                 // Ne jamais écraser un contenu modifié lors d’une réinstallation.
                 if (query('SELECT id FROM articles WHERE slug=?', [$article['slug']])->fetch()) continue;
-                query('INSERT INTO articles (id,slug,title,category,article_date,excerpt,body,cover,cover_alt,gallery,status,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', [id(), $article['slug'], $article['title'], $article['category'], $article['date'], $article['excerpt'], $article['body'], $article['cover'] ?? '', $article['coverAlt'] ?? '', json_encode($article['gallery'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), ($article['draft'] ?? false) ? 'draft' : 'ready', now()]);
+                $id = id();
+                query('INSERT INTO articles (id,slug,title,category,article_date,excerpt,body,cover,cover_alt,gallery,status,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', [$id, $article['slug'], $article['title'], $article['category'], $article['date'], $article['excerpt'], $article['body'], $article['cover'] ?? '', $article['coverAlt'] ?? '', json_encode($article['gallery'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), ($article['draft'] ?? false) ? 'draft' : 'ready', now()]);
+                if ($migrated) {
+                    $data = articleData(query('SELECT * FROM articles WHERE id=?', [$id])->fetch());
+                    recordRevision($id, 1, $data, 'Version initiale', null);
+                    if (!($article['draft'] ?? false)) validatePublication($id, 1, $data);
+                }
             }
         });
+        migrateEditorial();
         echo "Tables initialisées ; articles existants préservés.\n";
     } elseif ($command === 'user' || $command === 'reset-password') {
         // Entrée JSON sur stdin : aucun mot de passe dans l’historique de commande.

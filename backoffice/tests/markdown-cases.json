@@ -1,0 +1,22 @@
+[
+  { "name": "lien interne", "body": "[Contact](/contact/)", "valid": true },
+  { "name": "lien https et titre", "body": "[Site](https://example.test/page \"Titre\")", "valid": true },
+  { "name": "parenthèses imbriquées", "body": "[Site](https://example.test/un_(deux_(trois)))", "valid": true },
+  { "name": "ancre", "body": "[Section](#section)", "valid": true },
+  { "name": "courriel et téléphone", "body": "[Écrire](mailto:test@example.test) [Appeler](tel:+225000000)", "valid": true },
+  { "name": "référence https", "body": "[Site][lien]\n\n[lien]: https://example.test", "valid": true },
+  { "name": "ftp inline", "body": "[Site](ftp://example.test)", "valid": false },
+  { "name": "ftp angle", "body": "[Site](<ftp://example.test>)", "valid": false },
+  { "name": "ftp référence", "body": "[Site][lien]\n\n[lien]: ftp://example.test", "valid": false },
+  { "name": "référence courte javascript", "body": "[Site]\n\n[Site]: javascript:alert(1)", "valid": false },
+  { "name": "javascript avec entité", "body": "[Site](java&#115;cript:alert(1))", "valid": false },
+  { "name": "libellé imbriqué", "body": "[texte [interne]](ftp://example.test)", "valid": false },
+  { "name": "adresse sans protocole", "body": "[Site](//example.test)", "valid": false },
+  { "name": "adresse relative", "body": "[Contact](contact/)", "valid": false },
+  { "name": "html actif", "body": "<script>alert(1)</script>", "valid": false },
+  { "name": "commentaire html", "body": "<!-- commentaire -->", "valid": false },
+  { "name": "bloc de code", "body": "```html\n<script>alert(1)</script>\n[Site](ftp://example.test)\n```", "valid": true },
+  { "name": "code inline", "body": "Exemple : `[Site](ftp://example.test)`", "valid": true },
+  { "name": "lien après code", "body": "`exemple` [Site](ftp://example.test)", "valid": false },
+  { "name": "fence longue", "body": "````\n```\n[Site](ftp://example.test)\n````", "valid": true }
+]

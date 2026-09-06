@@ -1,7 +1,7 @@
 <?php
 namespace Baruck;
 
-$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'media' => 'Médiathèque', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
+$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'media' => 'Médiathèque', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
 $title = $titles[$page] ?? 'Administration';
 $inputClass = 'mt-2 w-full rounded-lg border border-line bg-ivory px-4 py-3 text-sm focus:border-accent';
 $buttonClass = 'inline-flex items-center justify-center rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-ivory hover:bg-[#b64820] disabled:opacity-50';
@@ -23,11 +23,12 @@ function field(string $label, string $name, mixed $value = '', string $type = 't
         <p class="mb-3 text-xs font-semibold uppercase tracking-[.18em] text-accent"><?= $setup ? 'Première ouverture locale' : 'Administration' ?></p>
         <h2 id="login-title" class="font-display text-3xl"><?= $setup ? 'Créez votre compte' : 'Ravi de vous retrouver' ?></h2>
         <p class="mt-3 text-sm leading-relaxed text-ink/60"><?= $setup ? 'Choisissez les identifiants de votre compte administrateur pour cette installation locale.' : 'Connectez-vous avec votre compte Baruck.' ?></p>
+        <?php if (isset($_SESSION['recovery'])): ?><p role="status" class="mt-6 rounded-lg bg-paper p-4 text-sm">Votre session a expiré. Reconnectez-vous avec le même compte pour retrouver votre saisie. Elle reste disponible pendant une heure.</p><?php endif; ?>
         <?php if ($error): ?><p role="alert" class="mt-6 rounded-lg border border-[#b64820]/30 bg-[#b64820]/10 p-4 text-sm"><?= e($error) ?></p><?php endif; ?>
         <form method="post" class="mt-7 space-y-5"><?= csrfField() ?><input type="hidden" name="action" value="<?= $setup ? 'setup' : 'login' ?>">
             <?php if ($setup): ?><div><?php field('Votre nom', 'name', $_POST['name'] ?? '', 'text', 'required maxlength="100" autocomplete="name"'); ?></div><?php endif; ?>
             <div><?php field('Adresse e-mail', 'email', $_POST['email'] ?? '', 'email', 'required maxlength="190" autocomplete="username"'); ?></div>
-            <div><?php field('Mot de passe', 'password', '', 'password', 'required ' . ($setup ? 'minlength="12" maxlength="72" autocomplete="new-password"' : 'autocomplete="current-password"')); ?><?php if ($setup): ?><p class="mt-2 text-xs text-ink/60">Au moins 12 caractères. Vous pourrez le modifier dans votre compte.</p><?php endif; ?></div>
+            <div><?php field('Mot de passe', 'password', '', 'password', 'required ' . ($setup ? 'minlength="15" maxlength="72" autocomplete="new-password"' : 'autocomplete="current-password"')); ?><?php if ($setup): ?><p class="mt-2 text-xs text-ink/60">Au moins 15 caractères. Une phrase de plusieurs mots convient.</p><?php endif; ?></div>
             <button class="<?= $buttonClass ?> w-full" type="submit"><?= $setup ? 'Créer mon compte et entrer' : 'Se connecter' ?> <span aria-hidden="true" class="ml-3">→</span></button>
         </form>
         <?php if (!$setup): ?><p class="mt-6 text-xs leading-relaxed text-ink/60">En cas de mot de passe oublié, contactez la personne qui gère les accès au site.</p><?php endif; ?>

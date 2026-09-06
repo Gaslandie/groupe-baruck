@@ -43,6 +43,15 @@ function write(data = {}, body = "Texte de test.", filename = "article-test.md")
   fs.writeFileSync(path.join(articles, filename), matter.stringify(body, fields));
 }
 
+test("les cas de liens contrôlés par PHP respectent aussi la validation Next", () => {
+  const cases = JSON.parse(fs.readFileSync(path.join(project, "backoffice/tests/markdown-cases.json"), "utf8"));
+  for (const item of cases) {
+    write({}, item.body);
+    if (item.valid) assert.doesNotThrow(getAllArticles, item.name);
+    else assert.throws(getAllArticles, undefined, item.name);
+  }
+});
+
 test("les articles du dépôt sont lisibles avec et sans préfixe d’hébergement", () => {
   let publishedCount = 0;
   for (const filename of fs.readdirSync(path.join(project, "content/actualites"))) {

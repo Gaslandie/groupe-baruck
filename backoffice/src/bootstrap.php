@@ -84,4 +84,6 @@ function categories(): array
 }
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/markdown.php';
 require __DIR__ . '/content.php';
+require __DIR__ . '/editorial.php';

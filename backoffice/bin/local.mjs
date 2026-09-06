@@ -23,7 +23,7 @@ catch (error) {
 const envFile = path.join(local, 'mysql.env');
 await fs.writeFile(envFile, `MYSQL_ROOT_PASSWORD=${secrets.root}\nMYSQL_DATABASE=baruck\nMYSQL_USER=baruck\nMYSQL_PASSWORD=${secrets.password}\n`, { mode: 0o600 });
 const config = path.join(local, 'config.php');
-await fs.writeFile(config, `<?php return ['environment'=>'local','origin'=>'http://127.0.0.1:8091','site_url'=>'https://gaslandie.github.io/groupe-baruck/','storage'=>'/data','database'=>['dsn'=>'mysql:host=baruck-admin-mysql;dbname=baruck;charset=utf8mb4','user'=>'baruck','password'=>'${secrets.password}']];\n`, { mode: 0o600 });
+await fs.writeFile(config, `<?php return ['environment'=>'local','origin'=>'http://127.0.0.1:8091','site_url'=>'http://localhost:3000/','storage'=>'/data','database'=>['dsn'=>'mysql:host=baruck-admin-mysql;dbname=baruck;charset=utf8mb4','user'=>'baruck','password'=>'${secrets.password}']];\n`, { mode: 0o600 });
 if (!exists('network', 'baruck-admin')) docker('network', 'create', 'baruck-admin');
 if (!exists('container', 'baruck-admin-mysql')) {
   console.log('Démarrage de MySQL dans un environnement réservé à Baruck…');
