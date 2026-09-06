@@ -139,9 +139,16 @@ export function LegalContent() {
           l’e-mail reste modifiable avant tout envoi.
         </p>
         <p className={paragraphClass}>
-          Sur la page Contact, la carte Google Maps n’est chargée qu’après le clic sur « Afficher
-          la carte ». À partir de ce clic, Google peut traiter des données techniques ou utiliser
-          ses propres traceurs conformément à sa politique.
+          Sur la page Contact, la carte Google Maps reste bloquée jusqu’au clic sur « Autoriser
+          Google Maps ». Vous pouvez choisir « Ne pas afficher » et continuer à consulter le
+          site. L’autorisation vaut uniquement pour la page en cours. Une fois la carte chargée,
+          Google reçoit des données techniques, dont l’adresse IP, et peut utiliser ses propres
+          cookies ou traceurs conformément à sa politique.
+        </p>
+        <p className={paragraphClass}>
+          Le bouton « Retirer l’autorisation et masquer la carte » décharge la carte. Il ne
+          supprime pas les données déjà reçues par Google ni les cookies éventuellement déjà
+          déposés, qui peuvent être gérés dans les réglages du navigateur.
         </p>
         <p className={paragraphClass}>
           Les liens externes conduisent vers les services concernés, dont les politiques propres

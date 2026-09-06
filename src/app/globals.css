@@ -117,6 +117,14 @@
 @layer components {
   .menu-open { overflow: hidden; }
 
+  .nav-disclosure-summary { cursor: pointer; list-style: none; }
+  .nav-disclosure-summary::-webkit-details-marker { display: none; }
+  .nav-disclosure-arrow { display: inline-block; transition: transform .22s ease; }
+  details[open] > summary .nav-disclosure-arrow { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: no-preference) {
+    details[open] > .nav-disclosure-content { animation: navigation-in .22s ease both; }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html[data-navigation-transition]::view-transition-old(root) {
       animation: navigation-out .24s ease-out both;

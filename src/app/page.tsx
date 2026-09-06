@@ -7,7 +7,6 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { NewsPreview } from "@/components/home/NewsPreview";
 import { PageTeaser } from "@/components/home/PageTeaser";
 import { EdvImpactHighlights } from "@/components/espoir-de-vie/EdvImpactHighlights";
-import { Marquee } from "@/components/ui/Marquee";
 import { pageTeasers } from "@/data/home";
 import { presidentPortrait } from "@/data/media";
 import { site } from "@/data/site";
@@ -20,23 +19,16 @@ export const metadata: Metadata = {
   openGraph: socialMetadata(presidentPortrait),
 };
 
-const marqueeItems = [
-  "Guinée",
-  "Studio Photo",
-  "Hôtesses événementielles",
-  "Communication",
-  "Entrepreneuriat",
-  "Impact social",
-];
-
 export default function Home() {
   return (
     <PageShell variant="home" current="home" footer="home">
       <StructuredData data={organizationSchema} />
       <HeroSection />
-      <Marquee items={marqueeItems} label="Domaines d’activité" />
+      {pageTeasers.filter((teaser) => teaser.id === "apercu-studio").map((teaser) => (
+        <PageTeaser key={teaser.id} {...teaser} />
+      ))}
       <ActivitiesSection />
-      {pageTeasers.map((teaser) => (
+      {pageTeasers.filter((teaser) => teaser.id !== "apercu-studio").map((teaser) => (
         <PageTeaser key={teaser.id} {...teaser} />
       ))}
       <EdvImpactHighlights />

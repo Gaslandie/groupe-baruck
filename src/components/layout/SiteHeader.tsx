@@ -97,6 +97,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
   }, []);
 
   useEffect(() => {
+    document.querySelectorAll<HTMLDetailsElement>("details[data-nav-group][open]").forEach((group) => { group.open = false; });
     if (!isOpen) {
       document.body.classList.remove("menu-open");
       lastFocusedElement.current?.focus();
@@ -116,7 +117,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
 
       if (event.key !== "Tab") return;
       const sideNav = closeButtonRef.current?.closest("aside");
-      const focusable = sideNav?.querySelectorAll<HTMLElement>("a, button");
+      const focusable = Array.from(sideNav?.querySelectorAll<HTMLElement>("a, button, summary") ?? []).filter((element) => element.getClientRects().length > 0);
       if (!focusable?.length) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -137,6 +138,29 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
       document.body.classList.remove("menu-open");
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    const closeGroups = (event: Event) => {
+      if (!(event.target instanceof Element)) return;
+      document.querySelectorAll<HTMLDetailsElement>("details[data-nav-group][open]").forEach((group) => {
+        if (!group.contains(event.target as Node) || event.target instanceof Element && event.target.closest("a[href]")) group.open = false;
+      });
+    };
+    const escapeGroup = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      const group = document.querySelector<HTMLDetailsElement>("details[data-nav-group][open]");
+      if (!group) return;
+      event.preventDefault(); event.stopPropagation();
+      group.open = false;
+      group.querySelector("summary")?.focus();
+    };
+    document.addEventListener("click", closeGroups);
+    document.addEventListener("keydown", escapeGroup, true);
+    return () => {
+      document.removeEventListener("click", closeGroups);
+      document.removeEventListener("keydown", escapeGroup, true);
+    };
+  }, []);
 
   const currentAttributes = (href: string) => {
     const isCurrent = href === currentHref;
@@ -175,26 +199,26 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
               const hasOtherChildren = hasFeaturedChildren && otherChildren.length > 0;
 
               return (
-                <div key={item.href} className="group relative">
-                  <Link
-                    href={item.href}
+                <details key={item.href} name="desktop-nav-groups" data-nav-group className="relative">
+                  <summary
                     aria-current={itemCurrent["aria-current"]}
                     data-current={itemCurrent["data-current"]}
                     className={[
                       desktopLinkStyles,
+                      "nav-disclosure-summary",
                       styles.underline,
                       itemCurrent.isCurrent ? styles.currentDesktop : "",
                       "flex items-center gap-[.4rem]",
                     ].join(" ")}
                   >
                     {item.shortLabel ?? item.label}
-                    <span aria-hidden="true" className="text-small text-accent">
+                    <span aria-hidden="true" className="nav-disclosure-arrow text-small text-accent">
                       ⌄
                     </span>
-                  </Link>
+                  </summary>
                   <div
                     className={[
-                      "invisible absolute left-1/2 top-[calc(100%-.2rem)] translate-x-[-50%] translate-y-[10px] border border-[rgba(255,255,255,.14)] bg-[rgba(11,12,14,.96)] p-[.7rem] opacity-0 shadow-[0_20px_50px_rgba(0,0,0,.24)] transition-[opacity,visibility,transform] duration-[250ms] group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100",
+                      "nav-disclosure-content absolute left-1/2 top-[calc(100%-.2rem)] translate-x-[-50%] border border-[rgba(255,255,255,.14)] bg-[rgba(11,12,14,.96)] p-[.7rem] shadow-[0_20px_50px_rgba(0,0,0,.24)]",
                       hasOtherChildren ? "w-[320px]" : "w-[220px]",
                     ].join(" ")}
                   >
@@ -236,10 +260,11 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                             );
                           })}
                         </div>
+                        <Link href={item.href} className="mt-2 block border-t border-ivory/15 px-[.8rem] py-[.75rem] text-caption normal-case tracking-[.06em] hover:text-accent focus-visible:text-accent">Tous nos services</Link>
                       </>
                     ) : null}
                   </div>
-                </div>
+                </details>
               );
             }
 
@@ -327,70 +352,32 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           {mainNav.map((item) => {
             const itemCurrent = currentAttributes(item.href);
             const featuredChildren = item.children?.filter((child) => child.featured) ?? [];
-            const hasFeaturedChildren = featuredChildren.length > 0;
-            const visibleChildren = hasFeaturedChildren ? featuredChildren : item.children;
-            const hasOtherChildren = hasFeaturedChildren && item.children?.some((child) => !child.featured);
-
+            const visibleChildren = featuredChildren.length ? featuredChildren : item.children;
+            const hasOtherChildren = featuredChildren.length > 0 && item.children?.some((child) => !child.featured);
+            const heading = (
+              <>
+                <span className={["inline-block w-[2.3rem] align-middle font-sans text-micro tracking-[.1em]", itemCurrent.isCurrent ? styles.sideCurrentNumber : "text-accent"].join(" ")}>{item.number}</span>
+                {item.label}
+                {item.children ? <span aria-hidden="true" className="nav-disclosure-arrow ml-3 inline-block align-middle font-sans text-lead text-accent">⌄</span> : null}
+              </>
+            );
+            const headingClass = ["block py-[.34rem] font-display text-display-md leading-[1.06] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem]", itemCurrent.isCurrent ? styles.sideCurrent : ""].join(" ");
+            if (!visibleChildren) return (
+              <Link key={item.href} href={item.href} aria-current={itemCurrent["aria-current"]} data-current={itemCurrent["data-current"]} onClick={() => setIsOpen(false)} className={headingClass}>{heading}</Link>
+            );
             return (
-              <div key={item.href} className="contents">
-                <Link
-                  href={item.href}
-                  aria-current={itemCurrent["aria-current"]}
-                  data-current={itemCurrent["data-current"]}
-                  onClick={() => setIsOpen(false)}
-                  className={[
-                    "py-[.34rem] font-display text-display-md leading-[1.06] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem]",
-                    itemCurrent.isCurrent ? styles.sideCurrent : "",
-                  ].join(" ")}
-                >
-                  <span
-                    className={[
-                      "inline-block w-[2.3rem] align-middle font-sans text-micro tracking-[.1em]",
-                      itemCurrent.isCurrent ? styles.sideCurrentNumber : "text-accent",
-                    ].join(" ")}
-                  >
-                    {item.number}
-                  </span>
-                  {item.label}
-                </Link>
-
-                {visibleChildren ? (
-                  <div className="ml-[2.3rem] mb-[.55rem] mt-[.15rem] grid gap-[.15rem] border-l border-line pl-4">
-                    {visibleChildren.map((child) => {
-                      const childCurrent = currentAttributes(child.href);
-                      return (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          aria-current={childCurrent["aria-current"]}
-                          data-current={childCurrent["data-current"]}
-                          onClick={() => setIsOpen(false)}
-                          className={[
-                            "py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
-                            childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]",
-                          ].join(" ")}
-                        >
-                          {child.label}
-                        </Link>
-                      );
-                    })}
-                    {hasOtherChildren ? (
-                      <Link
-                        href={item.href}
-                        aria-current={itemCurrent["aria-current"]}
-                        data-current={itemCurrent["data-current"]}
-                        onClick={() => setIsOpen(false)}
-                        className={[
-                          "py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
-                          itemCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]",
-                        ].join(" ")}
-                      >
-                        Tous nos domaines
-                      </Link>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
+              <details key={item.href} name="side-nav-groups" data-nav-group>
+                <summary className={`nav-disclosure-summary ${headingClass}`}>{heading}</summary>
+                <div className="nav-disclosure-content ml-[2.3rem] mb-[.55rem] mt-[.15rem] grid gap-[.15rem] border-l border-line pl-4">
+                  {visibleChildren.map((child) => {
+                    const childCurrent = currentAttributes(child.href);
+                    return (
+                      <Link key={child.href} href={child.href} aria-current={childCurrent["aria-current"]} data-current={childCurrent["data-current"]} onClick={() => setIsOpen(false)} className={["py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent", childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]"].join(" ")}>{child.label}</Link>
+                    );
+                  })}
+                  {hasOtherChildren ? <Link href={item.href} onClick={() => setIsOpen(false)} className="py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] text-[#6f6f6b] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent">Tous nos domaines</Link> : null}
+                </div>
+              </details>
             );
           })}
         </nav>
