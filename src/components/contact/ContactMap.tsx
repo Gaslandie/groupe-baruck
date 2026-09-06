@@ -6,8 +6,9 @@ import { ClientNote } from "@/components/ui/ClientNote";
 export function ContactMap() {
   return (
     <section
+      id="carte"
       aria-label="Plan d’accès"
-      className="grid grid-cols-[38%_62%] gap-x-[clamp(2rem,5vw,5rem)] bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(3.5rem,6vw,6rem)] max-tablet:grid-cols-1 max-tablet:gap-y-10 max-tablet:px-[1.3rem] max-tablet:py-16"
+      className="scroll-mt-[92px] grid grid-cols-[38%_62%] gap-x-[clamp(2rem,5vw,5rem)] bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(3.5rem,6vw,6rem)] max-tablet:grid-cols-1 max-tablet:gap-y-10 max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <div className="reveal flex flex-col justify-center">
         <p className="eyebrow">Nous trouver</p>

@@ -131,6 +131,12 @@ export function LegalContent() {
           Le code du site ne dépose aucun cookie propre et n’intègre aucun outil d’analyse.
         </p>
         <p className={paragraphClass}>
+          L’assistant automatique du site répond avec des textes prédéfinis, sans intelligence
+          artificielle ni service tiers. Lorsqu’il est ouvert, le fil de la conversation (sujets
+          choisis, sans donnée personnelle) est conservé dans le stockage de session du navigateur
+          et effacé à la fermeture de l’onglet.
+        </p>
+        <p className={paragraphClass}>
           Sur la page Contact, la carte Google Maps n’est chargée qu’après le clic sur « Afficher
           la carte ». À partir de ce clic, Google peut traiter des données techniques ou utiliser
           ses propres traceurs conformément à sa politique.

@@ -1,5 +1,6 @@
 import type { FooterVariant, RouteKey } from "@/data/site";
 
+import { SiteAssistant } from "../assistant/SiteAssistant";
 import { RevealObserver } from "../ui/RevealObserver";
 import { SiteFooter } from "./SiteFooter";
 import { SiteHeader, type HeaderVariant } from "./SiteHeader";
@@ -30,6 +31,7 @@ export function PageShell({ variant, current, footer, mainClassName, children }:
         {children}
       </main>
       <SiteFooter variant={footer} />
+      <SiteAssistant />
       <RevealObserver />
     </div>
   );

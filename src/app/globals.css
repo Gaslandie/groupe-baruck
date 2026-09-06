@@ -17,6 +17,8 @@
   --animate-marquee: marquee 30s linear infinite;
   --animate-hero-zoom: heroZoomOut 5s linear forwards;
   --animate-progress: progress 5s linear forwards;
+  --animate-assistant-in: assistantIn .35s cubic-bezier(.2,.7,.2,1) both;
+  --animate-assistant-dot: assistantDot 1s ease-in-out infinite;
 
   @keyframes marquee {
     to { transform: translateX(-50%); }
@@ -35,6 +37,16 @@
   @keyframes heroIn {
     from { opacity: 0; transform: translateY(26px); }
     to { opacity: 1; transform: none; }
+  }
+
+  @keyframes assistantIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @keyframes assistantDot {
+    0%, 80%, 100% { opacity: .25; transform: translateY(0); }
+    40% { opacity: 1; transform: translateY(-3px); }
   }
 
   --breakpoint-*: initial;
@@ -142,6 +154,17 @@
     transition: transform 1.3s cubic-bezier(.2,.7,.2,1);
   }
   .reveal-media.is-visible > img { transform: none; }
+
+  /* Assistant guidé (src/components/assistant/SiteAssistant.tsx) : indicateur de frappe */
+  .assistant-typing > span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-ivory);
+    animation: assistantDot 1s ease-in-out infinite;
+  }
+  .assistant-typing > span:nth-child(2) { animation-delay: .15s; }
+  .assistant-typing > span:nth-child(3) { animation-delay: .3s; }
 
   .hero-in > * { animation: heroIn .9s cubic-bezier(.2,.7,.2,1) both; }
   .hero-in > :nth-child(2) { animation-delay: .08s; }
