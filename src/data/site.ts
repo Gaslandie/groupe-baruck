@@ -79,7 +79,7 @@ const contactHrefs: Record<ContactId, string> = {
 export const site = {
   name: "Groupe Baruck",
   designer: "GassTech Solutions",
-  url: "https://gaslandie.github.io/groupe-baruck/",
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://gaslandie.github.io/groupe-baruck/").replace(/\/?$/, "/"),
   description:
     "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
 };

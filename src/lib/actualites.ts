@@ -14,7 +14,10 @@ import {
 } from "@/data/actualites";
 import { asset } from "@/lib/asset";
 
-const articlesDirectory = path.join(process.cwd(), "content", "actualites");
+// Un export validé du back-office peut alimenter un build sans modifier les
+// articles suivis dans Git. Sans cette variable, le fonctionnement est inchangé.
+const editorialRoot = process.env.BARUCK_EDITORIAL_ROOT;
+const articlesDirectory = path.join(editorialRoot ?? process.cwd(), "content", "actualites");
 const slugPattern = /^[a-z0-9-]+$/;
 const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -79,8 +82,10 @@ export function resolveImage(src: string, alt: string, filename: string): NewsIm
     error(filename, `l’extension de l’image "${src}" doit être .jpg, .jpeg, .png ou .webp.`);
   }
 
-  const file = path.join(process.cwd(), "public", src.slice(1));
-  const imagesRoot = path.join(process.cwd(), "public", "images");
+  const isUpload = src.startsWith("/images/actualites/uploads/") && editorialRoot;
+  const imageBase = isUpload ? editorialRoot : process.cwd();
+  const file = path.join(imageBase, "public", src.slice(1));
+  const imagesRoot = path.join(imageBase, "public", "images");
   if (
     src.includes("\\") ||
     src.split("/").some((segment) => segment === "." || segment === "..") ||

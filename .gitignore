@@ -6,4 +6,12 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+backoffice/config.local.php
+backoffice/.local/
+backoffice/storage/
+backoffice/seed.json
+backoffice/public/admin.css
+backoffice/public/inter.woff2
+backoffice/dist/
+.backoffice-content/
 tools/dewatermark/planches/

@@ -7,7 +7,13 @@
     "build": "next build",
     "lint": "eslint",
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/*.test.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "backoffice:prepare": "node backoffice/bin/prepare.mjs",
+    "backoffice:local": "npm run backoffice:prepare && node backoffice/bin/local.mjs",
+    "backoffice:package": "npm run backoffice:prepare && node backoffice/bin/package.mjs",
+    "backoffice:test": "node --test backoffice/tests/*.test.mjs",
+    "backoffice:test:mysql": "node --test backoffice/tests/integration.mjs",
+    "backoffice:publish-build": "node backoffice/bin/build-publication.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
 import { brandLogo } from "@/data/media";
+import { site } from "@/data/site";
 import { socialMetadata } from "@/lib/metadata";
 
 import "./globals.css";
@@ -15,7 +16,7 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gaslandie.github.io/groupe-baruck/"),
+  metadataBase: new URL(site.url),
   title: {
     default: "Groupe Baruck — Vision, excellence, impact",
     template: "%s — Groupe Baruck",

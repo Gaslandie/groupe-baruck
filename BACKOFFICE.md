@@ -1,5 +1,43 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Révision du 6 septembre 2026 — cible Bluehost
+
+**Cette décision remplace le choix Pages CMS décrit dans l’étude historique ci-dessous.** Mohamed confirme un hébergement final Bluehost, MySQL et une boutique à venir. Ses captures montrent `groupebaruck.com` actif et l’accès cPanel, avec plusieurs sites sur le compte ; elles ne donnent ni le Document Root de Baruck, ni la version PHP active, ni la formule exacte. Aucun chemin serveur n’est déduit des noms des dossiers des autres sites.
+
+La cible est une administration PHP/MySQL à `admin.groupebaruck.com`, avec comptes propres à Baruck. Le site public reste l’export Next.js, à placer sur `groupebaruck.com`. Les contenus validés alimentent sa construction. MySQL et les fichiers privés appartiennent au back-office ; les images sélectionnées sont copiées dans la publication publique. Ce choix évite de supposer qu’un serveur Node persistant est disponible : Bluehost documente PHP/MySQL pour ses serveurs mutualisés et une racine de sous-domaine distincte dans cPanel. [Versions Bluehost](https://www.bluehost.com/help/article/bluehost-software-and-program-versions), [sous-domaines](https://www.bluehost.com/help/article/subdomains).
+
+### Arbitrage actualisé
+
+| Piste | Avec Bluehost et MySQL | Décision pour ce lot |
+| --- | --- | --- |
+| Pages CMS / Sveltia / Decap | Restent possibles techniquement pour construire un site statique, mais conservent un backend Git pour les contenus | Ancienne piste ; ne correspond pas à l’administration autonome demandée |
+| WordPress découplé du site | PHP/MySQL, comptes et révisions disponibles ; nécessite une installation WordPress et le raccordement Next ; WooCommerce serait une piste future, pas une conséquence obligatoire de MySQL | Alternative valable si les fonctionnalités éditoriales avancées deviennent prioritaires ; non installé dans ce lot |
+| Administration PHP dédiée | Compatible avec la cible PHP/MySQL, interface et droits centrés sur Baruck, aucune bibliothèque npm ou Composer supplémentaire | Implémentation de ce premier lot ; coût de maintenance de l’authentification et des fonctions éditoriales assumé dans le périmètre technique |
+| Framework PHP avec administration | Socle plus riche, mais nouvelles dépendances, contraintes de déploiement et maintenance à valider | À réévaluer si l’administration devient une application métier importante |
+| Payload / Strapi / backend Next | Demande un runtime Node et son exploitation, non établis par les captures | Ne pas retenir sur la seule preuve d’un accès cPanel |
+
+Il ne s’agit pas d’une équivalence fonctionnelle avec un CMS mature : l’éditeur visuel, les révisions restaurables, les e-mails de récupération et l’automatisation du déploiement restent à prévoir. La boutique est explicitement hors de ce lot.
+
+### Lot implémenté et suite
+
+1. Administration locale PHP 8.2/MySQL 8 : authentification, administrateur/rédacteur, révocation des sessions, journal, actualités avec galeries, images privées, validation et conflits d’édition. L’initialisation importe les six articles existants sans les réécrire. Le premier compte local est choisi par Mohamed, aucun identifiant imposé.
+2. Export des seuls contenus validés et construction avec le chargeur Next existant : validation des contenus, URL existantes conservées, nouvelles pages, médias, RSS, sitemap, domaine configurable. Le paquet d’administration est généré sans secrets.
+3. À exécuter avec l’accès Bluehost : vérifier PHP et la racine du domaine, créer le sous-domaine, la base dédiée, le certificat, installer et effectuer la recette HTTPS. Les captures ne donnent pas une session technique utilisable par Codex.
+4. À raccorder après recette de l’hébergement : déploiement des publications avec sauvegarde, retour arrière et déclenchement depuis l’administration. Pour l’instant, l’interface distingue validation, téléchargement et mise en ligne effective.
+
+Le guide concret est dans [backoffice/INSTALLATION.md](backoffice/INSTALLATION.md). Les tests portent sur les autorisations serveur, les sessions, CSRF, les fichiers reçus, la concurrence d’édition et le passage vers l’export ; aucune capture ni appréciation visuelle du site n’est produite. Les mécanismes de sessions et de hachage suivent les primitives documentées par PHP. [Sessions](https://www.php.net/manual/en/features.session.security.management.php), [password_hash](https://www.php.net/manual/en/function.password-hash.php).
+
+### Vérifications de cette livraison Bluehost
+
+- Lint et TypeScript passent. Les 18 cas éditoriaux existants et les 5 cas d’import/export passent.
+- La recette HTTP avec PHP 8.2 et MySQL 8 passe ses 7 parcours : premier compte/CSRF, rôles, validation/conflits, upload/MIME/confidentialité, export, révocation des sessions et limitation des connexions. Elle utilise une base éphémère indépendante.
+- Les exports Next.js à la racine et avec `/groupe-baruck` passent ; chemins d’images et identifiants HTML vérifiés. Un troisième build utilise l’export réel de la base de recette : article ajouté, image identique à son empreinte, métadonnées sur `groupebaruck.com`, RSS, sitemap et exclusion du brouillon vérifiés. Aucun contenu de recette n’est ajouté au dépôt ni déployé.
+- Builds réalisés avec webpack dans une copie isolée : l’exécution en sandbox bloquait le sous-processus TypeScript. Le serveur de développement du site reste indépendant.
+- Le paquet d’administration ne contient ni configuration privée, ni base, ni sessions, ni secrets. L’entrée locale répond sur `http://127.0.0.1:8091/` ; 8081 appartient déjà à un autre projet. La création de compte et les données locales persistent dans les volumes Baruck.
+- Non vérifiés à ce stade : configuration Apache/cPanel réelle, HTTPS du sous-domaine, accès MySQL Bluehost, sauvegarde/restauration distante et transfert des publications. Aucun déploiement Bluehost n’est annoncé comme effectué.
+
+## Étude historique — hypothèse GitHub Pages, remplacée ci-dessus
+
 Date de recherche : 6 septembre 2026. Périmètre de cette étape : commencer le back-office éditorial, avec les actualités et leurs images, en conservant GitHub Pages. Planification, implémentation et relecture assurées par Codex à la demande de Mohamed.
 
 ## Décision

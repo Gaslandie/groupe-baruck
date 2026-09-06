@@ -12,8 +12,9 @@ Stack : App Router, TypeScript strict, Tailwind CSS v4 et export statique.
 
 ## Maintenance
 
-Les actualités et leurs images sont configurées pour Pages CMS dans `.pages.yml`.
-Voir [le benchmark, le plan et le guide du back-office](BACKOFFICE.md) pour l’activation et la publication.
+Le back-office PHP/MySQL pour Bluehost est dans `backoffice/` : comptes, actualités, images et préparation des publications. `npm run backoffice:local` lance l’administration locale après préparation de son environnement Docker.
+Voir [le benchmark et le plan révisés](BACKOFFICE.md) et [l’installation Bluehost](backoffice/INSTALLATION.md).
+La configuration Pages CMS `.pages.yml` correspond à l’ancienne piste GitHub Pages, conservée pour la prévisualisation ; elle n’est pas le back-office Bluehost.
 
 Modifier en priorité les contenus dans `src/data`. Les tarifs du studio photo sont dans `src/data/services.ts`.
 Les fichiers `public/*.html` redirigent les anciennes URL vers les routes Next.js.
@@ -27,3 +28,5 @@ L’ancienne maquette HTML reste accessible dans l’historique Git, notamment a
 `npm run typecheck` contrôle TypeScript.
 `npm test` vérifie le contrat éditorial du CMS et le chargement des articles (Node 24).
 En production, `NEXT_PUBLIC_BASE_PATH=/groupe-baruck` préfixe les assets.
+`NEXT_PUBLIC_SITE_URL` définit le domaine des métadonnées, du sitemap et du RSS (la prévisualisation GitHub reste la valeur par défaut).
+`npm run backoffice:publish-build -- publication.json` construit le site depuis les contenus validés du back-office, sans modifier les fichiers éditoriaux du dépôt.

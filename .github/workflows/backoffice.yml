@@ -1,0 +1,29 @@
+name: Test Bluehost back office
+
+on:
+  push:
+    branches: [main]
+    paths: ['backoffice/**', 'src/lib/actualites.ts', 'content/actualites/**', 'package.json', '.github/workflows/backoffice.yml']
+  pull_request:
+    paths: ['backoffice/**', 'src/lib/actualites.ts', 'content/actualites/**', 'package.json', '.github/workflows/backoffice.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mysql:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: docker build -t baruck-backoffice-php:local backoffice
+      - run: npm run backoffice:local
+      - run: npm run backoffice:test
+      - run: npm run backoffice:test:mysql
+      - run: npm run backoffice:package
