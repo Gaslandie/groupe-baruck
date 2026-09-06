@@ -148,3 +148,9 @@ Demandée par Mohamed après le premier déploiement (« un chat box fait maison
 Contrôles ajoutés au test Chrome headless (`cdp-test-v2.mjs`, 30 contrôles) : lanceur actif après hydratation, salutation, recherche (réponse unique, tableau des prix, ambiguïté, inconnu), contexte WhatsApp / e-mail, cartes hôtesses / JECA / domaines, fil conservé et thème JECA après navigation, thème Espoir de Vie, Échap, reduced-motion, feuille mobile, absence d'erreur console.
 
 Restent hors de portée sans décision : mesure d'usage (règle « pas d'analytics »), `viewport-fit=cover`, nom et visuel validés par le client.
+
+## 10. Ajustements demandés par Mohamed après essai (2026-09-06, troisième commit)
+
+- Sous-titre « Réponses automatiques · rien n'est transmis » retiré de l'en-tête du panneau (jugé sans intérêt) ; l'information reste dans les mentions légales.
+- Temps de réflexion : 5 s avant chaque réponse, avec les trois points qui grossissent l'un après l'autre (`assistantDot`, échelle 0,8 → 1,6, cycle 1,5 s, décalage 0,25 s), 1,5 s pour un simple retour au menu des sujets, réponse immédiate en `prefers-reduced-motion`. Le fil est marqué `aria-busy` pendant l'attente et les options restent masquées jusqu'à la réponse. Ce choix contredit la recommandation du § 4.1 (délai court) et suit la pratique « humanisante » de Smart Tribune (3–4 s) ; Mohamed a tranché pour 5 s.
+

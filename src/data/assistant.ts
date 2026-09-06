@@ -73,7 +73,6 @@ export type AssistantNode = {
 export const assistantMeta = {
   name: "Assistant Baruck",
   monogram: "B",
-  tagline: "Réponses automatiques · rien n’est transmis",
   launcher: "Assistant",
   openLabel: "Ouvrir l’assistant",
   closeLabel: "Fermer l’assistant",

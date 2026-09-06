@@ -35,7 +35,10 @@ type StoredState = { open: boolean; entries: Entry[] };
 const startEntry: Entry = { kind: "bot", node: "start" };
 
 const STORAGE_KEY = "baruck-assistant";
-const TYPING_DELAY = 450;
+/* Temps de « réflexion » avant chaque réponse (demande de Mohamed, 2026-09-06) :
+   les trois points s'animent pendant ce délai. Retour au menu des sujets plus court. */
+const ANSWER_DELAY = 5000;
+const MENU_DELAY = 1500;
 const MAX_ENTRIES = 60;
 const MAX_QUESTION_LENGTH = 200;
 
@@ -308,7 +311,8 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
       return;
     }
     setTyping(true);
-    typingTimer.current = window.setTimeout(commit, TYPING_DELAY);
+    const delay = entry.node === "start" || entry.node === "encore" ? MENU_DELAY : ANSWER_DELAY;
+    typingTimer.current = window.setTimeout(commit, delay);
   }, []);
 
   const choose = (option: AssistantOption) => {
@@ -453,9 +457,6 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
                 >
                   {assistantMeta.name}
                 </h2>
-                <p className="mb-0 mt-[.25rem] text-[.52rem] uppercase tracking-[.14em] text-[rgba(255,255,255,.6)]">
-                  {assistantMeta.tagline}
-                </p>
               </div>
             </div>
             <button
@@ -475,6 +476,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
             ref={logRef}
             role="log"
             aria-live="polite"
+            aria-busy={typing}
             aria-label="Conversation avec l’assistant"
             tabIndex={0}
             className="flex flex-1 flex-col gap-[.9rem] overflow-y-auto px-[1.1rem] py-[1rem]"
