@@ -70,7 +70,15 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.match(page.headers.get('set-cookie'), /HttpOnly/i);
     assert.match(page.headers.get('set-cookie'), /SameSite=Strict/i);
     assert.match(page.headers.get('content-security-policy'), /frame-ancestors 'none'/);
+    assert.equal(page.headers.get('referrer-policy'), 'same-origin');
     assert.equal((await anonymous.request('/', { action: 'setup', email: adminEmail, password, name: 'Recette' })).status, 403);
+    for (const Origin of ['null', 'https://hostile.example']) {
+      assert.equal((await admin.post('/', { action: 'setup', email: adminEmail, password, name: 'Recette' }, { Origin })).status, 403);
+    }
+    if (process.env.BARUCK_TEST_CHROME) {
+      const browser = spawnSync(process.execPath, [path.join(directory, 'tests/browser-form.mjs'), origin], { encoding: 'utf8', timeout: 30000 });
+      assert.equal(browser.status, 0, browser.stderr || browser.stdout);
+    }
     assert.equal((await admin.post('/', { action: 'setup', email: adminEmail, password: '😀😀😀😀', name: 'Recette' })).status, 422);
     for (const email of ['kkkk@dddd', 'kkkk\\@dddd', 'sans-arobase.fr', 'nom@@exemple.fr', 'nom espace@exemple.fr', 'nom..prenom@exemple.fr', 'nom@-exemple.fr']) {
       const invalid = await admin.post('/', { action: 'setup', email, password, name: 'Recette' });

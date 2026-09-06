@@ -17,7 +17,9 @@ function startSession(): void
     header('Cache-Control: no-store, private');
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
-    header('Referrer-Policy: no-referrer');
+    // Un POST de formulaire sous no-referrer peut envoyer Origin: null.
+    // Conserver l’origine en interne ; ne rien transmettre aux sites externes.
+    header('Referrer-Policy: same-origin');
     header('X-Robots-Tag: noindex, nofollow');
     header("Content-Security-Policy: default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
     if ($settings['environment'] === 'production') header('Strict-Transport-Security: max-age=31536000');

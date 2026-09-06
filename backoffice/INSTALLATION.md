@@ -65,6 +65,8 @@ Sans `BARUCK_EDITORIAL_ROOT`, le build habituel utilise toujours les fichiers du
 ```sh
 npm run backoffice:test
 npm run backoffice:test:mysql
+# Facultatif, si Chrome est déjà installé : recette avec soumission HTML native
+BARUCK_TEST_CHROME=/usr/bin/google-chrome npm run backoffice:test:mysql
 npm test
 npm run lint
 npm run typecheck
@@ -73,3 +75,5 @@ npm run typecheck
 La recette MySQL nécessite le démarrage local précédent. Elle crée sa propre base temporaire, un conteneur PHP et des comptes de test, puis les supprime ; elle ne touche pas les comptes de l’installation locale. Elle vérifie les droits, les sessions, CSRF, les conflits, les validations, un upload réel, l’export, les migrations répétées, les révisions et retraits, la récupération de saisie et la limitation des connexions. Un corpus commun confronte les liens Markdown au validateur PHP et au chargeur Next. La validation PHP cible les constructions prises en charge ; le build Next reste le contrôle final, pas une équivalence complète avec un parseur CommonMark. Les images privées sont servies après authentification avec un type MIME contrôlé ; seuls les fichiers inclus dans une publication deviennent publics.
 
 Sauvegarder ensemble MySQL et le dossier `storage/media`, avec une procédure de restauration vérifiée. Les sessions et limites de connexion restent dans le stockage privé. Prévoir les mises à jour de PHP/MySQL et la maintenance du code d’authentification. Le journal garde les actions et leurs auteurs ; la table des révisions conserve séparément le contenu des versions enregistrées depuis cette migration. Les versions précédant la migration ne peuvent pas être reconstituées. L’application est un premier lot éditorial ; la boutique nécessite son propre cadrage métier avant extension.
+
+Le back-office utilise `Referrer-Policy: same-origin` : les formulaires internes conservent leur origine et les liens externes ne transmettent pas de référent. `no-referrer` peut produire `Origin: null` sur un POST HTML natif, qui est rejeté par la protection CSRF. Les origines étrangères ou nulles restent refusées. [Documentation MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referrer-Policy).
