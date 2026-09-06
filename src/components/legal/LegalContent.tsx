@@ -132,9 +132,11 @@ export function LegalContent() {
         </p>
         <p className={paragraphClass}>
           L’assistant automatique du site répond avec des textes prédéfinis, sans intelligence
-          artificielle ni service tiers. Lorsqu’il est ouvert, le fil de la conversation (sujets
-          choisis, sans donnée personnelle) est conservé dans le stockage de session du navigateur
-          et effacé à la fermeture de l’onglet.
+          artificielle ni service tiers ; la recherche sur une question saisie se fait dans le
+          navigateur. Lorsqu’il est ouvert, le fil de la conversation (sujets choisis, questions
+          saisies) reste dans le stockage de session du navigateur, n’est transmis à personne et
+          est effacé à la fermeture de l’onglet. Le message prérempli proposé pour WhatsApp ou
+          l’e-mail reste modifiable avant tout envoi.
         </p>
         <p className={paragraphClass}>
           Sur la page Contact, la carte Google Maps n’est chargée qu’après le clic sur « Afficher

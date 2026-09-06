@@ -166,6 +166,14 @@
   .assistant-typing > span:nth-child(2) { animation-delay: .15s; }
   .assistant-typing > span:nth-child(3) { animation-delay: .3s; }
 
+  .assistant-options > * { animation: assistantIn .3s cubic-bezier(.2,.7,.2,1) both; }
+  .assistant-options > :nth-child(2) { animation-delay: .05s; }
+  .assistant-options > :nth-child(3) { animation-delay: .1s; }
+  .assistant-options > :nth-child(4) { animation-delay: .15s; }
+  .assistant-options > :nth-child(5) { animation-delay: .2s; }
+  .assistant-options > :nth-child(6) { animation-delay: .25s; }
+  .assistant-options > :nth-child(n+7) { animation-delay: .3s; }
+
   .hero-in > * { animation: heroIn .9s cubic-bezier(.2,.7,.2,1) both; }
   .hero-in > :nth-child(2) { animation-delay: .08s; }
   .hero-in > :nth-child(3) { animation-delay: .16s; }

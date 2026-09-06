@@ -31,7 +31,7 @@ export function PageShell({ variant, current, footer, mainClassName, children }:
         {children}
       </main>
       <SiteFooter variant={footer} />
-      <SiteAssistant />
+      <SiteAssistant variant={variant} />
       <RevealObserver />
     </div>
   );
