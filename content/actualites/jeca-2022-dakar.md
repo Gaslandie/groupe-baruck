@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "JECA 2022 : la première rencontre à Dakar"
 date: 2022-08-04
 category: jeca

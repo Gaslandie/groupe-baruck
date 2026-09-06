@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "Vêtir et chausser dignement"
 date: 2017-06-03
 category: espoir-de-vie

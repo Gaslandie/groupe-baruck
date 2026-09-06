@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "JECA 2026 : la troisième édition à Conakry"
 date: 2026-07-30
 category: jeca

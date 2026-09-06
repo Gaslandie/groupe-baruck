@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "JECA 2023 : deuxième édition à Dakar"
 date: 2023-12-02
 category: jeca

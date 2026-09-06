@@ -1,0 +1,123 @@
+# Back-office éditorial : voir BACKOFFICE.md pour l’activation et la publication.
+media:
+  - name: images
+    label: Images du site
+    input: public/images
+    output: /images
+    extensions: [jpg, jpeg, png, webp]
+    rename: safe
+
+content:
+  - name: actualites
+    label: Actualités
+    type: collection
+    path: content/actualites
+    format: yaml-frontmatter
+    subfolders: false
+    filename:
+      template: "{primary}.md"
+      field: false
+    operations:
+      create: true
+      rename: false
+      delete: false
+    view:
+      primary: title
+      fields: [title, category, date, draft]
+      sort: [date, title, category, draft]
+      search: [title, excerpt]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: draft
+        label: Brouillon
+        type: boolean
+        default: true
+        description: "Activé : l’article est exclu du site. Désactiver après validation du contenu. Enregistrer un article publié met à jour le site après le déploiement."
+      - name: title
+        label: Titre
+        type: string
+        required: true
+        description: "À la création, le titre détermine l’adresse de l’article. Cette adresse reste ensuite stable."
+      - name: date
+        label: Date de l’actualité
+        type: date
+        required: true
+        default: ""
+        options:
+          time: false
+          format: yyyy-MM-dd
+        description: "Renseigner une date validée. Ce champ ne programme pas la publication."
+      - name: category
+        label: Catégorie
+        type: select
+        required: true
+        options:
+          values:
+            - name: groupe
+              label: Groupe Baruck
+            - name: jeca
+              label: JECA
+            - name: espoir-de-vie
+              label: Espoir de Vie
+            - name: studio-photo
+              label: Studio photo
+            - name: hotesses
+              label: Hôtesses événementielles
+      - name: excerpt
+        label: Résumé
+        type: text
+        required: true
+        description: "Court texte affiché dans les listes d’actualités et les moteurs de recherche."
+      - name: cover
+        label: Image de couverture
+        type: image
+        options:
+          media: images
+          path: public/images/actualites
+        description: "Facultative. Utiliser une image JPG, JPEG, PNG ou WebP et renseigner sa description ci-dessous."
+      - name: coverAlt
+        label: Description de la couverture
+        type: string
+        description: "Obligatoire lorsqu’une couverture est choisie. Décrire en français ce que montre l’image."
+      - name: gallery
+        label: Galerie
+        type: object
+        list: true
+        fields:
+          - name: src
+            label: Image
+            type: image
+            required: true
+            options:
+              media: images
+              path: public/images/actualites
+          - name: alt
+            label: Description de l’image
+            type: string
+            required: true
+          - name: caption
+            label: Légende
+            type: string
+        description: "Ajouter et réordonner les images du carrousel. La légende est facultative."
+      - name: body
+        label: Contenu de l’article
+        type: rich-text
+        required: true
+        options:
+          format: markdown
+          media: images
+          path: public/images/actualites
+        description: "Utiliser l’éditeur pour les titres, paragraphes, listes et liens. Liens internes : /jeca/ ou /contact/. Le HTML brut n’est pas accepté."
+
+settings:
+  content:
+    merge: true
+  commit:
+    identity: app
+    templates:
+      create: "content: create {path}"
+      update: "content: update {path}"
+      delete: "content: delete {path}"
+      rename: "content: rename {oldPath} to {newPath}"

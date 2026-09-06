@@ -1,4 +1,5 @@
 ---
+draft: false
 title: "Inauguration de l’orphelinat"
 date: 2017-02-15
 category: espoir-de-vie
