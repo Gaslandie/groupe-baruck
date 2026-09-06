@@ -27,11 +27,11 @@ export function ConstructionPage({
         <Brand />
         <Link
           href={routes.home}
-          className="inline-flex items-center gap-4 border-b border-[rgba(255,255,255,.3)] pb-[.35rem] text-[.6rem] uppercase tracking-[.15em] max-tablet:border-0 max-tablet:p-[.8rem] max-tablet:text-[.55rem]"
+          className="inline-flex items-center gap-4 border-b border-[rgba(255,255,255,.3)] pb-[.35rem] text-label uppercase tracking-[.15em] max-tablet:border-0 max-tablet:p-[.8rem] max-tablet:text-micro"
         >
           <span className="max-tablet:hidden">Retour à l’accueil</span>
           <span className="hidden max-tablet:inline">Accueil</span>
-          <span aria-hidden="true" className="text-[.8rem] text-accent">
+          <span aria-hidden="true" className="text-small text-accent">
             ↗
           </span>
         </Link>
@@ -55,24 +55,24 @@ export function ConstructionPage({
         />
 
         <div className="w-[min(900px,100%)] text-center">
-          <span className="mb-8 block font-display text-[.8rem] italic text-accent">{index}</span>
+          <span className="mb-8 block font-display text-small italic text-accent">{index}</span>
           <p className="eyebrow justify-center text-[#d8c8aa] before:hidden">{eyebrow}</p>
-          <h1 className="m-0 font-display text-[clamp(3.4rem,8vw,8.5rem)] font-normal leading-[.88] tracking-[-.055em] [text-wrap:balance] max-tablet:text-[clamp(3.2rem,17vw,5.2rem)]">
+          <h1 className="m-0 font-display text-display-xl font-normal leading-[.88] tracking-[-.055em] [text-wrap:balance]">
             {title}
             <em className="block font-normal text-accent">{emphasis}</em>
           </h1>
-          <p className="mx-auto mb-[2.4rem] mt-8 max-w-[530px] text-[.88rem] leading-[1.75] text-[rgba(255,255,255,.58)] max-tablet:text-[.8rem]">
+          <p className="mx-auto mb-[2.4rem] mt-8 max-w-[530px] text-small leading-[1.75] text-[rgba(255,255,255,.58)] max-tablet:text-small">
             {text}
           </p>
           <Link
             href={routes.home}
-            className="inline-flex min-h-[54px] items-center justify-center gap-8 bg-[#fffdf8] px-[1.4rem] text-[.62rem] uppercase tracking-[.13em] text-[#0b0c0e] transition-[background,color,transform] duration-[250ms] hover:translate-y-[-2px] hover:bg-accent hover:text-white"
+            className="inline-flex min-h-[54px] items-center justify-center gap-8 bg-[#fffdf8] px-[1.4rem] text-label uppercase tracking-[.13em] text-[#0b0c0e] transition-[background,color,transform] duration-[250ms] hover:translate-y-[-2px] hover:bg-accent hover:text-white"
           >
             Retourner à l’accueil <span aria-hidden="true">↖</span>
           </Link>
         </div>
 
-        <div className="absolute bottom-6 left-[clamp(1.2rem,3.4vw,4rem)] right-[clamp(1.2rem,3.4vw,4rem)] flex justify-between text-[.48rem] uppercase tracking-[.14em] text-[rgba(255,255,255,.35)] max-tablet:flex-col max-tablet:items-center max-tablet:gap-2 max-tablet:text-center">
+        <div className="absolute bottom-6 left-[clamp(1.2rem,3.4vw,4rem)] right-[clamp(1.2rem,3.4vw,4rem)] flex justify-between text-micro uppercase tracking-[.14em] text-[rgba(255,255,255,.35)] max-tablet:flex-col max-tablet:items-center max-tablet:gap-2 max-tablet:text-center">
           {footerItems.map((item) => (
             <span key={item}>{item}</span>
           ))}

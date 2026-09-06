@@ -5,7 +5,7 @@ export function StudioEvents() {
     <section className="px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
       <div className="mb-[clamp(2.5rem,5vw,3.5rem)] max-w-[760px]">
         <p className="eyebrow">Nos interventions</p>
-        <h2 className="mb-[1.4rem] mt-2 font-display text-[clamp(3rem,5vw,6rem)] font-normal leading-[.92] tracking-[-.045em]">
+        <h2 className="mb-[1.4rem] mt-2 font-display text-display-xl font-normal leading-[.92] tracking-[-.045em]">
           Les événements
           <br />
           <em className="font-normal text-accent">que nous couvrons.</em>
@@ -21,12 +21,12 @@ export function StudioEvents() {
             key={event.number}
             className="flex min-h-[180px] flex-col justify-between gap-[1.4rem] border-b border-r border-line p-[1.6rem] max-tablet:min-h-0 max-tablet:gap-[1.1rem]"
           >
-            <span className="text-[.56rem] tracking-[.14em] text-accent">{event.number}</span>
+            <span className="text-micro tracking-[.14em] text-accent">{event.number}</span>
             <div>
-              <h3 className="mb-[.55rem] mt-0 font-display text-[clamp(1.35rem,1.8vw,1.8rem)] font-normal leading-[1.06]">
+              <h3 className="mb-[.55rem] mt-0 font-display text-display-sm font-normal leading-[1.06]">
                 {event.title}
               </h3>
-              <p className="m-0 text-[.78rem] leading-[1.6] text-[#65645f]">{event.text}</p>
+              <p className="m-0 text-caption leading-[1.6] text-[#65645f]">{event.text}</p>
             </div>
           </article>
         ))}

@@ -7,7 +7,7 @@ export function StudioSpaces() {
       <div className="mb-[clamp(2.5rem,5vw,4rem)] grid grid-cols-[minmax(280px,.8fr)_1.2fr] gap-[clamp(3rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:gap-10">
         <div>
           <p className="eyebrow">Nos espaces</p>
-          <h2 className="mb-0 mt-2 font-display text-[clamp(3rem,5vw,6rem)] font-normal leading-[.92] tracking-[-.045em]">
+          <h2 className="mb-0 mt-2 font-display text-display-xl font-normal leading-[.92] tracking-[-.045em]">
             Deux studios,
             <br />
             <em className="font-normal text-accent">une même exigence.</em>
@@ -35,16 +35,16 @@ export function StudioSpaces() {
             />
             <div className="flex flex-1 flex-col gap-[1.4rem] px-[1.8rem] pb-[1.9rem] pt-[1.7rem]">
               <span
-                className={`text-[.56rem] uppercase tracking-[.14em] ${space.vip ? "text-gold" : "text-accent"}`}
+                className={`text-micro uppercase tracking-[.14em] ${space.vip ? "text-gold" : "text-accent"}`}
               >
                 {space.number}
               </span>
               <div>
-                <h3 className="mb-[.8rem] mt-0 font-display text-[clamp(1.6rem,2.2vw,2.2rem)] font-normal leading-[1.04]">
+                <h3 className="mb-[.8rem] mt-0 font-display text-display-md font-normal leading-[1.04]">
                   {space.title}
                 </h3>
                 <p
-                  className={`m-0 text-[.86rem] leading-[1.7] ${space.vip ? "text-[rgba(255,255,255,.66)]" : "text-[#65645f]"}`}
+                  className={`m-0 text-small leading-[1.7] ${space.vip ? "text-[rgba(255,255,255,.66)]" : "text-[#65645f]"}`}
                 >
                   {space.text}
                 </p>
@@ -55,7 +55,7 @@ export function StudioSpaces() {
                 {space.items.map((item) => (
                   <li
                     key={item}
-                    className={`relative pl-[1.05rem] text-[.78rem] leading-[1.5] before:absolute before:left-0 before:top-[.6em] before:h-px before:w-[6px] before:content-[''] ${space.vip ? "text-[rgba(255,255,255,.72)] before:bg-gold" : "text-[#55534e] before:bg-accent"}`}
+                    className={`relative pl-[1.05rem] text-caption leading-[1.5] before:absolute before:left-0 before:top-[.6em] before:h-px before:w-[6px] before:content-[''] ${space.vip ? "text-[rgba(255,255,255,.72)] before:bg-gold" : "text-[#55534e] before:bg-accent"}`}
                   >
                     {item}
                   </li>
@@ -66,7 +66,7 @@ export function StudioSpaces() {
         ))}
       </div>
       <div className="mt-[clamp(2rem,4vw,3rem)]">
-        <p className="mb-[1.4rem] mt-0 flex items-center gap-[.75rem] text-[.56rem] uppercase tracking-[.14em] text-accent before:h-px before:w-7 before:bg-current before:content-['']">
+        <p className="mb-[1.4rem] mt-0 flex items-center gap-[.75rem] text-micro uppercase tracking-[.14em] text-accent before:h-px before:w-7 before:bg-current before:content-['']">
           Le matériel du studio
         </p>
         <ul className="m-0 grid list-none grid-cols-3 gap-[1.1rem] p-0 max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
@@ -79,10 +79,10 @@ export function StudioSpaces() {
                 className="aspect-[16/10] w-full object-cover"
               />
               <div className="px-[1.4rem] pb-6 pt-[1.3rem]">
-                <strong className="mb-[.45rem] block font-display text-[1.25rem] font-normal leading-[1.2] text-ink">
+                <strong className="mb-[.45rem] block font-display text-lead font-normal leading-[1.2] text-ink">
                   {item.title}
                 </strong>
-                <span className="text-[.82rem] leading-[1.65] text-[#65645f]">{item.text}</span>
+                <span className="text-small leading-[1.65] text-[#65645f]">{item.text}</span>
               </div>
             </li>
           ))}

@@ -25,14 +25,14 @@ export function AboutCommunication() {
         <div className="reveal">
           <dl className="m-0 border-t border-line">
             <div className="grid grid-cols-[130px_1fr] gap-4 border-b border-line py-[1.05rem] max-tablet:grid-cols-1 max-tablet:gap-[.3rem]">
-              <dt className="self-center text-[.56rem] uppercase tracking-[.14em] text-accent">Présence</dt>
-              <dd className="m-0 font-display text-[clamp(1.15rem,1.6vw,1.45rem)] leading-[1.2]">{presence}</dd>
+              <dt className="self-center text-micro uppercase tracking-[.14em] text-accent">Présence</dt>
+              <dd className="m-0 font-display text-display-xs leading-[1.2]">{presence}</dd>
             </div>
             <div className="grid grid-cols-[130px_1fr] gap-4 border-b border-line py-[1.05rem] max-tablet:grid-cols-1 max-tablet:gap-[.3rem]">
-              <dt className="self-center text-[.56rem] uppercase tracking-[.14em] text-accent">
+              <dt className="self-center text-micro uppercase tracking-[.14em] text-accent">
                 Services présentés
               </dt>
-              <dd className="m-0 font-display text-[clamp(1.15rem,1.6vw,1.45rem)] leading-[1.2]">
+              <dd className="m-0 font-display text-display-xs leading-[1.2]">
                 {servicesLabel}
               </dd>
             </div>
@@ -47,11 +47,11 @@ export function AboutCommunication() {
               href={service.href}
               className="reveal flex flex-col border border-line bg-ivory px-[1.7rem] pb-[1.7rem] pt-[1.8rem] transition-[transform,box-shadow] duration-[320ms] hover:translate-y-[-6px] hover:shadow-[0_22px_55px_rgba(23,21,16,.12)]"
             >
-              <h3 className="mb-[.9rem] mt-0 font-display text-[clamp(1.35rem,1.8vw,1.7rem)] font-normal leading-[1.15]">
+              <h3 className="mb-[.9rem] mt-0 font-display text-display-sm font-normal leading-[1.15]">
                 {service.title}
               </h3>
-              <p className="m-0 text-[.84rem] leading-[1.7] text-[#65645f]">{service.text}</p>
-              <span className="mb-0 mt-auto pt-[1.6rem] text-[.6rem] uppercase tracking-[.12em] text-accent">
+              <p className="m-0 text-small leading-[1.7] text-[#65645f]">{service.text}</p>
+              <span className="mb-0 mt-auto pt-[1.6rem] text-label uppercase tracking-[.12em] text-accent">
                 {service.cta} <i aria-hidden="true" className="not-italic">↗</i>
               </span>
             </Link>

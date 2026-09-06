@@ -49,7 +49,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
       <div className="mb-6 flex items-end justify-between">
         <p className="eyebrow mb-0">En images</p>
         <span
-          className="font-display text-[.88rem] italic text-[#77746e]"
+          className="font-display text-small italic text-[#77746e]"
           aria-live="polite"
         >
           {index + 1} / {total}
@@ -84,7 +84,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
               className="aspect-[16/10] w-full bg-[#cac5bb] object-cover"
             />
             {image.caption ? (
-              <figcaption className="mt-3 text-[.6rem] uppercase tracking-[.14em] text-[#77746e]">
+              <figcaption className="mt-3 text-label uppercase tracking-[.14em] text-[#77746e]">
                 {image.caption}
               </figcaption>
             ) : null}

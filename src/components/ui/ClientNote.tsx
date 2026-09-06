@@ -5,5 +5,5 @@ type ClientNoteProps = {
 };
 
 export function ClientNote({ children = "À valider avec le client." }: ClientNoteProps) {
-  return <small className="mt-[.4rem] block text-[.6rem] italic leading-[1.5] text-[#8a8880]">{children}</small>;
+  return <small className="mt-[.4rem] block text-label italic leading-[1.5] text-[#8a8880]">{children}</small>;
 }

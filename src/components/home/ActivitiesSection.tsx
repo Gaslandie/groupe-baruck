@@ -46,21 +46,21 @@ export function ActivitiesSection() {
               className="absolute inset-0 z-[-1] bg-[linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.78))]"
             />
             <div className="flex items-center justify-between">
-              <span className="text-[.6rem] uppercase tracking-[.18em]">
+              <span className="text-label uppercase tracking-[.18em]">
                 {formatNumber(index + 1)} / {formatNumber(activities.length)}
               </span>
               <i
                 aria-hidden="true"
-                className="font-sans text-[1.2rem] not-italic transition-transform duration-[250ms] group-hover:translate-x-1 group-hover:translate-y-[-4px]"
+                className="font-sans text-lead not-italic transition-transform duration-[250ms] group-hover:translate-x-1 group-hover:translate-y-[-4px]"
               >
                 ↗
               </i>
             </div>
             <div>
-              <h3 className="mb-[.75rem] text-balance font-display text-[clamp(2rem,3vw,3.4rem)] font-normal leading-[.92] tracking-[-.04em]">
+              <h3 className="mb-[.75rem] text-balance font-display text-display-lg font-normal leading-[.92] tracking-[-.04em]">
                 {activity.title}
               </h3>
-              <p className="m-0 max-w-[320px] text-[.78rem] leading-[1.6] text-[rgba(255,255,255,.68)]">
+              <p className="m-0 max-w-[320px] text-caption leading-[1.6] text-[rgba(255,255,255,.68)]">
                 {activity.description}
               </p>
             </div>

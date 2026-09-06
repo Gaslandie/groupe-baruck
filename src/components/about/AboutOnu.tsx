@@ -29,16 +29,16 @@ export function AboutOnu() {
             className="h-full w-full object-cover saturate-[.8] contrast-[1.04] transition-transform duration-700 ease-[cubic-bezier(.2,.7,.2,1)] hover:scale-[1.03]"
           />
         </figure>
-        <span aria-hidden="true" className="absolute bottom-[4%] left-[-.6rem] z-[3] rotate-180 [writing-mode:vertical-rl] font-display text-[clamp(2.4rem,4vw,4.6rem)] italic leading-none tracking-[-.04em] text-accent">2016</span>
+        <span aria-hidden="true" className="absolute bottom-[4%] left-[-.6rem] z-[3] rotate-180 [writing-mode:vertical-rl] font-display text-display-lg italic leading-none tracking-[-.04em] text-accent">2016</span>
       </div>
       <div className="reveal">
         <p className="eyebrow">Nations Unies · 2016</p>
-        <h2 className="m-[.4rem_0_0] text-balance font-display text-[clamp(2.7rem,5vw,5.6rem)] font-normal leading-[.92] tracking-[-.05em]">
+        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
           La protection
           <em className="block font-normal text-accent">de l’enfant.</em>
         </h2>
         <p className="lead mb-[1.4rem] mt-6">En 2016, MR Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.</p>
-        <p className="m-0 max-w-[560px] text-[.92rem] leading-[1.8] text-[#64645f]">Cette expérience éclaire la manière dont il conduit aujourd’hui le Groupe Baruck : une attention constante portée à l’utilité sociale des projets, au-delà de leur seule performance économique.</p>
+        <p className="m-0 max-w-[560px] text-body leading-[1.8] text-[#64645f]">Cette expérience éclaire la manière dont il conduit aujourd’hui le Groupe Baruck : une attention constante portée à l’utilité sociale des projets, au-delà de leur seule performance économique.</p>
         <p className="content-disclaimer">Le détail de cette mission — pays, programme et durée — sera précisé après validation.</p>
       </div>
     </section>

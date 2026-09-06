@@ -74,12 +74,12 @@ export function PageTeaser({
         }`}
       >
         <p className={eyebrowClasses[tone]}>{eyebrow}</p>
-        <h2 className="m-0 text-balance font-display text-[clamp(2.8rem,4.8vw,5.6rem)] font-normal leading-[.9] tracking-[-.05em] max-tablet:text-[clamp(2.6rem,12vw,4rem)]">
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.9] tracking-[-.05em]">
           {title}
           <em className={`block font-normal ${accentClasses[tone]}`}>{emphasis}</em>
         </h2>
         <p
-          className={`mb-10 mt-7 max-w-[520px] text-[clamp(.9rem,1.15vw,1.02rem)] leading-[1.75] ${
+          className={`mb-10 mt-7 max-w-[520px] text-lead leading-[1.75] ${
             tone === "paper" ? "text-[#64645f]" : "text-[rgba(255,255,255,.7)]"
           }`}
         >

@@ -20,11 +20,11 @@ export function NewsCard({ article }: NewsCardProps) {
         <NewsImage cover={article.cover} category={article.category} />
       </div>
       <NewsMeta category={article.category} date={article.date} />
-      <h3 className="mt-4 font-display text-[clamp(1.5rem,2vw,2rem)] font-normal leading-[1.05] tracking-[-.035em]">
+      <h3 className="mt-4 font-display text-display-sm font-normal leading-[1.05] tracking-[-.035em]">
         {article.title}
       </h3>
-      <p className="mt-3 text-[.86rem] leading-[1.65] text-[#696963]">{article.excerpt}</p>
-      <span className="mt-5 text-[.6rem] uppercase tracking-[.14em] text-accent">Lire ↗</span>
+      <p className="mt-3 text-small leading-[1.65] text-[#696963]">{article.excerpt}</p>
+      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">Lire ↗</span>
     </Link>
   );
 }

@@ -20,7 +20,7 @@ const filters: { value: MediaFilter; label: string }[] = [
 ];
 
 const filterButtonClass =
-  "inline-flex min-h-11 cursor-pointer items-center border px-[1.1rem] text-[.6rem] uppercase tracking-[.14em] transition-[background,color,border-color] duration-[250ms]";
+  "inline-flex min-h-11 cursor-pointer items-center border px-[1.1rem] text-label uppercase tracking-[.14em] transition-[background,color,border-color] duration-[250ms]";
 
 export function MediaLibrary() {
   const [filter, setFilter] = useState<MediaFilter>("all");
@@ -77,7 +77,7 @@ export function MediaLibrary() {
           <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
             <div>
               <p className="eyebrow">{mediaCategoryLabels[collection.category]}</p>
-              <h2 className="m-0 font-display text-[clamp(2rem,3.4vw,3.4rem)] font-normal leading-[1] tracking-[-.04em]">
+              <h2 className="m-0 font-display text-display-lg font-normal leading-[1] tracking-[-.04em]">
                 {collection.title}
               </h2>
             </div>
@@ -96,7 +96,7 @@ export function MediaLibrary() {
                   loading="lazy"
                   className="aspect-[4/3] w-full bg-[#cac5bb] object-cover"
                 />
-                <figcaption className="mt-3 text-[.6rem] uppercase tracking-[.14em] text-[#77746e]">
+                <figcaption className="mt-3 text-label uppercase tracking-[.14em] text-[#77746e]">
                   {photo.caption}
                 </figcaption>
               </figure>

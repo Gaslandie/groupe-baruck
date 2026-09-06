@@ -4,7 +4,7 @@ export function HostessOffers() {
   return (
     <section className="scroll-mt-[100px] bg-ink px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] text-ivory">
       <div className="mb-14 flex items-end justify-between gap-12 max-tablet:block">
-        <h2 className="m-0 font-display text-[clamp(3rem,5vw,5.8rem)] font-normal leading-[.9] tracking-[-.045em]">
+        <h2 className="m-0 font-display text-display-xl font-normal leading-[.9] tracking-[-.045em]">
           Élégance,
           <br />
           présence et service
@@ -20,12 +20,12 @@ export function HostessOffers() {
             key={offer.number}
             className="flex min-h-[210px] flex-col justify-between border-b border-r border-[rgba(255,255,255,.16)] p-[1.8rem] max-tablet:min-h-[170px]"
           >
-            <span className="text-[.56rem] uppercase tracking-[.14em] text-accent">{offer.number}</span>
+            <span className="text-micro uppercase tracking-[.14em] text-accent">{offer.number}</span>
             <div>
-              <h3 className="mb-2 mt-6 font-display text-[clamp(1.7rem,2.4vw,2.6rem)] font-normal leading-none">
+              <h3 className="mb-2 mt-6 font-display text-display-md font-normal leading-none">
                 {offer.title}
               </h3>
-              <p className="m-0 text-[.82rem] leading-[1.5] text-[rgba(255,255,255,.62)]">{offer.text}</p>
+              <p className="m-0 text-small leading-[1.5] text-[rgba(255,255,255,.62)]">{offer.text}</p>
             </div>
           </article>
         ))}

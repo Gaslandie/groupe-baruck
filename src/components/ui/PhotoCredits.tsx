@@ -16,7 +16,7 @@ export function PhotoCredits({ photos, source, tone = "dark", className = "" }: 
 
   if (source) {
     return (
-      <p className={`m-0 text-[.52rem] uppercase tracking-[.14em] ${text} ${className}`}>
+      <p className={`m-0 text-micro uppercase tracking-[.14em] ${text} ${className}`}>
         Photos provisoires ·{" "}
         <a href={source.href} target="_blank" rel="noreferrer" className={linkClassName}>
           {source.label}
@@ -26,7 +26,7 @@ export function PhotoCredits({ photos, source, tone = "dark", className = "" }: 
   }
 
   return (
-    <p className={`m-0 text-[.52rem] uppercase tracking-[.14em] ${text} ${className}`}>
+    <p className={`m-0 text-micro uppercase tracking-[.14em] ${text} ${className}`}>
       Photos provisoires · Wikimedia Commons
       {(photos ?? []).map((photo) => (
         <span key={photo.href}>

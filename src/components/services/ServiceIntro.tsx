@@ -13,7 +13,7 @@ export function ServiceIntro({ eyebrow, title, emphasis, text, tags }: ServiceIn
     <section className="grid grid-cols-[minmax(280px,.8fr)_1.2fr] gap-[clamp(3rem,8vw,9rem)] px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-tablet:grid-cols-1 max-tablet:gap-10">
       <div>
         <p className="eyebrow">{eyebrow}</p>
-        <h2 className="mb-0 mt-2 font-display text-[clamp(3rem,5vw,6rem)] font-normal leading-[.92] tracking-[-.045em]">
+        <h2 className="mb-0 mt-2 font-display text-display-xl font-normal leading-[.92] tracking-[-.045em]">
           {title}
           <em className="font-normal text-accent">{emphasis}</em>
         </h2>
@@ -24,7 +24,7 @@ export function ServiceIntro({ eyebrow, title, emphasis, text, tags }: ServiceIn
           {tags.map((tag) => (
             <span
               key={tag}
-              className="border border-line px-[.85rem] py-[.7rem] text-[.66rem] uppercase tracking-[.08em] text-[#55534e]"
+              className="border border-line px-[.85rem] py-[.7rem] text-label uppercase tracking-[.08em] text-[#55534e]"
             >
               {tag}
             </span>

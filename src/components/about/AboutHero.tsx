@@ -24,11 +24,11 @@ export function AboutHero() {
       />
       <div className="hero-in">
         <p className="eyebrow light">Le Groupe · Vision, excellence, impact</p>
-        <h1 className="mb-[1.6rem] mt-0 max-w-[830px] text-balance font-display text-[clamp(3.3rem,6vw,7rem)] font-normal leading-[.88] tracking-[-.05em] max-desktop:text-[clamp(3rem,6vw,5.2rem)] max-tablet:text-[clamp(3.2rem,15vw,5.4rem)]">
+        <h1 className="mb-[1.6rem] mt-0 max-w-[830px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.05em]">
           Un homme, une vision,
           <em className="block font-normal text-accent">un groupe.</em>
         </h1>
-        <p className="mb-[2.2rem] mt-0 max-w-[560px] text-[clamp(.9rem,1.15vw,1.02rem)] leading-[1.75] text-[rgba(255,255,255,.7)]">
+        <p className="mb-[2.2rem] mt-0 max-w-[560px] text-lead leading-[1.75] text-[rgba(255,255,255,.7)]">
           Un groupe ancré en Guinée, porté par une vision fondée sur l’entrepreneuriat, la création de valeur et
           l’engagement au service de la société.
         </p>

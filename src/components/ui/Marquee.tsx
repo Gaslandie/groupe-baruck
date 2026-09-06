@@ -10,13 +10,13 @@ function MarqueeItems({ items, hidden = false }: { items: string[]; hidden?: boo
     <Fragment key={item}>
       <span
         aria-hidden={hidden || undefined}
-        className="whitespace-nowrap font-display text-[1.08rem] italic"
+        className="whitespace-nowrap font-display text-body italic"
       >
         {item}
       </span>
       <i
         aria-hidden={hidden || undefined}
-        className="mx-[2.4rem] font-sans text-[.38rem] not-italic"
+        className="mx-[2.4rem] font-sans text-micro not-italic"
       >
         ◆
       </i>

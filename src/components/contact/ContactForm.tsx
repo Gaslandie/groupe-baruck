@@ -13,7 +13,7 @@ const formClassName =
 const fieldClassName =
   "w-full resize-y rounded-none border-0 border-b border-[#c8c4bb] bg-transparent py-[.8rem] text-ink outline-none focus:border-accent";
 
-const labelClassName = "text-[.53rem] uppercase tracking-[.13em] text-[#6f6d67]";
+const labelClassName = "text-micro uppercase tracking-[.13em] text-[#6f6d67]";
 
 type ContactFormProps = {
   id?: string;
@@ -95,10 +95,10 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
     return (
       <div role="status" id={id} className={containerClassName}>
         <p className="eyebrow col-span-full">Message envoyé</p>
-        <h2 className="col-span-full m-0 max-w-[650px] font-display text-[clamp(2.6rem,4.5vw,5rem)] font-normal leading-[.95] tracking-[-.04em]">
+        <h2 className="col-span-full m-0 max-w-[650px] font-display text-display-xl font-normal leading-[.95] tracking-[-.04em]">
           Merci, votre message a bien été transmis.
         </h2>
-        <p className="col-span-full m-0 max-w-[540px] text-[.88rem] leading-[1.7] text-[#686762]">
+        <p className="col-span-full m-0 max-w-[540px] text-small leading-[1.7] text-[#686762]">
           Nous vous répondons par le canal que vous avez indiqué.
         </p>
         <a
@@ -193,13 +193,13 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="form-button col-span-full flex min-h-[58px] w-full cursor-pointer items-center justify-between border-0 bg-ink px-6 text-[.64rem] uppercase tracking-[.13em] text-ivory transition-colors duration-[250ms] disabled:cursor-wait disabled:opacity-70 max-tablet:col-auto"
+        className="form-button col-span-full flex min-h-[58px] w-full cursor-pointer items-center justify-between border-0 bg-ink px-6 text-label uppercase tracking-[.13em] text-ivory transition-colors duration-[250ms] disabled:cursor-wait disabled:opacity-70 max-tablet:col-auto"
       >
         {isSubmitting ? "Envoi…" : "Envoyer le message"} <span>↗</span>
       </button>
       <p
         aria-live="polite"
-        className="col-span-full mb-0 mt-[-.8rem] min-h-4 text-[.7rem] leading-[1.6] text-[#6c6a64] max-tablet:col-auto"
+        className="col-span-full mb-0 mt-[-.8rem] min-h-4 text-caption leading-[1.6] text-[#6c6a64] max-tablet:col-auto"
       >
         {status === "fallback" ? "Votre messagerie s’ouvre avec le message prérempli." : null}
         {status === "error" ? (

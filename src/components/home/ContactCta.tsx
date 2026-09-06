@@ -27,12 +27,12 @@ export function ContactCta() {
         <span className="absolute inset-[27%] rounded-full border border-[rgba(255,255,255,.07)] bg-[radial-gradient(circle,rgba(220,91,43,.13),transparent_68%)]" />
       </div>
       <p className="eyebrow light before:hidden">Une ambition en commun ?</p>
-      <h2 className="relative z-[1] mx-auto mb-[1.6rem] mt-2 max-w-[1100px] font-display text-[clamp(3rem,6vw,7rem)] font-normal leading-[.92] tracking-[-.05em] max-tablet:text-[clamp(3rem,14vw,5rem)]">
+      <h2 className="relative z-[1] mx-auto mb-[1.6rem] mt-2 max-w-[1100px] font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
         Construisons ensemble
         <br />
         des projets qui ont <em className="font-normal text-accent">de l’impact.</em>
       </h2>
-      <p className="relative z-[1] mx-auto mb-[2.2rem] max-w-[560px] text-[.88rem] leading-[1.7] text-[rgba(255,255,255,.62)]">
+      <p className="relative z-[1] mx-auto mb-[2.2rem] max-w-[560px] text-small leading-[1.7] text-[rgba(255,255,255,.62)]">
         Pour une collaboration, un partenariat ou plus d’informations sur nos activités, échangeons.
       </p>
       <div className="relative z-[1] flex flex-wrap items-center justify-center gap-[.8rem]">

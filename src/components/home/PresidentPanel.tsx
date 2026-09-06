@@ -20,13 +20,13 @@ export function PresidentPanel() {
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,9,10,.08)_20%,rgba(8,9,10,.32)_56%,rgba(8,9,10,.94)_100%),linear-gradient(90deg,rgba(5,6,7,.18),transparent_65%)]" />
       <div className="hero-in absolute bottom-[clamp(4rem,8vh,7rem)] left-[clamp(1.5rem,4vw,4.8rem)] right-[clamp(1.2rem,3vw,3rem)] z-[2] max-tablet:bottom-[2.2rem] max-tablet:left-[1.3rem]">
-        <p className="eyebrow light text-[.72rem] max-tablet:text-[.66rem]">Direction du Groupe Baruck</p>
-        <h1 className="m-0 max-w-[760px] text-balance font-display text-[clamp(2.7rem,4.4vw,5.2rem)] font-normal leading-[.88] tracking-[-.045em] max-desktop:text-[clamp(2.5rem,5vw,4.2rem)] max-tablet:text-[clamp(2.55rem,11vw,4rem)]">
+        <p className="eyebrow light text-caption max-tablet:text-label">Direction du Groupe Baruck</p>
+        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.045em]">
           <span className="text-[#d8c8aa]">MR</span> Djoro Joël
           <br />
           <em className="font-normal text-accent">Shaloom</em> Krasso
         </h1>
-        <div className="mb-[.8rem] mt-[1.3rem] grid gap-2 text-[.78rem] uppercase leading-[1.35] tracking-[.06em] max-tablet:max-w-[390px] max-tablet:gap-[.4rem] max-tablet:text-[.66rem]">
+        <div className="mb-[.8rem] mt-[1.3rem] grid gap-2 text-caption uppercase leading-[1.35] tracking-[.06em] max-tablet:max-w-[390px] max-tablet:gap-[.4rem] max-tablet:text-label">
           <Link href={routes.group} className={roleClassName}>
             PDG du Groupe Baruck
           </Link>
@@ -49,7 +49,7 @@ export function PresidentPanel() {
           </Link>
         </div>
       </div>
-      <span className="absolute left-[1.4rem] top-1/2 z-[2] origin-left -rotate-90 translate-x-[-50%] text-[.53rem] uppercase tracking-[.18em] text-[rgba(255,255,255,.42)] max-tablet:hidden">
+      <span className="absolute left-[1.4rem] top-1/2 z-[2] origin-left -rotate-90 translate-x-[-50%] text-micro uppercase tracking-[.18em] text-[rgba(255,255,255,.42)] max-tablet:hidden">
         Leadership · Entrepreneuriat · Engagement
       </span>
     </div>

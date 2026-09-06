@@ -32,7 +32,7 @@ export function ServiceFaq({ id = "questions", eyebrow, title, emphasis, items }
       <div className="mb-[clamp(2.5rem,5vw,3.5rem)] grid grid-cols-[minmax(280px,.8fr)_1.2fr] items-end gap-[clamp(3rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:gap-10">
         <div>
           <p className="eyebrow">{eyebrow}</p>
-          <h2 className="mb-0 mt-2 font-display text-[clamp(3rem,5vw,6rem)] font-normal leading-[.92] tracking-[-.045em]">
+          <h2 className="mb-0 mt-2 font-display text-display-xl font-normal leading-[.92] tracking-[-.045em]">
             {title}
             <em className="font-normal text-accent">{emphasis}</em>
           </h2>
@@ -41,7 +41,7 @@ export function ServiceFaq({ id = "questions", eyebrow, title, emphasis, items }
       <div>
         {items.map(({ question, answer }) => (
           <details key={question} className="border-t border-line last:border-b open:[&>summary>span]:rotate-45">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-[1.15rem] font-display text-[clamp(1.35rem,2vw,1.9rem)] leading-[1.2] [&::-webkit-details-marker]:hidden">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-[1.15rem] font-display text-display-sm leading-[1.2] [&::-webkit-details-marker]:hidden">
               {question}
               <span aria-hidden="true" className="shrink-0 text-accent">+</span>
             </summary>

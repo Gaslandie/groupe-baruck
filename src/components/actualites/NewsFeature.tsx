@@ -21,10 +21,10 @@ export function NewsFeature({ article }: NewsFeatureProps) {
       </div>
       <div>
         <NewsMeta category={article.category} date={article.date} />
-        <h2 className="mt-5 font-display text-[clamp(2.4rem,4vw,4.6rem)] font-normal leading-[.95] tracking-[-.045em]">
+        <h2 className="mt-5 font-display text-display-lg font-normal leading-[.95] tracking-[-.045em]">
           {article.title}
         </h2>
-        <p className="mt-5 max-w-[520px] text-[.95rem] leading-[1.7] text-[#696963]">
+        <p className="mt-5 max-w-[520px] text-body leading-[1.7] text-[#696963]">
           {article.excerpt}
         </p>
         <span className="text-link mt-6">

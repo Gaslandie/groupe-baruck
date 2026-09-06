@@ -8,12 +8,12 @@ export function EdvOrphanage() {
     >
       <div className="reveal relative isolate flex min-h-[760px] flex-col justify-center overflow-hidden bg-[linear-gradient(145deg,#24130b,#4a1e0d)] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,8vw,9rem)] text-white max-tablet:min-h-[580px] max-tablet:px-[1.3rem] max-tablet:py-20">
         <p className="edv-kicker">Un projet fondateur</p>
-        <h2 className="m-0 text-balance font-display text-[clamp(3rem,5.3vw,6.2rem)] font-normal leading-[.88] tracking-[-.055em] max-tablet:text-[clamp(2.8rem,13vw,4.25rem)]">
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
           Construire un lieu
           <br />
           <em className="font-[inherit] text-edv-gold">où grandir en sécurité.</em>
         </h2>
-        <p className="mb-0 mt-8 max-w-[600px] text-[.9rem] leading-[1.8] text-[rgba(255,255,255,.7)]">
+        <p className="mb-0 mt-8 max-w-[600px] text-body leading-[1.8] text-[rgba(255,255,255,.7)]">
           De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple
           : offrir protection, stabilité et attention.
         </p>
@@ -27,20 +27,20 @@ export function EdvOrphanage() {
             {item.date ? (
               <time
                 dateTime={item.date.iso}
-                className="text-[.56rem] font-extrabold uppercase leading-[1.5] tracking-[.12em] text-edv-ember"
+                className="text-micro font-extrabold uppercase leading-[1.5] tracking-[.12em] text-edv-ember"
               >
                 {item.date.label}
               </time>
             ) : (
-              <span className="text-[.56rem] font-extrabold uppercase leading-[1.5] tracking-[.12em] text-edv-ember">
+              <span className="text-micro font-extrabold uppercase leading-[1.5] tracking-[.12em] text-edv-ember">
                 {item.step}
               </span>
             )}
             <div>
-              <h3 className="mb-[.65rem] mt-0 font-display text-[clamp(1.55rem,2.3vw,2.5rem)] font-normal leading-none">
+              <h3 className="mb-[.65rem] mt-0 font-display text-display-md font-normal leading-none">
                 {item.title}
               </h3>
-              <p className="m-0 max-w-[520px] text-[.8rem] leading-[1.7] text-edv-muted">{item.text}</p>
+              <p className="m-0 max-w-[520px] text-small leading-[1.7] text-edv-muted">{item.text}</p>
             </div>
           </li>
         ))}

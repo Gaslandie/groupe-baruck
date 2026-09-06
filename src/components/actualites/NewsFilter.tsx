@@ -29,7 +29,7 @@ function filterHref(category: NewsCategory | null): string {
 }
 
 const filterLinkClass =
-  "inline-flex min-h-11 items-center border px-[1.1rem] text-[.6rem] uppercase tracking-[.14em] transition-[background,color,border-color] duration-[250ms]";
+  "inline-flex min-h-11 items-center border px-[1.1rem] text-label uppercase tracking-[.14em] transition-[background,color,border-color] duration-[250ms]";
 
 type NewsFilterViewProps = {
   articles: ArticleSummary[];

@@ -5,10 +5,10 @@ import { ClientNote } from "@/components/ui/ClientNote";
 import { placeholderPhotos, unsplashCredit, type RemotePhoto } from "@/data/media";
 import { contacts, hqAddress, routes, site } from "@/data/site";
 
-const paragraphClass = "m-0 text-[.95rem] leading-[1.75] text-[#65645f]";
+const paragraphClass = "m-0 text-body leading-[1.75] text-[#65645f]";
 const inlineLinkClass =
   "underline decoration-[rgba(11,12,14,.3)] underline-offset-4 transition-colors duration-[220ms] hover:text-accent";
-const termClass = "text-[.56rem] uppercase tracking-[.14em] text-accent";
+const termClass = "text-micro uppercase tracking-[.14em] text-accent";
 
 const githubPagesDocs =
   "https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages";
@@ -34,8 +34,8 @@ function LegalSection({ id, number, title, children }: LegalSectionProps) {
       className="reveal grid grid-cols-[minmax(220px,.55fr)_1fr] gap-x-[clamp(2rem,5vw,5rem)] gap-y-6 border-t border-line py-[clamp(2.5rem,4vw,4rem)] max-[1080px]:grid-cols-1"
     >
       <div>
-        <span className="text-[.56rem] tracking-[.15em] text-accent">{number}</span>
-        <h2 className="mb-0 mt-3 font-display text-[clamp(1.6rem,2.4vw,2.3rem)] font-normal leading-[1.05] tracking-[-.035em]">
+        <span className="text-micro tracking-[.15em] text-accent">{number}</span>
+        <h2 className="mb-0 mt-3 font-display text-display-md font-normal leading-[1.05] tracking-[-.035em]">
           {title}
         </h2>
       </div>
@@ -173,7 +173,7 @@ export function LegalContent() {
               <a href={photo.href} target="_blank" rel="noreferrer" className={inlineLinkClass}>
                 {photo.author}
               </a>
-              <span className="text-[.6rem] uppercase tracking-[.14em] text-[#77746e]">
+              <span className="text-label uppercase tracking-[.14em] text-[#77746e]">
                 {photo.licence}
               </span>
             </li>

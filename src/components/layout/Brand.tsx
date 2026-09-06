@@ -27,7 +27,7 @@ export function Brand({ className = "" }: BrandProps) {
           className="h-full w-full object-cover object-center"
         />
       </span>
-      <span className="flex items-center justify-center gap-[.55rem] whitespace-nowrap text-[.47rem] leading-none tracking-[.24em] max-tablet:gap-[.35rem] max-tablet:text-[.4rem] max-tablet:tracking-[.18em]">
+      <span className="flex items-center justify-center gap-[.55rem] whitespace-nowrap text-micro leading-none tracking-[.24em] max-tablet:gap-[.35rem] max-tablet:text-micro max-tablet:tracking-[.18em]">
         <span
           aria-hidden="true"
           className="block h-px w-[27px] bg-current opacity-[.58] max-tablet:w-[18px]"

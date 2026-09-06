@@ -47,22 +47,22 @@ export function AboutMilestones() {
           >
             <time
               dateTime={milestone.dateTime}
-              className="font-display text-[clamp(1.6rem,2.4vw,2.4rem)] leading-none text-accent"
+              className="font-display text-display-md leading-none text-accent"
             >
               {milestone.year}
             </time>
             <MilestoneLink href={milestone.href}>
               <span>
-                <h3 className="m-0 font-display text-[clamp(1.4rem,2vw,2rem)] font-normal leading-[1.15]">
+                <h3 className="m-0 font-display text-display-sm font-normal leading-[1.15]">
                   {milestone.title}
                 </h3>
-                <p className="mb-0 mt-[.7rem] max-w-[540px] text-[.86rem] leading-[1.7] text-[rgba(255,255,255,.66)]">
+                <p className="mb-0 mt-[.7rem] max-w-[540px] text-small leading-[1.7] text-[rgba(255,255,255,.66)]">
                   {milestone.text}
                 </p>
               </span>
               <i
                 aria-hidden="true"
-                className="mt-[.35rem] text-[.8rem] not-italic text-accent transition-transform duration-[250ms] group-hover:translate-x-1 group-hover:translate-y-[-2px]"
+                className="mt-[.35rem] text-small not-italic text-accent transition-transform duration-[250ms] group-hover:translate-x-1 group-hover:translate-y-[-2px]"
               >
                 ↗
               </i>
@@ -72,7 +72,7 @@ export function AboutMilestones() {
       </ol>
 
       <div className="reveal mt-[clamp(3rem,5vw,4.5rem)] max-w-[540px] border-t border-[rgba(255,255,255,.18)] pt-[1.4rem]">
-        <p className="m-0 text-[.62rem] uppercase tracking-[.15em] text-[rgba(255,255,255,.75)]">
+        <p className="m-0 text-label uppercase tracking-[.15em] text-[rgba(255,255,255,.75)]">
           Création du Groupe Baruck
         </p>
         <ClientNote>Date à confirmer avec le client.</ClientNote>

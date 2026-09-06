@@ -34,11 +34,11 @@ export function EdvPresence() {
               aria-hidden="true"
               className="absolute inset-0 z-[-1] bg-[linear-gradient(180deg,rgba(24,14,9,.3),rgba(24,14,9,.93)_70%)]"
             />
-            <small className="text-[.55rem] font-extrabold tracking-[.15em] text-edv-gold">{country.number}</small>
-            <h3 className="mb-4 mt-[1.1rem] font-display text-[clamp(2.5rem,4vw,4.6rem)] font-normal leading-[.9] tracking-[-.05em]">
+            <small className="text-micro font-extrabold tracking-[.15em] text-edv-gold">{country.number}</small>
+            <h3 className="mb-4 mt-[1.1rem] font-display text-display-lg font-normal leading-[.9] tracking-[-.05em]">
               {country.title}
             </h3>
-            <p className="m-0 max-w-[390px] text-[.8rem] leading-[1.75] text-[rgba(255,255,255,.62)]">
+            <p className="m-0 max-w-[390px] text-small leading-[1.75] text-[rgba(255,255,255,.62)]">
               {country.text}
             </p>
           </article>

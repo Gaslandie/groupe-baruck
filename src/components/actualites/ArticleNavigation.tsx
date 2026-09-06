@@ -10,9 +10,9 @@ type ArticleNavigationProps = {
   next?: ArticleSummary;
 };
 
-const labelClass = "text-[.6rem] uppercase tracking-[.14em] text-[#77746e]";
+const labelClass = "text-label uppercase tracking-[.14em] text-[#77746e]";
 const titleClass =
-  "font-display text-[clamp(1.3rem,1.8vw,1.7rem)] font-normal leading-[1.1] tracking-[-.03em] transition-colors duration-[250ms] group-hover:text-accent";
+  "font-display text-display-sm font-normal leading-[1.1] tracking-[-.03em] transition-colors duration-[250ms] group-hover:text-accent";
 
 export function ArticleNavigation({ previous, next }: ArticleNavigationProps) {
   if (!previous && !next) return null;

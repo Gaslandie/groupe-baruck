@@ -30,57 +30,57 @@ export function ForumEdition({
       >
         <div>
           <span
-            className={`block text-[.5rem] font-extrabold uppercase tracking-[.17em] ${isDark ? "text-[rgba(255,255,255,.52)]" : "text-jeca-muted"}`}
+            className={`block text-micro font-extrabold uppercase tracking-[.17em] ${isDark ? "text-[rgba(255,255,255,.52)]" : "text-jeca-muted"}`}
           >
             Édition
           </span>
           <strong
-            className={`mt-1 block font-display text-[clamp(3.2rem,5vw,5.2rem)] font-normal italic leading-[.85] ${isDark ? "text-jeca-yellow" : "text-jeca-red"}`}
+            className={`mt-1 block font-display text-display-xl font-normal italic leading-[.85] ${isDark ? "text-jeca-yellow" : "text-jeca-red"}`}
           >
             {number}
           </strong>
         </div>
         <div>
           <p
-            className={`mb-[.55rem] mt-0 text-[.58rem] font-extrabold uppercase tracking-[.17em] ${isDark ? "text-jeca-yellow" : "text-jeca-green"}`}
+            className={`mb-[.55rem] mt-0 text-micro font-extrabold uppercase tracking-[.17em] ${isDark ? "text-jeca-yellow" : "text-jeca-green"}`}
           >
             {edition.place}
           </p>
-          <h2 className="m-0 font-display text-[clamp(2.7rem,5vw,5.6rem)] font-normal leading-[.92] tracking-[-.05em] max-tablet:text-[clamp(2.6rem,11vw,4.1rem)]">
+          <h2 className="m-0 font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
             {edition.title}
           </h2>
         </div>
         <time
           dateTime={edition.date.iso}
-          className="self-center whitespace-nowrap border border-current px-4 py-3 text-[.55rem] font-extrabold uppercase tracking-[.12em] max-tablet:col-span-full max-tablet:justify-self-start"
+          className="self-center whitespace-nowrap border border-current px-4 py-3 text-micro font-extrabold uppercase tracking-[.12em] max-tablet:col-span-full max-tablet:justify-self-start"
         >
           {edition.date.label}
         </time>
       </header>
       {edition.story ? (
         <div className="mb-16 mt-12 grid grid-cols-[1fr_.75fr_.65fr] gap-[clamp(2rem,5vw,6rem)] max-[1080px]:grid-cols-2 max-[1080px]:[&_aside]:col-span-full max-tablet:mt-10 max-tablet:block max-tablet:[&>div]:my-8">
-          <p className="m-0 font-display text-[clamp(1.35rem,2.1vw,2.2rem)] font-normal leading-[1.35] text-jeca-blue">
+          <p className="m-0 font-display text-display-md font-normal leading-[1.35] text-jeca-blue">
             {edition.story.lead}
           </p>
           <div>
             {edition.story.paragraphs.map((paragraph) => (
-              <p key={paragraph} className="mb-4 mt-0 text-[.85rem] leading-[1.8] text-jeca-muted">
+              <p key={paragraph} className="mb-4 mt-0 text-small leading-[1.8] text-jeca-muted">
                 {paragraph}
               </p>
             ))}
           </div>
           <aside className="bg-jeca-green p-6 text-white">
-            <span className="mb-6 block text-[.5rem] font-extrabold uppercase tracking-[.15em] text-jeca-yellow">
+            <span className="mb-6 block text-micro font-extrabold uppercase tracking-[.15em] text-jeca-yellow">
               Thème
             </span>
-            <strong className="font-display text-[clamp(1.35rem,2vw,2rem)] font-normal leading-[1.3]">
+            <strong className="font-display text-display-sm font-normal leading-[1.3]">
               {edition.story.theme}
             </strong>
           </aside>
         </div>
       ) : (
         <p
-          className={`mb-16 mt-10 max-w-[740px] font-display text-[clamp(1.15rem,1.6vw,1.55rem)] font-normal leading-[1.5] ${isDark ? "text-[rgba(255,255,255,.68)]" : "text-jeca-muted"}`}
+          className={`mb-16 mt-10 max-w-[740px] font-display text-display-xs font-normal leading-[1.5] ${isDark ? "text-[rgba(255,255,255,.68)]" : "text-jeca-muted"}`}
         >
           {edition.simpleLead}
         </p>

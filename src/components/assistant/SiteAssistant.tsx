@@ -140,7 +140,7 @@ function Monogram({ className = "" }: { className?: string }) {
   );
 }
 
-const bubbleClass = "bg-[rgba(255,255,255,.07)] px-[.9rem] py-[.65rem] text-[.8rem] leading-[1.6]";
+const bubbleClass = "bg-[rgba(255,255,255,.07)] px-[.9rem] py-[.65rem] text-small leading-[1.6]";
 const blockClass = "w-full " + bubbleClass;
 
 function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: string }) {
@@ -153,7 +153,7 @@ function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: st
       return (
         <div className={blockClass}>
           {block.title ? (
-            <p className="m-0 mb-[.45rem] text-[.5rem] uppercase tracking-[.16em] text-[var(--asst-accent)]">{block.title}</p>
+            <p className="m-0 mb-[.45rem] text-micro uppercase tracking-[.16em] text-[var(--asst-accent)]">{block.title}</p>
           ) : null}
           <dl className="m-0">
             {block.rows.map((row) => (
@@ -161,11 +161,11 @@ function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: st
                 key={row.label}
                 className="grid grid-cols-[1fr_auto] items-baseline gap-x-4 border-t border-[rgba(255,255,255,.12)] py-[.45rem]"
               >
-                <dt className="text-[.74rem] leading-[1.4]">
+                <dt className="text-caption leading-[1.4]">
                   {row.label}
-                  {row.note ? <small className="block text-[.6rem] text-[rgba(255,255,255,.55)]">{row.note}</small> : null}
+                  {row.note ? <small className="block text-label text-[rgba(255,255,255,.55)]">{row.note}</small> : null}
                 </dt>
-                <dd className="m-0 whitespace-nowrap font-display text-[.92rem] leading-[1.3]">{row.value}</dd>
+                <dd className="m-0 whitespace-nowrap font-display text-body leading-[1.3]">{row.value}</dd>
               </div>
             ))}
           </dl>
@@ -177,10 +177,10 @@ function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: st
           {block.items.map((item) => (
             <li key={item.title} className="border-t border-[rgba(255,255,255,.12)] py-[.55rem] first:border-t-0 first:pt-0 last:pb-0">
               {item.meta ? (
-                <span className="mb-[.15rem] block text-[.5rem] uppercase tracking-[.16em] text-[var(--asst-accent)]">{item.meta}</span>
+                <span className="mb-[.15rem] block text-micro uppercase tracking-[.16em] text-[var(--asst-accent)]">{item.meta}</span>
               ) : null}
-              <strong className="block font-display text-[.98rem] font-normal leading-[1.25]">{item.title}</strong>
-              {item.text ? <span className="mt-[.2rem] block text-[.74rem] leading-[1.5] text-[rgba(255,255,255,.72)]">{item.text}</span> : null}
+              <strong className="block font-display text-body font-normal leading-[1.25]">{item.title}</strong>
+              {item.text ? <span className="mt-[.2rem] block text-caption leading-[1.5] text-[rgba(255,255,255,.72)]">{item.text}</span> : null}
             </li>
           ))}
         </ul>
@@ -191,7 +191,7 @@ function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: st
           {block.items.map((item) => (
             <li
               key={item}
-              className="border border-[rgba(255,255,255,.22)] px-[.6rem] py-[.3rem] text-[.6rem] uppercase tracking-[.12em]"
+              className="border border-[rgba(255,255,255,.22)] px-[.6rem] py-[.3rem] text-label uppercase tracking-[.12em]"
             >
               {item}
             </li>
@@ -203,8 +203,8 @@ function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: st
         <dl className={["m-0 grid gap-[.55rem]", blockClass].join(" ")}>
           {block.items.map((item) => (
             <div key={item.label}>
-              <dt className="text-[.5rem] uppercase tracking-[.16em] text-[var(--asst-accent)]">{item.label}</dt>
-              <dd className="m-0 mt-[.15rem] text-[.82rem] leading-[1.5]">
+              <dt className="text-micro uppercase tracking-[.16em] text-[var(--asst-accent)]">{item.label}</dt>
+              <dd className="m-0 mt-[.15rem] text-small leading-[1.5]">
                 {item.href ? (
                   <a
                     href={item.href}
@@ -226,10 +226,10 @@ function MessageBlock({ block, greeting }: { block: AssistantBlock; greeting: st
 }
 
 const optionClass =
-  "cursor-pointer border border-[rgba(255,255,255,.28)] bg-transparent px-[.8rem] py-[.5rem] text-left text-[.7rem] leading-[1.35] text-ivory transition-[background,border-color,transform] duration-[200ms] hover:border-ivory hover:bg-[rgba(255,255,255,.08)] hover:translate-y-[-1px] focus-visible:border-ivory focus-visible:bg-[rgba(255,255,255,.08)]";
+  "cursor-pointer border border-[rgba(255,255,255,.28)] bg-transparent px-[.8rem] py-[.5rem] text-left text-caption leading-[1.35] text-ivory transition-[background,border-color,transform] duration-[200ms] hover:border-ivory hover:bg-[rgba(255,255,255,.08)] hover:translate-y-[-1px] focus-visible:border-ivory focus-visible:bg-[rgba(255,255,255,.08)]";
 
 const footerActionClass =
-  "cursor-pointer border-0 bg-transparent p-0 text-[.56rem] uppercase tracking-[.16em] text-[rgba(255,255,255,.68)] transition-colors duration-[200ms] hover:text-ivory focus-visible:text-ivory";
+  "cursor-pointer border-0 bg-transparent p-0 text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.68)] transition-colors duration-[200ms] hover:text-ivory focus-visible:text-ivory";
 
 export function SiteAssistant({ variant }: SiteAssistantProps) {
   const pathname = usePathname();
@@ -429,11 +429,11 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
         aria-controls="site-assistant"
         onClick={toggle}
         className={[
-          "fixed bottom-[calc(clamp(1rem,3vw,1.75rem)+env(safe-area-inset-bottom,0px))] right-[clamp(1rem,3vw,1.75rem)] z-[70] flex h-[56px] cursor-pointer items-center gap-[.7rem] rounded-full border border-[rgba(255,255,255,.18)] bg-[var(--asst-bg)] pl-[.6rem] pr-[1.25rem] text-[.6rem] uppercase tracking-[.16em] text-ivory shadow-[0_18px_40px_rgba(0,0,0,.28)] transition-[transform,opacity] duration-[250ms] hover:translate-y-[-2px] disabled:cursor-wait disabled:opacity-70 max-tablet:h-[52px] max-tablet:w-[52px] max-tablet:justify-center max-tablet:p-0",
+          "fixed bottom-[calc(clamp(1rem,3vw,1.75rem)+env(safe-area-inset-bottom,0px))] right-[clamp(1rem,3vw,1.75rem)] z-[70] flex h-[56px] cursor-pointer items-center gap-[.7rem] rounded-full border border-[rgba(255,255,255,.18)] bg-[var(--asst-bg)] pl-[.6rem] pr-[1.25rem] text-label uppercase tracking-[.16em] text-ivory shadow-[0_18px_40px_rgba(0,0,0,.28)] transition-[transform,opacity] duration-[250ms] hover:translate-y-[-2px] disabled:cursor-wait disabled:opacity-70 max-tablet:h-[52px] max-tablet:w-[52px] max-tablet:justify-center max-tablet:p-0",
           open ? "max-tablet:hidden" : "",
         ].join(" ")}
       >
-        <Monogram className="h-[38px] w-[38px] text-[1.15rem] max-tablet:h-[34px] max-tablet:w-[34px] max-tablet:text-[1.05rem]" />
+        <Monogram className="h-[38px] w-[38px] text-lead max-tablet:h-[34px] max-tablet:w-[34px] max-tablet:text-body" />
         <span className="max-tablet:hidden">{open ? "Fermer" : assistantMeta.launcher}</span>
       </button>
 
@@ -447,13 +447,13 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
         >
           <div className="flex items-center justify-between gap-4 border-b border-[rgba(255,255,255,.14)] px-[1.1rem] py-[.85rem]">
             <div className="flex items-center gap-[.75rem]">
-              <Monogram className="h-[36px] w-[36px] text-[1.1rem]" />
+              <Monogram className="h-[36px] w-[36px] text-lead" />
               <div>
                 <h2
                   id="site-assistant-title"
                   ref={headingRef}
                   tabIndex={-1}
-                  className="m-0 font-display text-[1.15rem] font-normal leading-[1.1] tracking-[-.02em] outline-none"
+                  className="m-0 font-display text-lead font-normal leading-[1.1] tracking-[-.02em] outline-none"
                 >
                   {assistantMeta.name}
                 </h2>
@@ -463,7 +463,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               type="button"
               aria-label={assistantMeta.closeLabel}
               onClick={close}
-              className="flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-[.56rem] uppercase tracking-[.16em] text-inherit"
+              className="flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-micro uppercase tracking-[.16em] text-inherit"
             >
               <span className="max-tablet:hidden">Fermer</span>
               <span aria-hidden="true" className="font-sans text-[1.6rem] font-normal leading-none">
@@ -486,10 +486,10 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               if (entry.kind === "user") {
                 return (
                   <div key={index} className="animate-assistant-in flex flex-col items-end gap-[.3rem]">
-                    <span className="text-[.5rem] uppercase tracking-[.16em] text-[rgba(255,255,255,.45)]">
+                    <span className="text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.45)]">
                       {assistantMeta.userSpeaker}
                     </span>
-                    <p className="m-0 max-w-[85%] bg-[var(--asst-user)] px-[.9rem] py-[.6rem] text-[.8rem] leading-[1.5]">{entry.label}</p>
+                    <p className="m-0 max-w-[85%] bg-[var(--asst-user)] px-[.9rem] py-[.6rem] text-small leading-[1.5]">{entry.label}</p>
                   </div>
                 );
               }
@@ -498,12 +498,12 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               const options = isLast && !typing ? optionsFor(entry) : [];
               return (
                 <div key={index} className="animate-assistant-in flex flex-col items-start gap-[.3rem]">
-                  <span className="flex items-center gap-[.4rem] text-[.5rem] uppercase tracking-[.16em] text-[var(--asst-accent)]">
-                    <Monogram className="h-[16px] w-[16px] text-[.6rem]" />
+                  <span className="flex items-center gap-[.4rem] text-micro uppercase tracking-[.16em] text-[var(--asst-accent)]">
+                    <Monogram className="h-[16px] w-[16px] text-label" />
                     {assistantMeta.botSpeaker}
                   </span>
                   {entry.note ? (
-                    <p className="m-0 text-[.66rem] italic leading-[1.4] text-[rgba(255,255,255,.55)]">{entry.note}</p>
+                    <p className="m-0 text-label italic leading-[1.4] text-[rgba(255,255,255,.55)]">{entry.note}</p>
                   ) : null}
                   {node.messages.map((message, messageIndex) => (
                     <MessageBlock
@@ -543,13 +543,13 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               autoComplete="off"
               enterKeyHint="send"
               maxLength={MAX_QUESTION_LENGTH}
-              className="min-w-0 flex-1 border-0 border-b border-[rgba(255,255,255,.22)] bg-transparent py-[.45rem] text-[.82rem] text-ivory outline-none placeholder:text-[rgba(255,255,255,.4)] focus:border-[var(--asst-accent)]"
+              className="min-w-0 flex-1 border-0 border-b border-[rgba(255,255,255,.22)] bg-transparent py-[.45rem] text-small text-ivory outline-none placeholder:text-[rgba(255,255,255,.4)] focus:border-[var(--asst-accent)]"
             />
             <button
               type="submit"
               disabled={!question.trim() || typing}
               aria-label={assistantMeta.sendLabel}
-              className="flex h-[36px] w-[36px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(255,255,255,.28)] bg-transparent text-[1rem] text-ivory transition-[background,border-color,opacity] duration-[200ms] hover:border-ivory hover:bg-[rgba(255,255,255,.08)] disabled:cursor-default disabled:opacity-40"
+              className="flex h-[36px] w-[36px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(255,255,255,.28)] bg-transparent text-body text-ivory transition-[background,border-color,opacity] duration-[200ms] hover:border-ivory hover:bg-[rgba(255,255,255,.08)] disabled:cursor-default disabled:opacity-40"
             >
               <span aria-hidden="true">↑</span>
             </button>

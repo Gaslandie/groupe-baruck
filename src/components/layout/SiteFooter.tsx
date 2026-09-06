@@ -54,21 +54,21 @@ export function SiteFooter({ variant }: SiteFooterProps) {
     >
       <div className="max-tablet:col-span-full">
         <Brand className="[--brand-width:200px] [--brand-mobile-width:175px]" />
-        <p className="mt-6 max-w-[380px] text-[.95rem] leading-[1.75] text-[rgba(255,255,255,.6)]">
+        <p className="mt-6 max-w-[380px] text-body leading-[1.75] text-[rgba(255,255,255,.6)]">
           {content.blurb}
         </p>
         <span
           className={[
-            "mt-8 block font-sans text-[.7rem] font-normal uppercase tracking-[.16em]",
+            "mt-8 block font-sans text-caption font-normal uppercase tracking-[.16em]",
             styles.title,
           ].join(" ")}
         >
           Siège du Groupe Baruck · Guinée
         </span>
-        <p className="mt-[.85rem] max-w-[380px] text-[.95rem] leading-[1.75] text-[rgba(255,255,255,.6)]">
+        <p className="mt-[.85rem] max-w-[380px] text-body leading-[1.75] text-[rgba(255,255,255,.6)]">
           {hqAddress}
         </p>
-        <div className="mt-[.85rem] flex flex-col gap-[.85rem] font-display text-[1.05rem]">
+        <div className="mt-[.85rem] flex flex-col gap-[.85rem] font-display text-body">
           {facebookPages.map((page) => (
             <FooterAnchor
               key={page.href}
@@ -79,10 +79,10 @@ export function SiteFooter({ variant }: SiteFooterProps) {
       </div>
 
       {content.columns.map((column) => (
-        <div key={column.title} className="flex flex-col gap-[.85rem] font-display text-[1.05rem]">
+        <div key={column.title} className="flex flex-col gap-[.85rem] font-display text-body">
           <span
             className={[
-              "mb-[.6rem] font-sans text-[.7rem] font-normal uppercase tracking-[.16em]",
+              "mb-[.6rem] font-sans text-caption font-normal uppercase tracking-[.16em]",
               styles.title,
             ].join(" ")}
           >
@@ -94,7 +94,7 @@ export function SiteFooter({ variant }: SiteFooterProps) {
         </div>
       ))}
 
-      <div className="col-span-full flex flex-wrap justify-between gap-x-6 gap-y-[.6rem] border-t border-[rgba(255,255,255,.12)] pt-[1.6rem] text-[.72rem] uppercase tracking-[.1em] text-[rgba(255,255,255,.6)] max-tablet:flex-col">
+      <div className="col-span-full flex flex-wrap justify-between gap-x-6 gap-y-[.6rem] border-t border-[rgba(255,255,255,.12)] pt-[1.6rem] text-caption uppercase tracking-[.1em] text-[rgba(255,255,255,.6)] max-tablet:flex-col">
         <p>© {year} Groupe Baruck. Tous droits réservés.</p>
         <span>Site web conçu par {site.designer}</span>
         <Link href={routes.legal} className="hover:text-accent">

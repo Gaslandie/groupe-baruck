@@ -9,7 +9,7 @@ type NewsMetaProps = {
 
 export function NewsMeta({ category, date, light = false }: NewsMetaProps) {
   return (
-    <div className="flex items-center gap-3 text-[.58rem] uppercase tracking-[.16em]">
+    <div className="flex items-center gap-3 text-micro uppercase tracking-[.16em]">
       <span className="text-accent">{categoryLabels[category]}</span>
       <span aria-hidden="true" className="text-[#96958f]">
         ·

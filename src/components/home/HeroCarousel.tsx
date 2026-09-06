@@ -14,7 +14,7 @@ const CHANGE_DURATION = 260;
 
 function SlideAction({ action, secondary = false }: { action: HeroAction; secondary?: boolean }) {
   const className = [
-    "inline-flex items-center gap-4 border-b border-current pb-[.45rem] text-[.65rem] uppercase tracking-[.13em] max-tablet:text-[.55rem]",
+    "inline-flex items-center gap-4 border-b border-current pb-[.45rem] text-label uppercase tracking-[.13em] max-tablet:text-micro",
     secondary ? "text-[rgba(255,255,255,.62)]" : "",
   ].join(" ");
   const content = (
@@ -197,10 +197,10 @@ export function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           isChanging ? "translate-y-4 opacity-0" : "translate-y-0 opacity-100",
         ].join(" ")}
       >
-        <h2 className="mb-[1.2rem] mt-[.8rem] max-w-[830px] text-balance font-display text-[clamp(3.3rem,6vw,7rem)] font-normal leading-[.88] tracking-[-.05em] max-desktop:text-[clamp(3rem,6vw,5.2rem)] max-tablet:text-[clamp(3.2rem,15vw,5.4rem)]">
+        <h2 className="mb-[1.2rem] mt-[.8rem] max-w-[830px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.05em]">
           {slide.title}
         </h2>
-        <p className="mb-[1.7rem] max-w-[490px] text-[clamp(.85rem,1.1vw,1.05rem)] leading-[1.6] text-[rgba(255,255,255,.7)] max-tablet:max-w-[calc(100%-105px)] max-tablet:text-[.8rem]">
+        <p className="mb-[1.7rem] max-w-[490px] text-lead leading-[1.6] text-[rgba(255,255,255,.7)] max-tablet:max-w-[calc(100%-105px)] max-tablet:text-small">
           {slide.description}
         </p>
         <div className="flex flex-wrap items-center gap-x-5 gap-y-[1.25rem] max-tablet:max-w-[calc(100%-90px)] max-tablet:gap-x-4 max-tablet:gap-y-[.7rem]">

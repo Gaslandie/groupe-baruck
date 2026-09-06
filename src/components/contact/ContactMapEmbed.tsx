@@ -21,8 +21,8 @@ export function ContactMapEmbed({ embedUrl }: ContactMapEmbedProps) {
       <div
         className={`${frameClass} flex flex-col items-center justify-center px-[1.3rem] py-12 text-center max-tablet:py-14`}
       >
-        <p className="m-0 font-display text-[clamp(1.5rem,2.4vw,2rem)] leading-[1.1]">Kobayah, Conakry</p>
-        <p className="mb-0 mt-3 max-w-[320px] text-[.88rem] leading-[1.7] text-ink-soft">
+        <p className="m-0 font-display text-display-sm leading-[1.1]">Kobayah, Conakry</p>
+        <p className="mb-0 mt-3 max-w-[320px] text-small leading-[1.7] text-ink-soft">
           Affichez la carte pour situer le quartier.
         </p>
         <button
@@ -32,7 +32,7 @@ export function ContactMapEmbed({ embedUrl }: ContactMapEmbedProps) {
         >
           Afficher la carte
         </button>
-        <small className="mt-[.9rem] block max-w-[320px] text-[.6rem] italic leading-[1.5] text-ink-soft/70">
+        <small className="mt-[.9rem] block max-w-[320px] text-label italic leading-[1.5] text-ink-soft/70">
           La carte est fournie par Google et se charge lorsque vous cliquez.
         </small>
       </div>

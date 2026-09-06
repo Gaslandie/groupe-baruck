@@ -78,7 +78,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
               alt={activePhoto.alt}
               className="h-full w-full object-contain"
             />
-            <figcaption className="flex justify-center gap-4 text-center text-[.75rem] uppercase tracking-[.12em]">
+            <figcaption className="flex justify-center gap-4 text-center text-caption uppercase tracking-[.12em]">
               <span>{activePhoto.caption}</span>
               <small className="text-[inherit] text-[rgba(255,255,255,.55)]">
                 {activeIndex + 1} / {photos.length}
@@ -115,7 +115,7 @@ export function GalleryPhoto({
     <button
       type="button"
       onClick={() => gallery.openPhoto(index)}
-      className={`group relative h-full w-full min-w-0 cursor-zoom-in overflow-hidden border-0 bg-[#cad0d9] p-0 after:absolute after:bottom-4 after:right-4 after:grid after:h-[38px] after:w-[38px] after:translate-y-2 after:place-items-center after:bg-[rgba(4,16,49,.75)] after:text-[1.2rem] after:text-white after:opacity-0 after:transition-[opacity,transform] after:duration-[250ms] after:content-['+'] hover:after:translate-y-0 hover:after:opacity-100 focus-visible:after:translate-y-0 focus-visible:after:opacity-100 max-tablet:after:bottom-[.6rem] max-tablet:after:right-[.6rem] max-tablet:after:h-8 max-tablet:after:w-8 max-tablet:after:translate-y-0 max-tablet:after:opacity-100 ${className}`}
+      className={`group relative h-full w-full min-w-0 cursor-zoom-in overflow-hidden border-0 bg-[#cad0d9] p-0 after:absolute after:bottom-4 after:right-4 after:grid after:h-[38px] after:w-[38px] after:translate-y-2 after:place-items-center after:bg-[rgba(4,16,49,.75)] after:text-lead after:text-white after:opacity-0 after:transition-[opacity,transform] after:duration-[250ms] after:content-['+'] hover:after:translate-y-0 hover:after:opacity-100 focus-visible:after:translate-y-0 focus-visible:after:opacity-100 max-tablet:after:bottom-[.6rem] max-tablet:after:right-[.6rem] max-tablet:after:h-8 max-tablet:after:w-8 max-tablet:after:translate-y-0 max-tablet:after:opacity-100 ${className}`}
     >
       <img
         src={asset(photo.src)}

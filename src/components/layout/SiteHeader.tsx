@@ -162,7 +162,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
 
         <nav
           aria-label="Navigation principale"
-          className="hidden items-center gap-[clamp(.8rem,1.25vw,1.4rem)] text-[.64rem] uppercase tracking-[.085em] wide:flex"
+          className="hidden items-center gap-[clamp(.8rem,1.25vw,1.4rem)] text-label uppercase tracking-[.085em] wide:flex"
         >
           {mainNav.map((item) => {
             const itemCurrent = currentAttributes(item.href);
@@ -188,7 +188,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                     ].join(" ")}
                   >
                     {item.shortLabel ?? item.label}
-                    <span aria-hidden="true" className="text-[.8rem] text-accent">
+                    <span aria-hidden="true" className="text-small text-accent">
                       ⌄
                     </span>
                   </Link>
@@ -207,7 +207,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                           aria-current={childCurrent["aria-current"]}
                           data-current={childCurrent["data-current"]}
                           className={[
-                            "block px-[.8rem] py-[.75rem] text-[.72rem] normal-case tracking-[.06em] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory",
+                            "block px-[.8rem] py-[.75rem] text-caption normal-case tracking-[.06em] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory",
                             hasFeaturedChildren ? "font-medium text-ivory" : "text-[rgba(255,255,255,.72)]",
                           ].join(" ")}
                         >
@@ -217,7 +217,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                     })}
                     {hasOtherChildren ? (
                       <>
-                        <span className="mt-[.4rem] block border-t border-[rgba(255,255,255,.14)] px-[.8rem] pb-[.2rem] pt-[.7rem] text-[.5rem] uppercase tracking-[.16em] text-[rgba(255,255,255,.4)]">
+                        <span className="mt-[.4rem] block border-t border-[rgba(255,255,255,.14)] px-[.8rem] pb-[.2rem] pt-[.7rem] text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.4)]">
                           Autres domaines
                         </span>
                         <div className="grid grid-cols-2">
@@ -229,7 +229,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                                 href={child.href}
                                 aria-current={childCurrent["aria-current"]}
                                 data-current={childCurrent["data-current"]}
-                                className="block px-[.8rem] py-[.75rem] text-[.68rem] normal-case tracking-[.06em] text-[rgba(255,255,255,.72)] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory"
+                                className="block px-[.8rem] py-[.75rem] text-label normal-case tracking-[.06em] text-[rgba(255,255,255,.72)] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory"
                               >
                                 {child.label}
                               </Link>
@@ -264,7 +264,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         <div className="flex items-center gap-8">
           <Link
             href={routes.contact}
-            className="border-b border-[rgba(255,255,255,.3)] pb-[.3rem] text-[.74rem] uppercase tracking-[.08em] wide:hidden max-tablet:hidden"
+            className="border-b border-[rgba(255,255,255,.3)] pb-[.3rem] text-caption uppercase tracking-[.08em] wide:hidden max-tablet:hidden"
           >
             Parler avec nous <span className={["ml-[.4rem]", styles.contactArrow].join(" ")}>↗</span>
           </Link>
@@ -275,7 +275,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             aria-controls="side-nav"
             aria-expanded={isOpen}
             onClick={() => setIsOpen((open) => !open)}
-            className="group flex cursor-pointer items-center gap-[.85rem] border-0 bg-transparent py-[.75rem] pl-[.75rem] text-[.68rem] uppercase tracking-[.18em] text-inherit"
+            className="group flex cursor-pointer items-center gap-[.85rem] border-0 bg-transparent py-[.75rem] pl-[.75rem] text-label uppercase tracking-[.18em] text-inherit"
           >
             <span className="max-tablet:hidden">Menu</span>
             <span aria-hidden="true" className="flex h-[18px] w-[30px] flex-col justify-center gap-[7px]">
@@ -307,7 +307,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         ].join(" ")}
       >
         <div className="flex items-center justify-between border-b border-line pb-6">
-          <span className="text-[.63rem] uppercase tracking-[.18em]">Groupe Baruck</span>
+          <span className="text-label uppercase tracking-[.18em]">Groupe Baruck</span>
           <button
             ref={closeButtonRef}
             id="close-menu"
@@ -316,7 +316,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             onClick={() => setIsOpen(false)}
             className="flex cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-inherit"
           >
-            <span className="text-[.63rem] uppercase tracking-[.18em]">Fermer</span>
+            <span className="text-label uppercase tracking-[.18em]">Fermer</span>
             <span aria-hidden="true" className="font-sans text-[2rem] font-normal leading-none">
               ×
             </span>
@@ -339,13 +339,13 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                   data-current={itemCurrent["data-current"]}
                   onClick={() => setIsOpen(false)}
                   className={[
-                    "py-[.34rem] font-display text-[clamp(1.8rem,3vw,3.15rem)] leading-[1.06] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem] max-tablet:text-[clamp(1.75rem,8vw,2.5rem)]",
+                    "py-[.34rem] font-display text-display-md leading-[1.06] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem]",
                     itemCurrent.isCurrent ? styles.sideCurrent : "",
                   ].join(" ")}
                 >
                   <span
                     className={[
-                      "inline-block w-[2.3rem] align-middle font-sans text-[.55rem] tracking-[.1em]",
+                      "inline-block w-[2.3rem] align-middle font-sans text-micro tracking-[.1em]",
                       itemCurrent.isCurrent ? styles.sideCurrentNumber : "text-accent",
                     ].join(" ")}
                   >
@@ -366,7 +366,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                           data-current={childCurrent["data-current"]}
                           onClick={() => setIsOpen(false)}
                           className={[
-                            "py-[.18rem] font-sans text-[.72rem] font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
+                            "py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
                             childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]",
                           ].join(" ")}
                         >
@@ -381,7 +381,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                         data-current={itemCurrent["data-current"]}
                         onClick={() => setIsOpen(false)}
                         className={[
-                          "py-[.18rem] font-sans text-[.72rem] font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
+                          "py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent",
                           itemCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]",
                         ].join(" ")}
                       >
@@ -395,7 +395,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           })}
         </nav>
 
-        <div className="grid grid-cols-[105px_1fr] gap-4 border-t border-line pt-[1.3rem] text-[.76rem] max-tablet:grid-cols-1">
+        <div className="grid grid-cols-[105px_1fr] gap-4 border-t border-line pt-[1.3rem] text-caption max-tablet:grid-cols-1">
           <p className="m-0 text-[#6f6f6b] max-tablet:mb-2">Restons en contact</p>
           <div className="grid grid-cols-2 gap-x-[1.2rem] gap-y-[.85rem] max-tablet:grid-cols-1 max-tablet:gap-[.7rem]">
             {sideNavContacts.map((contact) => (
@@ -407,7 +407,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                 onClick={() => setIsOpen(false)}
                 className="leading-[1.3]"
               >
-                <small className="mb-[.2rem] block text-[.46rem] uppercase tracking-[.1em] text-accent">
+                <small className="mb-[.2rem] block text-micro uppercase tracking-[.1em] text-accent">
                   {contact.label}
                 </small>
                 {contact.value}

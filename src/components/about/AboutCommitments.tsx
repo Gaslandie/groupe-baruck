@@ -22,9 +22,9 @@ export function AboutCommitments() {
             <img src={asset(jecaLogo.src)} alt="Logo de la JECA, Jeunes Entrepreneurs Chrétiens Africains" width={jecaLogo.width} height={jecaLogo.height} loading="lazy" className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-multiply" />
           </div>
           <div className="relative flex-1 border-t border-line p-[1.8rem]">
-            <span className="text-[.56rem] uppercase tracking-[.15em] text-accent">Entrepreneuriat</span>
-            <h3 className="mb-[.8rem] mt-[1.2rem] font-display text-[2.2rem] font-normal">JECA</h3>
-            <p className="m-0 max-w-[380px] text-[.85rem] leading-[1.7] text-[#676661]">Une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.</p>
+            <span className="text-micro uppercase tracking-[.15em] text-accent">Entrepreneuriat</span>
+            <h3 className="mb-[.8rem] mt-[1.2rem] font-display text-title-lg font-normal">JECA</h3>
+            <p className="m-0 max-w-[380px] text-small leading-[1.7] text-[#676661]">Une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.</p>
             <i aria-hidden="true" className="absolute bottom-[1.6rem] right-[1.6rem] grid h-[42px] w-[42px] place-items-center border border-line not-italic transition-[background,color] duration-[250ms] group-hover:bg-ink group-hover:text-ivory">↗</i>
           </div>
         </Link>
@@ -33,9 +33,9 @@ export function AboutCommitments() {
             <img src={asset(edvLogo.src)} alt="Logo de l’ONG Espoir de Vie" width={edvLogo.width} height={edvLogo.height} loading="lazy" className="h-auto max-h-full w-auto max-w-full object-contain mix-blend-normal" />
           </div>
           <div className="relative flex-1 border-t border-line p-[1.8rem]">
-            <span className="text-[.56rem] uppercase tracking-[.15em] text-accent">Engagement social</span>
-            <h3 className="mb-[.8rem] mt-[1.2rem] font-display text-[2.2rem] font-normal">Espoir de Vie</h3>
-            <p className="m-0 max-w-[380px] text-[.85rem] leading-[1.7] text-[#676661]">Protéger les enfants, accompagner les familles et apporter une aide concrète aux personnes vulnérables.</p>
+            <span className="text-micro uppercase tracking-[.15em] text-accent">Engagement social</span>
+            <h3 className="mb-[.8rem] mt-[1.2rem] font-display text-title-lg font-normal">Espoir de Vie</h3>
+            <p className="m-0 max-w-[380px] text-small leading-[1.7] text-[#676661]">Protéger les enfants, accompagner les familles et apporter une aide concrète aux personnes vulnérables.</p>
             <i aria-hidden="true" className="absolute bottom-[1.6rem] right-[1.6rem] grid h-[42px] w-[42px] place-items-center border border-line not-italic transition-[background,color] duration-[250ms] group-hover:bg-ink group-hover:text-ivory">↗</i>
           </div>
         </Link>

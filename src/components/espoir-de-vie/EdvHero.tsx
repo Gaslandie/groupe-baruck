@@ -15,15 +15,15 @@ export function EdvHero() {
       <div className="grid grid-cols-[minmax(0,900px)_auto] items-center justify-between gap-[clamp(2rem,6vw,6rem)] max-[1100px]:grid-cols-1 max-[1100px]:justify-items-start">
         <div className="hero-in">
           <p className="edv-kicker edv-kicker-light">Engagement humanitaire · Afrique de l’Ouest</p>
-          <h1 className="m-0 max-w-[900px] text-balance font-display text-[clamp(3.4rem,6.2vw,7.4rem)] font-normal leading-[.88] tracking-[-.055em] max-tablet:text-[clamp(3rem,14vw,4.7rem)]">
+          <h1 className="m-0 max-w-[900px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
             Espoir de Vie.
             <br />
             <em className="font-[inherit] text-edv-gold">Agir pour les plus vulnérables.</em>
           </h1>
-          <p className="mb-5 mt-[1.8rem] max-w-[640px] text-[clamp(.92rem,1.25vw,1.15rem)] leading-[1.7] text-[rgba(255,255,255,.7)] max-tablet:mt-[1.4rem] max-tablet:text-[.85rem]">
+          <p className="mb-5 mt-[1.8rem] max-w-[640px] text-lead leading-[1.7] text-[rgba(255,255,255,.7)] max-tablet:mt-[1.4rem] max-tablet:text-small">
             Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire.
           </p>
-          <blockquote className="mb-8 mt-0 font-display text-base italic leading-[1.5] text-[rgba(255,255,255,.82)] max-tablet:text-[.9rem]">
+          <blockquote className="mb-8 mt-0 font-display text-base italic leading-[1.5] text-[rgba(255,255,255,.82)] max-tablet:text-body">
             « Avec Dieu, nous ferons des exploits. »
           </blockquote>
           <div className="edv-actions">

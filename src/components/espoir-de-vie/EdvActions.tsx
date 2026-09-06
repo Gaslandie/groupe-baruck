@@ -30,7 +30,7 @@ export function EdvActions() {
               className={`reveal relative flex min-h-[420px] flex-col overflow-hidden border-b border-r border-edv-line p-[clamp(1.5rem,3vw,3rem)] max-[1100px]:min-h-[390px] max-tablet:min-h-[370px] max-tablet:p-[1.7rem] ${action.tone ? cardTones[action.tone] : "bg-edv-cream"}`}
             >
               <div
-                className={`flex justify-between gap-4 text-[.51rem] font-extrabold uppercase tracking-[.12em] ${isColored ? "text-edv-gold" : "text-edv-ember"}`}
+                className={`flex justify-between gap-4 text-micro font-extrabold uppercase tracking-[.12em] ${isColored ? "text-edv-gold" : "text-edv-ember"}`}
               >
                 <span>{action.number}</span>
                 {action.date ? (
@@ -42,20 +42,20 @@ export function EdvActions() {
                 )}
               </div>
               <p
-                className={`mb-[.9rem] mt-auto text-[.53rem] font-extrabold uppercase tracking-[.13em] ${isColored ? "text-edv-gold" : "text-edv-ember"}`}
+                className={`mb-[.9rem] mt-auto text-micro font-extrabold uppercase tracking-[.13em] ${isColored ? "text-edv-gold" : "text-edv-ember"}`}
               >
                 {action.place}
               </p>
-              <h3 className="mb-4 mt-0 max-w-[430px] font-display text-[clamp(2rem,3.2vw,3.7rem)] font-normal leading-[.92] tracking-[-.045em]">
+              <h3 className="mb-4 mt-0 max-w-[430px] font-display text-display-lg font-normal leading-[.92] tracking-[-.045em]">
                 {action.title}
               </h3>
               <p
-                className={`relative z-[1] m-0 max-w-[430px] text-[.78rem] leading-[1.7] ${isColored ? "text-[rgba(255,255,255,.72)]" : "text-edv-muted"}`}
+                className={`relative z-[1] m-0 max-w-[430px] text-caption leading-[1.7] ${isColored ? "text-[rgba(255,255,255,.72)]" : "text-edv-muted"}`}
               >
                 {action.text}
               </p>
               {action.highlight ? (
-                <strong className="mt-[1.8rem] font-display text-[1.15rem] font-normal italic text-edv-gold">
+                <strong className="mt-[1.8rem] font-display text-lead font-normal italic text-edv-gold">
                   {action.highlight}
                 </strong>
               ) : null}

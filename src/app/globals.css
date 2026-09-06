@@ -78,6 +78,25 @@
   --color-edv-line: rgba(54, 30, 18, .16);
 }
 
+/* Échelle typographique unique du site (2026-09-06). Rôles, jamais de taille arbitraire en rem ou clamp() :
+   micro 11px (numéros, micro-étiquettes) · label 12px (eyebrows, menu, boutons) · caption 13px · small 14px ·
+   body 16px · lead (≈17–19px) · title 24px · title-lg 34px · display-xs → display-xl (titres fluides). */
+@theme static {
+  --text-micro: .6875rem;
+  --text-label: .75rem;
+  --text-caption: .8125rem;
+  --text-small: .875rem;
+  --text-body: 1rem;
+  --text-lead: clamp(1.05rem, .3vw + .95rem, 1.2rem);
+  --text-title: 1.5rem;
+  --text-title-lg: 2.125rem;
+  --text-display-xs: clamp(1.15rem, .5vw + .95rem, 1.45rem);
+  --text-display-sm: clamp(1.35rem, .8vw + 1rem, 1.8rem);
+  --text-display-md: clamp(1.8rem, 1.4vw + .9rem, 2.6rem);
+  --text-display-lg: clamp(2.4rem, 2.6vw + 1rem, 4.6rem);
+  --text-display-xl: clamp(3rem, 4vw + 1.2rem, 6.4rem);
+}
+
 @layer base {
   html { scroll-behavior: smooth; }
   body { @apply bg-paper text-ink font-sans overflow-x-hidden; }
@@ -101,7 +120,7 @@
   .eyebrow {
     margin: 0 0 1.2rem;
     text-transform: uppercase;
-    font-size: .63rem;
+    font-size: var(--text-label);
     font-weight: 700;
     letter-spacing: .23em;
     color: var(--color-accent);
@@ -253,7 +272,7 @@
     justify-content: center;
     gap: 1.5rem;
     border: 1px solid rgba(255,255,255,.32);
-    font-size: .66rem;
+    font-size: var(--text-label);
     text-transform: uppercase;
     letter-spacing: .12em;
     transition: color .25s, border-color .25s, transform .25s;
@@ -272,7 +291,7 @@
   .form-button { --fill: var(--color-accent); }
 
   .text-link {
-    font-size: .65rem;
+    font-size: var(--text-label);
     text-transform: uppercase;
     letter-spacing: .13em;
     display: inline-flex;
@@ -299,11 +318,11 @@
   .text-link:focus-visible span { transform: translate(3px, -3px); }
 
   .lead {
-    font: 400 clamp(1.15rem, 1.6vw, 1.55rem)/1.5 var(--font-display);
+    font: 400 var(--text-display-xs)/1.5 var(--font-display);
   }
 
   .article-body {
-    font-size: 1rem;
+    font-size: var(--text-body);
     line-height: 1.8;
   }
 
@@ -318,8 +337,8 @@
     margin: 2.2em 0 .7em;
   }
 
-  .article-body h2 { font-size: clamp(1.8rem, 2.6vw, 2.4rem); }
-  .article-body h3 { font-size: clamp(1.35rem, 1.9vw, 1.7rem); }
+  .article-body h2 { font-size: var(--text-display-md); }
+  .article-body h3 { font-size: var(--text-display-sm); }
 
   .article-body ul,
   .article-body ol {
@@ -334,7 +353,7 @@
     border-left: 2px solid var(--color-accent);
     padding-left: 1.2rem;
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: var(--text-lead);
     line-height: 1.5;
     color: #4a4944;
   }
@@ -361,7 +380,7 @@
 
   .content-disclaimer {
     margin: 1.3rem 0 0;
-    font-size: .6rem;
+    font-size: var(--text-label);
     color: #77756f;
     font-style: italic;
   }
@@ -372,7 +391,7 @@
     gap: .75rem;
     margin: 0 0 1.2rem;
     color: var(--color-jeca-blue);
-    font-size: .63rem;
+    font-size: var(--text-label);
     line-height: 1.4;
     font-weight: 700;
     letter-spacing: .23em;
@@ -398,7 +417,7 @@
     justify-content: center;
     gap: 1.5rem;
     padding: 0 1.2rem;
-    font-size: .66rem;
+    font-size: var(--text-label);
     font-weight: 500;
     letter-spacing: .12em;
     text-transform: uppercase;
@@ -425,7 +444,7 @@
     gap: .75rem;
     margin: 0 0 1.25rem;
     color: var(--color-edv-ember);
-    font-size: .58rem;
+    font-size: var(--text-label);
     font-weight: 800;
     letter-spacing: .2em;
     text-transform: uppercase;
@@ -451,7 +470,7 @@
     gap: 1.5rem;
     padding: 0 1.25rem;
     border: 1px solid rgba(255,255,255,.35);
-    font-size: .59rem;
+    font-size: var(--text-label);
     font-weight: 700;
     letter-spacing: .13em;
     text-transform: uppercase;
@@ -473,11 +492,11 @@
   .edv-button-outline:focus-visible { color: var(--color-edv-ink); }
 
   @media (max-width: 760px) {
-    .button { min-height: 44px; padding: 0 .85rem; font-size: .56rem; gap: .8rem; }
-    .jeca-button { min-height: 44px; padding-inline: 1rem; gap: 1rem; font-size: .56rem; }
+    .button { min-height: 44px; padding: 0 .85rem; gap: .8rem; }
+    .jeca-button { min-height: 44px; padding-inline: 1rem; gap: 1rem; }
     .jeca-button-primary { color: var(--color-jeca-blue); background: var(--color-jeca-yellow); border-color: var(--color-jeca-yellow); }
     .jeca-button-line { color: #fff; border-color: rgba(255,255,255,.38); }
-    .edv-button { min-height: 46px; padding-inline: .9rem; gap: .7rem; font-size: .53rem; }
+    .edv-button { min-height: 46px; padding-inline: .9rem; gap: .7rem; }
   }
 
   @media (max-width: 420px) {

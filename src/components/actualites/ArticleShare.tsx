@@ -9,7 +9,7 @@ type ArticleShareProps = {
 };
 
 const actionClass =
-  "inline-flex min-h-12 cursor-pointer items-center border border-line px-5 text-[.6rem] uppercase tracking-[.14em] transition-[background,color] duration-[250ms] hover:bg-ink hover:text-ivory";
+  "inline-flex min-h-12 cursor-pointer items-center border border-line px-5 text-label uppercase tracking-[.14em] transition-[background,color] duration-[250ms] hover:bg-ink hover:text-ivory";
 
 export function ArticleShare({ title, url }: ArticleShareProps) {
   const [feedback, setFeedback] = useState("");
@@ -41,7 +41,7 @@ export function ArticleShare({ title, url }: ArticleShareProps) {
       </div>
       <p
         aria-live="polite"
-        className="mt-4 min-h-[1.4em] font-display text-[.88rem] italic text-[#77746e]"
+        className="mt-4 min-h-[1.4em] font-display text-small italic text-[#77746e]"
       >
         {feedback}
       </p>

@@ -21,10 +21,10 @@ function ChannelRow({ label, value, href, external = false, withBorderBottom = f
       }`}
     >
       <span>
-        <small className="mb-[.35rem] block text-[.5rem] uppercase tracking-[.16em] text-accent">{label}</small>
-        <span className="font-display text-[clamp(1.35rem,2vw,1.9rem)] leading-none">{value}</span>
+        <small className="mb-[.35rem] block text-micro uppercase tracking-[.16em] text-accent">{label}</small>
+        <span className="font-display text-display-sm leading-none">{value}</span>
       </span>
-      <i aria-hidden="true" className="text-[.85rem] not-italic text-accent transition-transform duration-[220ms] group-hover:translate-x-1">
+      <i aria-hidden="true" className="text-small not-italic text-accent transition-transform duration-[220ms] group-hover:translate-x-1">
         ↗
       </i>
     </a>
@@ -36,12 +36,12 @@ export function ContactDetails() {
     <section id="coordonnees" className="reveal-stagger grid grid-cols-[40%_60%] bg-paper max-tablet:grid-cols-1">
       <div className="reveal flex flex-col justify-center border-r border-line px-[clamp(2rem,5vw,6rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:border-r-0 max-tablet:px-[1.3rem] max-tablet:py-16">
         <p className="eyebrow">Nous joindre</p>
-        <h2 className="m-0 text-balance font-display text-[clamp(3rem,5.6vw,6.6rem)] font-normal leading-[.92] tracking-[-.05em] max-tablet:text-[clamp(2.8rem,13vw,4.2rem)]">
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
           Un message,
           <br />
           <em className="font-normal text-accent">une réponse.</em>
         </h2>
-        <p className="mb-12 mt-6 max-w-[380px] text-[.88rem] leading-[1.7] text-[#686762]">
+        <p className="mb-12 mt-6 max-w-[380px] text-small leading-[1.7] text-[#686762]">
           Choisissez le canal qui vous convient : nous vous répondons par celui-ci.
         </p>
 

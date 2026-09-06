@@ -49,7 +49,7 @@ export function WestAfricaPresenceMap() {
             ))}
           </g>
         </svg>
-        <p className="mb-0 mt-3 text-[.52rem] uppercase tracking-[.14em] text-[rgba(255,255,255,.38)]">
+        <p className="mb-0 mt-3 text-micro uppercase tracking-[.14em] text-[rgba(255,255,255,.38)]">
           Fond cartographique :{" "}
           <a
             href={naturalEarthUrl}
@@ -64,7 +64,7 @@ export function WestAfricaPresenceMap() {
       </div>
       <div>
         <p className="eyebrow light">Implantation régionale</p>
-        <h3 className="m-0 font-display text-[clamp(1.8rem,2.6vw,2.4rem)] font-normal leading-[1.05] tracking-[-.035em]">
+        <h3 className="m-0 font-display text-display-md font-normal leading-[1.05] tracking-[-.035em]">
           Trois pays mis en lumière.
         </h3>
         <ol className="m-0 mt-8 list-none border-t border-[rgba(255,255,255,.16)] p-0">
@@ -73,12 +73,12 @@ export function WestAfricaPresenceMap() {
               key={item.country}
               className="grid grid-cols-[auto_auto_1fr] items-baseline gap-x-4 border-b border-[rgba(255,255,255,.16)] py-[1.05rem]"
             >
-              <span className="text-[.56rem] tracking-[.15em] text-accent">{item.number}</span>
-              <span className="flex items-baseline gap-3 font-display text-[clamp(1.15rem,1.6vw,1.45rem)] leading-[1.2]">
+              <span className="text-micro tracking-[.15em] text-accent">{item.number}</span>
+              <span className="flex items-baseline gap-3 font-display text-display-xs leading-[1.2]">
                 <i aria-hidden="true" className="inline-block h-[10px] w-[10px] shrink-0 self-center bg-accent" />
                 {item.country}
               </span>
-              <span className="text-right text-[.6rem] uppercase tracking-[.14em] text-[rgba(255,255,255,.6)]">
+              <span className="text-right text-label uppercase tracking-[.14em] text-[rgba(255,255,255,.6)]">
                 {item.role}
               </span>
             </li>

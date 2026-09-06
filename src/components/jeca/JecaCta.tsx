@@ -6,7 +6,7 @@ export function JecaCta() {
   return (
     <section className="flex min-h-[540px] flex-col items-center justify-center bg-jeca-blue px-6 py-24 text-center text-white max-tablet:min-h-[520px]">
       <p className="jeca-kicker light">JECA</p>
-      <h2 className="mb-[2.3rem] mt-0 text-balance font-display text-[clamp(3rem,5.6vw,6.6rem)] font-normal leading-[.92] tracking-[-.05em] max-tablet:text-[clamp(2.8rem,13vw,4.2rem)]">
+      <h2 className="mb-[2.3rem] mt-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
         La diaspora et l’Afrique,
         <br />
         <em className="text-jeca-yellow">réunies pour agir.</em>

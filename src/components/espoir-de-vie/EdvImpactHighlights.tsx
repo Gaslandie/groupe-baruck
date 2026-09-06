@@ -16,13 +16,13 @@ export function EdvImpactHighlights() {
       <div className="reveal mb-[clamp(2rem,4vw,3.2rem)] flex items-end justify-between gap-[clamp(2rem,5vw,5rem)] max-[1100px]:flex-col max-[1100px]:items-start max-[1100px]:gap-6">
         <div>
           <p className="edv-kicker edv-kicker-light">Espoir de Vie · Repères documentés</p>
-          <h2 className="m-0 text-balance font-display text-[clamp(2.2rem,4vw,4rem)] font-normal leading-[.95] tracking-[-.05em] max-tablet:text-[clamp(2.2rem,10vw,3.2rem)]">
+          <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.05em]">
             Des actions,
             <em className="font-[inherit] text-edv-gold"> des repères concrets.</em>
           </h2>
         </div>
         <div className="flex w-[min(430px,42%)] flex-col items-start gap-5 max-[1100px]:w-full">
-          <p className="m-0 text-[.84rem] leading-[1.75] text-[rgba(255,255,255,.6)]">
+          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.6)]">
             Ces repères proviennent des actions déjà présentées sur la page Espoir de Vie.
           </p>
           <Link href={`${routes.edv}#actions`} className="edv-button edv-button-line">
@@ -37,10 +37,10 @@ export function EdvImpactHighlights() {
             key={item.value + item.label}
             className="reveal flex min-h-[150px] flex-col justify-center border-b border-r border-[rgba(255,255,255,.15)] p-[clamp(1.1rem,2vw,1.8rem)] max-tablet:min-h-[130px]"
           >
-            <dt className="font-display text-[clamp(1.9rem,3vw,3rem)] font-normal italic leading-[.9] tracking-[-.04em] text-edv-gold">
+            <dt className="font-display text-display-md font-normal italic leading-[.9] tracking-[-.04em] text-edv-gold">
               {item.value}
             </dt>
-            <dd className="mb-0 ml-0 mr-0 mt-3 text-[.6rem] uppercase leading-[1.5] tracking-[.08em] text-[rgba(255,255,255,.7)]">
+            <dd className="mb-0 ml-0 mr-0 mt-3 text-label uppercase leading-[1.5] tracking-[.08em] text-[rgba(255,255,255,.7)]">
               {item.label}
             </dd>
           </div>
