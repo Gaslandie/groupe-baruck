@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { jecaGalleries } from "./jeca";
+import { brandHero } from "./marque-baruck";
 import {
   edvLogo,
   hostessesHero,
@@ -183,6 +184,17 @@ export const activities: Activity[] = [
 ];
 
 export const pageTeasers: PageTeaser[] = [
+  {
+    id: "apercu-marque",
+    tone: "ink",
+    image: brandHero,
+    eyebrow: "La marque Baruck",
+    title: "L’élégance,",
+    emphasis: "notre affaire.",
+    text: "Vêtements, sacs, chaussures, parfums et accessoires : découvrez l’univers Baruck et préparez votre commande par WhatsApp.",
+    href: routes.brand,
+    linkLabel: "Découvrir la collection",
+  },
   {
     id: "apercu-about",
     tone: "ink",

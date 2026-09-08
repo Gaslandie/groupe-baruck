@@ -232,6 +232,7 @@
   aside#side-nav nav > div:nth-child(5) { --n: 4; }
   aside#side-nav nav > div:nth-child(6) { --n: 5; }
   aside#side-nav nav > div:nth-child(7) { --n: 6; }
+  aside#side-nav nav > div:nth-child(8) { --n: 7; }
 
   aside#side-nav[aria-hidden="false"] nav > div > a:first-child {
     animation: heroIn .6s cubic-bezier(.2,.7,.2,1) both;
@@ -311,6 +312,9 @@
   .button-accent { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-ivory); --fill: var(--color-ivory); }
   .button-accent:hover,
   .button-accent:focus-visible { color: var(--color-ink); }
+  .button-dark { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-ivory); --fill: var(--color-gold); }
+  .button-dark:hover,
+  .button-dark:focus-visible { color: var(--color-ink); border-color: var(--color-gold); }
   .form-button { --fill: var(--color-accent); }
 
   .text-link {

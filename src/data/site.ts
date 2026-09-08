@@ -4,6 +4,7 @@ export type RouteKey =
   | "services"
   | "studio"
   | "hostesses"
+  | "brand"
   | "jeca"
   | "edv"
   | "news"
@@ -59,6 +60,7 @@ export const routes: Record<RouteKey, string> = {
   services: "/#activites",
   studio: "/studio-photo/",
   hostesses: "/hotesses-evenementielles/",
+  brand: "/marque-baruck/",
   jeca: "/jeca/",
   edv: "/espoir-de-vie/",
   news: "/actualites/",
@@ -156,7 +158,8 @@ export const mainNav: NavItem[] = [
       { label: "Médiathèque", href: routes.media, featured: true },
     ],
   },
-  { number: "07", label: "Contact", href: routes.contact },
+  { number: "07", label: "La marque", href: routes.brand },
+  { number: "08", label: "Contact", href: routes.contact },
 ];
 
 export const sideNavContacts: ContactLink[] = [

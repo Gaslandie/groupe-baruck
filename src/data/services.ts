@@ -73,6 +73,10 @@ export const hostessTags: string[] = [
   "Lancements",
   "Événements privés",
   "Événements publics",
+  "Baptêmes",
+  "Soirées",
+  "Galas",
+  "Dîners",
 ];
 
 export const studioSpaces: StudioSpace[] = [
@@ -339,6 +343,12 @@ export const hostessOffers: HostessOffer[] = [
     text: "Une présence soignée, dynamique et adaptée à votre image.",
   },
 ];
+
+/** Complément extrait des affiches hôtesses fournies par le client. */
+export const hostessServiceComplement = {
+  title: "Restauration & hôtellerie",
+  text: "Baruck Communication Guinée propose également son service pour la restauration, l’événementiel et l’hôtellerie. Contactez l’équipe pour préciser les besoins de votre réception.",
+};
 
 export type ServiceFaqItem = { question: string; answer: string };
 

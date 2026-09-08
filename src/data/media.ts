@@ -137,6 +137,13 @@ export const presidentOnu2: ImageAsset = {
   height: 540,
 };
 
+/** Photos complémentaires fournies par le client, sans date déduite des fichiers. */
+export const presidentOnuGallery: ImageAsset[] = [
+  { src: "/images/president/onu-seance-travail.jpg", alt: "Djoro Joël Shaloom Krasso à une table de travail aux Nations Unies", width: 720, height: 540 },
+  { src: "/images/president/onu-devant-drapeaux.jpg", alt: "Djoro Joël Shaloom Krasso devant les drapeaux des Nations Unies", width: 960, height: 720 },
+  { src: "/images/president/onu-salle-conference.jpg", alt: "Djoro Joël Shaloom Krasso dans une salle de conférence des Nations Unies", width: 960, height: 720 },
+];
+
 export const studioHero: ImageAsset = {
   src: "/images/services/studio-photo-hero.webp",
   alt: "Studio Photo Baruck la Prospérité",

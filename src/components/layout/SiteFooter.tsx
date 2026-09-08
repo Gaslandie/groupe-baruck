@@ -100,6 +100,7 @@ export function SiteFooter({ variant }: SiteFooterProps) {
         <Link href={routes.legal} className="hover:text-accent">
           Mentions légales
         </Link>
+        <Link href={routes.brand} className="hover:text-accent">La marque Baruck</Link>
         <a href={content.backToTop}>Retour en haut ↑</a>
       </div>
     </footer>

@@ -36,9 +36,9 @@ export function PresidentPanel() {
           <Link href={routes.edv} className={roleClassName}>
             Président de l’ONG Espoir de Vie
           </Link>
-          <a href="#experience-onu" className={roleClassName}>
+          <Link href={`${routes.group}#experience-onu`} className={roleClassName}>
             Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016
-          </a>
+          </Link>
         </div>
         <div className="flex flex-wrap items-center gap-[.8rem] max-tablet:gap-2">
           <Link href={routes.group} className="button button-primary">

@@ -1,4 +1,4 @@
-import { hostessOffers } from "@/data/services";
+import { hostessOffers, hostessServiceComplement } from "@/data/services";
 
 export function HostessOffers() {
   return (
@@ -29,6 +29,10 @@ export function HostessOffers() {
             </div>
           </article>
         ))}
+      </div>
+      <div className="mt-10 border-l-2 border-gold pl-6">
+        <h3 className="font-display text-title font-normal">{hostessServiceComplement.title}</h3>
+        <p className="mt-3 max-w-[760px] text-body leading-[1.75] text-[rgba(255,255,255,.7)]">{hostessServiceComplement.text}</p>
       </div>
     </section>
   );
