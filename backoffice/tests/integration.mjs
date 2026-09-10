@@ -56,6 +56,8 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   const adminEmail = 'admin@example.test';
   const editorEmail = 'editor+recette@sous.example.test';
   let articleId;
+  let imageId;
+  let unusedImageId;
   const fields = { action: 'save_article', id: '', version: '0', slug: 'recette-mysql', title: 'Recette MySQL', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Texte de recette.', cover: '', cover_alt: '', status: 'draft' };
   await t.test('migration additive et réinstallation conservent les versions initiales', () => {
     const counts = () => sql(`SELECT (SELECT COUNT(*) FROM ${database}.articles),(SELECT COUNT(*) FROM ${database}.article_revisions),(SELECT COUNT(*) FROM ${database}.article_publications);`);
@@ -125,7 +127,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       assert.equal(response.status, expected, response.html);
     }
     const media = await admin.request('/?page=media');
-    const imageId = media.html.match(/page=image&amp;id=([a-f0-9]{32})/)?.[1];
+    imageId = media.html.match(/page=image&amp;id=([a-f0-9]{32})/)?.[1];
     assert.ok(imageId);
     assert.match((await anonymous.request('/?page=image&id=' + imageId)).html, /Connectez-vous/);
     const image = await admin.request('/?page=image&id=' + imageId);
@@ -148,6 +150,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const imported = await editor.request('/?page=media_api', apiFile);
     assert.equal(imported.status, 201);
     assert.ok(JSON.parse(imported.html).item.path.startsWith('/images/actualites/uploads/'));
+    unusedImageId = JSON.parse(imported.html).item.id;
     assert.equal((await admin.post('/?page=edit&id=' + articleId, { ...fields, id: articleId, version: '2', status: 'ready', cover: imagePath, cover_alt: 'Image de recette' })).status, 303);
     if (process.env.BARUCK_TEST_CHROME) {
       const browser = spawnSync(process.execPath, [path.join(directory, 'tests/browser-form.mjs'), origin, 'media'], { input: JSON.stringify({ cookie: editor.cookie, articleId }), encoding: 'utf8', timeout: 30000 });
@@ -198,6 +201,65 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
     assert.equal(await exported(), undefined, 'une réinstallation ne rétablit pas un article retiré');
     assert.match((await editor.request('/?page=history&id=' + id)).html, /Version publique initiale/);
+  });
+  await t.test('mesure d’audience sans cookie : collecte, statistiques, conseils et export CSV', async () => {
+    const phone = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
+    const collect = (body, headers = {}) => fetch(origin + '/collect.php', { method: 'POST', body: JSON.stringify(body), headers: { Origin: 'https://groupebaruck.com', 'User-Agent': phone, ...headers } });
+    const preflight = await fetch(origin + '/collect.php', { method: 'OPTIONS', headers: { Origin: 'https://www.groupebaruck.com' } });
+    assert.equal(preflight.status, 204);
+    assert.equal(preflight.headers.get('access-control-allow-origin'), 'https://www.groupebaruck.com');
+    assert.equal((await collect({ p: '/', w: 390 }, { Origin: 'https://hostile.example' })).status, 403);
+    assert.equal((await fetch(origin + '/collect.php', { method: 'POST', body: '{}' })).status, 403);
+    assert.equal((await collect({ p: '/', w: 1200 }, { 'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1)' })).status, 204);
+    assert.equal((await collect({ p: '/../config.php', w: 390 })).status, 204);
+    const count = () => sql(`SELECT COUNT(*) AS n FROM ${database}.page_views;`).split('\n')[1];
+    assert.equal(count(), '0', 'robots et chemins hors site ignorés');
+    for (const [p, r, agent] of [['/', 'https://l.facebook.com/l.php?u=1', phone], ['/actualites/recette-mysql/', 'https://groupebaruck.com/', phone], ['/actualites/recette-mysql', '', 'Mozilla/5.0 (X11; Linux x86_64) Firefox/130.0']]) {
+      assert.equal((await collect({ p, r, w: agent === phone ? 390 : 1440 }, { 'User-Agent': agent })).status, 204);
+    }
+    assert.equal(sql(`SELECT COUNT(*) AS a, COUNT(DISTINCT visitor) AS b, SUM(referrer='interne') AS c, SUM(referrer='facebook.com') AS d, SUM(device='mobile') AS e, SUM(path='/actualites/recette-mysql/') AS f FROM ${database}.page_views;`).split('\n')[1], '3\t2\t1\t1\t2\t2');
+    assert.ok(!sql(`SELECT * FROM ${database}.page_views;`).includes('Firefox'), 'aucun navigateur ni adresse conservés en clair');
+    const stats = await admin.request('/?page=stats&days=7');
+    assert.equal(stats.status, 200);
+    for (const expected of [/Recette MySQL/, /Facebook/, /Mobile/, /Ce que disent les chiffres/, /Page la plus vue/, /Activité de l’équipe/]) assert.match(stats.html, expected);
+    assert.doesNotMatch(stats.html, /style="/, 'aucun style en ligne : la CSP les refuse');
+    const editorStats = await editor.request('/?page=stats');
+    assert.match(editorStats.html, /Visiteurs · 30 jours/);
+    assert.doesNotMatch(editorStats.html, /Activité de l’équipe/);
+    const csv = await admin.post('/?page=stats', { action: 'export_stats', days: '7' });
+    assert.equal(csv.status, 200);
+    assert.match(csv.headers.get('content-type'), /text\/csv/);
+    assert.match(csv.html, /pages;"Recette MySQL \(\/actualites\/recette-mysql\/\)";2;2/);
+    assert.match((await admin.request('/?page=articles')).html, /Vues · 30 j/);
+    const dashboard = await admin.request('/');
+    for (const expected of [/À faire/, /Visiteurs par jour/, /brouillons? attend(?:ent)? une validation/, /Dernières modifications/]) assert.match(dashboard.html, expected);
+  });
+  await t.test('suppression confirmée : brouillon jamais publié et image inutilisée, refus sinon', async () => {
+    const draftId = (await admin.request('/?page=articles&q=Brouillon')).html.match(/page=edit&amp;id=([a-f0-9]{32})/)?.[1];
+    assert.ok(draftId);
+    const editPage = await admin.request('/?page=edit&id=' + draftId);
+    assert.match(editPage.html, /data-confirm="/);
+    assert.match(editPage.html, /Supprimer l’actualité/);
+    assert.match(editPage.html, /id="confirm-dialog"/);
+    const version = editPage.html.match(/name="version" value="(\d+)"/)[1];
+    assert.equal((await editor.post('/?page=edit&id=' + draftId, { action: 'delete_article', id: draftId, version })).status, 403);
+    assert.equal((await admin.post('/?page=edit&id=' + articleId, { action: 'delete_article', id: articleId, version: '3' })).status, 422, 'un article retenu pour publication ne se supprime pas');
+    assert.equal((await admin.post('/?page=edit&id=' + draftId, { action: 'delete_article', id: draftId, version: '999' })).status, 409);
+    assert.equal((await admin.post('/?page=edit&id=' + draftId, { action: 'delete_article', id: draftId, version })).status, 303);
+    assert.equal((await admin.request('/?page=edit&id=' + draftId)).status, 404);
+    assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.article_revisions WHERE article_id='${draftId}';`).split('\n')[1], '0');
+    const media = await admin.request('/?page=media');
+    assert.match(media.html, /id="upload-dialog"/);
+    assert.match(media.html, /utilisée dans 1 actualité</);
+    assert.match(media.html, /non utilisée/);
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: imageId })).status, 422, 'une image utilisée reste en place');
+    assert.equal((await editor.post('/?page=media', { action: 'delete_media', id: unusedImageId })).status, 403);
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: unusedImageId })).status, 303);
+    assert.equal((await admin.request('/?page=image&id=' + unusedImageId)).status, 404);
+    assert.equal(docker(['exec', container, 'sh', '-c', 'ls /tmp/baruck-data/media | wc -l']), '1');
+    const users = await admin.request('/?page=users');
+    assert.match(users.html, /id="user-dialog"/);
+    assert.match(users.html, /data-confirm="/);
   });
   await t.test('une saisie après expiration revient au même compte sans écraser une édition concurrente', async () => {
     const route = '/?page=edit&id=' + articleId;

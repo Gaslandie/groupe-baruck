@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
+import { Audience } from "@/components/layout/Audience";
 import { NavigationTransitions } from "@/components/layout/NavigationTransitions";
 import { brandLogo } from "@/data/media";
 import { site } from "@/data/site";
@@ -40,6 +41,7 @@ export default function RootLayout({
     <html lang="fr" className={inter.variable} data-scroll-behavior="smooth">
       <body>
         <NavigationTransitions />
+        <Audience />
         {children}
       </body>
     </html>

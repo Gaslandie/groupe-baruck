@@ -33,14 +33,10 @@ $gallery = is_array($article['gallery'] ?? null) ? $article['gallery'] : [];
 </form>
 <?php require __DIR__ . '/media-dialog.php'; ?>
 <script src="/media-picker.js" defer></script>
-<?php if ($publication && $user['role'] === 'admin'): ?>
-<details class="mt-8 rounded-xl border border-line bg-ivory p-6">
-    <summary class="cursor-pointer text-sm font-semibold">Retirer cet article de la prochaine publication</summary>
-    <p class="mt-4 max-w-2xl text-sm leading-relaxed text-ink/65">Le prochain export exclura cet article. Le brouillon et toutes ses versions resteront disponibles. Cette action ne modifie pas un site déjà en ligne.</p>
-    <form method="post" class="mt-5 space-y-4">
-        <?= csrfField() ?><input type="hidden" name="action" value="withdraw_publication"><input type="hidden" name="id" value="<?= e($article['id']) ?>"><input type="hidden" name="version" value="<?= e($article['version']) ?>">
-        <label class="flex items-center gap-3 text-sm"><input type="checkbox" name="confirm_withdraw" value="yes" required>Je confirme le retrait de la prochaine publication.</label>
-        <button class="<?= $secondaryClass ?>">Confirmer le retrait</button>
-    </form>
-</details>
+<?php if ($user['role'] === 'admin' && !empty($article['id'])): ?>
+<section class="mt-8 flex flex-wrap items-center gap-3 rounded-xl border border-line bg-ivory p-6">
+    <p class="mr-auto text-sm text-ink/65"><?= $publication ? 'Retirer exclut cet article du prochain site construit. Le brouillon et l’historique restent disponibles.' : 'Cet article n’est retenu pour aucune publication. Le supprimer efface aussi son historique.' ?></p>
+    <?php if ($publication) confirmForm('withdraw_publication', ['id' => $article['id'], 'version' => $article['version'], 'confirm_withdraw' => 'yes'], 'Retirer de la prochaine publication ?', 'L’actualité « ' . $article['title'] . ' » ne figurera plus dans le prochain site construit. Son brouillon et ses versions sont conservés.', 'Retirer de la publication', $dangerClass);
+    else confirmForm('delete_article', ['id' => $article['id'], 'version' => $article['version']], 'Supprimer cette actualité ?', 'L’actualité « ' . $article['title'] . ' » et tout son historique seront définitivement supprimés.', 'Supprimer l’actualité', $dangerClass); ?>
+</section>
 <?php endif; ?>

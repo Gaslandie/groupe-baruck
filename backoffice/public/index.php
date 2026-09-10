@@ -16,7 +16,7 @@ try {
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
     if ($setup) $page = 'setup';
     elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'media', 'users', 'account', 'publication', 'image'], true)) {
+    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'media', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
     if ($user && in_array($page, ['users', 'publication'], true)) requireAdmin($user);
@@ -53,6 +53,20 @@ try {
                     withdrawPublication($_POST, $user);
                     $_SESSION['flash'] = 'Article retiré de la prochaine publication. Son brouillon et son historique sont conservés.';
                     redirect('edit', ['id' => text($_POST, 'id', 32)]);
+                case 'delete_article':
+                    deleteArticle($_POST, $user);
+                    $_SESSION['flash'] = 'Actualité supprimée.';
+                    redirect('articles');
+                case 'delete_media':
+                    deleteMedia($_POST, $user);
+                    $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
+                    redirect('media');
+                case 'export_stats':
+                    $period = (int) filter_var($_POST['days'] ?? 30, FILTER_VALIDATE_INT);
+                    $csv = statsCsv(audienceSummary($period, gmdate('Y-m-d')), editorialSummary(gmdate('Y-m-d')));
+                    header('Content-Type: text/csv; charset=utf-8');
+                    header('Content-Disposition: attachment; filename="baruck-statistiques-' . gmdate('Y-m-d') . '.csv"');
+                    echo $csv; exit;
                 case 'upload':
                     uploadMedia($_FILES['image'] ?? [], text($_POST, 'alt', 500), $user);
                     $_SESSION['flash'] = 'Image ajoutée à la médiathèque.'; redirect('media');

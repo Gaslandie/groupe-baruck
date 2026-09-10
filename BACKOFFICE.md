@@ -1,5 +1,18 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Tableau de bord, statistiques et dialogues — 10 septembre 2026
+
+**Travail local, sans déploiement.** Objectif de ce lot : un tableau de bord simple mais complet, où chaque chiffre conduit à une décision, et des dialogues à la place des formulaires ouverts en permanence.
+
+- **Vue d’ensemble.** La page s’ouvre sur « À faire » : versions validées non préparées, brouillons à valider, silence éditorial de plus de 45 jours, actualités validées sans couverture, chacune avec son bouton d’action. Puis quatre repères : visiteurs et pages vues sur 30 jours avec écart en pourcentage par rapport aux 30 jours précédents, actualités validées, date de la dernière actualité. Puis les visiteurs par jour et les dernières modifications.
+- **Statistiques**, nouvelle entrée du menu à gauche, visible par toute l’équipe. Période au choix (7, 30, 90 jours, 12 mois), export CSV. « Ce que disent les chiffres » traduit les données en phrases : hausse ou baisse de fréquentation, part du mobile, source qui apporte le plus de visiteurs, catégorie d’actualités la plus lue, page la plus vue. Ensuite : visiteurs par jour, pages les plus vues, provenance des visiteurs, appareils, lectures par catégorie, rythme de publication sur douze mois et, pour l’administrateur, l’activité de l’équipe. Les graphiques sont des SVG rendus côté serveur, une seule teinte, valeur lisible au survol ; aucun script ni style en ligne, la CSP du back-office reste inchangée.
+- **Mesure d’audience.** Le site public envoie une requête par page vue à `collect.php` du back-office : chemin, provenance, largeur d’écran. Aucun cookie, aucune adresse IP ni navigateur conservés : l’empreinte visiteur est un hachage salé qui change chaque jour. Les robots connus, les origines étrangères et les chemins hors site sont écartés. **Le site n’envoie rien tant que `NEXT_PUBLIC_AUDIENCE_URL` n’est pas renseignée au build** ; GitHub Pages reste donc sans mesure. Ce point reste à valider avec le client, y compris la mention dans la page de confidentialité.
+- **Dialogues.** Création de compte, ajout d’image et toutes les confirmations (désactiver un accès, retirer de la publication, supprimer) passent par un `<dialog>` natif ; sans JavaScript, une case à cocher tient lieu de confirmation.
+- **Suppressions.** L’administrateur peut supprimer une actualité jamais retenue pour publication, avec son historique, et une image importée qu’aucune actualité n’utilise. Une actualité validée doit d’abord être retirée ; une image utilisée est protégée. La médiathèque indique pour chaque image le nombre d’actualités qui l’utilisent.
+- **Actualités.** La liste affiche les vues sur 30 jours dès que la mesure est active. La page Publication résume les versions validées depuis la dernière préparation.
+
+Vérifications : 59 contrôles PHP (dont 24 nouveaux : chemins, provenances, appareils, robots, écarts, conseils, SVG), lint et TypeScript du site, recette HTTP/MySQL étendue de deux parcours (collecte et statistiques ; suppressions confirmées). Non vérifié : rendu visuel des dialogues et des graphiques, comportement réel de `sendBeacon` sur le site déployé.
+
 ## Finalisation locale — protection du travail éditorial
 
 **Le travail reste local, à la demande de Mohamed.** Accès : <http://127.0.0.1:8091/>. Aucun déploiement ni push dans cette étape. La cible Bluehost décrite ensuite reste un projet pour plus tard.

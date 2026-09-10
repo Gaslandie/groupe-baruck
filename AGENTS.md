@@ -24,7 +24,7 @@ Application Next.js du Groupe Baruck (client : Djoro Joël Shaloom Krasso), réa
 - Valeurs provisoires décidées par Mohamed (horaires, réseaux, carte) : toujours accompagnées de `<ClientNote>` (« à valider avec le client »).
 - Ids HTML uniques par page (`grep -o 'id="[a-z-]*"' out/index.html | sort | uniq -d` doit être vide) ; les ancres du menu Services pointent sur les cartes d'activités de l'accueil.
 - Animations : CSS uniquement (`globals.css`), jamais de librairie ; respecter le bloc `prefers-reduced-motion`.
-- Contenus : n'ajouter aucun chiffre, date, nom ou dénomination sans validation client. Ne pas harmoniser ONG/Fondation ni les coordonnées : décisions client en attente. Pas de bouton de don, pas de backend de formulaire, pas d'analytics.
+- Contenus : n'ajouter aucun chiffre, date, nom ou dénomination sans validation client. Ne pas harmoniser ONG/Fondation ni les coordonnées : décisions client en attente. Pas de bouton de don, pas de backend de formulaire. Seule mesure d'audience autorisée : le composant `Audience` vers le back-office, inactif tant que `NEXT_PUBLIC_AUDIENCE_URL` est vide.
 
 ## Contrôles avant chaque commit
 `npm run lint` · `npm run typecheck` · `npm run build` · et, dès que des assets ou des liens sont touchés, `NEXT_PUBLIC_BASE_PATH=/groupe-baruck npm run build` puis `grep -rn 'src="/images' out/` (doit être vide). Commits en anglais avec préfixe conventionnel. Si Turbopack est bloqué par la sandbox, builder avec `--webpack` et le signaler dans le compte rendu.

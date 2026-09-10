@@ -92,3 +92,36 @@ function withdrawPublication(array $input, array $user): void
         audit('Retrait de la prochaine publication', $row['title'], $user['id']);
     });
 }
+
+/** Suppression réservée aux actualités jamais retenues pour publication. */
+function deleteArticle(array $input, array $user): void
+{
+    requireAdmin($user);
+    $id = text($input, 'id', 32);
+    $version = filter_var($input['version'] ?? '', FILTER_VALIDATE_INT);
+    transaction(function () use ($id, $version, $user) {
+        $row = query('SELECT * FROM articles WHERE id=? FOR UPDATE', [$id])->fetch();
+        if (!$row || (int) $row['version'] !== $version) throw new ConflictError('Cet article a changé. Rechargez la page avant de le supprimer.');
+        if (query('SELECT article_id FROM article_publications WHERE article_id=?', [$id])->fetch()) throw new ValidationError('Retirez d’abord cet article de la prochaine publication.');
+        query('DELETE FROM article_revisions WHERE article_id=?', [$id]);
+        query('DELETE FROM articles WHERE id=?', [$id]);
+        audit('Actualité supprimée', $row['title'], $user['id']);
+    });
+}
+
+/** Suppression d’une image importée qu’aucune actualité n’utilise. */
+function deleteMedia(array $input, array $user): void
+{
+    requireAdmin($user);
+    $id = text($input, 'id', 32);
+    $file = transaction(function () use ($id, $user) {
+        $row = query('SELECT * FROM media WHERE id=? FOR UPDATE', [$id])->fetch();
+        if (!$row) throw new ValidationError('Image introuvable.');
+        $used = mediaUsage()[$id] ?? 0;
+        if ($used > 0) throw new ValidationError('Cette image est utilisée par ' . $used . ' actualité' . ($used > 1 ? 's' : '') . '. Retirez-la des actualités avant de la supprimer.');
+        query('DELETE FROM media WHERE id=?', [$id]);
+        audit('Image supprimée', $row['alt'], $user['id']);
+        return config()['storage'] . '/media/' . $row['filename'];
+    });
+    if (is_file($file)) unlink($file);
+}

@@ -1,21 +1,34 @@
 <?php
 namespace Baruck;
 
-$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'media' => 'Médiathèque', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
+$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'media' => 'Médiathèque', 'stats' => 'Statistiques', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
 $title = $titles[$page] ?? 'Administration';
 $inputClass = 'mt-2 w-full rounded-lg border border-line bg-ivory px-4 py-3 text-sm focus:border-accent';
 $buttonClass = 'inline-flex items-center justify-center rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-ivory hover:bg-[#b64820] disabled:opacity-50';
 $secondaryClass = 'inline-flex items-center justify-center rounded-lg border border-line px-5 py-3 text-sm font-semibold hover:bg-paper-deep';
+$dangerClass = 'inline-flex items-center justify-center rounded-lg border border-[#b64820]/40 px-5 py-3 text-sm font-semibold text-[#b64820] hover:bg-[#b64820]/10';
+$dialogClass = 'fixed inset-0 m-auto max-h-[90dvh] w-[min(560px,94vw)] overflow-auto rounded-xl border border-line bg-paper p-6 text-ink backdrop:bg-ink/60';
+$cardClass = 'rounded-xl border border-line bg-ivory';
 function field(string $label, string $name, mixed $value = '', string $type = 'text', string $extra = ''): void {
     global $inputClass;
     if ($type === 'email') $extra .= ' pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Utilisez une adresse complète, par exemple nom@exemple.com." autocapitalize="none" spellcheck="false" aria-describedby="' . e($name) . '-help"';
     echo '<label class="block text-sm font-medium" for="' . e($name) . '">' . e($label) . '</label><input class="' . $inputClass . '" id="' . e($name) . '" name="' . e($name) . '" type="' . e($type) . '" value="' . e(is_scalar($value) ? $value : '') . '" ' . $extra . '>';
     if ($type === 'email') echo '<p id="' . e($name) . '-help" class="mt-2 text-caption text-ink/60">Adresse complète, par exemple nom@exemple.com.</p>';
 }
+/** Formulaire confirmé par le dialogue commun ; sans JavaScript, une case à cocher tient ce rôle. */
+function confirmForm(string $action, array $fields, string $title, string $message, string $label, string $button, string $class = ''): void {
+    global $secondaryClass;
+    echo '<form method="post" data-confirm="' . e($message) . '" data-confirm-title="' . e($title) . '" data-confirm-label="' . e($label) . '" class="' . e($class) . '">' . csrfField() . '<input type="hidden" name="action" value="' . e($action) . '">';
+    foreach ($fields as $name => $value) echo '<input type="hidden" name="' . e($name) . '" value="' . e($value) . '">';
+    echo '<noscript><label class="mb-3 flex items-center gap-2 text-caption"><input type="checkbox" required>' . e($message) . '</label></noscript><button class="' . ($button ?: $secondaryClass) . '">' . e($label) . '</button></form>';
+}
+function statusLabel(array $row): string {
+    return $row['publication_version'] !== null ? ($row['status'] === 'ready' ? 'Validé' : 'Révision en cours') : 'Brouillon';
+}
 ?>
 <!doctype html>
 <html lang="fr">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b0c0e"><title><?= e($title) ?> — Administration Baruck</title><link rel="stylesheet" href="/admin.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#0b0c0e"><title><?= e($title) ?> — Administration Baruck</title><link rel="stylesheet" href="/admin.css"><script src="/admin.js" defer></script></head>
 <body class="min-h-screen bg-paper text-ink">
 <a href="#main" class="sr-only focus:not-sr-only focus:block focus:p-4">Aller au contenu</a>
 <?php if (!$user): ?>
@@ -41,7 +54,7 @@ function field(string $label, string $name, mixed $value = '', string $type = 't
     <aside class="bg-ink px-6 py-7 text-ivory desktop:sticky desktop:top-0 desktop:h-screen desktop:px-7">
         <a href="/" class="font-display text-3xl">Baruck<span class="text-accent">.</span></a><p class="mt-2 text-[10px] uppercase tracking-[.22em] text-ivory/45">Administration</p>
         <nav aria-label="Administration" class="mt-9 flex flex-wrap gap-2 desktop:flex-col">
-        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'media' => 'Médiathèque', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles'); ?>
+        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'media' => 'Médiathèque', 'stats' => 'Statistiques', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles'); ?>
             <a href="<?= e(url($key)) ?>" <?= $active ? 'aria-current="page"' : '' ?> class="rounded-lg px-4 py-3 text-sm <?= $active ? 'bg-ivory/10 text-ivory' : 'text-ivory/60 hover:bg-ivory/5 hover:text-ivory' ?>"><?= e($label) ?></a>
         <?php endforeach; ?>
         </nav>
@@ -54,5 +67,10 @@ function field(string $label, string $name, mixed $value = '', string $type = 't
         <?php require __DIR__ . '/content.php'; ?>
     </main>
 </div>
+<dialog id="confirm-dialog" data-dialog aria-labelledby="confirm-title" class="<?= $dialogClass ?>">
+    <h2 id="confirm-title" class="font-display text-title">Confirmer</h2>
+    <p id="confirm-text" class="mt-3 text-sm leading-relaxed text-ink/70"></p>
+    <div class="mt-6 flex flex-wrap justify-end gap-3"><button type="button" data-close class="<?= $secondaryClass ?>">Annuler</button><button type="button" id="confirm-accept" class="<?= $buttonClass ?>">Confirmer</button></div>
+</dialog>
 <?php endif; ?>
 </body></html>

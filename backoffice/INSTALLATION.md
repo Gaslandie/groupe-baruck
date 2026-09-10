@@ -8,11 +8,25 @@ Cette application PHP est distincte de l’export public Next.js. Elle gère les
 
 Le back-office fonctionne localement avec une vraie base MySQL. Les six actualités du dépôt servent d’import initial, sans écrasement lors d’une réinstallation. Les contenus validés peuvent être exportés puis construire le site existant, avec ses URL, son sitemap et son RSS. **Le déploiement Bluehost et le déclenchement automatique de publication ne sont pas raccordés.** Le bouton de téléchargement le dit explicitement.
 
-L’édition du corps utilise Markdown ; l’éditeur visuel, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. Les articles et médias n’ont pas de suppression définitive dans l’interface.
+L’édition du corps utilise Markdown ; l’éditeur visuel, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. L’administrateur peut supprimer une actualité jamais retenue pour publication et une image importée qu’aucune actualité n’utilise ; chaque suppression est confirmée dans un dialogue.
 
 Chaque enregistrement conserve une révision complète. « Historique et restauration » affiche les 50 versions les plus récentes ; les versions antérieures restent en base. Une restauration crée un nouveau brouillon, avec contrôle des modifications concurrentes. Le rédacteur peut retravailler un article validé : **la dernière version validée reste disponible pour l’export** jusqu’à une nouvelle validation par un administrateur. Le retrait de la prochaine publication est une action distincte, réservée à l’administrateur et soumise à confirmation.
 
 Si la session expire au moment d’envoyer le formulaire d’article, une saisie munie du jeton valide de cette session peut être récupérée pendant une heure après reconnexion au même compte. Elle reste à relire et à enregistrer ; une modification concurrente bloque son écrasement. Cela suppose que la session existe encore côté serveur. Ce mécanisme ne sauvegarde pas automatiquement la frappe et ne couvre pas la fermeture d’un onglet avant envoi ou la disparition du fichier de session. Un autre compte ne peut pas récupérer cette saisie.
+
+## Tableau de bord et statistiques
+
+La vue d’ensemble commence par « À faire » : ce qui attend une action, avec le bouton correspondant. Les repères chiffrés comparent les 30 derniers jours aux 30 jours précédents. La page « Statistiques » du menu détaille l’audience par période, avec export CSV, et traduit les chiffres en conseils courts. Les brouillons, la médiathèque et les comptes ont leurs dialogues ; les actions irréversibles demandent une confirmation.
+
+### Activer la mesure d’audience
+
+Le site public envoie une requête par page vue à `collect.php` du back-office, sans cookie et sans conserver d’adresse IP : chemin, provenance, largeur d’écran et une empreinte de visiteur qui change chaque jour. Le composant est présent dans le site mais **n’envoie rien tant que la variable n’est pas renseignée au build** :
+
+```sh
+NEXT_PUBLIC_AUDIENCE_URL=https://admin.groupebaruck.com/collect.php
+```
+
+En local, `http://127.0.0.1:8091/collect.php` avec le site sur `http://localhost:3000/`. Le point de collecte n’accepte que l’origine du site configurée dans `site_url` (avec ou sans `www`). Les robots connus sont ignorés. Si le site change de domaine, mettre à jour `site_url`. La mention de cette mesure dans la page de confidentialité du site reste à valider avec le client.
 
 ## Choisir, importer et télécharger les images
 

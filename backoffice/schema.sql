@@ -68,3 +68,15 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
     name VARCHAR(100) PRIMARY KEY,
     applied_at VARCHAR(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS page_views (
+    id CHAR(32) PRIMARY KEY,
+    day CHAR(10) NOT NULL,
+    path VARCHAR(255) NOT NULL,
+    referrer VARCHAR(120) NOT NULL DEFAULT '',
+    device VARCHAR(12) NOT NULL,
+    visitor CHAR(32) NOT NULL,
+    created_at VARCHAR(25) NOT NULL,
+    KEY day_path (day, path),
+    KEY day_visitor (day, visitor)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
