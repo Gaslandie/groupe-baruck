@@ -16,10 +16,10 @@ try {
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
     if ($setup) $page = 'setup';
     elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
-    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'users', 'publication'], true)) requireAdmin($user);
+    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'users', 'publication'], true)) requireAdmin($user);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
@@ -77,6 +77,10 @@ try {
                     saveCoordonnees($_POST, $user);
                     $_SESSION['flash'] = 'Coordonnées enregistrées. Elles partiront sur le site avec la prochaine publication.';
                     redirect('coordonnees');
+                case 'save_textes':
+                    saveTextes($_POST, $user);
+                    $_SESSION['flash'] = 'Textes enregistrés. Ils partiront sur le site avec la prochaine publication.';
+                    redirect('textes');
                 case 'delete_media':
                     deleteMedia($_POST, $user);
                     $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
@@ -136,13 +140,30 @@ try {
     $publication = null;
     $product = null;
     $coordonnees = null;
+    $textes = null;
     $version = 0;
+    if ($page === 'textes') {
+        $saved = setting('textes');
+        $posted = $error && ($_POST['action'] ?? '') === 'save_textes';
+        $textes = [];
+        foreach ($saved as $group => $entries) {
+            foreach ($entries as $key => $entry) {
+                $sent = $posted && is_array($_POST[$group][$key] ?? null) ? $_POST[$group][$key] : [];
+                $textes[$group][$key] = [
+                    'title' => is_string($sent['title'] ?? null) ? $sent['title'] : $entry['title'],
+                    'description' => is_string($sent['description'] ?? null) ? $sent['description'] : $entry['description'],
+                ];
+            }
+        }
+        // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
+        $version = $posted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : settingVersion('textes');
+    }
     if ($page === 'coordonnees') {
         $coordonnees = $error && ($_POST['action'] ?? '') === 'save_coordonnees'
             ? ['contacts' => is_array($_POST['contacts'] ?? null) ? $_POST['contacts'] : [], 'address' => $_POST['address'] ?? '', 'hours' => is_array($_POST['hours'] ?? null) ? array_values($_POST['hours']) : [], 'facebookPages' => is_array($_POST['facebook'] ?? null) ? array_values($_POST['facebook']) : [], 'mapQuery' => $_POST['mapQuery'] ?? '']
-            : coordonnees();
+            : setting('coordonnees');
         // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
-        $version = $coordonnees === coordonnees() ? coordonneesVersion() : (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT);
+        $version = $coordonnees === setting('coordonnees') ? settingVersion('coordonnees') : (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT);
     }
     if ($page === 'product') {
         $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';

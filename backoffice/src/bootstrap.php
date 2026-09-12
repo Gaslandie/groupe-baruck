@@ -102,5 +102,7 @@ require __DIR__ . '/content.php';
 require __DIR__ . '/media.php';
 require __DIR__ . '/editorial.php';
 require __DIR__ . '/boutique.php';
+require __DIR__ . '/settings.php';
 require __DIR__ . '/coordonnees.php';
+require __DIR__ . '/textes.php';
 require __DIR__ . '/stats.php';

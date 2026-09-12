@@ -11,6 +11,7 @@ import {
   type ImageAsset,
 } from "./media";
 import { routes, whatsappRequests } from "./site";
+import { siteTexts } from "./textes";
 
 export type HeroAction = {
   label: string;
@@ -56,9 +57,7 @@ export type PageTeaser = {
 export const heroSlides: HeroSlide[] = [
   {
     id: "guinee",
-    title: "Le Groupe Baruck en Guinée",
-    description:
-      "La Guinée est notre point d’ancrage : nous y développons le Studio Photo Baruck, nos services d’hôtesses événementielles et nos activités de communication, avec une vision entrepreneuriale tournée vers l’impact.",
+    ...siteTexts.heroSlides["guinee"],
     image: placeholderImages.hotellerie.src,
     position: "center",
     bg: "linear-gradient(145deg, #101820, #263b48 58%, #72563d)",
@@ -68,9 +67,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: "studio-photo",
-    title: "Studio Photo Baruck",
-    description:
-      "Mariage, baptême, anniversaire, conférence, shooting photo et photo d’identité. Retrouvez-nous à Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.",
+    ...siteTexts.heroSlides["studio-photo"],
     image: "/images/services/studio-photo-hero.webp",
     position: "center",
     bg: "linear-gradient(145deg, #161211, #633329 58%, #b3492e)",
@@ -84,9 +81,7 @@ export const heroSlides: HeroSlide[] = [
   },
   {
     id: "hotesses",
-    title: "Hôtesses événementielles",
-    description:
-      "Concerts géants, rencontres, mariages, buffets et autres événements : une équipe élégante, professionnelle et dynamique à votre service en Guinée.",
+    ...siteTexts.heroSlides["hotesses"],
     image: "/images/services/hotesses-hero.webp",
     position: "center 42%",
     bg: "linear-gradient(145deg, #170e13, #6f1934 58%, #a73a4d)",
@@ -103,80 +98,63 @@ export const heroSlides: HeroSlide[] = [
 export const activities: Activity[] = [
   {
     id: "hotellerie",
-    title: "Hôtellerie",
-    description:
-      "Des espaces d’accueil pensés pour offrir confort, qualité et distinction.",
+    ...siteTexts.activities["hotellerie"],
     image: placeholderImages.hotellerie.src,
     bg: "radial-gradient(circle at 72% 24%, #d6a363 0 5%, transparent 5.5%), linear-gradient(135deg, #16211e 0%, #6a4c34 54%, #17191a 100%)",
     art: "repeating-linear-gradient(90deg, transparent 0 13%, rgba(255,255,255,.07) 13.2% 13.6%), linear-gradient(25deg, transparent 47%, rgba(255,255,255,.12) 47.3% 48%, transparent 48.3%)",
   },
   {
     id: "restauration",
-    title: "Restauration",
-    description:
-      "Une expérience culinaire portée par la qualité du service et le sens de l’accueil.",
+    ...siteTexts.activities["restauration"],
     image: placeholderImages.restauration.src,
     bg: "radial-gradient(circle at 70% 44%, #dfbd83 0 13%, #7f5538 13.3% 14%, transparent 14.3%), linear-gradient(145deg, #3d1711, #8b4b2f 60%, #1e1210)",
     art: "radial-gradient(ellipse at 70% 44%, transparent 0 19%, rgba(255,255,255,.13) 19.3% 20%, transparent 20.3%)",
   },
   {
     id: "agrobusiness",
-    title: "Agro-business",
-    description:
-      "Développer des solutions agricoles et commerciales créatrices de valeur.",
+    ...siteTexts.activities["agrobusiness"],
     image: placeholderImages.agrobusiness.src,
     bg: "linear-gradient(140deg, #101b16, #496346 55%, #aa8353)",
     art: "repeating-radial-gradient(ellipse at 85% 110%, transparent 0 8%, rgba(229,208,155,.18) 8.3% 9%, transparent 9.3% 16%)",
   },
   {
     id: "studio",
-    title: "Studio d’enregistrement",
-    description:
-      "Un environnement professionnel dédié à la création et à la production musicale.",
+    ...siteTexts.activities["studio"],
     image: placeholderImages.studioEnregistrement.src,
     bg: "linear-gradient(145deg, #101116, #35233d 55%, #9e452c)",
     art: "repeating-linear-gradient(90deg, transparent 0 5%, rgba(255,255,255,.11) 5.3% 5.7%, transparent 6% 10%)",
   },
   {
     id: "cinema",
-    title: "Cinéma",
-    description:
-      "Donner vie aux histoires à travers la création et la production audiovisuelle.",
+    ...siteTexts.activities["cinema"],
     image: placeholderImages.cinema.src,
     bg: "radial-gradient(circle at 80% 20%, #ead0a1 0 2%, rgba(219,140,65,.45) 3%, transparent 23%), linear-gradient(150deg, #091015, #263746 50%, #5c3425)",
     art: "linear-gradient(113deg, transparent 46%, rgba(255,224,175,.12) 46.5% 58%, transparent 58.5%)",
   },
   {
     id: "mobilite",
-    title: "Voitures de luxe",
-    description:
-      "Des véhicules haut de gamme pour les déplacements professionnels et les événements.",
+    ...siteTexts.activities["mobilite"],
     image: placeholderImages.voituresLuxe.src,
     bg: "linear-gradient(140deg, #111315, #35404a 58%, #7b6147)",
     art: "linear-gradient(165deg, transparent 54%, rgba(255,255,255,.13) 54.3% 55%, transparent 55.3%), radial-gradient(ellipse at 70% 65%, rgba(255,255,255,.14), transparent 38%)",
   },
   {
     id: "communication",
-    title: "Communication digitale",
-    description:
-      "Accompagner les entreprises dans leur visibilité, leur image et leur croissance numérique.",
+    ...siteTexts.activities["communication"],
     image: placeholderImages.communicationDigitale.src,
     bg: "linear-gradient(145deg, #121018, #302954 55%, #b25134)",
     art: "repeating-linear-gradient(45deg, transparent 0 12%, rgba(255,255,255,.06) 12.2% 12.6%)",
   },
   {
     id: "artistes",
-    title: "Production d’artistes",
-    description: "Encadrer, développer et promouvoir les talents artistiques.",
+    ...siteTexts.activities["artistes"],
     image: placeholderImages.productionArtistes.src,
     bg: "radial-gradient(circle at 28% 28%, rgba(239,163,89,.8), transparent 16%), linear-gradient(145deg, #171217, #64243a 56%, #be6034)",
     art: "radial-gradient(circle at 64% 48%, transparent 0 12%, rgba(255,255,255,.1) 12.4% 13%, transparent 13.4% 24%, rgba(255,255,255,.07) 24.4% 25%, transparent 25.4%)",
   },
   {
     id: "clips",
-    title: "Clips vidéo",
-    description:
-      "Concevoir des productions visuelles modernes pour les artistes, les marques et les institutions.",
+    ...siteTexts.activities["clips"],
     image: placeholderImages.clipsVideo.src,
     bg: "linear-gradient(135deg, #0b1316, #194653 54%, #914b36)",
     art: "linear-gradient(35deg, transparent 0 34%, rgba(255,255,255,.13) 34.3% 35%, transparent 35.3%), linear-gradient(125deg, transparent 0 67%, rgba(255,255,255,.09) 67.3% 68%, transparent 68.3%)",

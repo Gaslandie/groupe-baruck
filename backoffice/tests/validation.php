@@ -108,4 +108,31 @@ check(Baruck\validateCoordonnees([...$base, 'facebook' => []])['facebookPages'] 
 check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'address' => ''])), 'adresse vide refusée');
 check(array_keys(Baruck\contactLines()) === ['landline', 'mobile', 'whatsappHq', 'whatsappCeo', 'email'], 'lignes de contact du site');
 
+// Textes de l’accueil : structure du site imposée, longueurs plafonnées.
+$reference = Baruck\seed()['textes'];
+$textInput = [];
+foreach ($reference as $group => $entries) {
+    foreach ($entries as $key => $entry) $textInput[$group][$key] = ['title' => $entry['title'], 'description' => $entry['description']];
+}
+check(Baruck\validateTextes($textInput) === $textInput, 'textes du site acceptés tels quels');
+check(!accepts(fn() => Baruck\validateTextes([])), 'formulaire vide refusé');
+$missing = $textInput;
+unset($missing['activities']['cinema']);
+check(!accepts(fn() => Baruck\validateTextes($missing)), 'entrée manquante refusée');
+$extra = $textInput;
+$extra['activities']['invente'] = ['title' => 'Nouveau', 'description' => 'Texte'];
+check(!array_key_exists('invente', Baruck\validateTextes($extra)['activities']), 'entrée inventée ignorée');
+$long = $textInput;
+$long['activities']['cinema']['description'] = str_repeat('é', 131);
+check(!accepts(fn() => Baruck\validateTextes($long)), 'texte d’activité trop long refusé');
+$long['activities']['cinema']['description'] = str_repeat('é', 130);
+check(accepts(fn() => Baruck\validateTextes($long)), 'longueur comptée en caractères, pas en octets');
+$longTitle = $textInput;
+$longTitle['heroSlides']['guinee']['title'] = str_repeat('a', 61);
+check(!accepts(fn() => Baruck\validateTextes($longTitle)), 'titre de diaporama trop long refusé');
+$emptyText = $textInput;
+$emptyText['heroSlides']['guinee']['description'] = '';
+check(!accepts(fn() => Baruck\validateTextes($emptyText)), 'texte vide refusé');
+check(array_keys(Baruck\textGroups()) === ['heroSlides', 'activities'], 'groupes de textes déclarés');
+
 echo $count . " contrôles de validation réussis.\n";

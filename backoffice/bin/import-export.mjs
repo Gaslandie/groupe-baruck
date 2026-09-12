@@ -99,7 +99,27 @@ export async function importExport(file, destination) {
       };
       await fs.writeFile(path.join(destination, 'content/coordonnees.json'), JSON.stringify(clean, null, 2) + '\n');
     }
-    return { articles: slugs.size, images: images.size, products: products.length, contacts: Boolean(contacts) };
+    // Les textes gardent la structure du site : la publication ne peut ni en
+    // ajouter, ni en retirer. Le fichier du dépôt sert de référence.
+    const texts = source.texts;
+    if (texts) {
+      const reference = JSON.parse(await fs.readFile(path.resolve('content/textes.json'), 'utf8'));
+      const clean = {};
+      for (const [group, entries] of Object.entries(reference)) {
+        if (typeof texts[group] !== 'object' || texts[group] === null) throw new Error(`Groupe de textes manquant : ${group}.`);
+        clean[group] = {};
+        for (const key of Object.keys(entries)) {
+          const entry = texts[group][key];
+          if (typeof entry !== 'object' || entry === null) throw new Error(`Texte manquant : ${group}.${key}.`);
+          clean[group][key] = {
+            title: string(entry.title, `${group}.${key}.title`, 240),
+            description: string(entry.description, `${group}.${key}.description`, 1040),
+          };
+        }
+      }
+      await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(clean, null, 2) + '\n');
+    }
+    return { articles: slugs.size, images: images.size, products: products.length, contacts: Boolean(contacts), texts: Boolean(texts) };
   } catch (error) {
     await fs.rm(destination, { recursive: true, force: true });
     throw error;

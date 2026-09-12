@@ -36,7 +36,17 @@ Les horaires et les pages Facebook sont des listes : deux lignes vides s'ajouten
 
 La réponse de la FAQ sur les horaires suit désormais ces lignes : modifier les horaires ne laisse plus une réponse fausse sur la page Contact.
 
-Techniquement, ces coordonnées partent dans le bundle du navigateur (en-tête, formulaire, assistant) : elles ne peuvent pas être lues par un chargeur serveur comme les actualités. Elles passent par un alias de build (`next.config.ts`) qui pointe sur `content/coordonnees.json` du dépôt ou, pendant une publication, sur le fichier validé déposé dans `.backoffice-content/` — un emplacement ignoré par Git, effacé à la fin de la commande. Une publication qui ne contient aucune coordonnée laisse celles du dépôt en place.
+Techniquement, ces coordonnées partent dans le bundle du navigateur (en-tête, formulaire, assistant) : elles ne peuvent pas être lues par un chargeur serveur comme les actualités. Elles passent par un alias de build (`next.config.ts`) qui pointe sur `content/coordonnees.json` du dépôt ou, pendant une publication, sur le fichier validé déposé dans `.backoffice-content/` — un emplacement ignoré par Git, effacé à la fin de la commande. Le même mécanisme sert aux textes de l'accueil. Une publication qui ne contient aucune coordonnée laisse celles du dépôt en place.
+
+## Textes de l'accueil
+
+« Textes de l'accueil », réservée à l'administrateur, modifie les mots de la page d'accueil : les trois volets du diaporama et les neuf cartes d'activités, chacun avec son titre et son texte.
+
+**Le site garde la structure, l'écran ne porte que les mots.** Les identifiants, les images, les dégradés et les boutons de ces blocs restent dans le code : rien ne s'ajoute ni ne se retire depuis l'administration, et une entrée inventée dans le formulaire est ignorée. Chaque champ affiche sa longueur maximale — 60 et 260 caractères pour un volet du diaporama, 40 et 130 pour une activité — parce qu'un texte plus long déborderait de son encadré. La longueur est comptée en caractères, pas en octets : les accents ne pénalisent pas.
+
+Une modification concurrente est refusée et demande de recharger la page. Comme les coordonnées, ces textes partent dans le bundle du navigateur (l'assistant guidé les reprend) et suivent le même alias de build.
+
+Les autres textes du site — les blocs de présentation, les pages Le Groupe, JECA, Espoir de Vie et les pages de services — restent dans le code : ils mêlent mise en forme et contenu et demandent un cadrage avant d'être ouverts.
 
 ## Tableau de bord et statistiques
 
@@ -94,7 +104,7 @@ En cas de perte d’un mot de passe : `php bin/install.php reset-password` avec 
 
 ## Construire une publication du site
 
-L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque actualité, les articles mis en boutique, les coordonnées et les images téléversées qu’ils référencent, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
+L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque actualité, les articles mis en boutique, les coordonnées, les textes de l’accueil et les images téléversées qu’ils référencent, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
 
 Dans le projet Next.js :
 

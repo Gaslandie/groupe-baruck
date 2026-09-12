@@ -15,18 +15,6 @@ function contactLines(): array
     ];
 }
 
-/** Coordonnées enregistrées, ou celles du site tant que rien n’a été modifié. */
-function coordonnees(): array
-{
-    $saved = query('SELECT payload FROM settings WHERE name=?', ['coordonnees'])->fetch();
-    return $saved ? json_decode($saved['payload'], true, 512, JSON_THROW_ON_ERROR) : seed()['coordonnees'];
-}
-
-function coordonneesVersion(): int
-{
-    return (int) (query('SELECT version FROM settings WHERE name=?', ['coordonnees'])->fetchColumn() ?: 0);
-}
-
 function validatePhone(string $value, string $label): string
 {
     if (!preg_match('/^\+[0-9][0-9 ]{7,23}$/D', $value)) {
@@ -87,16 +75,6 @@ function validateCoordonnees(array $input): array
 
 function saveCoordonnees(array $input, array $user): void
 {
-    requireAdmin($user);
     $data = validateCoordonnees($input);
-    $version = filter_var($input['version'] ?? 0, FILTER_VALIDATE_INT);
-    transaction(function () use ($data, $version, $user) {
-        $current = query('SELECT version FROM settings WHERE name=? FOR UPDATE', ['coordonnees'])->fetchColumn();
-        if ((int) ($current ?: 0) !== $version) throw new ConflictError('Les coordonnées ont été modifiées ailleurs. Rechargez la page avant d’enregistrer.');
-        query(
-            'INSERT INTO settings (name,payload,version,updated_at,updated_by) VALUES (?,?,1,?,?) ON DUPLICATE KEY UPDATE payload=VALUES(payload),version=version+1,updated_at=VALUES(updated_at),updated_by=VALUES(updated_by)',
-            ['coordonnees', json($data), now(), $user['id']],
-        );
-        audit('Coordonnées modifiées', $data['contacts']['whatsappHq'], $user['id']);
-    });
+    saveSetting('coordonnees', $data, $input['version'] ?? 0, $user, 'Coordonnées modifiées', $data['contacts']['whatsappHq']);
 }

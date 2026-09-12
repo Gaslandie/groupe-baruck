@@ -242,6 +242,36 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
     assert.equal(JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).contacts.contacts.whatsappHq, '+224 111 22 33 44', 'une réinstallation ne rétablit pas les coordonnées du dépôt');
   });
+  await t.test('textes de l’accueil : droits, longueurs, structure imposée et conflit', async () => {
+    assert.equal((await editor.request('/?page=textes')).status, 403);
+    const page = await admin.request('/?page=textes');
+    assert.match(page.html, /Diaporama d’accueil/);
+    assert.match(page.html, /Activités du Groupe/);
+    assert.match(page.html, /Le Groupe Baruck en Guinée/, 'les textes du site servent de point de départ');
+    // Le formulaire renvoie toutes les entrées : la structure appartient au site.
+    const fields = Object.fromEntries([...page.html.matchAll(/name="((?:heroSlides|activities)\[[a-z0-9-]+\]\[(?:title|description)\])"[^>]*value="([^"]*)"/g)].map(([, name, value]) => [name, value]));
+    for (const [, name, value] of page.html.matchAll(/name="((?:heroSlides|activities)\[[a-z0-9-]+\]\[description\])"[^>]*>([^<]*)<\/textarea>/g)) fields[name] = value;
+    assert.equal(Object.keys(fields).length, 24, '3 volets et 9 activités, titre et texte');
+    const form = { action: 'save_textes', version: '0', ...fields, 'heroSlides[guinee][title]': 'Le Groupe Baruck, Conakry' };
+    const editorCsrf = (await editor.request('/?page=edit')).csrf;
+    assert.equal((await editor.request('/', { ...form, csrf: editorCsrf })).status, 403);
+    assert.equal((await admin.post('/?page=textes', { ...form, 'activities[cinema][description]': 'x'.repeat(131) })).status, 422, 'texte trop long refusé');
+    assert.equal((await admin.post('/?page=textes', { ...form, 'heroSlides[guinee][title]': 'a'.repeat(61) })).status, 422, 'titre trop long refusé');
+    assert.equal((await admin.post('/?page=textes', { ...form, 'activities[cinema][title]': '' })).status, 422, 'titre vide refusé');
+    const partial = { ...form };
+    delete partial['activities[cinema][title]'];
+    assert.equal((await admin.post('/?page=textes', partial)).status, 422, 'entrée manquante refusée');
+    assert.equal((await admin.post('/?page=textes', { ...form, 'activities[invente][title]': 'Faux', 'activities[invente][description]': 'Faux texte' })).status, 303);
+    const saved = await admin.request('/?page=textes');
+    assert.match(saved.html, /Le Groupe Baruck, Conakry/);
+    assert.doesNotMatch(saved.html, /invente|Faux texte/, 'une entrée inventée n’entre pas dans la structure');
+    assert.equal((await admin.post('/?page=textes', form)).status, 409, 'la version périmée est refusée');
+    const exported = JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
+    assert.equal(exported.texts.heroSlides.guinee.title, 'Le Groupe Baruck, Conakry');
+    assert.equal(Object.keys(exported.texts.activities).length, 9);
+    docker(['exec', container, 'php', 'bin/install.php', 'init']);
+    assert.equal(JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).texts.heroSlides.guinee.title, 'Le Groupe Baruck, Conakry', 'une réinstallation ne rétablit pas les textes du dépôt');
+  });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);
     const response = await admin.post('/?page=publication', { action: 'export' });

@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
@@ -15,10 +16,16 @@ const contacts = {
   facebookPages: [{ country: 'Guinée', href: 'https://www.facebook.com/BaruckCommunication' }],
   mapQuery: 'Kobayah, Conakry, Guinée',
 };
+// Structure reprise du dépôt : la publication ne peut ni ajouter ni retirer un bloc.
+const reference = JSON.parse(readFileSync(new URL('../../content/textes.json', import.meta.url), 'utf8'));
+const texts = Object.fromEntries(Object.entries(reference).map(([group, entries]) => [
+  group,
+  Object.fromEntries(Object.keys(entries).map((key) => [key, { title: `Titre ${key}`, description: `Texte de recette ${key}.` }])),
+]));
 async function fixture(t, change) {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'baruck-export-test-'));
   t.after(() => fs.rm(dir, { recursive: true, force: true }));
-  const input = { format: 'baruck-editorial-v1', articles: [structuredClone(article)], products: [structuredClone(product)], contacts: structuredClone(contacts), media: [] };
+  const input = { format: 'baruck-editorial-v1', articles: [structuredClone(article)], products: [structuredClone(product)], contacts: structuredClone(contacts), texts: structuredClone(texts), media: [] };
   change?.(input);
   const file = path.join(dir, 'export.json');
   await fs.writeFile(file, JSON.stringify(input));
@@ -26,7 +33,7 @@ async function fixture(t, change) {
 }
 test('convertit les contenus validés sans interpolation du frontmatter', async (t) => {
   const { file, out } = await fixture(t);
-  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 1, contacts: true });
+  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 1, contacts: true, texts: true });
   const content = await fs.readFile(path.join(out, 'content/actualites/actualite-test.md'), 'utf8');
   assert.match(content, /draft: false/);
   assert.match(content, /title: "Titre : \\"test\\""/);
@@ -37,8 +44,29 @@ test('convertit les contenus validés sans interpolation du frontmatter', async 
 });
 test('laisse les coordonnées du dépôt quand la publication n’en porte aucune', async (t) => {
   const { file, out } = await fixture(t, (input) => { delete input.contacts; });
-  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 1, contacts: false });
+  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 1, contacts: false, texts: true });
   await assert.rejects(fs.stat(path.join(out, 'content/coordonnees.json')), { code: 'ENOENT' });
+});
+test('reprend les textes de l’accueil et laisse ceux du dépôt sans publication', async (t) => {
+  const { file, out } = await fixture(t);
+  await importExport(file, out);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(out, 'content/textes.json'), 'utf8')), texts);
+  const bare = await fixture(t, (input) => { delete input.texts; });
+  assert.deepEqual(await importExport(bare.file, bare.out), { articles: 1, images: 0, products: 1, contacts: true, texts: false });
+  await assert.rejects(fs.stat(path.join(bare.out, 'content/textes.json')), { code: 'ENOENT' });
+});
+test('refuse des textes incomplets ou non textuels', async (t) => {
+  const changes = [
+    (input) => { delete input.texts.activities.cinema; },
+    (input) => { delete input.texts.heroSlides; },
+    (input) => { input.texts.activities.cinema.title = ''; },
+    (input) => { input.texts.activities.cinema.description = { html: 'x' }; },
+  ];
+  for (const change of changes) {
+    const { file, out } = await fixture(t, change);
+    await assert.rejects(importExport(file, out));
+    await assert.rejects(fs.stat(out), { code: 'ENOENT' });
+  }
 });
 test('refuse des coordonnées incomplètes ou des liens détournés', async (t) => {
   const changes = [
@@ -58,7 +86,7 @@ test('refuse des coordonnées incomplètes ou des liens détournés', async (t) 
 });
 test('laisse la boutique du dépôt quand la publication n’en porte aucune', async (t) => {
   const { file, out } = await fixture(t, (input) => { delete input.products; });
-  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 0, contacts: true });
+  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 0, contacts: true, texts: true });
   await assert.rejects(fs.stat(path.join(out, 'content/boutique.json')), { code: 'ENOENT' });
 });
 test('refuse un catalogue dupliqué, sans photo ou mal identifié', async (t) => {

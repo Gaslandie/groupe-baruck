@@ -72,6 +72,7 @@ function adviceList(array $items, string $empty = ''): void {
     </div>
 <?php elseif ($page === 'product'): require __DIR__ . '/product.php'; ?>
 <?php elseif ($page === 'coordonnees'): require __DIR__ . '/coordonnees.php'; ?>
+<?php elseif ($page === 'textes'): require __DIR__ . '/textes.php'; ?>
 <?php elseif ($page === 'edit'): require __DIR__ . '/editor.php'; ?>
 <?php elseif ($page === 'history'): require __DIR__ . '/history.php'; ?>
 <?php elseif ($page === 'stats'): require __DIR__ . '/statistics.php'; ?>

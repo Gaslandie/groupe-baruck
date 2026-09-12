@@ -1,5 +1,19 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Textes de l'accueil — 12 septembre 2026
+
+**Travail local, sans déploiement.** Objectif de ce lot : ouvrir au client les mots de la page d'accueil sans lui donner les moyens de casser la mise en page.
+
+- **Textes de l'accueil**, dernière entrée du menu à gauche, réservée à l'administrateur : les trois volets du diaporama et les neuf cartes d'activités, titre et texte.
+- **Le code garde la structure, le contenu ne porte que les mots.** `content/textes.json` est indexé par les identifiants du site ; images, dégradés, liens et ordre restent dans `src/data/home.ts`, qui les reprend par un `...siteTexts.activities["cinema"]`. Une entrée inventée dans le formulaire est ignorée, une entrée manquante est refusée — côté PHP comme à l'import d'une publication.
+- **Des longueurs plutôt qu'une consigne.** 60 et 260 caractères pour un volet, 40 et 130 pour une activité, soit environ un quart de marge sur les textes actuels. Le champ affiche sa limite et sa longueur ; la validation compte des caractères, pas des octets, pour ne pas pénaliser les accents.
+- **Périmètre assumé.** Les teasers de l'accueil portent du JSX (`<br>`, `<em>`) et ne sont pas du texte simple : ils restent dans le code, comme les pages Le Groupe, JECA, Espoir de Vie et les pages de services, qui mêlent mise en forme et contenu. Les ouvrir demande un cadrage, pas un champ de plus.
+- **Réglages factorisés.** La table `settings` et ses helpers versionnés servent désormais aux coordonnées et aux textes ; l'alias de build de `next.config.ts` liste les fichiers de contenu embarqués dans le bundle.
+
+Vérifications : 98 contrôles PHP (dont 9 nouveaux), recette HTTP/MySQL portée à 16 parcours dont un parcours textes (droits, titre et texte trop longs, titre vide, entrée manquante, entrée inventée ignorée, conflit, export, réinstallation), 11 cas d'import/export, 21 cas du site, lint, TypeScript, builds turbopack et webpack, build avec préfixe. Les 31 pages construites ont été comparées à celles d'avant le lot : aucune différence de contenu. Chaîne complète rejouée sur un export réel portant les trois contenus modifiés — titre de diaporama, numéro WhatsApp et 39 articles de boutique repris dans `out/`, `.backoffice-content/` effacé ensuite. Non vérifié : rendu visuel de l'écran Textes, parcours sur mobile.
+
+Une exécution de la recette Chrome sur quatre a échoué sur les deux parcours navigateur, sans se reproduire sur les trois suivantes ; la cause n'est pas établie.
+
 ## Coordonnées du Groupe — 12 septembre 2026
 
 **Travail local, sans déploiement.** Objectif de ce lot : que le client corrige seul un numéro, une adresse ou un horaire, sans jamais saisir un lien.

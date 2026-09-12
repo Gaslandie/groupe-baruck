@@ -16,3 +16,19 @@ declare module "@content/coordonnees.json" {
 
   export default coordonnees;
 }
+
+/**
+ * Contrat du fichier de textes de l'accueil. Le code garde la structure — les
+ * identifiants, les images, les dégradés, les liens — le fichier ne porte que
+ * les mots. Résolu par le même alias de build que les coordonnées.
+ */
+declare module "@content/textes.json" {
+  type Entry = { title: string; description: string };
+
+  const textes: {
+    heroSlides: Record<"guinee" | "studio-photo" | "hotesses", Entry>;
+    activities: Record<"hotellerie" | "restauration" | "agrobusiness" | "studio" | "cinema" | "mobilite" | "communication" | "artistes" | "clips", Entry>;
+  };
+
+  export default textes;
+}

@@ -7,16 +7,18 @@ import { importExport } from './import-export.mjs';
 
 if (!process.argv[2]) throw new Error('Utilisation : npm run backoffice:publish-build -- /chemin/publication.json');
 const destination = path.join(os.tmpdir(), 'baruck-publication-' + crypto.randomBytes(8).toString('hex'));
-// Les coordonnées partent dans le bundle du navigateur : elles ne peuvent pas
-// être lues depuis le dossier temporaire. Elles sont déposées le temps du build
+// Coordonnées et textes partent dans le bundle du navigateur : ils ne peuvent
+// pas être lus depuis le dossier temporaire. Ils sont déposés le temps du build
 // dans un emplacement ignoré par Git, que next.config.ts préfère au dépôt.
-const publishedContacts = path.resolve('.backoffice-content/coordonnees.json');
+const bundledContent = ['coordonnees.json', 'textes.json'];
+const publishedDirectory = path.resolve('.backoffice-content');
 try {
   const result = await importExport(path.resolve(process.argv[2]), destination);
-  const exportedContacts = path.join(destination, 'content/coordonnees.json');
-  if (await fs.stat(exportedContacts).then(() => true, () => false)) {
-    await fs.mkdir(path.dirname(publishedContacts), { recursive: true });
-    await fs.copyFile(exportedContacts, publishedContacts);
+  for (const name of bundledContent) {
+    const exported = path.join(destination, 'content', name);
+    if (!(await fs.stat(exported).then(() => true, () => false))) continue;
+    await fs.mkdir(publishedDirectory, { recursive: true });
+    await fs.copyFile(exported, path.join(publishedDirectory, name));
   }
   console.log(`Construction de ${result.articles} actualités validées et ${result.products} articles de boutique…`);
   // Le chargeur habituel valide aussi les liens, dates, catégories, images et
@@ -29,6 +31,6 @@ try {
   console.log('Publication construite dans out/. Elle attend son déploiement sur le site.');
 } finally {
   await fs.rm(destination, { recursive: true, force: true });
-  await fs.rm(publishedContacts, { force: true });
-  await fs.rmdir(path.dirname(publishedContacts)).catch(() => {});
+  for (const name of bundledContent) await fs.rm(path.join(publishedDirectory, name), { force: true });
+  await fs.rmdir(publishedDirectory).catch(() => {});
 }

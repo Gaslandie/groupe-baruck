@@ -1,0 +1,54 @@
+{
+  "heroSlides": {
+    "guinee": {
+      "title": "Le Groupe Baruck en Guinée",
+      "description": "La Guinée est notre point d’ancrage : nous y développons le Studio Photo Baruck, nos services d’hôtesses événementielles et nos activités de communication, avec une vision entrepreneuriale tournée vers l’impact."
+    },
+    "studio-photo": {
+      "title": "Studio Photo Baruck",
+      "description": "Mariage, baptême, anniversaire, conférence, shooting photo et photo d’identité. Retrouvez-nous à Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage."
+    },
+    "hotesses": {
+      "title": "Hôtesses événementielles",
+      "description": "Concerts géants, rencontres, mariages, buffets et autres événements : une équipe élégante, professionnelle et dynamique à votre service en Guinée."
+    }
+  },
+  "activities": {
+    "hotellerie": {
+      "title": "Hôtellerie",
+      "description": "Des espaces d’accueil pensés pour offrir confort, qualité et distinction."
+    },
+    "restauration": {
+      "title": "Restauration",
+      "description": "Une expérience culinaire portée par la qualité du service et le sens de l’accueil."
+    },
+    "agrobusiness": {
+      "title": "Agro-business",
+      "description": "Développer des solutions agricoles et commerciales créatrices de valeur."
+    },
+    "studio": {
+      "title": "Studio d’enregistrement",
+      "description": "Un environnement professionnel dédié à la création et à la production musicale."
+    },
+    "cinema": {
+      "title": "Cinéma",
+      "description": "Donner vie aux histoires à travers la création et la production audiovisuelle."
+    },
+    "mobilite": {
+      "title": "Voitures de luxe",
+      "description": "Des véhicules haut de gamme pour les déplacements professionnels et les événements."
+    },
+    "communication": {
+      "title": "Communication digitale",
+      "description": "Accompagner les entreprises dans leur visibilité, leur image et leur croissance numérique."
+    },
+    "artistes": {
+      "title": "Production d’artistes",
+      "description": "Encadrer, développer et promouvoir les talents artistiques."
+    },
+    "clips": {
+      "title": "Clips vidéo",
+      "description": "Concevoir des productions visuelles modernes pour les artistes, les marques et les institutions."
+    }
+  }
+}
