@@ -20,6 +20,7 @@ if (!literal) throw new Error('Rayons de la boutique introuvables dans src/data/
 const brandCategories = Object.fromEntries([...literal[1].matchAll(/^\s*([a-z]+):\s*"([^"]+)",$/gm)].map(([, key, label]) => [key, label]));
 if (Object.keys(brandCategories).length === 0) throw new Error('Aucun rayon de boutique reconnu.');
 const { products } = JSON.parse(await fs.readFile(path.join(root, 'content/boutique.json'), 'utf8'));
+const coordonnees = JSON.parse(await fs.readFile(path.join(root, 'content/coordonnees.json'), 'utf8'));
 for (const product of products) {
   if (!brandCategories[product.category]) throw new Error(`Rayon inconnu pour l'article « ${product.name} » : ${product.category}.`);
 }
@@ -29,7 +30,7 @@ for (const name of images.filter((name) => /\.(?:jpe?g|png|webp)$/i.test(name)))
   await fs.mkdir(path.dirname(destination), { recursive: true });
   await fs.copyFile(path.join(root, 'public/images', name), destination);
 }
-await fs.writeFile(path.join(directory, 'seed.json'), JSON.stringify({ articles, products, brandCategories, existingImages: images.filter((name) => /\.(?:jpe?g|png|webp)$/i.test(name)).map((name) => '/images/' + name).sort() }, null, 2) + '\n');
+await fs.writeFile(path.join(directory, 'seed.json'), JSON.stringify({ articles, products, brandCategories, coordonnees, existingImages: images.filter((name) => /\.(?:jpe?g|png|webp)$/i.test(name)).map((name) => '/images/' + name).sort() }, null, 2) + '\n');
 const result = await postcss([tailwind({ base: root })]).process('@import "../../src/app/globals.css";\n@source "../src";\n@source "./media-picker.js";\n@source "./admin.js";\n@font-face { font-family: Inter; src: url("/inter.woff2") format("woff2"); font-display: swap; font-weight: 100 900; }\n:root { --font-inter: Inter; }', { from: path.join(directory, 'public/source.css'), to: path.join(directory, 'public/admin.css') });
 await fs.writeFile(path.join(directory, 'public/admin.css'), result.css);
 await fs.copyFile(path.join(root, 'src/app/fonts/inter-latin.woff2'), path.join(directory, 'public/inter.woff2'));

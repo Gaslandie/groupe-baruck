@@ -203,6 +203,45 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
     assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.products;`).split('\n')[1], '39', 'une réinstallation ne recrée pas un article supprimé');
   });
+  await t.test('coordonnées : droits, contrôles, lignes vidées et conflit', async () => {
+    assert.equal((await editor.request('/?page=coordonnees')).status, 403);
+    const page = await admin.request('/?page=coordonnees');
+    assert.match(page.html, /\+224 623 72 04 27/, 'les coordonnées du site servent de point de départ');
+    assert.match(page.html, /https:\/\/wa\.me\/224623720427/, 'le lien obtenu est montré avant enregistrement');
+    const form = {
+      action: 'save_coordonnees', version: '0',
+      'contacts[landline]': '+224 625 19 72 58', 'contacts[mobile]': '+224 623 54 66 57',
+      'contacts[whatsappHq]': '+224 111 22 33 44', 'contacts[whatsappCeo]': '+33 7 55 42 37 54',
+      'contacts[email]': 'nouvelle@example.test',
+      address: 'Nouvelle adresse de recette, Conakry.', mapQuery: 'Ratoma, Conakry, Guinée',
+      'hours[0][days]': 'Lundi – Vendredi', 'hours[0][hours]': '9h – 18h',
+      'hours[1][days]': '', 'hours[1][hours]': '',
+      'facebook[0][country]': 'Guinée', 'facebook[0][href]': 'https://www.facebook.com/BaruckCommunication',
+      'facebook[1][country]': '', 'facebook[1][href]': '',
+    };
+    const editorCsrf = (await editor.request('/?page=edit')).csrf;
+    assert.equal((await editor.request('/', { ...form, csrf: editorCsrf })).status, 403, 'un rédacteur ne modifie pas les coordonnées');
+    for (const [field, value, reason] of [
+      ['contacts[whatsappHq]', '623 72 04 27', 'numéro sans indicatif'],
+      ['contacts[email]', 'sans-arobase', 'e-mail invalide'],
+      ['facebook[0][href]', 'https://exemple.test/page', 'lien hors Facebook'],
+      ['hours[0][hours]', '', 'ligne d’horaire incomplète'],
+    ]) {
+      assert.equal((await admin.post('/?page=coordonnees', { ...form, [field]: value })).status, 422, reason);
+    }
+    assert.equal((await admin.post('/?page=coordonnees', form)).status, 303);
+    const saved = await admin.request('/?page=coordonnees');
+    assert.match(saved.html, /\+224 111 22 33 44/);
+    assert.match(saved.html, /Nouvelle adresse de recette/);
+    assert.doesNotMatch(saved.html, /Dimanche/, 'la ligne vidée a bien été retirée');
+    assert.equal((await admin.post('/?page=coordonnees', form)).status, 409, 'la version périmée est refusée');
+    const exported = JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
+    assert.equal(exported.contacts.contacts.whatsappHq, '+224 111 22 33 44');
+    assert.equal(exported.contacts.hours.length, 1);
+    assert.equal(exported.contacts.facebookPages.length, 1);
+    docker(['exec', container, 'php', 'bin/install.php', 'init']);
+    assert.equal(JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).contacts.contacts.whatsappHq, '+224 111 22 33 44', 'une réinstallation ne rétablit pas les coordonnées du dépôt');
+  });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);
     const response = await admin.post('/?page=publication', { action: 'export' });

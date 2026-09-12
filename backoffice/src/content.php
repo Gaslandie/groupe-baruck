@@ -125,5 +125,5 @@ function exportContent(array $user): array
         $media[] = ['path' => $path, 'sha256' => hash_file('sha256', $file), 'data' => base64_encode(file_get_contents($file))];
     }
     audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
-    return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'media' => $media];
+    return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => coordonnees(), 'media' => $media];
 }

@@ -26,6 +26,18 @@ Les rayons (Homme, Femme, Enfant, Autres vêtements, Sacs & petite maroquinerie,
 
 Le catalogue du dépôt vit dans `content/boutique.json`. Une publication qui ne contient aucun article de boutique laisse ce fichier en place : la collection du site n’est jamais vidée par accident.
 
+## Coordonnées
+
+« Coordonnées », réservée à l'administrateur, regroupe ce qui change dans la vraie vie : les cinq lignes de contact (fixe, mobile, WhatsApp du siège, WhatsApp du PDG, e-mail), l'adresse affichée du siège, le lieu recherché sur la carte, les horaires et les pages Facebook par pays.
+
+**Aucun lien n'est saisi.** Les liens d'appel, de WhatsApp, d'e-mail et de carte se déduisent des valeurs : corriger un numéro corrige le menu, le pied de page, la page Contact, l'assistant et le bouton de commande de la boutique. L'encadré « Liens obtenus » montre le résultat avant enregistrement. Les numéros doivent commencer par l'indicatif international (`+224…`), sinon le lien WhatsApp serait faux. Un lien de page doit rester une adresse `https` de facebook.com.
+
+Les horaires et les pages Facebook sont des listes : deux lignes vides s'ajoutent toujours en bas pour en créer, et **vider une ligne la retire**. Aucun JavaScript n'est nécessaire. Une modification concurrente est refusée et demande de recharger la page.
+
+La réponse de la FAQ sur les horaires suit désormais ces lignes : modifier les horaires ne laisse plus une réponse fausse sur la page Contact.
+
+Techniquement, ces coordonnées partent dans le bundle du navigateur (en-tête, formulaire, assistant) : elles ne peuvent pas être lues par un chargeur serveur comme les actualités. Elles passent par un alias de build (`next.config.ts`) qui pointe sur `content/coordonnees.json` du dépôt ou, pendant une publication, sur le fichier validé déposé dans `.backoffice-content/` — un emplacement ignoré par Git, effacé à la fin de la commande. Une publication qui ne contient aucune coordonnée laisse celles du dépôt en place.
+
 ## Tableau de bord et statistiques
 
 La vue d’ensemble commence par « À faire » : ce qui attend une action, avec le bouton correspondant. Les repères chiffrés comparent les 30 derniers jours aux 30 jours précédents. La page « Statistiques » du menu détaille l’audience par période, avec export CSV, et traduit les chiffres en conseils courts. Les brouillons, la médiathèque et les comptes ont leurs dialogues ; les actions irréversibles demandent une confirmation.
@@ -82,7 +94,7 @@ En cas de perte d’un mot de passe : `php bin/install.php reset-password` avec 
 
 ## Construire une publication du site
 
-L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque actualité, les articles mis en boutique et les images téléversées qu’ils référencent, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
+L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque actualité, les articles mis en boutique, les coordonnées et les images téléversées qu’ils référencent, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
 
 Dans le projet Next.js :
 

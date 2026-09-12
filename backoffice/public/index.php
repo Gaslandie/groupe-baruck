@@ -16,10 +16,10 @@ try {
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
     if ($setup) $page = 'setup';
     elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
-    if ($user && in_array($page, ['boutique', 'product', 'users', 'publication'], true)) requireAdmin($user);
+    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'users', 'publication'], true)) requireAdmin($user);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
@@ -73,6 +73,10 @@ try {
                     deleteProduct($_POST, $user);
                     $_SESSION['flash'] = 'Article supprimé de la boutique.';
                     redirect('boutique');
+                case 'save_coordonnees':
+                    saveCoordonnees($_POST, $user);
+                    $_SESSION['flash'] = 'Coordonnées enregistrées. Elles partiront sur le site avec la prochaine publication.';
+                    redirect('coordonnees');
                 case 'delete_media':
                     deleteMedia($_POST, $user);
                     $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
@@ -131,6 +135,15 @@ try {
     $article = null;
     $publication = null;
     $product = null;
+    $coordonnees = null;
+    $version = 0;
+    if ($page === 'coordonnees') {
+        $coordonnees = $error && ($_POST['action'] ?? '') === 'save_coordonnees'
+            ? ['contacts' => is_array($_POST['contacts'] ?? null) ? $_POST['contacts'] : [], 'address' => $_POST['address'] ?? '', 'hours' => is_array($_POST['hours'] ?? null) ? array_values($_POST['hours']) : [], 'facebookPages' => is_array($_POST['facebook'] ?? null) ? array_values($_POST['facebook']) : [], 'mapQuery' => $_POST['mapQuery'] ?? '']
+            : coordonnees();
+        // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
+        $version = $coordonnees === coordonnees() ? coordonneesVersion() : (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT);
+    }
     if ($page === 'product') {
         $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
         $product = $id ? query('SELECT * FROM products WHERE id=?', [$id])->fetch() : null;

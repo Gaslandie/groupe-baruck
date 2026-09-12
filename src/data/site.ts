@@ -1,3 +1,7 @@
+import { contactValues, mailtoHref, telHref, whatsappHref } from "./coordonnees";
+
+export { hqAddress } from "./coordonnees";
+
 export type RouteKey =
   | "home"
   | "group"
@@ -71,11 +75,20 @@ export const routes: Record<RouteKey, string> = {
 };
 
 const contactHrefs: Record<ContactId, string> = {
-  landline: "tel:+224625197258",
-  mobile: "tel:+224623546657",
-  whatsappHq: "https://wa.me/224623720427",
-  whatsappCeo: "https://wa.me/33755423754",
-  email: "mailto:jokrasso2@gmail.com",
+  landline: telHref(contactValues.landline),
+  mobile: telHref(contactValues.mobile),
+  whatsappHq: whatsappHref(contactValues.whatsappHq),
+  whatsappCeo: whatsappHref(contactValues.whatsappCeo),
+  email: mailtoHref(contactValues.email),
+};
+
+/** Intitulés des lignes de contact : nomenclature du site, pas une donnée modifiable. */
+const contactLabels: Record<ContactId, string> = {
+  landline: "Téléphone fixe Baruck Siège Guinée",
+  mobile: "Téléphone mobile",
+  whatsappHq: "WhatsApp Baruck Siège Guinée",
+  whatsappCeo: "WhatsApp PDG",
+  email: "E-mail",
 };
 
 export const site = {
@@ -86,43 +99,25 @@ export const site = {
     "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
 };
 
-export const hqAddress = "Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.";
-
 export const contacts: Record<ContactId, ContactLink> = {
-  landline: {
-    label: "Téléphone fixe Baruck Siège Guinée",
-    value: "+224 625 19 72 58",
-    href: contactHrefs.landline,
-  },
-  mobile: {
-    label: "Téléphone mobile",
-    value: "+224 623 54 66 57",
-    href: contactHrefs.mobile,
-  },
-  whatsappHq: {
-    label: "WhatsApp Baruck Siège Guinée",
-    value: "+224 623 72 04 27",
-    href: contactHrefs.whatsappHq,
-    external: true,
-  },
-  whatsappCeo: {
-    label: "WhatsApp PDG",
-    value: "+33 7 55 42 37 54",
-    href: contactHrefs.whatsappCeo,
-    external: true,
-  },
-  email: {
-    label: "E-mail",
-    value: "jokrasso2@gmail.com",
-    href: contactHrefs.email,
-  },
+  landline: { label: contactLabels.landline, value: contactValues.landline, href: contactHrefs.landline },
+  mobile: { label: contactLabels.mobile, value: contactValues.mobile, href: contactHrefs.mobile },
+  whatsappHq: { label: contactLabels.whatsappHq, value: contactValues.whatsappHq, href: contactHrefs.whatsappHq, external: true },
+  whatsappCeo: { label: contactLabels.whatsappCeo, value: contactValues.whatsappCeo, href: contactHrefs.whatsappCeo, external: true },
+  email: { label: contactLabels.email, value: contactValues.email, href: contactHrefs.email },
 };
 
+/** Demandes préremplies : le texte appartient au site, le numéro aux coordonnées. */
+const whatsappRequest = (text: string) =>
+  `${contactHrefs.whatsappHq}?text=${encodeURIComponent(text)}`;
+
 export const whatsappRequests = {
-  studioPrices:
-    "https://wa.me/224623720427?text=Bonjour%2C%20je%20souhaite%20conna%C3%AEtre%20les%20tarifs%20du%20Studio%20Photo%20Baruck.",
-  hostessBooking:
-    "https://wa.me/224623720427?text=Bonjour%2C%20je%20souhaite%20r%C3%A9server%20les%20h%C3%B4tesses%20%C3%A9v%C3%A9nementielles%20Baruck.",
+  studioPrices: whatsappRequest(
+    "Bonjour, je souhaite connaître les tarifs du Studio Photo Baruck.",
+  ),
+  hostessBooking: whatsappRequest(
+    "Bonjour, je souhaite réserver les hôtesses événementielles Baruck.",
+  ),
 } as const;
 
 export const mainNav: NavItem[] = [

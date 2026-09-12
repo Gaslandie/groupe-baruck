@@ -71,6 +71,7 @@ function adviceList(array $items, string $empty = ''): void {
         <?php if (!$rows): ?><p class="p-8 text-center text-sm text-ink/60"><?= $sortable ? 'La boutique est vide. Ajoutez un premier article pour ouvrir la collection.' : 'Aucun article ne correspond à votre recherche.' ?></p><?php endif; ?>
     </div>
 <?php elseif ($page === 'product'): require __DIR__ . '/product.php'; ?>
+<?php elseif ($page === 'coordonnees'): require __DIR__ . '/coordonnees.php'; ?>
 <?php elseif ($page === 'edit'): require __DIR__ . '/editor.php'; ?>
 <?php elseif ($page === 'history'): require __DIR__ . '/history.php'; ?>
 <?php elseif ($page === 'stats'): require __DIR__ . '/statistics.php'; ?>

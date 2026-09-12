@@ -7,8 +7,17 @@ import { importExport } from './import-export.mjs';
 
 if (!process.argv[2]) throw new Error('Utilisation : npm run backoffice:publish-build -- /chemin/publication.json');
 const destination = path.join(os.tmpdir(), 'baruck-publication-' + crypto.randomBytes(8).toString('hex'));
+// Les coordonnées partent dans le bundle du navigateur : elles ne peuvent pas
+// être lues depuis le dossier temporaire. Elles sont déposées le temps du build
+// dans un emplacement ignoré par Git, que next.config.ts préfère au dépôt.
+const publishedContacts = path.resolve('.backoffice-content/coordonnees.json');
 try {
   const result = await importExport(path.resolve(process.argv[2]), destination);
+  const exportedContacts = path.join(destination, 'content/coordonnees.json');
+  if (await fs.stat(exportedContacts).then(() => true, () => false)) {
+    await fs.mkdir(path.dirname(publishedContacts), { recursive: true });
+    await fs.copyFile(exportedContacts, publishedContacts);
+  }
   console.log(`Construction de ${result.articles} actualités validées et ${result.products} articles de boutique…`);
   // Le chargeur habituel valide aussi les liens, dates, catégories, images et
   // le rendu Markdown. Un export invalide fait échouer le build.
@@ -18,4 +27,8 @@ try {
   // Les images privées validées ne sont copiées que dans l’export public final.
   await fs.cp(path.join(destination, 'public/images/actualites/uploads'), path.resolve('out/images/actualites/uploads'), { recursive: true });
   console.log('Publication construite dans out/. Elle attend son déploiement sur le site.');
-} finally { await fs.rm(destination, { recursive: true, force: true }); }
+} finally {
+  await fs.rm(destination, { recursive: true, force: true });
+  await fs.rm(publishedContacts, { force: true });
+  await fs.rmdir(path.dirname(publishedContacts)).catch(() => {});
+}

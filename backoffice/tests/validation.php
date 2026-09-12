@@ -89,4 +89,23 @@ check(!accepts(fn() => Baruck\validateProduct([...$product, 'name' => ''])), 'ar
 check(Baruck\validateProduct([...$product, 'images' => [['src' => '', 'alt' => ''], $photo]])['images'] === [$photo], 'ligne de photo vide ignorée');
 check(array_keys(Baruck\brandCategories()) === ['homme', 'femme', 'enfant', 'vetements', 'sacs', 'chaussures', 'parfums', 'accessoires'], 'rayons repris du site');
 
+// Coordonnées : numéros internationaux, e-mail, horaires et pages Facebook.
+$base = ['contacts' => ['landline' => '+224 625 19 72 58', 'mobile' => '+224 623 54 66 57', 'whatsappHq' => '+224 623 72 04 27', 'whatsappCeo' => '+33 7 55 42 37 54', 'email' => 'jokrasso2@gmail.com'], 'address' => 'Kobayah, Conakry.', 'hours' => [['days' => 'Lundi – Samedi', 'hours' => '8h – 17h']], 'facebook' => [['country' => 'Guinée', 'href' => 'https://www.facebook.com/BaruckCommunication']], 'mapQuery' => 'Kobayah, Conakry, Guinée'];
+check(accepts(fn() => Baruck\validateCoordonnees($base)), 'coordonnées complètes acceptées');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'contacts' => [...$base['contacts'], 'whatsappHq' => '623 72 04 27']])), 'numéro sans indicatif refusé');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'contacts' => [...$base['contacts'], 'mobile' => '+224 62']])), 'numéro trop court refusé');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'contacts' => [...$base['contacts'], 'landline' => '+224 abc 12 34 56']])), 'numéro non numérique refusé');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'contacts' => [...$base['contacts'], 'email' => 'sans-arobase.fr']])), 'adresse e-mail invalide refusée');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'contacts' => 'pas un tableau'])), 'contacts non structurés refusés');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'hours' => []])), 'horaires vides refusés');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'hours' => [['days' => 'Lundi', 'hours' => '']]])), 'ligne d’horaire incomplète refusée');
+check(count(Baruck\validateCoordonnees([...$base, 'hours' => [...$base['hours'], ['days' => '', 'hours' => '']]])['hours']) === 1, 'ligne entièrement vide ignorée');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'hours' => array_fill(0, 8, $base['hours'][0])])), 'plus de sept horaires refusés');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'facebook' => [['country' => 'Guinée', 'href' => 'https://exemple.test/page']]])), 'lien hors Facebook refusé');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'facebook' => [['country' => 'Guinée', 'href' => 'http://www.facebook.com/x']]])), 'lien Facebook non chiffré refusé');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'facebook' => [['country' => 'Guinée', 'href' => 'https://faux-facebook.test/x']]])), 'domaine imitant Facebook refusé');
+check(Baruck\validateCoordonnees([...$base, 'facebook' => []])['facebookPages'] === [], 'aucune page Facebook accepté');
+check(!accepts(fn() => Baruck\validateCoordonnees([...$base, 'address' => ''])), 'adresse vide refusée');
+check(array_keys(Baruck\contactLines()) === ['landline', 'mobile', 'whatsappHq', 'whatsappCeo', 'email'], 'lignes de contact du site');
+
 echo $count . " contrôles de validation réussis.\n";

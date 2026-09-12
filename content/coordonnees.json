@@ -1,0 +1,20 @@
+{
+  "contacts": {
+    "landline": "+224 625 19 72 58",
+    "mobile": "+224 623 54 66 57",
+    "whatsappHq": "+224 623 72 04 27",
+    "whatsappCeo": "+33 7 55 42 37 54",
+    "email": "jokrasso2@gmail.com"
+  },
+  "address": "Kobayah, carrefour Transfo, près de la pharmacie Binta Sow, au 1er étage.",
+  "hours": [
+    { "days": "Lundi – Samedi", "hours": "8h – 17h" },
+    { "days": "Dimanche", "hours": "Fermé" }
+  ],
+  "facebookPages": [
+    { "country": "Guinée", "href": "https://www.facebook.com/profile.php?id=61583266386159" },
+    { "country": "Sénégal", "href": "https://www.facebook.com/Baruckcommunicationsenegal" },
+    { "country": "Côte d’Ivoire", "href": "https://www.facebook.com/BaruckCommunication" }
+  ],
+  "mapQuery": "Kobayah, Conakry, Guinée"
+}

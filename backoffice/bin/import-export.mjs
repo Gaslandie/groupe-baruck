@@ -68,7 +68,38 @@ export async function importExport(file, destination) {
       };
     });
     if (products.length) await fs.writeFile(path.join(destination, 'content/boutique.json'), JSON.stringify({ products }, null, 2) + '\n');
-    return { articles: slugs.size, images: images.size, products: products.length };
+    // Une publication sans coordonnées laisse celles du dépôt en place.
+    const contacts = source.contacts;
+    if (contacts) {
+      if (typeof contacts !== 'object' || Array.isArray(contacts)) throw new Error('Coordonnées exportées invalides.');
+      const lines = {};
+      for (const key of ['landline', 'mobile', 'whatsappHq', 'whatsappCeo', 'email']) {
+        lines[key] = string(contacts.contacts?.[key], `contacts.${key}`, 40);
+      }
+      for (const key of ['landline', 'mobile', 'whatsappHq', 'whatsappCeo']) {
+        if (!/^\+[0-9][0-9 ]{7,23}$/.test(lines[key])) throw new Error(`Numéro invalide : ${key}.`);
+      }
+      if (!/^[^\s@]+@[^\s@.]+\.[^\s@]+$/.test(lines.email)) throw new Error('Adresse e-mail invalide.');
+      const hours = contacts.hours ?? [];
+      const pages = contacts.facebookPages ?? [];
+      if (!Array.isArray(hours) || hours.length > 7 || !Array.isArray(pages) || pages.length > 10) throw new Error('Horaires ou pages Facebook invalides.');
+      const clean = {
+        contacts: lines,
+        address: string(contacts.address, 'address', 300),
+        hours: hours.map((row) => ({ days: string(row?.days, 'days', 60), hours: string(row?.hours, 'hours', 60) })),
+        facebookPages: pages.map((row) => {
+          const href = string(row?.href, 'href', 300);
+          // Une page « Facebook » doit rester sur facebook.com : pas de lien libre.
+          let host;
+          try { const url = new URL(href); host = url.protocol === 'https:' ? url.hostname : ''; } catch { host = ''; }
+          if (host !== 'facebook.com' && !host.endsWith('.facebook.com')) throw new Error(`Lien Facebook invalide : ${href}.`);
+          return { country: string(row?.country, 'country', 60), href };
+        }),
+        mapQuery: string(contacts.mapQuery, 'mapQuery', 200),
+      };
+      await fs.writeFile(path.join(destination, 'content/coordonnees.json'), JSON.stringify(clean, null, 2) + '\n');
+    }
+    return { articles: slugs.size, images: images.size, products: products.length, contacts: Boolean(contacts) };
   } catch (error) {
     await fs.rm(destination, { recursive: true, force: true });
     throw error;

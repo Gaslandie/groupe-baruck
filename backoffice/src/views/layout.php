@@ -1,7 +1,7 @@
 <?php
 namespace Baruck;
 
-$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'boutique' => 'Boutique', 'product' => empty($product['id']) ? 'Nouvel article' : 'Modifier l’article', 'media' => 'Médiathèque', 'stats' => 'Statistiques', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
+$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'boutique' => 'Boutique', 'product' => empty($product['id']) ? 'Nouvel article' : 'Modifier l’article', 'media' => 'Médiathèque', 'coordonnees' => 'Coordonnées', 'stats' => 'Statistiques', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
 $title = $titles[$page] ?? 'Administration';
 $inputClass = 'mt-2 w-full rounded-lg border border-line bg-ivory px-4 py-3 text-sm focus:border-accent';
 $buttonClass = 'inline-flex items-center justify-center rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-ivory hover:bg-[#b64820] disabled:opacity-50';
@@ -54,7 +54,7 @@ function statusLabel(array $row): string {
     <aside class="bg-ink px-6 py-7 text-ivory desktop:sticky desktop:top-0 desktop:h-screen desktop:px-7">
         <a href="/" class="font-display text-3xl">Baruck<span class="text-accent">.</span></a><p class="mt-2 text-[10px] uppercase tracking-[.22em] text-ivory/45">Administration</p>
         <nav aria-label="Administration" class="mt-9 flex flex-wrap gap-2 desktop:flex-col">
-        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'boutique' => 'Boutique', 'media' => 'Médiathèque', 'stats' => 'Statistiques', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['boutique', 'publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles') || ($page === 'product' && $key === 'boutique'); ?>
+        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'boutique' => 'Boutique', 'media' => 'Médiathèque', 'coordonnees' => 'Coordonnées', 'stats' => 'Statistiques', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['boutique', 'coordonnees', 'publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles') || ($page === 'product' && $key === 'boutique'); ?>
             <a href="<?= e(url($key)) ?>" <?= $active ? 'aria-current="page"' : '' ?> class="rounded-lg px-4 py-3 text-sm <?= $active ? 'bg-ivory/10 text-ivory' : 'text-ivory/60 hover:bg-ivory/5 hover:text-ivory' ?>"><?= e($label) ?></a>
         <?php endforeach; ?>
         </nav>

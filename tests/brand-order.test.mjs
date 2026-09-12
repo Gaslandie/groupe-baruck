@@ -4,11 +4,20 @@ import { registerHooks } from "node:module";
 import { test } from "node:test";
 import { imageSize } from "image-size";
 
+// Les modules du site sont lus tels quels : alias de source, alias de contenu
+// et imports relatifs sans extension, comme les résout le bundler.
 registerHooks({
   resolve(specifier, context, nextResolve) {
-    return nextResolve(specifier.startsWith("@/")
-      ? new URL(`../src/${specifier.slice(2)}.ts`, import.meta.url).href
-      : specifier, context);
+    if (specifier.startsWith("@/")) {
+      return nextResolve(new URL(`../src/${specifier.slice(2)}.ts`, import.meta.url).href, context);
+    }
+    if (specifier.startsWith("@content/")) {
+      return nextResolve(new URL(`../content/${specifier.slice("@content/".length)}`, import.meta.url).href, context);
+    }
+    if (specifier.startsWith(".") && !/\.[a-z]+$/.test(specifier)) {
+      return nextResolve(`${specifier}.ts`, context);
+    }
+    return nextResolve(specifier, context);
   },
 });
 

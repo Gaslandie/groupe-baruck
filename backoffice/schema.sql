@@ -94,3 +94,11 @@ CREATE TABLE IF NOT EXISTS products (
     updated_by CHAR(32) NULL,
     KEY boutique_order (status, position)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS settings (
+    name VARCHAR(64) PRIMARY KEY,
+    payload MEDIUMTEXT NOT NULL,
+    version INT NOT NULL DEFAULT 1,
+    updated_at VARCHAR(25) NOT NULL,
+    updated_by CHAR(32) NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

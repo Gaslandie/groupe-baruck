@@ -1,5 +1,18 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Coordonnées du Groupe — 12 septembre 2026
+
+**Travail local, sans déploiement.** Objectif de ce lot : que le client corrige seul un numéro, une adresse ou un horaire, sans jamais saisir un lien.
+
+- **Coordonnées**, nouvelle entrée du menu à gauche, réservée à l'administrateur : cinq lignes de contact, adresse du siège, lieu de la carte, horaires et pages Facebook par pays. Un seul formulaire, sans JavaScript : deux lignes vides s'ajoutent en bas des listes, vider une ligne la retire.
+- **Rien de dérivable n'est saisi.** Les liens `tel:`, `wa.me`, `mailto:` et les URL Google Maps se construisent à partir des valeurs ; un encadré « Liens obtenus » les montre avant enregistrement. Les numéros sont refusés sans indicatif international — un numéro local produirait un lien WhatsApp mort. Un lien de page doit rester sur facebook.com.
+- **Une réponse qui ne ment plus.** La FAQ de la page Contact affirmait les horaires en dur ; elle les reprend désormais des horaires modifiables. C'est la seule différence de rendu du lot, assumée : une réponse figée contredirait les horaires publiés.
+- **Le point technique du lot.** Contrairement aux actualités et à la boutique, ces valeurs partent dans le bundle du navigateur (en-tête, formulaire de contact, assistant) : aucun chargeur serveur ne peut les fournir. Elles passent par un alias de build résolu par `next.config.ts`, toujours posé, que la publication redirige vers le fichier validé déposé dans `.backoffice-content/` — ignoré par Git et effacé en fin de commande. Les deux bundlers ont été vérifiés : turbopack refuse un chemin absolu hors projet, webpack laisse `tsconfig.paths` gagner sur un alias ; la solution retenue satisfait les deux.
+- **Nomenclature contre contenu.** Les intitulés des lignes (« WhatsApp PDG »…) restent dans `src/data/site.ts` : ce sont des choix de libellé, pas des coordonnées. Le fichier `content/coordonnees.json` ne porte que ce que le client modifie.
+- **Table `settings`.** Une table clé/valeur versionnée accueille ce premier réglage ; les modifications concurrentes sont refusées. Tant que rien n'est modifié, les coordonnées du site servent de valeurs de départ.
+
+Vérifications : 89 contrôles PHP (dont 16 nouveaux), recette HTTP/MySQL portée à 15 parcours dont un parcours coordonnées (droits, refus d'un numéro sans indicatif, d'un e-mail invalide, d'un lien hors Facebook, ligne vidée, conflit, export, réinstallation), 9 cas d'import/export, 21 cas du site, lint, TypeScript, build turbopack et webpack, build avec préfixe. Chaîne complète rejouée sur un export réel avec coordonnées modifiées : numéro, e-mail, adresse, horaires et carte repris dans `out/`, puis retour aux valeurs du dépôt au build suivant et `.backoffice-content/` effacé. Les 31 pages construites ont été comparées à celles d'avant le lot : seule la réponse FAQ sur les horaires diffère. Non vérifié : rendu visuel de l'écran Coordonnées, parcours sur mobile.
+
 ## Boutique de la marque — 12 septembre 2026
 
 **Travail local, sans déploiement.** Objectif de ce lot : rendre la collection de la marque Baruck modifiable par le client, sans lui faire saisir ni adresse, ni chemin d’image, ni prix.

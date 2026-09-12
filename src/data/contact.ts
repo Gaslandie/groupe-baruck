@@ -1,4 +1,7 @@
+import { facebookPages, hqHours, hqMap } from "./coordonnees";
 import { contacts, hqAddress, whatsappRequests } from "./site";
+
+export { facebookPages, hqHours, hqMap };
 
 export const contactSubjects = [
   "Studio photo",
@@ -44,23 +47,6 @@ export const contactNeeds = [
   },
 ] as const;
 
-export const hqHours = [
-  { days: "Lundi – Samedi", hours: "8h – 17h" },
-  { days: "Dimanche", hours: "Fermé" },
-] as const;
-
-export const facebookPages = [
-  { country: "Guinée", href: "https://www.facebook.com/profile.php?id=61583266386159" },
-  { country: "Sénégal", href: "https://www.facebook.com/Baruckcommunicationsenegal" },
-  { country: "Côte d’Ivoire", href: "https://www.facebook.com/BaruckCommunication" },
-] as const;
-
-export const hqMap = {
-  query: "Kobayah, Conakry, Guinée",
-  embedUrl: "https://www.google.com/maps?q=Kobayah%2C+Conakry%2C+Guin%C3%A9e&z=15&output=embed",
-  directionsUrl: "https://www.google.com/maps/search/?api=1&query=Kobayah%2C+Conakry%2C+Guin%C3%A9e",
-} as const;
-
 type ContactFaqItem = {
   question: string;
   answer: string;
@@ -74,8 +60,10 @@ export const contactFaq: ContactFaqItem[] = [
   },
   {
     question: "Quels sont les horaires du siège en Guinée ?",
-    // Reprend hqHours (Lundi – Samedi 8h – 17h, Dimanche fermé) : le siège seulement, pas le studio.
-    answer: "Le siège est ouvert du lundi au samedi de 8h à 17h et fermé le dimanche.",
+    // Suit hqHours : une modification des horaires ne doit pas laisser une réponse fausse.
+    answer: `Horaires du siège en Guinée : ${hqHours
+      .map(({ days, hours }) => `${days} : ${hours}`)
+      .join(" ; ")}. Ces horaires concernent le siège, pas le studio.`,
   },
   {
     question: "Comment réserver le studio photo ou les hôtesses ?",
