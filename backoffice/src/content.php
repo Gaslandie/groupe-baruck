@@ -10,9 +10,8 @@ function imagePath(string $value): string
     }
     if (str_starts_with($value, '/images/actualites/uploads/')) {
         if (!query('SELECT id FROM media WHERE filename = ?', [basename($value)])->fetch()) throw new ValidationError('Cette image n’existe plus dans la médiathèque.');
-    } else {
-        $manifest = json_decode(file_get_contents(dirname(__DIR__) . '/seed.json'), true, 512, JSON_THROW_ON_ERROR);
-        if (!in_array($value, $manifest['existingImages'], true)) throw new ValidationError('Choisissez une image du site ou de la médiathèque.');
+    } elseif (!in_array($value, seed()['existingImages'], true)) {
+        throw new ValidationError('Choisissez une image du site ou de la médiathèque.');
     }
     return $value;
 }
@@ -113,7 +112,8 @@ function exportContent(array $user): array
     $articles = query('SELECT payload FROM article_publications')->fetchAll();
     $data = array_map(fn($row) => json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR), $articles);
     usort($data, fn($first, $second) => strcmp($second['date'], $first['date']) ?: strcmp($first['slug'], $second['slug']));
-    $encoded = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    $products = publishedProducts();
+    $encoded = json_encode([$data, $products], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     $media = [];
     $total = 0;
     foreach (query('SELECT * FROM media')->fetchAll() as $row) {
@@ -124,6 +124,6 @@ function exportContent(array $user): array
         if ($total > 32 * 1024 * 1024) throw new ValidationError('Les images à exporter dépassent 32 Mo. Réduisez leur taille avant de préparer la publication.');
         $media[] = ['path' => $path, 'sha256' => hash_file('sha256', $file), 'data' => base64_encode(file_get_contents($file))];
     }
-    audit('Publication préparée', count($data) . ' article(s) validé(s)', $user['id']);
-    return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'media' => $media];
+    audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
+    return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'media' => $media];
 }

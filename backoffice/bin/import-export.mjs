@@ -9,7 +9,8 @@ export async function importExport(file, destination) {
   const info = await fs.stat(file);
   if (info.size > 48 * 1024 * 1024) throw new Error('Export trop volumineux (48 Mo maximum).');
   const source = JSON.parse(await fs.readFile(file, 'utf8'));
-  if (source.format !== 'baruck-editorial-v1' || !Array.isArray(source.articles) || !Array.isArray(source.media) || source.articles.length > 2000 || source.media.length > 2000) throw new Error('Format d’export invalide.');
+  const catalogue = source.products ?? [];
+  if (source.format !== 'baruck-editorial-v1' || !Array.isArray(source.articles) || !Array.isArray(source.media) || !Array.isArray(catalogue) || source.articles.length > 2000 || source.media.length > 2000 || catalogue.length > 2000) throw new Error('Format d’export invalide.');
   // Ne jamais fusionner une publication avec la précédente : les retraits
   // d’articles doivent être effectifs. Ne jamais effacer un dossier existant.
   await fs.mkdir(destination);
@@ -53,7 +54,21 @@ export async function importExport(file, destination) {
       const yaml = Object.entries(clean).map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join('\n');
       await fs.writeFile(path.join(destination, 'content/actualites', article.slug + '.md'), `---\n${yaml}\n---\n\n${string(article.body, 'body', 200000)}\n`);
     }
-    return { articles: slugs.size, images: images.size };
+    // Une publication sans catalogue laisse la boutique du dépôt en place.
+    const identifiers = new Set();
+    const products = catalogue.map((product) => {
+      if (!product || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.id) || product.id.length > 120 || identifiers.has(product.id)) throw new Error('Identifiant d’article de boutique invalide ou dupliqué.');
+      identifiers.add(product.id);
+      if (!Array.isArray(product.images) || product.images.length === 0 || product.images.length > 6) throw new Error(`L’article de boutique « ${product.id} » doit porter de 1 à 6 photos.`);
+      return {
+        id: product.id,
+        name: string(product.name, 'name', 160),
+        category: string(product.category, 'category', 32),
+        images: product.images.map((image) => ({ src: string(image?.src, 'src', 255), alt: string(image?.alt, 'alt', 500) })),
+      };
+    });
+    if (products.length) await fs.writeFile(path.join(destination, 'content/boutique.json'), JSON.stringify({ products }, null, 2) + '\n');
+    return { articles: slugs.size, images: images.size, products: products.length };
   } catch (error) {
     await fs.rm(destination, { recursive: true, force: true });
     throw error;

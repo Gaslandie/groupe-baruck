@@ -9,7 +9,7 @@ if (!process.argv[2]) throw new Error('Utilisation : npm run backoffice:publish-
 const destination = path.join(os.tmpdir(), 'baruck-publication-' + crypto.randomBytes(8).toString('hex'));
 try {
   const result = await importExport(path.resolve(process.argv[2]), destination);
-  console.log(`Construction de ${result.articles} actualités validées…`);
+  console.log(`Construction de ${result.articles} actualités validées et ${result.products} articles de boutique…`);
   // Le chargeur habituel valide aussi les liens, dates, catégories, images et
   // le rendu Markdown. Un export invalide fait échouer le build.
   const child = spawn('npm', ['run', 'build', '--', ...process.argv.slice(3)], { stdio: 'inherit', env: { ...process.env, BARUCK_EDITORIAL_ROOT: destination } });

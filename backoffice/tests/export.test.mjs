@@ -7,10 +7,11 @@ import crypto from 'node:crypto';
 import { importExport } from '../bin/import-export.mjs';
 
 const article = { slug: 'actualite-test', title: 'Titre : "test"', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Contenu de recette.', gallery: [] };
+const product = { id: 'article-test', name: 'Article de recette', category: 'sacs', images: [{ src: '/images/marque-baruck/sac-main-noir.jpg', alt: 'Sac de recette' }] };
 async function fixture(t, change) {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'baruck-export-test-'));
   t.after(() => fs.rm(dir, { recursive: true, force: true }));
-  const input = { format: 'baruck-editorial-v1', articles: [structuredClone(article)], media: [] };
+  const input = { format: 'baruck-editorial-v1', articles: [structuredClone(article)], products: [structuredClone(product)], media: [] };
   change?.(input);
   const file = path.join(dir, 'export.json');
   await fs.writeFile(file, JSON.stringify(input));
@@ -18,10 +19,31 @@ async function fixture(t, change) {
 }
 test('convertit les contenus validés sans interpolation du frontmatter', async (t) => {
   const { file, out } = await fixture(t);
-  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0 });
+  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 1 });
   const content = await fs.readFile(path.join(out, 'content/actualites/actualite-test.md'), 'utf8');
   assert.match(content, /draft: false/);
   assert.match(content, /title: "Titre : \\"test\\""/);
+  const catalogue = JSON.parse(await fs.readFile(path.join(out, 'content/boutique.json'), 'utf8'));
+  assert.deepEqual(catalogue, { products: [product] });
+});
+test('laisse la boutique du dépôt quand la publication n’en porte aucune', async (t) => {
+  const { file, out } = await fixture(t, (input) => { delete input.products; });
+  assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 0 });
+  await assert.rejects(fs.stat(path.join(out, 'content/boutique.json')), { code: 'ENOENT' });
+});
+test('refuse un catalogue dupliqué, sans photo ou mal identifié', async (t) => {
+  const changes = [
+    (input) => input.products.push(structuredClone(product)),
+    (input) => { input.products[0].images = []; },
+    (input) => { input.products[0].id = '../secret'; },
+    (input) => { input.products[0].images = Array.from({ length: 7 }, () => structuredClone(product.images[0])); },
+    (input) => { input.products[0].name = ''; },
+  ];
+  for (const change of changes) {
+    const { file, out } = await fixture(t, change);
+    await assert.rejects(importExport(file, out));
+    await assert.rejects(fs.stat(out), { code: 'ENOENT' });
+  }
 });
 test('refuse les chemins sortants et supprime seulement son export incomplet', async (t) => {
   const { file, out } = await fixture(t, (input) => { input.articles[0].slug = '../../secret'; });

@@ -58,6 +58,8 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   let articleId;
   let imageId;
   let unusedImageId;
+  let uploadedPath;
+  let productId;
   const fields = { action: 'save_article', id: '', version: '0', slug: 'recette-mysql', title: 'Recette MySQL', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Texte de recette.', cover: '', cover_alt: '', status: 'draft' };
   await t.test('migration additive et réinstallation conservent les versions initiales', () => {
     const counts = () => sql(`SELECT (SELECT COUNT(*) FROM ${database}.articles),(SELECT COUNT(*) FROM ${database}.article_revisions),(SELECT COUNT(*) FROM ${database}.article_publications);`);
@@ -136,6 +138,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const catalog = JSON.parse((await admin.request('/?page=media_api')).html).items;
     const imagePath = catalog.find(item => item.id === imageId)?.path;
     assert.ok(imagePath);
+    uploadedPath = imagePath;
     const seed = catalog.find(item => item.id.startsWith('seed-'));
     assert.ok(seed);
     assert.equal((await admin.request(seed.preview)).status, 200);
@@ -156,6 +159,49 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       const browser = spawnSync(process.execPath, [path.join(directory, 'tests/browser-form.mjs'), origin, 'media'], { input: JSON.stringify({ cookie: editor.cookie, articleId }), encoding: 'utf8', timeout: 30000 });
       assert.equal(browser.status, 0, browser.stderr || browser.stdout);
     }
+  });
+  await t.test('boutique : catalogue initial, fiche, ordre, retrait et suppression', async () => {
+    const seedPhoto = '/images/marque-baruck/sac-main-noir.jpg';
+    assert.equal((await editor.request('/?page=boutique')).status, 403);
+    const catalogue = await admin.request('/?page=boutique');
+    assert.match(catalogue.html, /39 article\(s\) · 39 en boutique/);
+    assert.match(catalogue.html, /Sac à main noir/);
+    const draft = { action: 'save_product', id: '', version: '0', name: 'Ceinture de recette', category: 'sacs', status: 'draft', 'images[0][src]': seedPhoto, 'images[0][alt]': 'Ceinture de recette Baruck' };
+    assert.equal((await editor.request('/?page=product', { ...draft, csrf: (await editor.request('/?page=edit')).csrf })).status, 403);
+    assert.equal((await admin.post('/?page=product', { ...draft, 'images[0][src]': '' })).status, 422, 'un article sans photo est refusé');
+    assert.equal((await admin.post('/?page=product', { ...draft, category: 'groupe' })).status, 422, 'une catégorie d’actualité n’est pas un rayon');
+    assert.equal((await admin.post('/?page=product', { ...draft, 'images[0][src]': '/images/../config.php' })).status, 422);
+    const created = await admin.post('/?page=product', draft);
+    assert.equal(created.status, 303, created.html);
+    productId = new URL(created.headers.get('location'), origin).searchParams.get('id');
+    assert.equal(sql(`SELECT slug FROM ${database}.products WHERE id='${productId}';`).split('\n')[1], 'ceinture-de-recette', 'identifiant déduit du nom');
+    assert.match((await admin.request('/?page=boutique')).html, /40 article\(s\) · 39 en boutique/);
+    if (process.env.BARUCK_TEST_CHROME) {
+      const browser = spawnSync(process.execPath, [path.join(directory, 'tests/browser-form.mjs'), origin, 'product'], { input: JSON.stringify({ cookie: admin.cookie, productId }), encoding: 'utf8', timeout: 30000 });
+      assert.equal(browser.status, 0, browser.stderr || browser.stdout);
+    }
+    assert.equal((await admin.post('/?page=boutique', { action: 'move_product', id: productId, direction: 'up' })).status, 422, 'le premier article ne monte pas');
+    assert.equal((await admin.post('/?page=boutique', { action: 'move_product', id: productId, direction: 'down' })).status, 303);
+    assert.deepEqual(sql(`SELECT slug FROM ${database}.products ORDER BY position,id LIMIT 2;`).split('\n').slice(1), ['sac-main-noir', 'ceinture-de-recette']);
+    assert.equal((await admin.post('/?page=product&id=' + productId, { action: 'switch_product', id: productId, status: 'ready' })).status, 303);
+    const page = await admin.request('/?page=product&id=' + productId);
+    assert.match(page.html, /Retirer de la boutique/);
+    const version = page.html.match(/name="version" value="(\d+)"/)[1];
+    assert.equal((await admin.post('/?page=product&id=' + productId, { ...draft, id: productId, version: '0', status: 'ready' })).status, 409);
+    assert.equal((await admin.post('/?page=product&id=' + productId, { ...draft, id: productId, version, status: 'ready', 'images[1][src]': uploadedPath, 'images[1][alt]': 'Photo importée' })).status, 303);
+    assert.match((await admin.request('/?page=media')).html, /utilisée dans 2 contenus</, 'les photos de la boutique protègent aussi une image');
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: imageId })).status, 422);
+    const exported = JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
+    assert.equal(exported.products.length, 40);
+    assert.equal(exported.products[1].id, 'ceinture-de-recette', 'ordre de la boutique conservé dans la publication');
+    assert.deepEqual(exported.products[1].images.map((image) => image.src), [seedPhoto, uploadedPath]);
+    assert.equal((await admin.post('/?page=product&id=' + productId, { action: 'delete_product', id: productId })).status, 422, 'un article en boutique ne se supprime pas');
+    assert.equal((await admin.post('/?page=product&id=' + productId, { action: 'switch_product', id: productId, status: 'draft' })).status, 303);
+    assert.ok(!JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).products.some((item) => item.id === 'ceinture-de-recette'));
+    assert.equal((await admin.post('/?page=product&id=' + productId, { action: 'delete_product', id: productId })).status, 303);
+    assert.equal((await admin.request('/?page=product&id=' + productId)).status, 404);
+    docker(['exec', container, 'php', 'bin/install.php', 'init']);
+    assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.products;`).split('\n')[1], '39', 'une réinstallation ne recrée pas un article supprimé');
   });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);
@@ -250,13 +296,14 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.article_revisions WHERE article_id='${draftId}';`).split('\n')[1], '0');
     const media = await admin.request('/?page=media');
     assert.match(media.html, /id="upload-dialog"/);
-    assert.match(media.html, /utilisée dans 1 actualité</);
+    assert.match(media.html, /utilisée dans 1 contenu</);
     assert.match(media.html, /non utilisée/);
     assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: imageId })).status, 422, 'une image utilisée reste en place');
     assert.equal((await editor.post('/?page=media', { action: 'delete_media', id: unusedImageId })).status, 403);
     assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: unusedImageId })).status, 303);
     assert.equal((await admin.request('/?page=image&id=' + unusedImageId)).status, 404);
-    assert.equal(docker(['exec', container, 'sh', '-c', 'ls /tmp/baruck-data/media | wc -l']), '1');
+    // Invariant : autant de fichiers que d’images enregistrées, quel que soit le nombre d’imports de la recette.
+    assert.equal(docker(['exec', container, 'sh', '-c', 'ls /tmp/baruck-data/media | wc -l']), sql(`SELECT COUNT(*) AS n FROM ${database}.media;`).split('\n')[1]);
     const users = await admin.request('/?page=users');
     assert.match(users.html, /id="user-dialog"/);
     assert.match(users.html, /data-confirm="/);

@@ -80,3 +80,17 @@ CREATE TABLE IF NOT EXISTS page_views (
     KEY day_path (day, path),
     KEY day_visitor (day, visitor)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS products (
+    id CHAR(32) PRIMARY KEY,
+    slug VARCHAR(120) NOT NULL UNIQUE,
+    name VARCHAR(160) NOT NULL,
+    category VARCHAR(32) NOT NULL,
+    images MEDIUMTEXT NOT NULL,
+    position INT NOT NULL DEFAULT 0,
+    status VARCHAR(16) NOT NULL DEFAULT 'draft',
+    version INT NOT NULL DEFAULT 1,
+    updated_at VARCHAR(25) NOT NULL,
+    updated_by CHAR(32) NULL,
+    KEY boutique_order (status, position)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { brandCategories, brandProducts, type BrandCategory, type BrandProduct } from "@/data/marque-baruck";
+import { brandCategories, type BrandCategory, type BrandProduct } from "@/data/marque-baruck";
 import { asset } from "@/lib/asset";
 import { brandOrderHref } from "@/lib/brand-order";
 
@@ -43,7 +43,7 @@ function ProductCard({ product }: { product: BrandProduct }) {
   );
 }
 
-export function BrandCatalogue() {
+export function BrandCatalogue({ products }: { products: BrandProduct[] }) {
   const [filter, setFilter] = useState<BrandCategory | "all">("all");
 
   // Un lien d’article reçu par WhatsApp doit rester accessible après un filtrage.
@@ -70,7 +70,8 @@ export function BrandCatalogue() {
     }
   }, [filter]);
 
-  const visibleCount = brandProducts.filter((product) => filter === "all" || product.category === filter).length;
+  // Un filtre vidé par une mise à jour du catalogue ne doit pas masquer la collection.
+  const visibleCount = products.filter((product) => filter === "all" || product.category === filter).length;
 
   return (
     <section id="collection" aria-labelledby="collection-title" className="scroll-mt-[92px] bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,8vw,8rem)]">
@@ -82,13 +83,13 @@ export function BrandCatalogue() {
         <p className="max-w-[440px] text-body leading-[1.75] text-[#64645f]">Choisissez un article et préparez votre demande. L’équipe vous renseigne sur les prix, les tailles et les disponibilités par WhatsApp.</p>
       </div>
       <div role="group" aria-label="Filtrer la collection" className="mb-6 flex flex-wrap gap-2">
-        {([ ["all", "Tout voir"], ...Object.entries(brandCategories)] as [BrandCategory | "all", string][]).map(([value, label]) => (
+        {([ ["all", "Tout voir"], ...Object.entries(brandCategories).filter(([key]) => products.some((product) => product.category === key))] as [BrandCategory | "all", string][]).map(([value, label]) => (
           <button key={value} type="button" aria-pressed={filter === value} aria-controls="catalogue-articles" onClick={() => setFilter(value)} className={`min-h-11 cursor-pointer border px-4 py-3 text-label tracking-[.04em] transition-colors duration-[220ms] ${filter === value ? "border-ink bg-ink text-ivory" : "border-line bg-ivory text-ink hover:border-ink"}`}>{label}</button>
         ))}
       </div>
       <p role="status" aria-live="polite" className="mb-6 text-small text-[#64645f]">{visibleCount} {visibleCount > 1 ? "articles et sélections" : "article"}</p>
       <div id="catalogue-articles" className="grid grid-cols-3 items-stretch gap-6 max-desktop:grid-cols-2 max-[580px]:grid-cols-1">
-        {brandProducts.map((product) => (
+        {products.map((product) => (
           <div key={product.id} hidden={filter !== "all" && product.category !== filter} className="h-full [&>article]:h-full">
             <ProductCard product={product} />
           </div>

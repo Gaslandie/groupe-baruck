@@ -3,7 +3,7 @@ $gallery = is_array($article['gallery'] ?? null) ? $article['gallery'] : [];
 ?>
 <a href="<?= e(url('articles')) ?>" class="mb-6 inline-block text-sm underline underline-offset-4">← Toutes les actualités</a>
 <?php if ($publication): ?><p class="mb-6 rounded-lg bg-paper-deep p-4 text-sm">La version <?= (int) $publication['version'] ?> reste retenue pour la prochaine publication. Vous pouvez préparer un brouillon sans la remplacer.</p><?php endif; ?>
-<form method="post" id="article-form">
+<form method="post" id="article-form" data-media-form>
     <?= csrfField() ?><input type="hidden" name="action" value="save_article"><input type="hidden" name="id" value="<?= e($article['id'] ?? '') ?>"><input type="hidden" name="version" value="<?= e($article['version'] ?? 0) ?>">
     <fieldset class="grid min-w-0 gap-6 wide:grid-cols-[minmax(0,1fr)_300px]">
     <div class="min-w-0 space-y-6">

@@ -1,8 +1,12 @@
 (() => {
-  const form = document.querySelector('#article-form');
+  const form = document.querySelector('[data-media-form]');
   const dialog = document.querySelector('#media-dialog');
   if (!form || !dialog) return;
   const gallery = form.querySelector('[data-gallery]');
+  // Actualités et boutique partagent ce sélecteur : le groupe de champs et sa
+  // limite sont portés par le formulaire, jamais écrits en dur ici.
+  const field = gallery.dataset.field;
+  const max = Number(gallery.dataset.max);
   const add = form.querySelector('[data-gallery-add]');
   const status = dialog.querySelector('#media-picker-status');
   const grid = dialog.querySelector('#media-picker-grid');
@@ -20,15 +24,16 @@
       row.querySelector('legend').textContent = `Image ${index + 1}`;
       for (const [selector, key] of [['[data-image-path]', 'src'], ['[data-image-alt]', 'alt'], ['[data-image-caption]', 'caption']]) {
         const input = row.querySelector(selector);
-        input.name = `gallery[${index}][${key}]`;
-        input.id = `gallery-${index}-${key}`;
+        if (!input) continue;
+        input.name = `${field}[${index}][${key}]`;
+        input.id = `${field}-${index}-${key}`;
         row.querySelector(`[data-${key}-label]`)?.setAttribute('for', input.id);
       }
       row.querySelector('[data-media-up]').disabled = index === 0;
       row.querySelector('[data-media-down]').disabled = index === rows.length - 1;
     });
-    add.disabled = rows.length >= 30;
-    form.querySelector('[data-gallery-status]').textContent = `${rows.length} image(s) sur 30.`;
+    add.disabled = rows.length >= max;
+    form.querySelector('[data-gallery-status]').textContent = `${rows.length} image(s) sur ${max}.`;
   }
   function applyImage(row, item) {
     row.querySelector('[data-image-path]').value = item?.path || '';
@@ -48,7 +53,7 @@
   function choose(item) {
     let row = target;
     if (!row) {
-      if (gallery.children.length >= 30) { status.textContent = 'La galerie contient déjà 30 images.'; return; }
+      if (gallery.children.length >= max) { status.textContent = `Cette sélection contient déjà ${max} images.`; return; }
       row = document.querySelector('#gallery-item-template').content.firstElementChild.cloneNode(true);
       gallery.append(row);
     }

@@ -118,7 +118,7 @@ function deleteMedia(array $input, array $user): void
         $row = query('SELECT * FROM media WHERE id=? FOR UPDATE', [$id])->fetch();
         if (!$row) throw new ValidationError('Image introuvable.');
         $used = mediaUsage()[$id] ?? 0;
-        if ($used > 0) throw new ValidationError('Cette image est utilisée par ' . $used . ' actualité' . ($used > 1 ? 's' : '') . '. Retirez-la des actualités avant de la supprimer.');
+        if ($used > 0) throw new ValidationError('Cette image est utilisée par ' . $used . ' contenu' . ($used > 1 ? 's' : '') . '. Retirez-la des actualités ou de la boutique avant de la supprimer.');
         query('DELETE FROM media WHERE id=?', [$id]);
         audit('Image supprimée', $row['alt'], $user['id']);
         return config()['storage'] . '/media/' . $row['filename'];

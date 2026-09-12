@@ -24,8 +24,17 @@ try {
                 }
             }
         });
+        transaction(function () use ($seed) {
+            $rank = 0;
+            foreach ($seed['products'] as $product) {
+                $rank++;
+                // Ne jamais écraser un article modifié lors d’une réinstallation.
+                if (query('SELECT id FROM products WHERE slug=?', [$product['id']])->fetch()) continue;
+                query('INSERT INTO products (id,slug,name,category,images,position,status,updated_at) VALUES (?,?,?,?,?,?,?,?)', [id(), $product['id'], $product['name'], $product['category'], json($product['images']), $rank, 'ready', now()]);
+            }
+        });
         migrateEditorial();
-        echo "Tables initialisées ; articles existants préservés.\n";
+        echo "Tables initialisées ; actualités et boutique existantes préservées.\n";
     } elseif ($command === 'user' || $command === 'reset-password') {
         // Entrée JSON sur stdin : aucun mot de passe dans l’historique de commande.
         $input = json_decode(stream_get_contents(STDIN), true, 32, JSON_THROW_ON_ERROR);

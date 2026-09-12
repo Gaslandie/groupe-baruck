@@ -2,10 +2,11 @@ import type { Metadata, Viewport } from "next";
 
 import { PageShell } from "@/components/layout/PageShell";
 import { BrandCatalogue } from "@/components/marque-baruck/BrandCatalogue";
-import { brandHero, brandProducts, brandStory } from "@/data/marque-baruck";
+import { brandHero, brandStory } from "@/data/marque-baruck";
 import { contacts, hqAddress, routes, site } from "@/data/site";
 import { asset } from "@/lib/asset";
 import { brandOrderHref } from "@/lib/brand-order";
+import { loadProducts } from "@/lib/boutique";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
@@ -17,9 +18,10 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#0b0c0e" };
 
-const perfume = brandProducts.find((product) => product.id === "eau-toilette-flacon-rond")!.images[0];
-
 export default function BrandPage() {
+  const products = loadProducts();
+  // Le parfum mis en avant suit le catalogue : la section suit son retrait.
+  const perfume = products.find((product) => product.category === "parfums");
   return (
     <PageShell variant="service" current="brand" footer="service">
       <section className="grid min-h-[90svh] grid-cols-2 bg-ink pb-0 pt-[110px] text-ivory max-tablet:grid-cols-1">
@@ -48,19 +50,21 @@ export default function BrandPage() {
         </div>
       </section>
 
-      <BrandCatalogue />
+      <BrandCatalogue products={products} />
 
-      <section className="grid grid-cols-2 bg-ink text-ivory max-tablet:grid-cols-1">
-        <figure className="m-0 bg-[#f1ece6]">
-          <img src={asset(perfume.src)} alt={perfume.alt} width={perfume.width} height={perfume.height} loading="lazy" className="aspect-square h-full w-full object-contain" />
-        </figure>
-        <div className="reveal flex flex-col justify-center px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,7vw,7rem)]">
-          <p className="eyebrow light">Parfums Baruck</p>
-          <h2 className="font-display text-display-lg font-normal leading-[1.05] tracking-[-.04em]">Une empreinte<br /><em className="font-normal text-gold">inoubliable.</em></h2>
-          <p className="mb-8 mt-6 max-w-[520px] text-lead leading-[1.8] text-[rgba(255,255,255,.72)]">{brandStory.perfume}</p>
-          <a href="#produit-eau-toilette-flacon-rond" className="text-link w-fit">Découvrir le parfum <span aria-hidden="true">↑</span></a>
-        </div>
-      </section>
+      {perfume && (
+        <section className="grid grid-cols-2 bg-ink text-ivory max-tablet:grid-cols-1">
+          <figure className="m-0 bg-[#f1ece6]">
+            <img src={asset(perfume.images[0].src)} alt={perfume.images[0].alt} width={perfume.images[0].width} height={perfume.images[0].height} loading="lazy" className="aspect-square h-full w-full object-contain" />
+          </figure>
+          <div className="reveal flex flex-col justify-center px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,7vw,7rem)]">
+            <p className="eyebrow light">Parfums Baruck</p>
+            <h2 className="font-display text-display-lg font-normal leading-[1.05] tracking-[-.04em]">Une empreinte<br /><em className="font-normal text-gold">inoubliable.</em></h2>
+            <p className="mb-8 mt-6 max-w-[520px] text-lead leading-[1.8] text-[rgba(255,255,255,.72)]">{brandStory.perfume}</p>
+            <a href={`#produit-${perfume.id}`} className="text-link w-fit">Découvrir le parfum <span aria-hidden="true">↑</span></a>
+          </div>
+        </section>
+      )}
 
       <section id="commander" className="scroll-mt-[100px] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,8vw,8rem)]">
         <p className="eyebrow">Votre commande</p>

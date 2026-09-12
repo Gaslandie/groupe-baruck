@@ -70,4 +70,23 @@ check(count($inactive) === 1 && str_contains($inactive[0]['text'], 'pas encore a
 $chart = Baruck\barChart([['label' => '1 sept.', 'visitors' => 0], ['label' => '2 sept.', 'visitors' => 7], ['label' => '3 sept.', 'visitors' => 14]], 'visitors', 'visiteurs');
 check(substr_count($chart, '<rect') === 3 && str_contains($chart, 'height="100"') && str_contains($chart, 'height="50"') && str_contains($chart, 'Maximum : 14 visiteurs') && !str_contains($chart, 'style='), 'graphique SVG proportionnel sans style en ligne');
 check(str_contains(Baruck\shareBar(1, 4), 'width="25"'), 'barre de part proportionnelle');
+// Boutique : identifiants déduits du nom, rayons et photos.
+check(Baruck\slugify('Sac à main noir') === 'sac-a-main-noir', 'accents et espaces transformés en identifiant');
+check(Baruck\slugify('Chemise  —  «  Été 2026  »') === 'chemise-ete-2026', 'ponctuation et espaces multiples réduits');
+check(Baruck\slugify('Œuf & Æther') === 'oeuf-aether', 'ligatures françaises transcrites');
+check(Baruck\slugify('   ') === 'article' && Baruck\slugify('日本') === 'article', 'nom sans lettre latine reste enregistrable');
+check(strlen(Baruck\slugify(str_repeat('mot ', 60))) <= 100 && !str_ends_with(Baruck\slugify(str_repeat('mot ', 60)), '-'), 'identifiant tronqué proprement');
+
+$photo = ['src' => '/images/marque-baruck/sac-main-noir.jpg', 'alt' => 'Sac à main noir Baruck'];
+$product = ['name' => 'Sac à main noir', 'category' => 'sacs', 'images' => [$photo]];
+check(accepts(fn() => Baruck\validateProduct($product)), 'article de boutique complet accepté');
+check(!accepts(fn() => Baruck\validateProduct([...$product, 'images' => []])), 'article sans photo refusé');
+check(!accepts(fn() => Baruck\validateProduct([...$product, 'images' => array_fill(0, 7, $photo)])), 'plus de six photos refusées');
+check(!accepts(fn() => Baruck\validateProduct([...$product, 'category' => 'groupe'])), 'catégorie d’actualité refusée comme rayon');
+check(!accepts(fn() => Baruck\validateProduct([...$product, 'images' => [['src' => '/images/../config.php', 'alt' => 'Fuite']]])), 'chemin sortant refusé');
+check(!accepts(fn() => Baruck\validateProduct([...$product, 'images' => [['src' => $photo['src'], 'alt' => '']]])), 'photo sans description refusée');
+check(!accepts(fn() => Baruck\validateProduct([...$product, 'name' => ''])), 'article sans nom refusé');
+check(Baruck\validateProduct([...$product, 'images' => [['src' => '', 'alt' => ''], $photo]])['images'] === [$photo], 'ligne de photo vide ignorée');
+check(array_keys(Baruck\brandCategories()) === ['homme', 'femme', 'enfant', 'vetements', 'sacs', 'chaussures', 'parfums', 'accessoires'], 'rayons repris du site');
+
 echo $count . " contrôles de validation réussis.\n";

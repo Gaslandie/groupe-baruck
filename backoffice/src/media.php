@@ -8,11 +8,14 @@ function mediaCatalog(): array
     foreach (query('SELECT id,filename,alt,width,height FROM media ORDER BY created_at DESC,id')->fetchAll() as $row) {
         $items[] = ['id' => $row['id'], 'path' => '/images/actualites/uploads/' . $row['filename'], 'alt' => $row['alt'], 'label' => $row['alt'], 'width' => (int) $row['width'], 'height' => (int) $row['height'], 'preview' => url('image', ['id' => $row['id']])];
     }
-    $seed = json_decode(file_get_contents(dirname(__DIR__) . '/seed.json'), true, 512, JSON_THROW_ON_ERROR);
+    $seed = seed();
     $descriptions = [];
     foreach ($seed['articles'] as $article) {
         if (!empty($article['cover'])) $descriptions[$article['cover']] = $article['coverAlt'] ?? '';
         foreach ($article['gallery'] ?? [] as $image) $descriptions[$image['src']] = $image['alt'];
+    }
+    foreach ($seed['products'] as $product) {
+        foreach ($product['images'] as $image) $descriptions[$image['src']] = $image['alt'];
     }
     foreach ($seed['existingImages'] as $path) {
         $file = dirname(__DIR__) . '/seed-media/' . substr($path, strlen('/images/'));

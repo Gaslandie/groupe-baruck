@@ -83,9 +83,23 @@ function categories(): array
     return ['groupe' => 'Groupe Baruck', 'jeca' => 'JECA', 'espoir-de-vie' => 'Espoir de Vie', 'studio-photo' => 'Studio photo', 'hotesses' => 'Hôtesses événementielles'];
 }
 
+/** Contenus du site préparés par « npm run backoffice:prepare » : articles, images et catalogue. */
+function seed(): array
+{
+    static $seed;
+    return $seed ??= json_decode(file_get_contents(dirname(__DIR__) . '/seed.json'), true, 512, JSON_THROW_ON_ERROR);
+}
+
+/** Rayons de la boutique : nomenclature du site, non modifiable depuis l’administration. */
+function brandCategories(): array
+{
+    return seed()['brandCategories'];
+}
+
 require __DIR__ . '/auth.php';
 require __DIR__ . '/markdown.php';
 require __DIR__ . '/content.php';
 require __DIR__ . '/media.php';
 require __DIR__ . '/editorial.php';
+require __DIR__ . '/boutique.php';
 require __DIR__ . '/stats.php';

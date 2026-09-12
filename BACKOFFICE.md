@@ -1,5 +1,20 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Boutique de la marque — 12 septembre 2026
+
+**Travail local, sans déploiement.** Objectif de ce lot : rendre la collection de la marque Baruck modifiable par le client, sans lui faire saisir ni adresse, ni chemin d’image, ni prix.
+
+- **Boutique**, nouvelle entrée du menu à gauche, réservée à l’administrateur. Les 39 articles du site sont importés à l’initialisation et restent modifiables. Une fiche demande un nom, un rayon et de une à six photos choisies dans la médiathèque ; l’identifiant public — l’ancre reprise dans le message WhatsApp du client — est déduit du nom, jamais saisi, et reste fixe. Aucun prix n’est saisi : la commande reste un échange WhatsApp.
+- **Cycle simple.** Un article est enregistré masqué, puis mis en boutique ; le retirer l’exclut du prochain site construit en conservant sa fiche et ses photos ; seul un article retiré peut être supprimé. Pas de révisions ni de double version pour la boutique : une fiche produit n’est pas un texte éditorial.
+- **Ordre.** Les nouveautés ouvrent la collection ; les flèches de la liste déplacent un article, sur la liste complète seulement — un ordre modifié sous un filtre sauterait des voisins.
+- **Le catalogue devient un contenu.** `src/data/marque-baruck.ts` conserve les rayons, les textes et le visuel d’ouverture ; la liste des articles part dans `content/boutique.json`, lu au build par `src/lib/boutique.ts` comme les actualités le sont par leur chargeur. Les dimensions des images sont mesurées sur les fichiers réels, jamais recopiées. Une publication sans catalogue laisse celui du dépôt en place : la collection ne peut pas être vidée par accident.
+- **Rayons non modifiables depuis l’administration.** `backoffice:prepare` les lit dans le fichier du site et les écrit dans `seed.json` : une seule source, aucune dérive possible entre le site et l’administration. Un rayon vidé disparaît des filtres du site, et la section « Parfums Baruck » suit le premier article de son rayon.
+- **Médiathèque.** Une image utilisée par une fiche de boutique est protégée de la suppression au même titre qu’une image d’actualité ; le décompte affiché parle désormais de « contenus ».
+
+Vérifications : 73 contrôles PHP (dont 14 nouveaux : identifiants déduits des noms, rayons, photos, chemins sortants), recette HTTP/MySQL portée à 14 parcours dont un parcours boutique complet (droits, refus, ordre, conflit, export, retrait, suppression, réinstallation), 7 cas d’import/export dont le catalogue converti et le refus des doublons, 21 cas du site, lint et TypeScript. La chaîne complète a été rejouée sur un export réel de la base de recette : 39 articles de boutique et leurs 42 images construits dans `out/`. La page publique rend un HTML identique à celui d’avant ce lot, hors identifiants de chunks. Recette Chrome ajoutée sur la fiche produit (photos ordonnées, sans légende ni couverture). Non vérifié : rendu visuel des écrans de boutique, parcours sur mobile.
+
+Une assertion de la recette comptait les fichiers de la médiathèque en dur, ce qui échouait dès que la recette Chrome importait une image ; elle compare désormais les fichiers aux images enregistrées.
+
 ## Tableau de bord, statistiques et dialogues — 10 septembre 2026
 
 **Travail local, sans déploiement.** Objectif de ce lot : un tableau de bord simple mais complet, où chaque chiffre conduit à une décision, et des dialogues à la place des formulaires ouverts en permanence.

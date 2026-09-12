@@ -183,7 +183,7 @@ function editorialSummary(string $today): array
     ];
 }
 
-/** Nombre d’actualités (brouillons ou versions validées) qui utilisent chaque image importée. */
+/** Nombre de contenus (actualités et articles de boutique) qui utilisent chaque image importée. */
 function mediaUsage(): array
 {
     $usage = [];
@@ -191,6 +191,7 @@ function mediaUsage(): array
     $documents = [];
     foreach (query('SELECT id,cover,gallery FROM articles')->fetchAll() as $row) $documents[$row['id']] = $row['cover'] . ' ' . $row['gallery'];
     foreach (query('SELECT article_id,payload FROM article_publications')->fetchAll() as $row) $documents[$row['article_id']] = ($documents[$row['article_id']] ?? '') . ' ' . $row['payload'];
+    foreach (query('SELECT id,images FROM products')->fetchAll() as $row) $documents['produit-' . $row['id']] = $row['images'];
     foreach ($usage as $id => $item) {
         foreach ($documents as $document) if (str_contains($document, $item['path'])) $usage[$id]['count']++;
     }

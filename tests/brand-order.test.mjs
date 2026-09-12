@@ -13,8 +13,12 @@ registerHooks({
 });
 
 const { brandOrderHref } = await import("../src/lib/brand-order.ts");
-const { brandProducts, brandCategories } = await import("../src/data/marque-baruck.ts");
+const { loadProducts } = await import("../src/lib/boutique.ts");
+const { brandCategories } = await import("../src/data/marque-baruck.ts");
 const { routes, site, contacts } = await import("../src/data/site.ts");
+
+// Le catalogue du dépôt, lu par le même chargeur que le build.
+const brandProducts = loadProducts();
 
 test("chaque demande identifie l’article et son visuel, vers le WhatsApp du siège", () => {
   for (const product of brandProducts) {
@@ -32,15 +36,16 @@ test("chaque demande identifie l’article et son visuel, vers le WhatsApp du si
 });
 
 test("le catalogue a des ancres uniques, des catégories connues et des images locales exactes", () => {
+  assert.ok(brandProducts.length > 0);
   assert.equal(new Set(brandProducts.map(({ id }) => id)).size, brandProducts.length);
   for (const product of brandProducts) {
     assert.match(product.id, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     assert.ok(brandCategories[product.category]);
     assert.ok(product.images.length > 0);
     for (const photo of product.images) {
-      assert.match(photo.src, /^\/images\/marque-baruck\/[a-z0-9-]+\.jpg$/);
-      const buffer = fs.readFileSync(new URL(`../public${photo.src}`, import.meta.url));
-      const dimensions = imageSize(buffer);
+      assert.match(photo.src, /^\/images\/[a-z0-9/-]+\.(?:jpe?g|png|webp)$/);
+      // Les dimensions viennent du fichier réel : aucune valeur saisie à la main.
+      const dimensions = imageSize(fs.readFileSync(new URL(`../public${photo.src}`, import.meta.url)));
       assert.equal(photo.width, dimensions.width);
       assert.equal(photo.height, dimensions.height);
       assert.ok(photo.alt.trim());

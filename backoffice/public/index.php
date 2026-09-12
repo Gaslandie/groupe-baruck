@@ -16,10 +16,10 @@ try {
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
     if ($setup) $page = 'setup';
     elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'media', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
-    if ($user && in_array($page, ['users', 'publication'], true)) requireAdmin($user);
+    if ($user && in_array($page, ['boutique', 'product', 'users', 'publication'], true)) requireAdmin($user);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
@@ -57,6 +57,22 @@ try {
                     deleteArticle($_POST, $user);
                     $_SESSION['flash'] = 'Actualité supprimée.';
                     redirect('articles');
+                case 'save_product':
+                    $id = saveProduct($_POST, $user);
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article en boutique. Il partira avec la prochaine publication.' : 'Article enregistré. Il reste masqué sur le site.';
+                    redirect('product', ['id' => $id]);
+                case 'switch_product':
+                    $product = switchProduct($_POST, $user);
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article remis en boutique.' : 'Article retiré de la boutique. Sa fiche et ses photos sont conservées.';
+                    redirect('product', ['id' => $product['id']]);
+                case 'move_product':
+                    moveProduct($_POST, $user);
+                    $_SESSION['flash'] = 'Ordre de la boutique mis à jour.';
+                    redirect('boutique');
+                case 'delete_product':
+                    deleteProduct($_POST, $user);
+                    $_SESSION['flash'] = 'Article supprimé de la boutique.';
+                    redirect('boutique');
                 case 'delete_media':
                     deleteMedia($_POST, $user);
                     $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
@@ -114,6 +130,15 @@ try {
 
     $article = null;
     $publication = null;
+    $product = null;
+    if ($page === 'product') {
+        $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
+        $product = $id ? query('SELECT * FROM products WHERE id=?', [$id])->fetch() : null;
+        if ($id && !$product) { http_response_code(404); $page = 'missing'; }
+        if ($product) $product['images'] = productImages($product);
+        if ($error && ($_POST['action'] ?? '') === 'save_product') $product = $_POST;
+        $product ??= ['id' => '', 'version' => 0, 'name' => '', 'category' => 'homme', 'images' => [], 'status' => 'draft'];
+    }
     if (in_array($page, ['edit', 'history'], true)) {
         $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
         $article = $id ? query('SELECT * FROM articles WHERE id=?', [$id])->fetch() : null;

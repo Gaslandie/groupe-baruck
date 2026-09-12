@@ -8,11 +8,23 @@ Cette application PHP est distincte de l’export public Next.js. Elle gère les
 
 Le back-office fonctionne localement avec une vraie base MySQL. Les six actualités du dépôt servent d’import initial, sans écrasement lors d’une réinstallation. Les contenus validés peuvent être exportés puis construire le site existant, avec ses URL, son sitemap et son RSS. **Le déploiement Bluehost et le déclenchement automatique de publication ne sont pas raccordés.** Le bouton de téléchargement le dit explicitement.
 
-L’édition du corps utilise Markdown ; l’éditeur visuel, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. L’administrateur peut supprimer une actualité jamais retenue pour publication et une image importée qu’aucune actualité n’utilise ; chaque suppression est confirmée dans un dialogue.
+L’édition du corps utilise Markdown ; l’éditeur visuel, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. L’administrateur peut supprimer une actualité jamais retenue pour publication et une image importée qu’aucun contenu n’utilise ; chaque suppression est confirmée dans un dialogue.
 
 Chaque enregistrement conserve une révision complète. « Historique et restauration » affiche les 50 versions les plus récentes ; les versions antérieures restent en base. Une restauration crée un nouveau brouillon, avec contrôle des modifications concurrentes. Le rédacteur peut retravailler un article validé : **la dernière version validée reste disponible pour l’export** jusqu’à une nouvelle validation par un administrateur. Le retrait de la prochaine publication est une action distincte, réservée à l’administrateur et soumise à confirmation.
 
 Si la session expire au moment d’envoyer le formulaire d’article, une saisie munie du jeton valide de cette session peut être récupérée pendant une heure après reconnexion au même compte. Elle reste à relire et à enregistrer ; une modification concurrente bloque son écrasement. Cela suppose que la session existe encore côté serveur. Ce mécanisme ne sauvegarde pas automatiquement la frappe et ne couvre pas la fermeture d’un onglet avant envoi ou la disparition du fichier de session. Un autre compte ne peut pas récupérer cette saisie.
+
+## Boutique
+
+« Boutique », dans le menu de gauche, gère les articles de la marque Baruck : les 39 articles du site servent d’import initial, sans écrasement lors d’une réinstallation. La page est **réservée à l’administrateur** ; les rédacteurs restent sur les actualités.
+
+Une fiche demande un nom, un rayon et de une à six photos. **Aucun prix n’est saisi** : la commande reste un échange WhatsApp, comme sur le site. L’identifiant public de l’article — l’ancre `#produit-…` reprise dans le message WhatsApp du client — est déduit du nom à la création ; il n’est jamais saisi et ne change plus ensuite. La première photo est celle qui apparaît dans la collection ; Monter et Descendre définissent l’ordre des photos.
+
+Un nouvel article est enregistré masqué, puis « Mettre en boutique » le retient pour la prochaine publication. Les nouveautés se placent en tête de la collection ; les flèches de la liste modifient cet ordre, sur la liste complète, sans recherche ni filtre. « Retirer de la boutique » l’exclut du prochain site construit en conservant sa fiche et ses photos ; seul un article retiré peut ensuite être supprimé.
+
+Les rayons (Homme, Femme, Enfant, Autres vêtements, Sacs & petite maroquinerie, Chaussures, Parfums, Accessoires) appartiennent au site : ils sont lus depuis `src/data/marque-baruck.ts` par `backoffice:prepare` et ne se modifient pas depuis l’administration. Un rayon vidé de ses articles disparaît des filtres du site. La section « Parfums Baruck » de la page suit le premier article du rayon Parfums et disparaît si ce rayon est vide.
+
+Le catalogue du dépôt vit dans `content/boutique.json`. Une publication qui ne contient aucun article de boutique laisse ce fichier en place : la collection du site n’est jamais vidée par accident.
 
 ## Tableau de bord et statistiques
 
@@ -30,9 +42,9 @@ En local, `http://127.0.0.1:8091/collect.php` avec le site sur `http://localhost
 
 ## Choisir, importer et télécharger les images
 
-Dans une actualité, « Choisir ou importer une image » ouvre la bibliothèque : les images initiales du site et les nouveaux imports sont proposés avec leurs aperçus et une recherche. Aucun chemin n’est à saisir pour la couverture ou la galerie. « Importer et utiliser cette image » accepte un fichier JPG, PNG ou WebP de 8 Mo maximum et de 40 mégapixels maximum, accompagné d’une description. Les limites et le type réel du fichier sont également vérifiés sur le serveur.
+Dans une actualité comme dans une fiche de boutique, « Choisir ou importer une image » ouvre la bibliothèque : les images initiales du site et les nouveaux imports sont proposés avec leurs aperçus et une recherche. Aucun chemin n’est à saisir pour la couverture ou la galerie. « Importer et utiliser cette image » accepte un fichier JPG, PNG ou WebP de 8 Mo maximum et de 40 mégapixels maximum, accompagné d’une description. Les limites et le type réel du fichier sont également vérifiés sur le serveur.
 
-La sélection conserve le texte dans le formulaire. Les boutons Monter, Descendre et Retirer organisent la galerie, limitée à 30 images. Enregistrer le brouillon ou valider reste nécessaire pour conserver ces changements dans l’article. L’import enregistre immédiatement le fichier dans la médiathèque privée, même si l’article n’est pas encore enregistré. Un fichier non référencé par une version validée n’est pas inclus dans l’export public. « Télécharger l’image » dans la médiathèque permet de récupérer le fichier après connexion.
+La sélection conserve le texte dans le formulaire. Les boutons Monter, Descendre et Retirer organisent la galerie, limitée à 30 images dans une actualité et à 6 photos dans une fiche de boutique. Enregistrer le brouillon ou valider reste nécessaire pour conserver ces changements dans l’article. L’import enregistre immédiatement le fichier dans la médiathèque privée, même si l’article n’est pas encore enregistré. Un fichier non référencé par une version validée n’est pas inclus dans l’export public. « Télécharger l’image » dans la médiathèque permet de récupérer le fichier après connexion.
 
 Le sélecteur utilise un script local, sans dépendance supplémentaire. Sans JavaScript, les images déjà enregistrées sont conservées ; leur sélection demande de l’activer. Une erreur d’import laisse le formulaire ouvert. Si la session expire pendant un import, le message demande de copier le texte avant reconnexion et rechargement : il n’y a pas encore de sauvegarde automatique de la frappe.
 
@@ -70,7 +82,7 @@ En cas de perte d’un mot de passe : `php bin/install.php reset-password` avec 
 
 ## Construire une publication du site
 
-L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque article et les images téléversées qu’elle référence, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
+L’administrateur valide les articles puis télécharge le JSON dans « Publication ». Ce fichier contient la dernière version validée de chaque actualité, les articles mis en boutique et les images téléversées qu’ils référencent, pas les comptes ni les modifications privées. Le traitement est une publication complète : seule une action explicite de retrait exclut un article précédemment validé du prochain site construit. Une validation prépare une publication ; elle ne prouve pas une mise en ligne effective.
 
 Dans le projet Next.js :
 
