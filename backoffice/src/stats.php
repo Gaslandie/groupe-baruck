@@ -5,6 +5,9 @@ namespace Baruck;
 
 const AUDIENCE_PERIODS = [7 => '7 jours', 30 => '30 jours', 90 => '90 jours', 365 => '12 mois'];
 
+/** Vues acceptées par visiteur et par jour : au-delà, la mesure cesse de croire ce qu’on lui envoie. */
+const COLLECT_DAILY_LIMIT = 400;
+
 function pageNames(): array
 {
     return ['/' => 'Accueil', '/groupe/' => 'Le Groupe', '/actualites/' => 'Actualités', '/contact/' => 'Contact', '/jeca/' => 'JECA', '/espoir-de-vie/' => 'Espoir de Vie', '/studio-photo/' => 'Studio photo', '/hotesses-evenementielles/' => 'Hôtesses événementielles', '/mediatheque/' => 'Médiathèque', '/projets-realisations/' => 'Projets & réalisations', '/mentions-legales/' => 'Mentions légales', '/marque-baruck/' => 'La marque'];
@@ -12,7 +15,7 @@ function pageNames(): array
 
 function sourceNames(): array
 {
-    return ['' => 'Accès direct', 'facebook.com' => 'Facebook', 'instagram.com' => 'Instagram', 'google.com' => 'Google', 'linkedin.com' => 'LinkedIn', 't.co' => 'X (Twitter)', 'x.com' => 'X (Twitter)', 'whatsapp.com' => 'WhatsApp', 'youtube.com' => 'YouTube', 'tiktok.com' => 'TikTok', 'bing.com' => 'Bing', 'duckduckgo.com' => 'DuckDuckGo', 'yahoo.com' => 'Yahoo'];
+    return ['' => 'Accès direct', 'facebook.com' => 'Facebook', 'instagram.com' => 'Instagram', 'google.com' => 'Google', 'linkedin.com' => 'LinkedIn', 't.co' => 'X (Twitter)', 'x.com' => 'X (Twitter)', 'whatsapp.com' => 'WhatsApp', 'youtube.com' => 'YouTube', 'tiktok.com' => 'TikTok', 'bing.com' => 'Bing', 'duckduckgo.com' => 'DuckDuckGo', 'yahoo.com' => 'Yahoo', 'autre' => 'Provenance inconnue'];
 }
 
 function sourceLabel(string $host): string
@@ -52,9 +55,13 @@ function referrerHost(string $referrer, string $siteUrl): string
 {
     $host = strtolower((string) parse_url(trim($referrer), PHP_URL_HOST));
     if ($host === '') return '';
+    // Un nom d’hôte ne porte que lettres, chiffres, points et tirets, sur 120 caractères
+    // au plus. Le reste vient d’une adresse forgée : la provenance est inconnue, pas un
+    // accès direct, et rien qu’un tableur interpréterait n’est enregistré.
+    if (!preg_match('~^[a-z0-9](?:[a-z0-9.-]{0,118}[a-z0-9])?$~D', $host)) return 'autre';
     $host = preg_replace('~^(?:www|m|l|lm|mobile)\.~', '', $host);
     $site = preg_replace('~^www\.~', '', strtolower((string) parse_url($siteUrl, PHP_URL_HOST)));
-    return $host === $site ? 'interne' : substr($host, 0, 120);
+    return $host === $site ? 'interne' : $host;
 }
 
 function deviceFromWidth(int $width): string
@@ -71,6 +78,9 @@ function recordView(array $input, array $server, string $day, ?string $salt = nu
     $referrer = referrerHost(is_string($input['r'] ?? null) ? $input['r'] : '', config()['site_url']);
     $device = deviceFromWidth((int) filter_var($input['w'] ?? 0, FILTER_VALIDATE_INT));
     $visitor = substr(hash('sha256', ($salt ?? visitorSalt($day)) . '|' . ($server['REMOTE_ADDR'] ?? '') . '|' . $agent), 0, 32);
+    // Le point de collecte est public : l’en-tête Origin n’engage que les navigateurs.
+    // Un plafond par visiteur et par jour empêche un envoi massif de fausser les chiffres.
+    if ((int) query('SELECT COUNT(*) FROM page_views WHERE day=? AND visitor=?', [$day, $visitor])->fetchColumn() >= COLLECT_DAILY_LIMIT) return false;
     query('INSERT INTO page_views (id,day,path,referrer,device,visitor,created_at) VALUES (?,?,?,?,?,?,?)', [id(), $day, $path, $referrer, $device, $visitor, now()]);
     return true;
 }
@@ -271,6 +281,13 @@ function shareBar(int $value, int $total): string
     return '<svg viewBox="0 0 100 6" preserveAspectRatio="none" class="h-1.5 w-full" aria-hidden="true"><rect width="100" height="6" class="fill-paper-deep"/><rect width="' . percent($value, $total) . '" height="6" class="fill-accent"/></svg>';
 }
 
+/** Une cellule ne doit jamais devenir une formule à l’ouverture du fichier dans un tableur. */
+function csvCell(mixed $value): string
+{
+    $value = (string) $value;
+    return $value !== '' && str_contains("=+-@\t\r", $value[0]) ? "'" . $value : $value;
+}
+
 function statsCsv(array $audience, array $editorial): string
 {
     $lines = [['section', 'libelle', 'vues', 'visiteurs']];
@@ -284,7 +301,7 @@ function statsCsv(array $audience, array $editorial): string
     foreach ($editorial['months'] as $month) $lines[] = ['actualites validees par mois', $month['label'], $month['value'], ''];
     $output = fopen('php://memory', 'r+');
     fwrite($output, "\u{FEFF}");
-    foreach ($lines as $line) fputcsv($output, $line, ';', '"', '\\', "\r\n");
+    foreach ($lines as $line) fputcsv($output, array_map(csvCell(...), $line), ';', '"', '\\', "\r\n");
     rewind($output);
     return stream_get_contents($output);
 }

@@ -1,5 +1,17 @@
 # Back-office Groupe Baruck — benchmark, décision et mise en place
 
+## Intégrité de la mesure d'audience — 13 septembre 2026
+
+Audit avant présentation au client. Deux défauts corrigés sur le point de collecte public :
+
+- **Une provenance forgée n'entre plus en base.** `collect.php` n'a que l'en-tête `Origin` pour filtre, et cet en-tête n'engage que les navigateurs. `parse_url` accepte des hôtes comme `=cmd|calc.evil.com` : la valeur était stockée telle quelle, puis recopiée dans l'export CSV, où un tableur l'aurait exécutée comme formule. Un hôte doit désormais ressembler à un nom d'hôte (lettres, chiffres, points, tirets, 120 caractères au plus) ; sinon il compte comme « Provenance inconnue » — pas comme un accès direct, qui aurait menti sur le chiffre.
+- **Un envoi massif ne fausse plus les chiffres.** Plafond de 400 vues par visiteur et par jour, appliqué avant l'écriture, sur l'empreinte quotidienne déjà calculée : aucune adresse IP conservée en plus.
+- **L'export CSV ne porte plus de formule active.** Toute cellule commençant par `= + - @`, tabulation ou retour chariot est préfixée d'une apostrophe. Le garde-fou couvre aussi les titres d'articles, écrits par l'équipe.
+
+Limite assumée : un point de collecte public sans cookie ne peut pas être rendu infalsifiable. Le plafond arrête un envoi massif ordinaire ; un envoi qui fait varier son navigateur déclaré passerait encore. Les statistiques sont une tendance, pas une mesure opposable.
+
+Vérifications : 104 contrôles PHP (dont 6 nouveaux), recette HTTP/MySQL à 16 parcours avec deux assertions ajoutées sur la provenance stockée et l'export, 11 cas d'import/export, 21 cas du site, lint et TypeScript. Les nouveaux contrôles ont été confrontés au code d'avant correction : ils échouent bien.
+
 ## Textes de l'accueil — 12 septembre 2026
 
 **Travail local, sans déploiement.** Objectif de ce lot : ouvrir au client les mots de la page d'accueil sans lui donner les moyens de casser la mise en page.

@@ -334,6 +334,11 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     }
     assert.equal(sql(`SELECT COUNT(*) AS a, COUNT(DISTINCT visitor) AS b, SUM(referrer='interne') AS c, SUM(referrer='facebook.com') AS d, SUM(device='mobile') AS e, SUM(path='/actualites/recette-mysql/') AS f FROM ${database}.page_views;`).split('\n')[1], '3\t2\t1\t1\t2\t2');
     assert.ok(!sql(`SELECT * FROM ${database}.page_views;`).includes('Firefox'), 'aucun navigateur ni adresse conservés en clair');
+    // Un en-tête Origin se forge hors navigateur : la provenance reçue n’entre jamais
+    // telle quelle en base, sinon l’export CSV porterait une formule active.
+    assert.equal((await collect({ p: '/contact/', r: 'http://=cmd|calc.evil.com/', w: 390 })).status, 204);
+    assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.page_views WHERE referrer='autre';`).split('\n')[1], '1');
+    assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.page_views WHERE referrer LIKE '=%';`).split('\n')[1], '0', 'aucune provenance forgée enregistrée');
     const stats = await admin.request('/?page=stats&days=7');
     assert.equal(stats.status, 200);
     for (const expected of [/Recette MySQL/, /Facebook/, /Mobile/, /Ce que disent les chiffres/, /Page la plus vue/, /Activité de l’équipe/]) assert.match(stats.html, expected);
@@ -345,6 +350,8 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal(csv.status, 200);
     assert.match(csv.headers.get('content-type'), /text\/csv/);
     assert.match(csv.html, /pages;"Recette MySQL \(\/actualites\/recette-mysql\/\)";2;2/);
+    assert.match(csv.html, /sources;"?Provenance inconnue/);
+    assert.doesNotMatch(csv.html, /;=/, 'aucune cellule interprétée comme une formule');
     assert.match((await admin.request('/?page=articles')).html, /Vues · 30 j/);
     const dashboard = await admin.request('/');
     for (const expected of [/À faire/, /Visiteurs par jour/, /brouillons? attend(?:ent)? une validation/, /Dernières modifications/]) assert.match(dashboard.html, expected);

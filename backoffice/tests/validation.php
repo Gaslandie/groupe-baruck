@@ -47,6 +47,19 @@ check(Baruck\referrerHost('https://www.groupebaruck.com/actualites/', 'https://g
 check(Baruck\referrerHost('https://l.facebook.com/l.php?u=x', 'https://groupebaruck.com') === 'facebook.com', 'sous-domaine de partage ramené à la source');
 check(Baruck\referrerHost('', 'https://groupebaruck.com') === '' && Baruck\referrerHost('pas une adresse', 'https://groupebaruck.com') === '', 'accès direct sans provenance');
 check(Baruck\sourceLabel('google.fr') === 'Google' && Baruck\sourceLabel('') === 'Accès direct' && Baruck\sourceLabel('exemple.org') === 'exemple.org', 'libellés des sources');
+check(Baruck\referrerHost('http://=cmd|calc.evil.com/', 'https://groupebaruck.com') === 'autre'
+    && Baruck\referrerHost('https://@=SUM(1,2).com/', 'https://groupebaruck.com') === 'autre'
+    && Baruck\referrerHost('https://' . str_repeat('a', 200) . '.com/', 'https://groupebaruck.com') === 'autre', 'provenance forgée écartée, jamais comptée comme accès direct');
+check(Baruck\referrerHost('https://xn--80ak6aa92e.com/page', 'https://groupebaruck.com') === 'xn--80ak6aa92e.com', 'nom de domaine international conservé');
+check(Baruck\sourceLabel('autre') === 'Provenance inconnue', 'libellé d’une provenance illisible');
+check(Baruck\csvCell('=1+1') === "'=1+1" && Baruck\csvCell('+33 6') === "'+33 6" && Baruck\csvCell('-5') === "'-5" && Baruck\csvCell('@x') === "'@x", 'cellules interprétables neutralisées');
+check(Baruck\csvCell('Accueil') === 'Accueil' && Baruck\csvCell('') === '' && Baruck\csvCell(12) === '12', 'cellules ordinaires inchangées');
+$hostile = Baruck\statsCsv([
+    'start' => '2026-09-01', 'end' => '2026-09-07', 'views' => 1, 'visitors' => 1, 'previousViews' => 0, 'previousVisitors' => 0,
+    'series' => [], 'pages' => [['label' => '=HYPERLINK("http://x")', 'path' => '/', 'views' => 1, 'visitors' => 1]],
+    'sources' => [['label' => '=cmd|calc', 'visitors' => 1]], 'devices' => [], 'categoryViews' => array_fill_keys(array_keys(Baruck\categories()), 0),
+], ['byCategory' => array_fill_keys(array_keys(Baruck\categories()), 0), 'months' => []]);
+check(str_contains($hostile, "\"'=HYPERLINK") && str_contains($hostile, "'=cmd|calc") && !preg_match('~;=~', $hostile), 'export CSV sans formule active');
 check(Baruck\deviceFromWidth(390) === 'mobile' && Baruck\deviceFromWidth(800) === 'tablette' && Baruck\deviceFromWidth(1440) === 'ordinateur' && Baruck\deviceFromWidth(0) === 'inconnu', 'appareils selon la largeur');
 check(Baruck\isBot('Mozilla/5.0 (compatible; Googlebot/2.1)') && Baruck\isBot('') && !Baruck\isBot('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1'), 'robots écartés, navigateurs conservés');
 check(Baruck\delta(120, 100) === 20 && Baruck\delta(80, 100) === -20 && Baruck\delta(5, 0) === null && Baruck\percent(1, 3) === 33, 'écarts et pourcentages');

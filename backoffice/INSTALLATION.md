@@ -60,7 +60,7 @@ Le site public envoie une requête par page vue à `collect.php` du back-office,
 NEXT_PUBLIC_AUDIENCE_URL=https://admin.groupebaruck.com/collect.php
 ```
 
-En local, `http://127.0.0.1:8091/collect.php` avec le site sur `http://localhost:3000/`. Le point de collecte n’accepte que l’origine du site configurée dans `site_url` (avec ou sans `www`). Les robots connus sont ignorés. Si le site change de domaine, mettre à jour `site_url`. La mention de cette mesure dans la page de confidentialité du site reste à valider avec le client.
+En local, `http://127.0.0.1:8091/collect.php` avec le site sur `http://localhost:3000/`. Le point de collecte n’accepte que l’origine du site configurée dans `site_url` (avec ou sans `www`). Les robots connus sont ignorés. L’en-tête `Origin` n’engage que les navigateurs : hors navigateur il se forge. La collecte s’en protège par un plafond de 400 vues par visiteur et par jour, et n’enregistre une provenance que si elle ressemble à un nom d’hôte — le reste est compté « Provenance inconnue » plutôt qu’en accès direct. L’export CSV neutralise toute cellule qu’un tableur interpréterait comme une formule. Ces chiffres restent une tendance d’audience, pas une mesure opposable. Si le site change de domaine, mettre à jour `site_url`. La mention de cette mesure dans la page de confidentialité du site reste à valider avec le client.
 
 ## Choisir, importer et télécharger les images
 
