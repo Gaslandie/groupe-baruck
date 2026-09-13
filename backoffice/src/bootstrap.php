@@ -16,6 +16,7 @@ function config(): array
     if (!is_array($config) || !in_array($config['environment'] ?? '', ['local', 'production'], true)) {
         throw new \RuntimeException('Configuration invalide.');
     }
+    if (!is_bool($config['trusted_proxy'] ?? false)) throw new \RuntimeException('Configuration invalide.');
     $origin = $config['origin'] ?? '';
     $local = $config['environment'] === 'local';
     if (($local && !preg_match('~^http://127\.0\.0\.1:[0-9]{1,5}$~D', $origin)) || (!$local && !preg_match('~^https://[a-z0-9.-]+(?::[0-9]+)?$~D', $origin))) {

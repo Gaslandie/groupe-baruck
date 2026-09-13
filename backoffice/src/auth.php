@@ -3,6 +3,18 @@ declare(strict_types=1);
 
 namespace Baruck;
 
+/**
+ * Le chiffrement est-il réellement en place ? Derrière un proxy déclaré de confiance,
+ * TLS se termine chez lui : PHP ne voit qu’une requête en clair et le croit sur parole.
+ * N’activer « trusted_proxy » que si PHP n’est joignable que par ce proxy — sinon
+ * n’importe qui pourrait annoncer une connexion chiffrée qui n’existe pas.
+ */
+function overHttps(array $settings, array $server): bool
+{
+    if (($server['HTTPS'] ?? '') === 'on') return true;
+    return ($settings['trusted_proxy'] ?? false) === true && ($server['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https';
+}
+
 function startSession(): void
 {
     $settings = config();
@@ -11,7 +23,7 @@ function startSession(): void
     if (($_SERVER['HTTP_HOST'] ?? '') !== $expectedHost . ($port ? ':' . $port : '')) {
         http_response_code(400); exit('Adresse du back-office incorrecte.');
     }
-    if ($settings['environment'] === 'production' && ($_SERVER['HTTPS'] ?? '') !== 'on') {
+    if ($settings['environment'] === 'production' && !overHttps($settings, $_SERVER)) {
         http_response_code(400); exit('La connexion HTTPS est nécessaire.');
     }
     header('Cache-Control: no-store, private');

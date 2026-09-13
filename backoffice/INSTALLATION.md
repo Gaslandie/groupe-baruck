@@ -89,6 +89,33 @@ Les conteneurs `baruck-admin-web` et `baruck-admin-mysql`, leur réseau et leurs
 docker stop baruck-admin-web baruck-admin-mysql
 ```
 
+## Lien public temporaire, pour un essai client
+
+Le client essaie le back-office depuis son propre navigateur, sans attendre Bluehost :
+
+```sh
+npm run backoffice:local   # une fois, si la pile locale n'est pas démarrée
+npm run backoffice:demo    # affiche le lien https://…trycloudflare.com
+npm run backoffice:demo:stop
+```
+
+Un tunnel Cloudflare termine TLS et relaie vers un conteneur PHP dédié, sur la base et le stockage de l'installation locale : le client voit le contenu réel, et ce qu'il modifie reste après l'arrêt du lien. Le conteneur n'ouvre **aucun port** sur la machine — le tunnel est le seul chemin, et c'est la condition qui rend `trusted_proxy` acceptable.
+
+**Ce n'est pas un hébergement.** L'adresse change à chaque démarrage, elle ne vit que pendant que la machine et les conteneurs tournent, et rien ne garantit sa disponibilité. La mise en ligne durable reste la procédure Bluehost ci-dessous.
+
+L'instance sert en `environment=production` : HTTPS exigé, cookie `__Host-`, HSTS, `noindex`, et **création de compte par le web fermée**. Les comptes se créent donc en ligne de commande :
+
+```sh
+docker exec -i baruck-demo-web php bin/install.php user   # JSON sur l'entrée standard
+docker exec -i baruck-demo-web php bin/install.php reset-password
+```
+
+Deux limites à connaître le temps de l'essai. Le back-office est joignable par toute personne qui a le lien : ne le diffuser qu'aux personnes concernées et le fermer après. Et comme toutes les requêtes arrivent par le tunnel, la limite de 50 échecs par adresse IP devient commune à tous les visiteurs ; la limite de 10 échecs par compte, elle, continue de protéger chaque compte séparément.
+
+### `trusted_proxy`
+
+Ce réglage fait croire PHP sur parole quand un proxy annonce `X-Forwarded-Proto: https`. Il n'a de sens que si PHP est **uniquement** joignable à travers ce proxy. Sur Apache/cPanel en direct, où PHP voit lui-même la connexion TLS, le laisser absent.
+
 ## Préparer et installer le paquet
 
 1. Construire avec `npm run backoffice:package`. Le résultat est `backoffice/dist/baruck-backoffice-bluehost.tar.gz`. Il contient les styles compilés, la police, PHP et l’import initial, aucun secret ni stockage local.

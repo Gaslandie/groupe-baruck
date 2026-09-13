@@ -39,6 +39,14 @@ check(Baruck\recoverExpiredSubmission($session, [...$post, 'csrf' => 'faux'], $s
 check(Baruck\recoverExpiredSubmission($session, [...$post, 'action' => 'create_user'], $server, 1000) === null, 'formulaire de compte non conservé');
 check(Baruck\recoverExpiredSubmission($session, [...$post, 'body' => str_repeat('x', 300001)], $server, 1000) === null, 'saisie surdimensionnée refusée');
 
+// Un proxy n’est cru sur parole que s’il a été déclaré de confiance.
+check(Baruck\overHttps([], ['HTTPS' => 'on']), 'connexion chiffrée directe reconnue');
+check(!Baruck\overHttps([], []), 'connexion en clair refusée');
+check(!Baruck\overHttps([], ['HTTP_X_FORWARDED_PROTO' => 'https']), 'en-tête de proxy ignoré sans déclaration');
+check(Baruck\overHttps(['trusted_proxy' => true], ['HTTP_X_FORWARDED_PROTO' => 'https']), 'proxy déclaré de confiance accepté');
+check(!Baruck\overHttps(['trusted_proxy' => true], ['HTTP_X_FORWARDED_PROTO' => 'http']), 'proxy de confiance annonçant du clair refusé');
+check(!Baruck\overHttps(['trusted_proxy' => 'oui'], ['HTTP_X_FORWARDED_PROTO' => 'https']), 'déclaration non booléenne sans effet');
+
 // Mesure d’audience : normalisation des chemins, provenances, appareils et robots.
 check(Baruck\normalizePath('/actualites/mon-article') === '/actualites/mon-article/', 'chemin normalisé avec barre finale');
 check(Baruck\normalizePath('') === '/' && Baruck\normalizePath('/') === '/', 'accueil accepté');

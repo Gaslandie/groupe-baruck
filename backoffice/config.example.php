@@ -11,5 +11,8 @@ return [
         'user' => 'CPANEL_baruck',
         'password' => '',
     ],
+    // À n'activer que si PHP n'est joignable qu'à travers un proxy de confiance qui
+    // termine TLS et pose X-Forwarded-Proto. Sur Apache/cPanel en direct : laisser absent.
+    // 'trusted_proxy' => true,
     'storage' => __DIR__ . '/storage',
 ];
