@@ -48,6 +48,12 @@ remote() { # une seule chaîne de commande ; l'entrée standard est transmise
   if [[ $dry == 1 ]]; then note "[dry-run] ssh $BLUEHOST_SSH -- $1" >&2; cat >/dev/null 2>&1 || true; return 0; fi
   ssh "${ssh_opts[@]}" "$BLUEHOST_SSH" "$1"
 }
+# Le shell doit être ouvert sur le compte (Bluehost : Hosting → Server → SSH Access), sinon rien n'est possible.
+require_shell() {
+  [[ $dry == 1 ]] && return 0
+  local probe; probe="$(remote 'echo baruck-ok' </dev/null 2>&1)" || true
+  [[ $probe == *baruck-ok* ]] || fail "Pas de shell sur $BLUEHOST_SSH : $probe"
+}
 remote_home=''
 home_dir() {
   if [[ -z $remote_home ]]; then
@@ -270,6 +276,10 @@ do_site() {
   if [[ $sitemap == *"https://$SITE_DOMAIN/"* ]]; then note 'sitemap.xml : domaine correct'; else note 'sitemap.xml : non lisible'; fi
 }
 
+case "$command_name" in
+  ''|-h|--help) sed -n '2,13p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'; exit 1 ;;
+esac
+require_shell
 case "$command_name" in
   check) do_check ;;
   setup) do_setup ;;
