@@ -1,9 +1,9 @@
 name: Deploy to Bluehost
 
 # À chaque push sur main : construit le site pour groupebaruck.com et envoie par FTP
-# le site et le back-office, chacun avec un compte FTP cPanel limité à son dossier.
-# Secrets GitHub : FTP_SERVER, SITE_FTP_USERNAME, SITE_FTP_PASSWORD,
-# ADMIN_FTP_USERNAME, ADMIN_FTP_PASSWORD. Sans eux, l'envoi est ignoré.
+# le site dans groupebaruck.com/ et le back-office dans baruck-admin/, deux dossiers
+# du compte cPanel. Secrets GitHub : FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+# (identifiants du compte cPanel, comme pour les autres sites). Sans eux, l'envoi est ignoré.
 
 on:
   push:
@@ -57,40 +57,40 @@ jobs:
           ! grep -rl 'gaslandie.github.io' dist/site
           echo "deployed_at=$(date -u +'%Y-%m-%dT%H:%M:%SZ') commit=${GITHUB_SHA}" > dist/site/deploy-check.txt
           du -sh dist/site dist/backoffice
-      - name: Send the site (FTP account limited to the site folder)
-        if: env.SITE_FTP_PASSWORD != ''
+      - name: Send the site to groupebaruck.com/
+        if: env.FTP_PASSWORD != ''
         env:
-          SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.SITE_FTP_USERNAME }}
-          password: ${{ secrets.SITE_FTP_PASSWORD }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./dist/site/
-          server-dir: /
+          server-dir: groupebaruck.com/
           exclude: |
             .well-known/**
             cgi-bin/**
-      - name: Send the back office (FTP account limited to baruck-admin)
-        if: env.ADMIN_FTP_PASSWORD != ''
+      - name: Send the back office to baruck-admin/
+        if: env.FTP_PASSWORD != ''
         env:
-          ADMIN_FTP_PASSWORD: ${{ secrets.ADMIN_FTP_PASSWORD }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.ADMIN_FTP_USERNAME }}
-          password: ${{ secrets.ADMIN_FTP_PASSWORD }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./dist/backoffice/
-          server-dir: /
+          server-dir: baruck-admin/
           exclude: |
             config.local.php
             storage/**
       - name: Check the site online
-        if: env.SITE_FTP_PASSWORD != ''
+        if: env.FTP_PASSWORD != ''
         env:
-          SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
           code=$(curl -s -o /dev/null -m 30 -w '%{http_code}' "http://$SITE_DOMAIN/deploy-check.txt" || true)
           echo "deploy-check.txt : HTTP $code"
