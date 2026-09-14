@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Actualités — Groupe Baruck</title>
+    <link>https://groupebaruck.com/actualites/</link>
+    <description>Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.</description>
+    <language>fr-FR</language>
+    <atom:link href="https://groupebaruck.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>JECA 2026 : la troisième édition à Conakry</title>
+      <link>https://groupebaruck.com/actualites/jeca-2026-conakry/</link>
+      <guid isPermaLink="true">https://groupebaruck.com/actualites/jeca-2026-conakry/</guid>
+      <pubDate>Thu, 30 Jul 2026 00:00:00 GMT</pubDate>
+      <category>JECA</category>
+      <description>La troisième édition de la JECA s’est tenue à Conakry, du 30 juillet au 04 août 2026.</description>
+    </item>
+    <item>
+      <title>JECA 2023 : deuxième édition à Dakar</title>
+      <link>https://groupebaruck.com/actualites/jeca-2023-dakar/</link>
+      <guid isPermaLink="true">https://groupebaruck.com/actualites/jeca-2023-dakar/</guid>
+      <pubDate>Sat, 02 Dec 2023 00:00:00 GMT</pubDate>
+      <category>JECA</category>
+      <description>La deuxième édition de la JECA s’est tenue une nouvelle fois à Dakar, du 02 au 08 décembre 2023.</description>
+    </item>
+    <item>
+      <title>JECA 2022 : la première rencontre à Dakar</title>
+      <link>https://groupebaruck.com/actualites/jeca-2022-dakar/</link>
+      <guid isPermaLink="true">https://groupebaruck.com/actualites/jeca-2022-dakar/</guid>
+      <pubDate>Thu, 04 Aug 2022 00:00:00 GMT</pubDate>
+      <category>JECA</category>
+      <description>Environ 50 personnes réunies autour de l’entrepreneuriat et de l’investissement en Afrique, du 04 au 14 août 2022.</description>
+    </item>
+    <item>
+      <title>Vêtir et chausser dignement</title>
+      <link>https://groupebaruck.com/actualites/espoir-de-vie-2017-chaussures-zaroko/</link>
+      <guid isPermaLink="true">https://groupebaruck.com/actualites/espoir-de-vie-2017-chaussures-zaroko/</guid>
+      <pubDate>Sat, 03 Jun 2017 00:00:00 GMT</pubDate>
+      <category>Espoir de Vie</category>
+      <description>Des vêtements ont été remis aux enfants de l’orphelinat, puis des chaussures aux enfants démunis de Divo et, le 3 juin 2017, aux enfants du village de Zaroko.</description>
+    </item>
+    <item>
+      <title>Inauguration de l’orphelinat</title>
+      <link>https://groupebaruck.com/actualites/espoir-de-vie-2017-inauguration-orphelinat/</link>
+      <guid isPermaLink="true">https://groupebaruck.com/actualites/espoir-de-vie-2017-inauguration-orphelinat/</guid>
+      <pubDate>Wed, 15 Feb 2017 00:00:00 GMT</pubDate>
+      <category>Espoir de Vie</category>
+      <description>Ouverture officielle de l’orphelinat le 15 février 2017, en présence des communautés et des autorités invitées.</description>
+    </item>
+    <item>
+      <title>Un Noël pour les enfants de Grôh</title>
+      <link>https://groupebaruck.com/actualites/espoir-de-vie-2015-noel-groh/</link>
+      <guid isPermaLink="true">https://groupebaruck.com/actualites/espoir-de-vie-2015-noel-groh/</guid>
+      <pubDate>Wed, 23 Dec 2015 00:00:00 GMT</pubDate>
+      <category>Espoir de Vie</category>
+      <description>Cent jouets remis aux enfants du village de Grôh, dans le département d’Hiré, autour d’un arbre de Noël et d’un moment de partage.</description>
+    </item>
+  </channel>
+</rss>

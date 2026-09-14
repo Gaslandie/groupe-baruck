@@ -1,0 +1,3 @@
+# Défense supplémentaire si le dossier complet est exposé par erreur.
+# Le DocumentRoot doit pointer sur backoffice/public, jamais backoffice.
+Require all denied

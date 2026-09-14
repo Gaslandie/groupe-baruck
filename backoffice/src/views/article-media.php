@@ -1,0 +1,8 @@
+<?php namespace Baruck;
+require_once __DIR__ . '/image-fields.php';
+$catalog = array_column(mediaCatalog(), null, 'path');
+?>
+<noscript><p class="rounded-lg bg-paper-deep p-4 text-body">Activez JavaScript pour choisir ou importer les images. Les images déjà enregistrées sont conservées.</p></noscript>
+<section data-cover class="rounded-xl border border-line bg-ivory p-6"><h2 class="mb-5 font-display text-title">Image de couverture</h2><?php imageFields('cover', ['src' => $article['cover'] ?? '', 'alt' => $article['cover_alt'] ?? ''], $catalog, true); ?></section>
+<section class="rounded-xl border border-line bg-ivory p-6"><h2 class="font-display text-title">Galerie</h2><p class="mt-2 text-caption text-ink/60">Ajoutez jusqu’à 30 images. Les boutons Monter et Descendre définissent leur ordre.</p><div data-gallery data-field="gallery" data-max="30" class="mt-5 space-y-5"><?php foreach ($gallery as $index => $item): if (!is_array($item) || empty($item['src'])) continue; ?><fieldset data-gallery-item class="rounded-lg border border-line p-4"><legend class="px-2 text-caption font-semibold">Image <?= (int) $index + 1 ?></legend><?php imageFields((string) $index, $item, $catalog); ?></fieldset><?php endforeach; ?></div><button type="button" data-gallery-add class="<?= $secondaryClass ?> mt-5">Ajouter une image à la galerie</button><p data-gallery-status role="status" class="mt-3 text-caption text-ink/60"></p></section>
+<template id="gallery-item-template"><fieldset data-gallery-item class="rounded-lg border border-line p-4"><legend class="px-2 text-caption font-semibold">Image</legend><?php imageFields('new', [], []); ?></fieldset></template>

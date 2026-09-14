@@ -1,0 +1,204 @@
+<?php
+declare(strict_types=1);
+
+namespace Baruck;
+
+require dirname(__DIR__) . '/src/bootstrap.php';
+
+try {
+    startSession();
+    $user = currentUser();
+    if (($_GET['page'] ?? '') === 'media_api') mediaApi($user);
+    $page = is_string($_GET['page'] ?? null) ? $_GET['page'] : 'dashboard';
+    $error = '';
+    $flash = $_SESSION['flash'] ?? '';
+    unset($_SESSION['flash']);
+    $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
+    if ($setup) $page = 'setup';
+    elseif (!$user) $page = 'login';
+    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+        http_response_code(404); $page = 'missing';
+    }
+    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'users', 'publication'], true)) requireAdmin($user);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
+        requireCsrf();
+        try {
+            $action = text($_POST, 'action', 32);
+            if ($setup && $action === 'setup') {
+                // Initialisation locale uniquement. En production : commande CLI privée.
+                if ((int) query("SELECT GET_LOCK('baruck_setup', 10)")->fetchColumn() !== 1) throw new ConflictError('Une initialisation est déjà en cours. Réessayez dans quelques instants.');
+                try {
+                    if ((int) query('SELECT COUNT(*) FROM users')->fetchColumn() > 0) throw new ConflictError('Le premier compte existe déjà. Rechargez la page.');
+                    createUser([...$_POST, 'role' => 'admin']);
+                } finally { query("SELECT RELEASE_LOCK('baruck_setup')"); }
+                login($_POST); loginDestination();
+            }
+            if (!$setup && !$user && $action === 'login') { login($_POST); loginDestination(); }
+            if (!$user) throw new ValidationError('Connectez-vous pour continuer.');
+            switch ($action) {
+                case 'logout':
+                    $_SESSION = []; session_regenerate_id(true); redirect('login');
+                case 'save_article':
+                    $id = saveArticle($_POST, $user);
+                    unset($_SESSION['recovery']);
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Nouvelle version validée pour la prochaine publication.' : 'Brouillon enregistré. La dernière version validée est conservée.';
+                    redirect('edit', ['id' => $id]);
+                case 'restore_revision':
+                    $id = restoreRevision($_POST, $user);
+                    $_SESSION['flash'] = 'Version restaurée en brouillon. La dernière version validée est conservée.';
+                    redirect('edit', ['id' => $id]);
+                case 'withdraw_publication':
+                    withdrawPublication($_POST, $user);
+                    $_SESSION['flash'] = 'Article retiré de la prochaine publication. Son brouillon et son historique sont conservés.';
+                    redirect('edit', ['id' => text($_POST, 'id', 32)]);
+                case 'delete_article':
+                    deleteArticle($_POST, $user);
+                    $_SESSION['flash'] = 'Actualité supprimée.';
+                    redirect('articles');
+                case 'save_product':
+                    $id = saveProduct($_POST, $user);
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article en boutique. Il partira avec la prochaine publication.' : 'Article enregistré. Il reste masqué sur le site.';
+                    redirect('product', ['id' => $id]);
+                case 'switch_product':
+                    $product = switchProduct($_POST, $user);
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article remis en boutique.' : 'Article retiré de la boutique. Sa fiche et ses photos sont conservées.';
+                    redirect('product', ['id' => $product['id']]);
+                case 'move_product':
+                    moveProduct($_POST, $user);
+                    $_SESSION['flash'] = 'Ordre de la boutique mis à jour.';
+                    redirect('boutique');
+                case 'delete_product':
+                    deleteProduct($_POST, $user);
+                    $_SESSION['flash'] = 'Article supprimé de la boutique.';
+                    redirect('boutique');
+                case 'save_coordonnees':
+                    saveCoordonnees($_POST, $user);
+                    $_SESSION['flash'] = 'Coordonnées enregistrées. Elles partiront sur le site avec la prochaine publication.';
+                    redirect('coordonnees');
+                case 'save_textes':
+                    saveTextes($_POST, $user);
+                    $_SESSION['flash'] = 'Textes enregistrés. Ils partiront sur le site avec la prochaine publication.';
+                    redirect('textes');
+                case 'delete_media':
+                    deleteMedia($_POST, $user);
+                    $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
+                    redirect('media');
+                case 'export_stats':
+                    $period = (int) filter_var($_POST['days'] ?? 30, FILTER_VALIDATE_INT);
+                    $csv = statsCsv(audienceSummary($period, gmdate('Y-m-d')), editorialSummary(gmdate('Y-m-d')));
+                    header('Content-Type: text/csv; charset=utf-8');
+                    header('Content-Disposition: attachment; filename="baruck-statistiques-' . gmdate('Y-m-d') . '.csv"');
+                    echo $csv; exit;
+                case 'upload':
+                    uploadMedia($_FILES['image'] ?? [], text($_POST, 'alt', 500), $user);
+                    $_SESSION['flash'] = 'Image ajoutée à la médiathèque.'; redirect('media');
+                case 'create_user':
+                    requireAdmin($user); createUser($_POST, $user['id']);
+                    $_SESSION['flash'] = 'Compte créé.'; redirect('users');
+                case 'toggle_user':
+                    requireAdmin($user);
+                    $id = text($_POST, 'id', 32);
+                    if ($id === $user['id']) throw new ValidationError('Vous ne pouvez pas désactiver votre propre compte.');
+                    transaction(function () use ($id, $user) {
+                        $target = query('SELECT * FROM users WHERE id=? FOR UPDATE', [$id])->fetch();
+                        if (!$target) throw new ValidationError('Compte introuvable.');
+                        query('UPDATE users SET active=?,session_version=session_version+1 WHERE id=?', [$target['active'] ? 0 : 1, $id]);
+                        audit($target['active'] ? 'Compte désactivé' : 'Compte réactivé', $target['name'], $user['id']);
+                    });
+                    $_SESSION['flash'] = 'Accès mis à jour. Les anciennes sessions sont invalidées.'; redirect('users');
+                case 'change_password':
+                    $old = is_string($_POST['current_password'] ?? null) ? $_POST['current_password'] : '';
+                    $hash = query('SELECT password_hash FROM users WHERE id=?', [$user['id']])->fetchColumn();
+                    $verified = withAttemptLimit($user['id'], fn() => strlen($old) <= 72 && password_verify($old, $hash), 'password-change');
+                    if (!$verified) throw new ValidationError('Le mot de passe actuel est incorrect.');
+                    $newHash = password(is_string($_POST['password'] ?? null) ? $_POST['password'] : '');
+                    transaction(function () use ($newHash, $user) {
+                        query('UPDATE users SET password_hash=?,session_version=session_version+1 WHERE id=?', [$newHash, $user['id']]);
+                        audit('Mot de passe modifié', $user['name'], $user['id']);
+                    });
+                    $_SESSION = []; session_regenerate_id(true); redirect('login');
+                case 'export':
+                    $export = exportContent($user);
+                    header('Content-Type: application/json; charset=utf-8');
+                    header('Content-Disposition: attachment; filename="baruck-publication-' . gmdate('Y-m-d-His') . '.json"');
+                    echo json_encode($export, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR); exit;
+                default: throw new ValidationError('Action inconnue.');
+            }
+        } catch (ValidationError | ConflictError $exception) {
+            http_response_code($exception instanceof ConflictError ? 409 : 422);
+            $error = $exception->getMessage();
+        }
+    } elseif ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'HEAD') {
+        header('Allow: GET, HEAD, POST'); http_response_code(405); exit;
+    }
+
+    if ($page === 'image' && $user) serveMedia();
+
+    $article = null;
+    $publication = null;
+    $product = null;
+    $coordonnees = null;
+    $textes = null;
+    $version = 0;
+    if ($page === 'textes') {
+        $saved = setting('textes');
+        $posted = $error && ($_POST['action'] ?? '') === 'save_textes';
+        $textes = [];
+        foreach ($saved as $group => $entries) {
+            foreach ($entries as $key => $entry) {
+                $sent = $posted && is_array($_POST[$group][$key] ?? null) ? $_POST[$group][$key] : [];
+                $textes[$group][$key] = [
+                    'title' => is_string($sent['title'] ?? null) ? $sent['title'] : $entry['title'],
+                    'description' => is_string($sent['description'] ?? null) ? $sent['description'] : $entry['description'],
+                ];
+            }
+        }
+        // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
+        $version = $posted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : settingVersion('textes');
+    }
+    if ($page === 'coordonnees') {
+        $coordonnees = $error && ($_POST['action'] ?? '') === 'save_coordonnees'
+            ? ['contacts' => is_array($_POST['contacts'] ?? null) ? $_POST['contacts'] : [], 'address' => $_POST['address'] ?? '', 'hours' => is_array($_POST['hours'] ?? null) ? array_values($_POST['hours']) : [], 'facebookPages' => is_array($_POST['facebook'] ?? null) ? array_values($_POST['facebook']) : [], 'mapQuery' => $_POST['mapQuery'] ?? '']
+            : setting('coordonnees');
+        // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
+        $version = $coordonnees === setting('coordonnees') ? settingVersion('coordonnees') : (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT);
+    }
+    if ($page === 'product') {
+        $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
+        $product = $id ? query('SELECT * FROM products WHERE id=?', [$id])->fetch() : null;
+        if ($id && !$product) { http_response_code(404); $page = 'missing'; }
+        if ($product) $product['images'] = productImages($product);
+        if ($error && ($_POST['action'] ?? '') === 'save_product') $product = $_POST;
+        $product ??= ['id' => '', 'version' => 0, 'name' => '', 'category' => 'homme', 'images' => [], 'status' => 'draft'];
+    }
+    if (in_array($page, ['edit', 'history'], true)) {
+        $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
+        $article = $id ? query('SELECT * FROM articles WHERE id=?', [$id])->fetch() : null;
+        if (($id || $page === 'history') && !$article) { http_response_code(404); $page = 'missing'; }
+        if ($article) {
+            $publication = query('SELECT version,validated_at FROM article_publications WHERE article_id=?', [$id])->fetch() ?: null;
+            $article['date'] = $article['article_date'];
+            $article['gallery'] = json_decode($article['gallery'], true, 512, JSON_THROW_ON_ERROR);
+        }
+        if ($error && ($_POST['action'] ?? '') === 'save_article') $article = $_POST;
+        $recovery = $_SESSION['recovery'] ?? null;
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $page === 'edit' && $recovery
+            && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()
+            && ($_GET['recover'] ?? '') === $recovery['token'] && ($recovery['draft']['id'] ?? '') === $id) {
+            $article = [...($article ?: []), ...$recovery['draft'], 'status' => 'draft'];
+            $flash = 'Votre saisie a été récupérée. Relisez-la puis enregistrez votre brouillon. Elle n’a pas remplacé la version validée.';
+        }
+        $article ??= ['id' => '', 'version' => 0, 'title' => '', 'slug' => '', 'category' => 'groupe', 'date' => '', 'excerpt' => '', 'body' => '', 'cover' => '', 'cover_alt' => '', 'gallery' => [], 'status' => 'draft'];
+    }
+    require dirname(__DIR__) . '/src/views/layout.php';
+} catch (\Throwable $exception) {
+    // Ne jamais afficher DSN, chemins, mots de passe ou trace dans la réponse.
+    error_log('Baruck admin: ' . get_class($exception) . ' code=' . $exception->getCode());
+    http_response_code(503);
+    header('Content-Type: text/html; charset=utf-8');
+    header('Cache-Control: no-store');
+    header('X-Robots-Tag: noindex, nofollow');
+    echo '<!doctype html><html lang="fr"><meta charset="utf-8"><title>Administration indisponible</title><h1>Administration temporairement indisponible</h1><p>Réessayez dans quelques instants. Si le problème persiste, contactez la personne qui gère le site.</p></html>';
+}

@@ -1,0 +1,5 @@
+:HL["/_next/static/chunks/1zqfd1fndzbff.css","style"]
+:HL["/_next/static/media/inter_latin-s.p.34fk6-9m1aguk.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/images/brand/baruck-logo.jpg","image"]
+:HL["/images/president/portrait.jpg","image",{"fetchPriority":"high"}]
+0:{"tree":{"name":"","param":null,"prefetchHints":4112,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4224,"slots":null}}},"staleTime":300,"buildId":"xZAHP8ivuVbgfvVrt_z1H"}
