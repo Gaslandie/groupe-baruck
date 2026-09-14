@@ -22,15 +22,9 @@ L’ancienne maquette HTML reste accessible dans l’historique Git, notamment a
 
 ## Déploiement Bluehost
 
-Le site public va sur `groupebaruck.com` et l’administration sur `admin.groupebaruck.com`, par SSH depuis ce dépôt. Copier `deploy/bluehost.env.example` en `deploy/bluehost.env` (ignoré par Git), renseigner l’accès SSH du compte cPanel et le Document Root du domaine, puis :
+À chaque push sur `main`, le workflow `.github/workflows/bluehost.yml` construit le site pour `https://groupebaruck.com/` (sans `basePath`, mesure d’audience vers le back-office), y ajoute `deploy/site.htaccess` (404, redirection HTTPS dès que le certificat répond, cache), prépare le paquet du back-office, puis envoie par FTP le site dans le Document Root `groupebaruck.com/` et le back-office dans `baruck-admin/` du compte cPanel, avec deux comptes FTP limités chacun à son dossier. Secrets GitHub : `FTP_SERVER`, `SITE_FTP_USERNAME`, `SITE_FTP_PASSWORD`, `ADMIN_FTP_USERNAME`, `ADMIN_FTP_PASSWORD`.
 
-`npm run deploy -- check` vérifie l’accès, PHP et les racines des domaines.
-`npm run deploy -- setup` crée une fois le sous-domaine, la base MySQL et `config.local.php`.
-`npm run deploy -- backoffice` met l’administration à jour et lance les migrations.
-`npm run deploy -- user` crée un compte administrateur.
-`npm run deploy -- site` construit l’export pour le domaine (sans `basePath`, mesure d’audience vers le back-office) et le met en ligne après sauvegarde ; `npm run deploy -- site publication.json` construit depuis une publication validée.
-
-`deploy/site.htaccess` porte la configuration Apache du site (404, HTTPS, cache). GitHub Pages reste la prévisualisation du code.
+Le compte Bluehost n’a pas d’accès shell. Les migrations du back-office (`php bin/install.php init`) tournent toutes les cinq minutes par une tâche cron cPanel, qui crée aussi un compte si un fichier `first-admin.json` est présent puis le supprime. `config.local.php` (base MySQL, origines) est déposé à la main dans `baruck-admin/`, jamais dans le dépôt. GitHub Pages reste la prévisualisation du code.
 
 ## Commandes
 

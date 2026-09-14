@@ -16,5 +16,3 @@ backoffice/public/inter.woff2
 backoffice/dist/
 .backoffice-content/
 tools/dewatermark/planches/
-
-deploy/bluehost.env

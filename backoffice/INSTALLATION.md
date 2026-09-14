@@ -4,9 +4,9 @@ Cette application PHP est distincte de l’export public Next.js. Elle gère les
 
 ## État et limites de ce lot
 
-**Déploiement par `deploy/bluehost.sh`** (`npm run deploy -- …`, voir le README) : il applique par SSH les étapes du chapitre « Préparer et installer le paquet », qui reste la référence manuelle.
+**Installée sur Bluehost le 14 septembre 2026** (`admin.groupebaruck.com`, PHP 8.4, MySQL `fnksrwmy_baruck`). Le code est envoyé par FTP depuis GitHub Actions à chaque push sur `main` (voir le README) ; le compte n’a pas d’accès shell, les migrations tournent par une tâche cron cPanel. Le chapitre « Préparer et installer le paquet » reste la référence pour une réinstallation.
 
-Le back-office fonctionne localement avec une vraie base MySQL. Les six actualités du dépôt servent d’import initial, sans écrasement lors d’une réinstallation. Les contenus validés peuvent être exportés puis construire le site existant, avec ses URL, son sitemap et son RSS. **La mise en ligne d’une publication passe par `npm run deploy -- site publication.json`** ; le déclenchement depuis le bouton de l’administration n’est pas raccordé, et le bouton de téléchargement le dit explicitement.
+Le back-office fonctionne localement avec une vraie base MySQL. Les six actualités du dépôt servent d’import initial, sans écrasement lors d’une réinstallation. Les contenus validés peuvent être exportés puis construire le site existant, avec ses URL, son sitemap et son RSS. **La mise en ligne d’une publication n’est pas encore raccordée au déploiement FTP** : `backoffice:publish-build` construit `out/` localement, mais le workflow ne construit que depuis les fichiers du dépôt. Le bouton de téléchargement le dit explicitement.
 
 L’édition du corps utilise Markdown ; l’éditeur visuel, l’aperçu avant validation, la publication planifiée et la réinitialisation par e-mail restent à réaliser. L’administrateur peut supprimer une actualité jamais retenue pour publication et une image importée qu’aucun contenu n’utilise ; chaque suppression est confirmée dans un dialogue.
 
@@ -118,7 +118,7 @@ Ce réglage fait croire PHP sur parole quand un proxy annonce `X-Forwarded-Proto
 
 ## Préparer et installer le paquet
 
-`npm run deploy -- check`, `setup`, `backoffice` et `user` exécutent par SSH les points 1, 2, 3, 5, 6 et 7 ci-dessous et demandent le certificat du point 4. Restent à faire dans cPanel : la version PHP du sous-domaine (MultiPHP, 8.2 minimum) et la vérification du point 8.
+Sans accès shell (cas de ce compte Bluehost), le point 7 se fait par une tâche cron cPanel : `cd …/baruck-admin && /usr/local/bin/ea-php84 bin/install.php init >> install.log 2>&1; if [ -f first-admin.json ]; then … bin/install.php user < first-admin.json >> install.log 2>&1 && rm -f first-admin.json; fi`, le JSON du compte étant déposé par FTP en mode 600. Le workflow GitHub remplace les points 1 et 3 pour le code ; `config.local.php` (point 6) se dépose par FTP en mode 600.
 
 1. Construire avec `npm run backoffice:package`. Le résultat est `backoffice/dist/baruck-backoffice-bluehost.tar.gz`. Il contient les styles compilés, la police, PHP et l’import initial, aucun secret ni stockage local.
 2. Dans cPanel, relever le **Document Root de groupebaruck.com**. Les captures de la liste des fichiers ne permettent pas de le déduire. Ne pas remplacer le `public_html` commun : plusieurs sites sont présents sur le compte.
@@ -143,7 +143,7 @@ NEXT_PUBLIC_SITE_URL=https://groupebaruck.com/ NEXT_PUBLIC_BASE_PATH= npm run ba
 
 Le script prépare un dossier temporaire, vérifie les chemins, les types d’images et leurs empreintes, lance les validations éditoriales existantes et le build, puis copie les nouvelles images dans `out/`. Il ne modifie ni les articles Markdown suivis par Git ni les photos d’origine. Une erreur interrompt la publication. **Ne transférer `out/` que si la commande termine avec succès.**
 
-`npm run deploy -- site /chemin/baruck-publication.json` enchaîne cette construction, la sauvegarde du site en ligne et le transfert par rsync dans le Document Root du site. Sans le script, transférer cet export dans le Document Root exact du site public. Prévoir une sauvegarde et la suppression contrôlée des anciennes pages du seul site Baruck pour rendre les retraits effectifs. Le transfert atomique, le retour arrière et la connexion du bouton de publication à ce transfert constituent l’étape suivante, à configurer avec l’accès Bluehost. Ne jamais synchroniser ce dossier sur la racine commune des autres sites.
+Transférer ensuite cet export dans le Document Root exact du site public (`groupebaruck.com/`, compte FTP `baruck@groupebaruck.com`). Prévoir une sauvegarde et la suppression contrôlée des anciennes pages du seul site Baruck pour rendre les retraits effectifs. Le transfert atomique, le retour arrière et la connexion du bouton de publication à ce transfert constituent l’étape suivante, à configurer avec l’accès Bluehost. Ne jamais synchroniser ce dossier sur la racine commune des autres sites.
 
 Sans `BARUCK_EDITORIAL_ROOT`, le build habituel utilise toujours les fichiers du dépôt. GitHub Pages reste une prévisualisation du code. Une fois Bluehost activé, MySQL devient la source éditoriale : ne pas continuer d’éditer les mêmes articles dans Pages CMS.
 
