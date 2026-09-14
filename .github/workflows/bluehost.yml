@@ -1,4 +1,9 @@
-name: Prepare Bluehost branch
+name: Deploy to Bluehost
+
+# À chaque push sur main : construit le site pour groupebaruck.com et envoie par FTP
+# le site et le back-office, chacun avec un compte FTP cPanel limité à son dossier.
+# Secrets GitHub : FTP_SERVER, SITE_FTP_USERNAME, SITE_FTP_PASSWORD,
+# ADMIN_FTP_USERNAME, ADMIN_FTP_PASSWORD. Sans eux, l'envoi est ignoré.
 
 on:
   push:
@@ -6,7 +11,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: bluehost
@@ -17,7 +22,7 @@ env:
   ADMIN_DOMAIN: admin.groupebaruck.com
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -36,7 +41,7 @@ jobs:
           NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
       - name: Package the back office
         run: npm run backoffice:package
-      - name: Assemble the branch content
+      - name: Assemble the files to send
         run: |
           set -euo pipefail
           rm -rf dist && mkdir -p dist/site
@@ -48,28 +53,45 @@ jobs:
             echo "::warning::HTTPS ne répond pas sur $SITE_DOMAIN : redirection HTTPS omise, relancer ce workflow une fois le certificat actif."
           fi
           tar -xzf backoffice/dist/baruck-backoffice-bluehost.tar.gz -C dist backoffice
-          cp deploy/cpanel.yml dist/.cpanel.yml
           test -f dist/site/index.html && test -f dist/site/404.html && test -f dist/backoffice/public/index.php
           ! grep -rl 'gaslandie.github.io' dist/site
+          echo "deployed_at=$(date -u +'%Y-%m-%dT%H:%M:%SZ') commit=${GITHUB_SHA}" > dist/site/deploy-check.txt
           du -sh dist/site dist/backoffice
-      - name: Push to the bluehost branch
-        run: |
-          set -euo pipefail
-          remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          rm -rf publish
-          if git ls-remote --exit-code --heads origin bluehost >/dev/null; then
-            git clone --depth 1 --branch bluehost "$remote" publish
-            find publish -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
-          else
-            git init -b bluehost publish
-          fi
-          cp -R dist/. publish/
-          cd publish
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then echo "Aucun changement."; exit 0; fi
-          git commit -q -m "Build ${GITHUB_SHA::7} for ${SITE_DOMAIN}"
-          git push "$remote" bluehost
+      - name: Send the site (FTP account limited to the site folder)
+        if: env.SITE_FTP_PASSWORD != ''
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.SITE_FTP_USERNAME }}
+          password: ${{ secrets.SITE_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/site/
+          server-dir: /
+          exclude: |
+            .well-known/**
+            cgi-bin/**
+      - name: Send the back office (FTP account limited to baruck-admin)
+        if: env.ADMIN_FTP_PASSWORD != ''
+        env:
+          ADMIN_FTP_PASSWORD: ${{ secrets.ADMIN_FTP_PASSWORD }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.ADMIN_FTP_USERNAME }}
+          password: ${{ secrets.ADMIN_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/backoffice/
+          server-dir: /
+          exclude: |
+            config.local.php
+            storage/**
+      - name: Check the site online
+        if: env.SITE_FTP_PASSWORD != ''
+        env:
+          SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
+        run: |
+          code=$(curl -s -o /dev/null -m 30 -w '%{http_code}' "http://$SITE_DOMAIN/deploy-check.txt" || true)
+          echo "deploy-check.txt : HTTP $code"
+          curl -s -m 30 "http://$SITE_DOMAIN/deploy-check.txt" || true
