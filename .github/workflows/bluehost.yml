@@ -1,0 +1,75 @@
+name: Prepare Bluehost branch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bluehost
+  cancel-in-progress: true
+
+env:
+  SITE_DOMAIN: groupebaruck.com
+  ADMIN_DOMAIN: admin.groupebaruck.com
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - name: Build the site for the client domain
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://${{ env.SITE_DOMAIN }}/
+          NEXT_PUBLIC_BASE_PATH: ""
+          NEXT_PUBLIC_AUDIENCE_URL: https://${{ env.ADMIN_DOMAIN }}/collect.php
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
+      - name: Package the back office
+        run: npm run backoffice:package
+      - name: Assemble the branch content
+        run: |
+          set -euo pipefail
+          rm -rf dist && mkdir -p dist/site
+          cp -R out/. dist/site/ && rm -f dist/site/.nojekyll
+          escaped="${SITE_DOMAIN//./\\\\.}"
+          sed -e "s/__SITE_DOMAIN_RE__/$escaped/g" -e "s/__SITE_DOMAIN__/$SITE_DOMAIN/g" deploy/site.htaccess > dist/site/.htaccess
+          if ! curl -s -o /dev/null -m 20 "https://$SITE_DOMAIN/"; then
+            sed -i '/# >>> https/,/# <<< https/d' dist/site/.htaccess
+            echo "::warning::HTTPS ne répond pas sur $SITE_DOMAIN : redirection HTTPS omise, relancer ce workflow une fois le certificat actif."
+          fi
+          tar -xzf backoffice/dist/baruck-backoffice-bluehost.tar.gz -C dist backoffice
+          cp deploy/cpanel.yml dist/.cpanel.yml
+          test -f dist/site/index.html && test -f dist/site/404.html && test -f dist/backoffice/public/index.php
+          ! grep -rl 'gaslandie.github.io' dist/site
+          du -sh dist/site dist/backoffice
+      - name: Push to the bluehost branch
+        run: |
+          set -euo pipefail
+          remote="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          rm -rf publish
+          if git ls-remote --exit-code --heads origin bluehost >/dev/null; then
+            git clone --depth 1 --branch bluehost "$remote" publish
+            find publish -mindepth 1 -maxdepth 1 -not -name .git -exec rm -rf {} +
+          else
+            git init -b bluehost publish
+          fi
+          cp -R dist/. publish/
+          cd publish
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Aucun changement."; exit 0; fi
+          git commit -q -m "Build ${GITHUB_SHA::7} for ${SITE_DOMAIN}"
+          git push "$remote" bluehost
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
