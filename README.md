@@ -20,6 +20,18 @@ Modifier en priorité les contenus dans `src/data`. Les tarifs du studio photo s
 Les fichiers `public/*.html` redirigent les anciennes URL vers les routes Next.js.
 L’ancienne maquette HTML reste accessible dans l’historique Git, notamment au commit `7450343` (`chore: move HTML mockup to maquette/`).
 
+## Déploiement Bluehost
+
+Le site public va sur `groupebaruck.com` et l’administration sur `admin.groupebaruck.com`, par SSH depuis ce dépôt. Copier `deploy/bluehost.env.example` en `deploy/bluehost.env` (ignoré par Git), renseigner l’accès SSH du compte cPanel et le Document Root du domaine, puis :
+
+`npm run deploy -- check` vérifie l’accès, PHP et les racines des domaines.
+`npm run deploy -- setup` crée une fois le sous-domaine, la base MySQL et `config.local.php`.
+`npm run deploy -- backoffice` met l’administration à jour et lance les migrations.
+`npm run deploy -- user` crée un compte administrateur.
+`npm run deploy -- site` construit l’export pour le domaine (sans `basePath`, mesure d’audience vers le back-office) et le met en ligne après sauvegarde ; `npm run deploy -- site publication.json` construit depuis une publication validée.
+
+`deploy/site.htaccess` porte la configuration Apache du site (404, HTTPS, cache). GitHub Pages reste la prévisualisation du code.
+
 ## Commandes
 
 `npm run dev` lance le serveur local.
