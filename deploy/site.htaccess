@@ -17,6 +17,13 @@ RewriteRule ^ https://__SITE_DOMAIN__%{REQUEST_URI} [R=301,L]
 RewriteCond %{HTTP_HOST} ^www\.__SITE_DOMAIN_RE__$ [NC]
 RewriteRule ^ https://__SITE_DOMAIN__%{REQUEST_URI} [R=301,L]
 # <<< https
+
+# La vidéo ne doit pas être lue depuis un autre site (affichage sur une autre page,
+# partage du lien direct dans une iframe). Un referer vide reste accepté : certains
+# navigateurs n'en envoient pas, et les bloquer casserait la lecture normale.
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?__SITE_DOMAIN_RE__(/|$) [NC]
+RewriteRule \.(mp4|webm|m4v)$ - [F,NC]
 </IfModule>
 
 <IfModule mod_headers.c>
