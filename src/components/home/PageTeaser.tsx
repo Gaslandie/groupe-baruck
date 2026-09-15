@@ -38,9 +38,12 @@ export function PageTeaser({
   logo,
 }: PageTeaserProps) {
   return (
-    <section id={id} className={`reveal-stagger grid min-h-[620px] grid-cols-2 max-tablet:grid-cols-1 ${toneClasses[tone]}`}>
+    <section
+      id={id}
+      className={`reveal-stagger grid min-h-[620px] grid-cols-2 gap-[clamp(0px,3.5vw,4.5rem)] px-[clamp(0px,3vw,4rem)] py-[clamp(0px,2.5vw,3.5rem)] max-tablet:grid-cols-1 max-tablet:gap-0 max-tablet:p-0 ${toneClasses[tone]}`}
+    >
       <figure
-        className={`reveal-media relative m-0 min-h-[620px] overflow-hidden max-tablet:order-first max-tablet:min-h-0 max-tablet:aspect-[4/3] ${
+        className={`reveal-media relative m-0 min-h-[560px] overflow-hidden max-tablet:order-first max-tablet:min-h-0 max-tablet:aspect-[4/3] ${
           logo
             ? "grid place-items-center bg-[radial-gradient(circle_at_10%_88%,rgba(199,70,28,.35),transparent_31%),linear-gradient(135deg,#180e09_0%,#2d160d_52%,#190e09_100%)]"
             : "bg-[#cac5bb]"
@@ -69,7 +72,7 @@ export function PageTeaser({
         ) : null}
       </figure>
       <div
-        className={`reveal flex flex-col justify-center px-[clamp(1.5rem,6vw,7rem)] py-[clamp(4rem,7vw,7rem)] max-tablet:px-[1.3rem] max-tablet:py-14 ${
+        className={`reveal flex flex-col justify-center px-[clamp(1.5rem,4vw,4.5rem)] py-[clamp(4rem,6vw,6rem)] max-tablet:px-[1.3rem] max-tablet:py-14 ${
           reverse ? "order-first max-tablet:order-none" : ""
         }`}
       >

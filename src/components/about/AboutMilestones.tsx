@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 
 import { milestones } from "@/data/about";
-import { ClientNote } from "@/components/ui/ClientNote";
 
 import { AboutSectionHead } from "./AboutSectionHead";
 
@@ -75,7 +74,6 @@ export function AboutMilestones() {
         <p className="m-0 text-label uppercase tracking-[.15em] text-[rgba(255,255,255,.75)]">
           Création du Groupe Baruck
         </p>
-        <ClientNote>Date à confirmer avec le client.</ClientNote>
       </div>
     </section>
   );

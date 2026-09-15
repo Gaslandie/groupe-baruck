@@ -1,7 +1,6 @@
 import { facebookPages, hqHours, hqMap } from "@/data/contact";
 import { hqAddress } from "@/data/site";
 import { ContactMapEmbed } from "@/components/contact/ContactMapEmbed";
-import { ClientNote } from "@/components/ui/ClientNote";
 
 export function ContactMap() {
   return (
@@ -18,7 +17,6 @@ export function ContactMap() {
           <em className="font-normal text-accent">à Kobayah.</em>
         </h2>
         <p className="mb-0 mt-6 max-w-[420px] text-small leading-[1.7] text-[#686762]">{hqAddress}</p>
-        <ClientNote>Carte approximative centrée sur le quartier de Kobayah — emplacement exact à valider avec le client.</ClientNote>
         <span className="mb-[.35rem] mt-6 block text-micro uppercase tracking-[.15em] text-accent">
           Horaires · Siège
         </span>

@@ -1,11 +1,8 @@
 import Link from "next/link";
 
 import { activities } from "@/data/home";
-import { unsplashCredit } from "@/data/media";
 import { routes } from "@/data/site";
 import { imageUrl } from "@/lib/asset";
-
-import { PhotoCredits } from "../ui/PhotoCredits";
 import { SectionHead } from "../ui/SectionHead";
 
 function formatNumber(value: number) {
@@ -67,7 +64,6 @@ export function ActivitiesSection() {
           </Link>
         ))}
       </div>
-      <PhotoCredits source={unsplashCredit} tone="light" className="mt-6" />
     </section>
   );
 }

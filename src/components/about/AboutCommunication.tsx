@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import { baruckCommunication } from "@/data/about";
-import { ClientNote } from "@/components/ui/ClientNote";
 
 import { AboutSectionHead } from "./AboutSectionHead";
 
@@ -37,7 +36,6 @@ export function AboutCommunication() {
               </dd>
             </div>
           </dl>
-          <ClientNote>Statut juridique et date de création à confirmer avec le client.</ClientNote>
         </div>
 
         <div className="grid grid-cols-2 gap-[1.1rem] max-tablet:grid-cols-1">

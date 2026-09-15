@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { placeholderPhotos } from "@/data/media";
 import { routes } from "@/data/site";
-import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 export function AboutHero() {
   return (
@@ -41,11 +40,6 @@ export function AboutHero() {
           </Link>
         </div>
       </div>
-      <PhotoCredits
-        photos={[placeholderPhotos.dakarHorizon]}
-        tone="light"
-        className="absolute bottom-3 right-[clamp(1.3rem,7vw,8rem)] z-[1] max-tablet:static max-tablet:mt-8"
-      />
     </section>
   );
 }

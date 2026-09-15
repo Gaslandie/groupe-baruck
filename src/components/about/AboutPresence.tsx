@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { placeholderPhotos } from "@/data/media";
 import { routes } from "@/data/site";
-import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 import { AboutSectionHead } from "./AboutSectionHead";
 import { WestAfricaPresenceMap } from "./WestAfricaPresenceMap";
@@ -75,11 +74,6 @@ export function AboutPresence() {
           <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.62)]">Présence validée par la direction du groupe. Les activités et implantations locales seront précisées prochainement.</p>
         </article>
       </div>
-      <PhotoCredits
-        photos={[placeholderPhotos.conakry, placeholderPhotos.dakar, placeholderPhotos.abidjan]}
-        tone="light"
-        className="mt-4"
-      />
     </section>
   );
 }

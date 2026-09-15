@@ -1,9 +1,8 @@
 import Link from "next/link";
 
-import { placeholderImages, unsplashCredit } from "@/data/media";
+import { placeholderImages } from "@/data/media";
 import { contacts, routes } from "@/data/site";
 import { imageUrl } from "@/lib/asset";
-import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 const ctaImage = placeholderImages.contactEquipe.src;
 
@@ -48,11 +47,6 @@ export function ContactCta() {
           WhatsApp Baruck
         </a>
       </div>
-      <PhotoCredits
-        source={unsplashCredit}
-        tone="light"
-        className="absolute bottom-3 right-[clamp(1.3rem,6vw,7.5rem)] z-[1] max-tablet:static max-tablet:mt-8"
-      />
     </section>
   );
 }

@@ -7,7 +7,7 @@ export type ImageAsset = {
 
 export type RemotePhoto = { src: string; position: string; author: string; licence: string; href: string };
 
-/** Source d'un lot de photos provisoires, sans liste de photographes. */
+/** Source d'un lot de photos, sans liste de photographes (crédits des mentions légales). */
 export type CreditSource = { label: string; href: string };
 
 export const unsplashCredit: CreditSource = {
@@ -15,18 +15,18 @@ export const unsplashCredit: CreditSource = {
   href: "https://unsplash.com/?utm_source=groupe_baruck&utm_medium=referral",
 };
 
-/** Visuels Unsplash provisoires, auto-hébergés en WebP (accueil). Photographes non établis. */
+/** Visuels d’ambiance auto-hébergés en WebP (accueil), à remplacer par les photos du client. */
 export const placeholderImages = {
-  hotellerie: { src: "/images/placeholders/hotellerie.webp", alt: "Photo d’ambiance provisoire — hôtellerie", width: 1800, height: 1013 },
-  restauration: { src: "/images/placeholders/restauration.webp", alt: "Photo d’ambiance provisoire — restauration", width: 1800, height: 1200 },
-  agrobusiness: { src: "/images/placeholders/agrobusiness.webp", alt: "Photo d’ambiance provisoire — agro-business", width: 1800, height: 1013 },
-  studioEnregistrement: { src: "/images/placeholders/studio-enregistrement.webp", alt: "Photo d’ambiance provisoire — studio d’enregistrement", width: 1800, height: 1200 },
-  cinema: { src: "/images/placeholders/cinema.webp", alt: "Photo d’ambiance provisoire — cinéma", width: 1800, height: 1200 },
-  voituresLuxe: { src: "/images/placeholders/voitures-luxe.webp", alt: "Photo d’ambiance provisoire — voitures de luxe", width: 1800, height: 1200 },
-  communicationDigitale: { src: "/images/placeholders/communication-digitale.webp", alt: "Photo d’ambiance provisoire — communication digitale", width: 1800, height: 1282 },
-  productionArtistes: { src: "/images/placeholders/production-artistes.webp", alt: "Photo d’ambiance provisoire — production d’artistes", width: 1800, height: 1200 },
-  clipsVideo: { src: "/images/placeholders/clips-video.webp", alt: "Photo d’ambiance provisoire — clips vidéo", width: 1800, height: 1216 },
-  contactEquipe: { src: "/images/placeholders/contact-equipe.webp", alt: "Photo d’ambiance provisoire — équipe en réunion", width: 2000, height: 2998 },
+  hotellerie: { src: "/images/placeholders/hotellerie.webp", alt: "Photo d’ambiance — hôtellerie", width: 1800, height: 1013 },
+  restauration: { src: "/images/placeholders/restauration.webp", alt: "Photo d’ambiance — restauration", width: 1800, height: 1200 },
+  agrobusiness: { src: "/images/placeholders/agrobusiness.webp", alt: "Photo d’ambiance — agro-business", width: 1800, height: 1013 },
+  studioEnregistrement: { src: "/images/placeholders/studio-enregistrement.webp", alt: "Photo d’ambiance — studio d’enregistrement", width: 1800, height: 1200 },
+  cinema: { src: "/images/placeholders/cinema.webp", alt: "Photo d’ambiance — cinéma", width: 1800, height: 1200 },
+  voituresLuxe: { src: "/images/placeholders/voitures-luxe.webp", alt: "Photo d’ambiance — voitures de luxe", width: 1800, height: 1200 },
+  communicationDigitale: { src: "/images/placeholders/communication-digitale.webp", alt: "Photo d’ambiance — communication digitale", width: 1800, height: 1282 },
+  productionArtistes: { src: "/images/placeholders/production-artistes.webp", alt: "Photo d’ambiance — production d’artistes", width: 1800, height: 1200 },
+  clipsVideo: { src: "/images/placeholders/clips-video.webp", alt: "Photo d’ambiance — clips vidéo", width: 1800, height: 1216 },
+  contactEquipe: { src: "/images/placeholders/contact-equipe.webp", alt: "Photo d’ambiance — équipe en réunion", width: 2000, height: 2998 },
 } as const satisfies Record<string, ImageAsset>;
 
 export const placeholderPhotos = {

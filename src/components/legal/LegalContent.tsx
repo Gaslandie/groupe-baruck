@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-import { ClientNote } from "@/components/ui/ClientNote";
 import { placeholderPhotos, unsplashCredit, type RemotePhoto } from "@/data/media";
 import { contacts, hqAddress, routes, site } from "@/data/site";
 
@@ -71,10 +70,6 @@ export function LegalContent() {
             <dt className={termClass}>Site</dt>
             <dd className={`${paragraphClass} text-ink`}>
               Groupe Baruck
-              <ClientNote>
-                Raison sociale, forme juridique, numéro RCCM, adresse du siège social et
-                représentant légal à confirmer avec le client.
-              </ClientNote>
             </dd>
           </div>
           <div className="flex flex-col gap-2">
@@ -167,13 +162,13 @@ export function LegalContent() {
 
       <LegalSection id="credits-photographiques" number="06" title="Crédits photographiques">
         <p className={paragraphClass}>
-          Visuels d’ambiance provisoires :{" "}
+          Visuels d’ambiance :{" "}
           <a href={unsplashCredit.href} target="_blank" rel="noreferrer" className={inlineLinkClass}>
             {unsplashCredit.label}
           </a>
           .
         </p>
-        <p className={paragraphClass}>Photographies provisoires issues de Wikimedia Commons :</p>
+        <p className={paragraphClass}>Photographies issues de Wikimedia Commons :</p>
         <ul className="m-0 flex list-none flex-col gap-3 p-0">
           {wikimediaPhotos.map((photo) => (
             <li key={photo.href} className={`${paragraphClass} flex flex-wrap items-baseline gap-x-3`}>

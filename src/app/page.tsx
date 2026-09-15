@@ -19,17 +19,19 @@ export const metadata: Metadata = {
   openGraph: socialMetadata(presidentPortrait),
 };
 
+/** Les aperçus alternent image / texte d'un bloc à l'autre, dans l'ordre de la page. */
+const studioTeaser = pageTeasers.find((teaser) => teaser.id === "apercu-studio");
+const otherTeasers = pageTeasers.filter((teaser) => teaser.id !== "apercu-studio");
+
 export default function Home() {
   return (
     <PageShell variant="home" current="home" footer="home">
       <StructuredData data={organizationSchema} />
       <HeroSection />
-      {pageTeasers.filter((teaser) => teaser.id === "apercu-studio").map((teaser) => (
-        <PageTeaser key={teaser.id} {...teaser} />
-      ))}
+      {studioTeaser ? <PageTeaser {...studioTeaser} reverse /> : null}
       <ActivitiesSection />
-      {pageTeasers.filter((teaser) => teaser.id !== "apercu-studio").map((teaser) => (
-        <PageTeaser key={teaser.id} {...teaser} />
+      {otherTeasers.map((teaser, index) => (
+        <PageTeaser key={teaser.id} {...teaser} reverse={index % 2 === 1} />
       ))}
       <EdvImpactHighlights />
       <NewsPreview />

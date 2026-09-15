@@ -1,7 +1,6 @@
 import { contactNeeds } from "@/data/contact";
 import { placeholderPhotos } from "@/data/media";
 import { contacts } from "@/data/site";
-import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 export function ContactHero() {
   return (
@@ -61,11 +60,6 @@ export function ContactHero() {
           ))}
         </div>
       </div>
-      <PhotoCredits
-        photos={[placeholderPhotos.conakryHero]}
-        tone="light"
-        className="absolute bottom-3 right-[clamp(1.3rem,5vw,5.5rem)] z-[1] max-tablet:static max-tablet:col-span-full max-tablet:px-[1.3rem] max-tablet:pb-4"
-      />
     </section>
   );
 }

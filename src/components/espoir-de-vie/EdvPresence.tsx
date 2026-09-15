@@ -1,5 +1,4 @@
 import { edvCountries } from "@/data/espoir-de-vie";
-import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 import { EdvSectionHead } from "./EdvSectionHead";
 
@@ -44,7 +43,6 @@ export function EdvPresence() {
           </article>
         ))}
       </div>
-      <PhotoCredits photos={edvCountries.map((country) => country.photo)} tone="light" className="mt-4" />
     </section>
   );
 }

@@ -1,5 +1,4 @@
 import { hostessProcess, hostessTags } from "@/data/services";
-import { ClientNote } from "@/components/ui/ClientNote";
 
 export function HostessProcess() {
   return (
@@ -36,7 +35,6 @@ export function HostessProcess() {
           </li>
         ))}
       </ol>
-      <ClientNote>Parcours de réservation à valider avec le client.</ClientNote>
 
       <div className="reveal mt-[clamp(2.5rem,5vw,3.5rem)] border-t border-line pt-[1.4rem]">
         <h3 className="m-0 text-micro uppercase tracking-[.15em] text-accent">Types d’événements</h3>

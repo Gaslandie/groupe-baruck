@@ -39,7 +39,6 @@ export function AboutOnu() {
         </h2>
         <p className="lead mb-[1.4rem] mt-6">En 2016, MR Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.</p>
         <p className="m-0 max-w-[560px] text-body leading-[1.8] text-[#64645f]">Cette expérience éclaire la manière dont il conduit aujourd’hui le Groupe Baruck : une attention constante portée à l’utilité sociale des projets, au-delà de leur seule performance économique.</p>
-        <p className="content-disclaimer">Le détail de cette mission — pays, programme et durée — sera précisé après validation.</p>
       </div>
       <div className="col-span-full grid grid-cols-3 gap-6 max-tablet:grid-cols-1">
         {presidentOnuGallery.map((photo) => (

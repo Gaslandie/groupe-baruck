@@ -10,6 +10,7 @@ import { EdvMission } from "@/components/espoir-de-vie/EdvMission";
 import { EdvOrphanage } from "@/components/espoir-de-vie/EdvOrphanage";
 import { EdvPresence } from "@/components/espoir-de-vie/EdvPresence";
 import { EdvSectionNav } from "@/components/espoir-de-vie/EdvSectionNav";
+import { EdvVideo } from "@/components/espoir-de-vie/EdvVideo";
 import { PageShell } from "@/components/layout/PageShell";
 import { edvLogo } from "@/data/media";
 import { routes, site } from "@/data/site";
@@ -40,6 +41,7 @@ export default function EspoirDeViePage() {
       <EdvMission />
       <EdvImpact />
       <EdvOrphanage />
+      <EdvVideo />
       <EdvActions />
       <EdvPresence />
       <EdvArchives />

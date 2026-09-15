@@ -208,3 +208,26 @@ export const edvCollaborations = [
     text: "L’orphelinat a reçu la visite d’une organisation française venue rencontrer les enfants et les équipes.",
   },
 ] satisfies EdvCollaboration[];
+
+export type EdvVideo = {
+  /** Fichier déposé dans `public/videos/` ; la section n'existe que s'il est présent. */
+  src: `/${string}`;
+  poster?: `/${string}`;
+  eyebrow: string;
+  title: string;
+  emphasis: string;
+  text: string;
+  date: { iso: string; label: string };
+  caption: string;
+};
+
+export const edvVisitVideo = {
+  src: "/videos/don-orphelinat-precieux-soleils.mp4",
+  poster: "/images/espoir-de-vie/don-orphelinat-precieux-soleils.jpg",
+  eyebrow: "Sur le terrain · Conakry",
+  title: "Un don à l’orphelinat",
+  emphasis: "des Précieux Soleils.",
+  text: "Le PDG du Groupe Baruck, également président de la JECA, s’est rendu dans le quartier de Sonfonia T7, à Conakry, auprès des enfants de l’orphelinat des Précieux Soleils.",
+  date: { iso: "2026-09-11", label: "Vendredi 11 septembre 2026" },
+  caption: "Remise d’un don aux enfants et à l’équipe de l’orphelinat des Précieux Soleils, à Sonfonia T7.",
+} satisfies EdvVideo;

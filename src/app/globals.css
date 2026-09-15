@@ -126,19 +126,43 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    html[data-navigation-transition]::view-transition-old(root) {
-      animation: navigation-out .24s ease-out both;
-    }
-    html[data-navigation-transition]::view-transition-new(root) {
-      animation: navigation-in .36s cubic-bezier(.2,.7,.2,1) both;
-    }
     html[data-page-enter] #main-content {
       animation: navigation-in .36s cubic-bezier(.2,.7,.2,1) both;
     }
   }
 
-  @keyframes navigation-out { to { opacity: 0; } }
   @keyframes navigation-in { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Barre d'attente pendant qu'une page se charge : purement indicative. */
+  .nav-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: 2px;
+    pointer-events: none;
+  }
+
+  .nav-progress::before {
+    content: "";
+    display: block;
+    height: 100%;
+    width: 8%;
+    background: var(--color-accent);
+    animation: nav-progress 14s cubic-bezier(.1,.7,.2,1) both;
+  }
+
+  @keyframes nav-progress {
+    0% { width: 0; }
+    10% { width: 32%; }
+    35% { width: 62%; }
+    100% { width: 94%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-progress::before { width: 100%; opacity: .55; }
+  }
 
   .eyebrow {
     margin: 0 0 1.2rem;
@@ -403,13 +427,6 @@
     max-width: 100%;
     height: auto;
     margin: 2em 0;
-  }
-
-  .content-disclaimer {
-    margin: 1.3rem 0 0;
-    font-size: var(--text-label);
-    color: #77756f;
-    font-style: italic;
   }
 
   .jeca-kicker {

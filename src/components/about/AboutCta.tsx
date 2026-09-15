@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { placeholderPhotos } from "@/data/media";
 import { routes } from "@/data/site";
-import { PhotoCredits } from "@/components/ui/PhotoCredits";
 
 export function AboutCta() {
   return (
@@ -28,7 +27,6 @@ export function AboutCta() {
       <div className="mt-[2.2rem] flex flex-wrap justify-center gap-[.8rem] max-tablet:[&_.button]:w-full">
         <Link href={routes.contact} className="button button-accent">Nous contacter <span>↗</span></Link>
       </div>
-      <PhotoCredits photos={[placeholderPhotos.madina]} tone="light" className="mt-10" />
     </section>
   );
 }

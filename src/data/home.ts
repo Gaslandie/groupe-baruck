@@ -187,7 +187,6 @@ export const pageTeasers: PageTeaser[] = [
   {
     id: "apercu-studio",
     tone: "paper",
-    reverse: true,
     image: { ...studioHero, position: "center" },
     eyebrow: "Baruck Communication · Guinée",
     title: "Studio Photo Baruck",
@@ -199,7 +198,6 @@ export const pageTeasers: PageTeaser[] = [
   {
     id: "apercu-hostesses",
     tone: "ink",
-    reverse: true,
     image: { ...hostessesHero, position: "center 38%" },
     eyebrow: "Baruck Communication · Guinée",
     title: "Hôtesses",
@@ -222,7 +220,6 @@ export const pageTeasers: PageTeaser[] = [
   {
     id: "apercu-edv",
     tone: "edv",
-    reverse: true,
     logo: edvLogo,
     eyebrow: "Engagement humanitaire · Afrique de l’Ouest",
     title: "Espoir de Vie.",

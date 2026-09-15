@@ -55,10 +55,6 @@ export function AboutIntro() {
           </article>
         ))}
       </div>
-      <p className="content-disclaimer col-span-full m-0">
-        Présentation éditoriale provisoire. L’histoire du groupe, sa date de création et ses chiffres clés seront
-        intégrés dès leur validation.
-      </p>
     </section>
   );
 }

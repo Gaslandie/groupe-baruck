@@ -1,6 +1,6 @@
 import { hqAddress } from "./site";
 
-// Les visuels temp-*.jpg sont provisoires et devront être remplacés par les photos réelles du studio.
+// Les visuels temp-*.jpg seront remplacés par les photos réelles du studio.
 
 export type ServiceImage = {
   src: `/${string}`;
@@ -393,7 +393,7 @@ export type HostessProcessStep = {
   text: string;
 };
 
-/** Parcours de réservation provisoire, en attente de validation client. */
+/** Parcours de réservation. */
 export const hostessProcess: HostessProcessStep[] = [
   {
     number: "01",

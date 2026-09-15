@@ -28,7 +28,6 @@ export function AboutRoles() {
           <span className="text-micro tracking-[.15em] text-accent">02</span>
           <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">Président de la JECA</h3>
           <p className="m-0 text-small leading-[1.7] text-[#65645f]">Jeunes Entrepreneurs Chrétiens Africains : une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.</p>
-          <small className="mt-[.8rem] block text-label italic text-[#8a8880]">Libellé officiel à confirmer.</small>
           <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">Découvrir la JECA ↗</i>
         </Link>
         <Link href={routes.edv} className={`${sharedCardStyles} border-line bg-ivory`}>
