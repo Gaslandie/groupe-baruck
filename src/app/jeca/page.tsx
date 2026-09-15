@@ -7,6 +7,7 @@ import { JecaCta } from "@/components/jeca/JecaCta";
 import { JecaGalleryProvider } from "@/components/jeca/JecaGallery";
 import { JecaGoree } from "@/components/jeca/JecaGoree";
 import { JecaHero } from "@/components/jeca/JecaHero";
+import { JecaSpeech } from "@/components/jeca/JecaSpeech";
 import { JecaNextEdition } from "@/components/jeca/JecaNextEdition";
 import { JecaJourney } from "@/components/jeca/JecaJourney";
 import { JecaVision } from "@/components/jeca/JecaVision";
@@ -38,6 +39,7 @@ export default function JecaPage() {
       <JecaVision />
       <JecaJourney />
       <JecaGoree />
+      <JecaSpeech />
       <ForumsIntro />
       <JecaGalleryProvider photos={galleryPhotos}>
         <ForumEdition edition={jecaEditions[0]} gallery={jecaGalleries[0]} offset={0} />

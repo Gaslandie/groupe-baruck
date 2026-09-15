@@ -2,7 +2,7 @@ import { edvVisitVideo } from "@/data/espoir-de-vie";
 import { asset } from "@/lib/asset";
 import { publicFileExists } from "@/lib/public-file";
 
-import { EdvVideoPlayer } from "./EdvVideoPlayer";
+import { VideoPlayer } from "../ui/VideoPlayer";
 
 /**
  * Vidéo de la visite, hébergée sur le site : aucun lecteur extérieur, aucun traceur.
@@ -45,11 +45,12 @@ export function EdvVideo() {
         </p>
       </div>
       <figure className="reveal m-0 w-full max-w-[460px] justify-self-end max-tablet:justify-self-start">
-        <EdvVideoPlayer
+        <VideoPlayer
           src={asset(edvVisitVideo.src)}
           poster={poster ? asset(poster) : undefined}
           width={368}
           height={368}
+          className="aspect-square"
         />
         <figcaption className="mt-[1.1rem] text-caption leading-[1.7] text-[rgba(255,255,255,.58)]">
           {edvVisitVideo.caption}

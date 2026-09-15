@@ -301,3 +301,45 @@ export const jecaNextEdition: JecaNextEdition = {
     "Prochaine édition de la JECA",
   )}&body=${encodeURIComponent(nextEditionMessage)}`,
 };
+
+export type JecaVideo = {
+  /** Fichier déposé dans `public/videos/` ; la section n'existe que s'il est présent. */
+  src: `/${string}`;
+  poster?: `/${string}`;
+  width: number;
+  height: number;
+  eyebrow: string;
+  title: string;
+  emphasis: string;
+  caption: string;
+  /** Ce que le président aborde, dans l'ordre : repères avant d'écouter. */
+  chapters: { number: string; title: string; text: string }[];
+};
+
+export const jecaSpeechVideo = {
+  src: "/videos/discours-pdg-jeca.mp4",
+  poster: "/images/jeca/discours-pdg-jeca.jpg",
+  width: 640,
+  height: 368,
+  eyebrow: "La parole du président",
+  title: "Écouter la vision,",
+  emphasis: "dans ses mots.",
+  caption: "Prise de parole du président de la JECA devant la presse.",
+  chapters: [
+    {
+      number: "01",
+      title: "Se réunir",
+      text: "Les États ne peuvent pas tout faire : il faut se réunir pour s’occuper de l’Afrique.",
+    },
+    {
+      number: "02",
+      title: "Dépasser la peur",
+      text: "Beaucoup ont peur d’investir après des expériences qui n’ont pas fonctionné. La réponse de la JECA est de sensibiliser la diaspora.",
+    },
+    {
+      number: "03",
+      title: "Venir au Sénégal",
+      text: "L’île de Gorée et le voyage de non-retour : la JECA a compris qu’elle devait aussi venir au Sénégal.",
+    },
+  ],
+} satisfies JecaVideo;
