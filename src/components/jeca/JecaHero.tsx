@@ -25,7 +25,7 @@ export function JecaHero() {
           <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-jeca-yellow">
             Président fondateur
           </span>
-          Djoro Joël Shaloom Krasso
+          MR Djoro Joël Shaloom Krasso
         </p>
       </div>
       <div className="hero-in relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(2rem,6vw,7.5rem)] pr-[clamp(2rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1080px]:px-10 max-tablet:z-[2] max-tablet:h-auto max-tablet:min-h-0 max-tablet:w-full max-tablet:px-[1.3rem] max-tablet:pb-14 max-tablet:pt-16">

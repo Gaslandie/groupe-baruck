@@ -24,7 +24,7 @@ export const milestones: Milestone[] = [
     year: "2016",
     dateTime: "2016",
     title: "Protection de l’enfant",
-    text: "Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.",
+    text: "MR Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.",
     href: "#experience-onu",
   },
   {

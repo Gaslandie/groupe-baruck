@@ -125,23 +125,23 @@ export const presidentPortrait: ImageAsset = {
 
 export const presidentOnu1: ImageAsset = {
   src: "/images/president/onu-2016-1.jpg",
-  alt: "Djoro Joël Shaloom Krasso participant à une séance de travail",
+  alt: "MR Djoro Joël Shaloom Krasso participant à une séance de travail",
   width: 720,
   height: 540,
 };
 
 export const presidentOnu2: ImageAsset = {
   src: "/images/president/onu-2016-2.jpg",
-  alt: "Djoro Joël Shaloom Krasso devant un portrait de Kofi Annan",
+  alt: "MR Djoro Joël Shaloom Krasso devant un portrait de Kofi Annan",
   width: 720,
   height: 540,
 };
 
 /** Photos complémentaires fournies par le client, sans date déduite des fichiers. */
 export const presidentOnuGallery: ImageAsset[] = [
-  { src: "/images/president/onu-seance-travail.jpg", alt: "Djoro Joël Shaloom Krasso à une table de travail aux Nations Unies", width: 720, height: 540 },
-  { src: "/images/president/onu-devant-drapeaux.jpg", alt: "Djoro Joël Shaloom Krasso devant les drapeaux des Nations Unies", width: 960, height: 720 },
-  { src: "/images/president/onu-salle-conference.jpg", alt: "Djoro Joël Shaloom Krasso dans une salle de conférence des Nations Unies", width: 960, height: 720 },
+  { src: "/images/president/onu-seance-travail.jpg", alt: "MR Djoro Joël Shaloom Krasso à une table de travail aux Nations Unies", width: 720, height: 540 },
+  { src: "/images/president/onu-devant-drapeaux.jpg", alt: "MR Djoro Joël Shaloom Krasso devant les drapeaux des Nations Unies", width: 960, height: 720 },
+  { src: "/images/president/onu-salle-conference.jpg", alt: "MR Djoro Joël Shaloom Krasso dans une salle de conférence des Nations Unies", width: 960, height: 720 },
 ];
 
 export const studioHero: ImageAsset = {

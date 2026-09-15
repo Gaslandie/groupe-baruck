@@ -45,7 +45,7 @@ export type JecaEditionNavItem = {
 
 export const jecaPortrait: ImageAsset = {
   src: "/images/jeca/president-fondateur.webp",
-  alt: "Djoro Joël Shaloom Krasso, président fondateur de la JECA",
+  alt: "MR Djoro Joël Shaloom Krasso, président fondateur de la JECA",
   width: 852,
   height: 1846,
 };
