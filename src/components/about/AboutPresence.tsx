@@ -5,6 +5,7 @@ import { routes } from "@/data/site";
 
 import { AboutSectionHead } from "./AboutSectionHead";
 import { WestAfricaPresenceMap } from "./WestAfricaPresenceMap";
+import { Icon } from "../ui/Icon";
 
 export function AboutPresence() {
   return (
@@ -35,8 +36,8 @@ export function AboutPresence() {
           <h3 className="mb-4 mt-6 font-display text-display-md font-normal">Guinée</h3>
           <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.62)]">Point d’ancrage du groupe. Baruck Communication y opère le Studio Photo Baruck la Prospérité, à Kobayah (Conakry), ainsi que ses équipes d’hôtesses événementielles.</p>
           <div className="mb-0 mt-auto flex flex-wrap gap-2 pt-[1.8rem]">
-            <Link href={routes.studio} className="border border-[rgba(255,255,255,.24)] px-[.8rem] py-[.6rem] text-label uppercase tracking-[.1em] transition-[background,color,border-color] duration-[250ms] hover:border-accent hover:bg-accent hover:text-ivory">Studio photo ↗</Link>
-            <Link href={routes.hostesses} className="border border-[rgba(255,255,255,.24)] px-[.8rem] py-[.6rem] text-label uppercase tracking-[.1em] transition-[background,color,border-color] duration-[250ms] hover:border-accent hover:bg-accent hover:text-ivory">Hôtesses événementielles ↗</Link>
+            <Link href={routes.studio} className="border border-[rgba(255,255,255,.24)] px-[.8rem] py-[.6rem] text-label uppercase tracking-[.1em] transition-[background,color,border-color] duration-[250ms] hover:border-accent hover:bg-accent hover:text-ivory">Studio photo <Icon name="arrow-up-right" /></Link>
+            <Link href={routes.hostesses} className="border border-[rgba(255,255,255,.24)] px-[.8rem] py-[.6rem] text-label uppercase tracking-[.1em] transition-[background,color,border-color] duration-[250ms] hover:border-accent hover:bg-accent hover:text-ivory">Hôtesses événementielles <Icon name="arrow-up-right" /></Link>
           </div>
         </article>
         <article className="group reveal relative isolate flex min-h-[380px] flex-col overflow-hidden bg-ink p-[clamp(1.8rem,2.6vw,2.6rem)]">

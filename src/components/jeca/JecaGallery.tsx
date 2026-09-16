@@ -13,6 +13,7 @@ import {
 
 import type { GalleryPhoto as GalleryPhotoData } from "@/data/jeca";
 import { asset } from "@/lib/asset";
+import { Icon } from "../ui/Icon";
 
 type GalleryContextValue = {
   openPhoto: (index: number) => void;
@@ -61,7 +62,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
           onClick={close}
           className="fixed right-6 top-[1.2rem] z-[2] h-12 w-12 cursor-pointer border border-[rgba(255,255,255,.4)] bg-[rgba(4,16,49,.65)] text-[1.8rem] text-white max-tablet:right-[.7rem] max-tablet:top-[.7rem]"
         >
-          ×
+          <Icon name="close" />
         </button>
         <button
           type="button"
@@ -69,7 +70,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
           onClick={() => move(-1)}
           className="fixed left-6 top-1/2 z-[2] h-12 w-12 translate-y-[-50%] cursor-pointer border border-[rgba(255,255,255,.4)] bg-[rgba(4,16,49,.65)] text-white transition-[background,color] duration-[250ms] hover:bg-white hover:text-jeca-blue max-tablet:bottom-[.6rem] max-tablet:left-[.7rem] max-tablet:top-auto max-tablet:h-11 max-tablet:w-11 max-tablet:translate-y-0"
         >
-          ←
+          <Icon name="arrow-left" />
         </button>
         {activePhoto && activeIndex !== null ? (
           <figure className="m-0 grid h-full w-full grid-rows-[1fr_auto] gap-[.8rem]">
@@ -92,7 +93,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
           onClick={() => move(1)}
           className="fixed right-6 top-1/2 z-[2] h-12 w-12 translate-y-[-50%] cursor-pointer border border-[rgba(255,255,255,.4)] bg-[rgba(4,16,49,.65)] text-white transition-[background,color] duration-[250ms] hover:bg-white hover:text-jeca-blue max-tablet:bottom-[.6rem] max-tablet:right-[.7rem] max-tablet:top-auto max-tablet:h-11 max-tablet:w-11 max-tablet:translate-y-0"
         >
-          →
+          <Icon name="arrow-right" />
         </button>
       </dialog>
     </GalleryContext.Provider>

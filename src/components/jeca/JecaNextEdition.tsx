@@ -1,4 +1,5 @@
 import { jecaNextEdition } from "@/data/jeca";
+import { Icon } from "../ui/Icon";
 
 export function JecaNextEdition() {
   return (
@@ -24,7 +25,7 @@ export function JecaNextEdition() {
             rel="noreferrer"
             className="jeca-button jeca-button-white"
           >
-            Être informé sur WhatsApp <span>↗</span>
+            Être informé sur WhatsApp <span><Icon name="arrow-up-right" /></span>
           </a>
           <a href={jecaNextEdition.emailHref} className="jeca-button jeca-button-outline">
             Être informé par e-mail

@@ -5,6 +5,7 @@ import { routes } from "@/data/site";
 
 import { NewsImage } from "./NewsImage";
 import { NewsMeta } from "./NewsMeta";
+import { Icon } from "../ui/Icon";
 
 type NewsFeatureProps = {
   article: ArticleSummary;
@@ -28,7 +29,7 @@ export function NewsFeature({ article }: NewsFeatureProps) {
           {article.excerpt}
         </p>
         <span className="text-link mt-6">
-          Lire l’article <span>↗</span>
+          Lire l’article <span><Icon name="arrow-up-right" /></span>
         </span>
       </div>
     </Link>

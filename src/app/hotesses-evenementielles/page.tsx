@@ -10,6 +10,7 @@ import { hostessesHero } from "@/data/media";
 import { hostessTags } from "@/data/services";
 import { contacts, hqAddress, routes, site, whatsappRequests } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
   title: "Hôtesses événementielles",
@@ -56,7 +57,7 @@ export default function HostessesPage() {
               rel="noreferrer"
               className="button button-accent"
             >
-              Réserver une équipe <span>↗</span>
+              Réserver une équipe <span><Icon name="arrow-up-right" /></span>
             </a>
             <a href={contacts.landline.href} className="button button-ghost">
               Nous appeler

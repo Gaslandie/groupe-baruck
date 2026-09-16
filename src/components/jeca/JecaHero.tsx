@@ -1,6 +1,7 @@
 import { jecaLogo } from "@/data/media";
 import { jecaPortrait } from "@/data/jeca";
 import { asset } from "@/lib/asset";
+import { Icon } from "../ui/Icon";
 
 export function JecaHero() {
   return (
@@ -55,10 +56,10 @@ export function JecaHero() {
         </p>
         <div className="jeca-actions">
           <a href="#editions" className="jeca-button jeca-button-primary">
-            Voir les éditions <span>↓</span>
+            Voir les éditions <span><Icon name="arrow-down" /></span>
           </a>
           <a href="#vision" className="jeca-button jeca-button-line">
-            Notre vision <span>↘</span>
+            Notre vision <span><Icon name="arrow-down-right" /></span>
           </a>
         </div>
         <dl className="mb-0 mt-[clamp(2rem,4vh,3.2rem)] grid max-w-[420px] grid-cols-[repeat(2,minmax(0,150px))] border-t border-jeca-line pt-[1.1rem] max-tablet:mt-8 max-tablet:border-[rgba(255,255,255,.22)] [@media(max-width:760px)_and_(max-height:700px)]:mt-[1.2rem]">

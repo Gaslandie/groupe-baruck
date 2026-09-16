@@ -3,7 +3,6 @@ import Link from "next/link";
 import { baruckCommunication } from "@/data/about";
 
 import { AboutSectionHead } from "./AboutSectionHead";
-
 export function AboutCommunication() {
   const { eyebrow, description, presence, servicesLabel, services } = baruckCommunication;
 
@@ -50,7 +49,7 @@ export function AboutCommunication() {
               </h3>
               <p className="m-0 text-small leading-[1.7] text-[#65645f]">{service.text}</p>
               <span className="mb-0 mt-auto pt-[1.6rem] text-label uppercase tracking-[.12em] text-accent">
-                {service.cta} <i aria-hidden="true" className="not-italic">↗</i>
+                {service.cta}
               </span>
             </Link>
           ))}

@@ -5,6 +5,8 @@ namespace Baruck;
 
 require dirname(__DIR__) . '/src/bootstrap.php';
 
+$buffers = ob_get_level();
+
 try {
     startSession();
     $user = currentUser();
@@ -192,10 +194,17 @@ try {
         }
         $article ??= ['id' => '', 'version' => 0, 'title' => '', 'slug' => '', 'category' => 'groupe', 'date' => '', 'excerpt' => '', 'body' => '', 'cover' => '', 'cover_alt' => '', 'gallery' => [], 'status' => 'draft'];
     }
+    // La mise en page part dans un tampon : si le rendu échoue à mi-chemin, la réponse
+    // d’erreur garde ses propres en-têtes au lieu de s’ajouter à une demi-page, et aucun
+    // avertissement PHP ne vient révéler les chemins des fichiers du serveur.
+    ob_start();
     require dirname(__DIR__) . '/src/views/layout.php';
+    ob_end_flush();
 } catch (\Throwable $exception) {
     // Ne jamais afficher DSN, chemins, mots de passe ou trace dans la réponse.
+    while (ob_get_level() > $buffers) ob_end_clean();
     error_log('Baruck admin: ' . get_class($exception) . ' code=' . $exception->getCode());
+    if (headers_sent()) { echo '<p>Administration temporairement indisponible. Réessayez dans quelques instants.</p>'; return; }
     http_response_code(503);
     header('Content-Type: text/html; charset=utf-8');
     header('Cache-Control: no-store');

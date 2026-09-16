@@ -1,6 +1,7 @@
 import { contactNeeds } from "@/data/contact";
 import { placeholderPhotos } from "@/data/media";
 import { contacts } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 export function ContactHero() {
   return (
@@ -28,7 +29,7 @@ export function ContactHero() {
         </p>
         <div className="flex flex-wrap gap-[.8rem] max-tablet:[&_.button]:w-full">
           <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="button button-accent">
-            WhatsApp Baruck Siège <span>↗</span>
+            WhatsApp Baruck Siège <span><Icon name="arrow-up-right" /></span>
           </a>
           <a href={contacts.landline.href} className="button button-ghost">
             Appeler le siège
@@ -46,16 +47,13 @@ export function ContactHero() {
               key={need.number}
               href={need.href}
               {...("external" in need && need.external ? { target: "_blank", rel: "noreferrer" } : {})}
-              className="grid grid-cols-[40px_1fr_auto] items-baseline gap-4 border-b border-[rgba(255,255,255,.16)] py-[.95rem] text-[rgba(255,255,255,.8)] transition-[color,padding,background] duration-[220ms] hover:bg-[rgba(255,255,255,.05)] hover:px-[.65rem] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.05)] focus-visible:px-[.65rem] focus-visible:text-ivory max-tablet:grid-cols-[32px_1fr_auto] max-tablet:gap-[.7rem]"
+              className="grid grid-cols-[40px_1fr] items-baseline gap-4 border-b border-[rgba(255,255,255,.16)] py-[.95rem] text-[rgba(255,255,255,.8)] transition-[color,padding,background] duration-[220ms] hover:bg-[rgba(255,255,255,.05)] hover:px-[.65rem] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.05)] focus-visible:px-[.65rem] focus-visible:text-ivory max-tablet:grid-cols-[32px_1fr] max-tablet:gap-[.7rem]"
             >
               <span className="text-micro tracking-[.14em] text-accent">{need.number}</span>
               <p className="m-0 text-small leading-[1.5]">
                 <strong className="font-semibold text-ivory">{need.title}</strong>
                 <small className="mt-1 block text-label text-[rgba(255,255,255,.45)]">{need.text}</small>
               </p>
-              <i aria-hidden="true" className="text-small not-italic text-accent">
-                {need.href === "#formulaire" ? "↓" : "↗"}
-              </i>
             </a>
           ))}
         </div>

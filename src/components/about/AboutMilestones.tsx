@@ -4,9 +4,8 @@ import Link from "next/link";
 import { milestones } from "@/data/about";
 
 import { AboutSectionHead } from "./AboutSectionHead";
-
 const linkStyles =
-  "group grid grid-cols-[1fr_auto] items-start gap-4 transition-[transform,color] duration-[250ms] hover:translate-x-[.4rem] focus-visible:translate-x-[.4rem]";
+  "group block transition-[transform,color] duration-[250ms] hover:translate-x-[.4rem] focus-visible:translate-x-[.4rem]";
 
 function MilestoneLink({ href, children }: { href: string; children: ReactNode }) {
   if (href.startsWith("#")) {
@@ -59,12 +58,6 @@ export function AboutMilestones() {
                   {milestone.text}
                 </p>
               </span>
-              <i
-                aria-hidden="true"
-                className="mt-[.35rem] text-small not-italic text-accent transition-transform duration-[250ms] group-hover:translate-x-1 group-hover:translate-y-[-2px]"
-              >
-                ↗
-              </i>
             </MilestoneLink>
           </li>
         ))}

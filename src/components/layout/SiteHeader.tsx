@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-import { mainNav, routes, sideNavContacts, type RouteKey } from "@/data/site";
+import { mainNav, routes, type RouteKey } from "@/data/site";
 
 import { Brand } from "./Brand";
+import { Icon } from "../ui/Icon";
 
 export type HeaderVariant = "home" | "about" | "service" | "jeca" | "edv";
 
@@ -27,8 +28,8 @@ type VariantStyle = {
 
 export const variantStyles: Record<HeaderVariant, VariantStyle> = {
   home: {
-    header: "",
-    scrolled: "bg-[rgba(11,12,14,.88)] backdrop-blur-[16px]",
+    header: "bg-[rgba(11,12,14,.82)] backdrop-blur-[16px]",
+    scrolled: "bg-[rgba(11,12,14,.92)] backdrop-blur-[16px]",
     underline: "after:bg-accent",
     currentDesktop: "",
     contactArrow: "text-accent",
@@ -291,7 +292,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             href={routes.contact}
             className="border-b border-[rgba(255,255,255,.3)] pb-[.3rem] text-caption uppercase tracking-[.08em] wide:hidden max-tablet:hidden"
           >
-            Parler avec nous <span className={["ml-[.4rem]", styles.contactArrow].join(" ")}>↗</span>
+            Parler avec nous <span className={["ml-[.4rem]", styles.contactArrow].join(" ")}><Icon name="arrow-up-right" /></span>
           </Link>
           <button
             id="menu-button"
@@ -343,7 +344,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           >
             <span className="text-label uppercase tracking-[.18em]">Fermer</span>
             <span aria-hidden="true" className="font-sans text-[2rem] font-normal leading-none">
-              ×
+              <Icon name="close" />
             </span>
           </button>
         </div>
@@ -382,26 +383,6 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           })}
         </nav>
 
-        <div className="grid grid-cols-[105px_1fr] gap-4 border-t border-line pt-[1.3rem] text-caption max-tablet:grid-cols-1">
-          <p className="m-0 text-[#6f6f6b] max-tablet:mb-2">Restons en contact</p>
-          <div className="grid grid-cols-2 gap-x-[1.2rem] gap-y-[.85rem] max-tablet:grid-cols-1 max-tablet:gap-[.7rem]">
-            {sideNavContacts.map((contact) => (
-              <a
-                key={contact.href}
-                href={contact.href}
-                target={contact.external ? "_blank" : undefined}
-                rel={contact.external ? "noreferrer" : undefined}
-                onClick={() => setIsOpen(false)}
-                className="leading-[1.3]"
-              >
-                <small className="mb-[.2rem] block text-micro uppercase tracking-[.1em] text-accent">
-                  {contact.label}
-                </small>
-                {contact.value}
-              </a>
-            ))}
-          </div>
-        </div>
       </aside>
     </>
   );

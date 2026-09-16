@@ -4,6 +4,7 @@ import { NewsCard } from "@/components/actualites/NewsCard";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { routes } from "@/data/site";
 import { getAllArticles } from "@/lib/actualites";
+import { Icon } from "../ui/Icon";
 
 export function NewsPreview() {
   const articles = getAllArticles().slice(0, 3);
@@ -27,7 +28,7 @@ export function NewsPreview() {
         ))}
       </div>
       <Link href={routes.news} className="text-link mt-14">
-        Toutes les actualités <span>↗</span>
+        Toutes les actualités <span><Icon name="arrow-up-right" /></span>
       </Link>
     </section>
   );

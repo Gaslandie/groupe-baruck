@@ -1,6 +1,6 @@
 import { contactNeeds, hqHours } from "./contact";
 import { edvCountries, edvPillars, edvTimeline } from "./espoir-de-vie";
-import { activities, pageTeasers } from "./home";
+import { activities, mainActivities, pageTeasers } from "./home";
 import { jecaEditions } from "./jeca";
 import { hostessOffers, hostessTags, studioFaq, studioPriceGroups } from "./services";
 import { contacts, footers, hqAddress, routes, site, whatsappRequests } from "./site";
@@ -136,7 +136,7 @@ const faq = (question: string): string => {
 };
 
 const teaser = (id: string): string => {
-  const item = pageTeasers.find((entry) => entry.id === id);
+  const item = [...pageTeasers, ...mainActivities].find((entry) => entry.id === id);
   if (!item) throw new Error(`Aperçu introuvable : ${id}`);
   return item.text;
 };
@@ -225,7 +225,7 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     topic: "studio",
     question: topicLabels.studio,
     keywords: ["studio", "photo", "photographe", "shooting", "seance", "portrait"],
-    messages: [teaser("apercu-studio")],
+    messages: [teaser("activite-studio")],
     options: [
       { label: "Les tarifs", next: "studio-tarifs" },
       { label: "Rendez-vous et horaires", next: "studio-rendez-vous" },
@@ -288,7 +288,7 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     topic: "hotesses",
     question: topicLabels.hotesses,
     keywords: ["hotesse", "hotesses", "evenementiel", "evenementielles"],
-    messages: [teaser("apercu-hostesses")],
+    messages: [teaser("activite-hotesses")],
     options: [
       { label: "Que proposent les hôtesses ?", next: "hotesses-offres" },
       { label: "Pour quels événements ?", next: "hotesses-evenements" },

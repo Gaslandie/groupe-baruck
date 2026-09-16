@@ -12,7 +12,7 @@
   --color-accent: #dc5b2b;
   --color-gold: #c7a765;
   --color-line: rgba(11, 12, 14, 0.15);
-  --font-display: Georgia, "Times New Roman", serif;
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
   --animate-marquee: marquee 30s linear infinite;
   --animate-hero-zoom: heroZoomOut 5s linear forwards;
@@ -333,6 +333,9 @@
   .button-ghost { --fill: var(--color-ivory); }
   .button-ghost:hover,
   .button-ghost:focus-visible { color: var(--color-ink); border-color: var(--color-ivory); }
+  .button-outline { color: var(--color-ink); border-color: rgba(11,12,14,.28); --fill: var(--color-ink); }
+  .button-outline:hover,
+  .button-outline:focus-visible { color: var(--color-ivory); border-color: var(--color-ink); }
   .button-accent { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-ivory); --fill: var(--color-ivory); }
   .button-accent:hover,
   .button-accent:focus-visible { color: var(--color-ink); }

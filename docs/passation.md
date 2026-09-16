@@ -1,4 +1,4 @@
-# Passation — Site Groupe Baruck (Next.js) — mise à jour 2026-09-06
+# Passation — Site Groupe Baruck (Next.js) — mise à jour 2026-09-16
 
 Notes pour reprendre le travail sur un autre poste. Code sur `https://github.com/Gaslandie/groupe-baruck` (branche `main`), site publié par GitHub Actions à chaque push sur `main` : `https://gaslandie.github.io/groupe-baruck/`.
 
@@ -15,6 +15,57 @@ npm run build        # export statique dans out/
 Prérequis : Node 24, npm 11, Codex CLI (config `~/.codex/config.toml`). Codex lit `AGENTS.md` à la racine. Outil `tools/dewatermark/` : voir son README (les planches `planches/` ne sont pas dans le dépôt : photos d'enfants filigranées, jamais publiées).
 
 Mémoire de Claude Code : locale à chaque poste. Sur le nouveau poste, ouvrir Claude Code dans le dépôt et lui demander de lire ce fichier puis d'enregistrer en mémoire les sections « Méthode de travail », « Décisions client en attente » et « Backlog ».
+
+## Étape du 2026-09-16 — accueil refondu, police des titres
+
+Tout est commité et poussé sur `main`. Le push déclenche `.github/workflows/bluehost.yml`,
+donc **le site part en ligne tout seul** : vérifier l'onglet Actions du dépôt et
+`https://groupebaruck.com/deploy-check.txt` (il contient l'horodatage et le commit déployé).
+Pour reprendre sur un autre poste : `git clone` puis `npm install` suffit, rien n'est en attente
+en local.
+
+Ce qui a changé sur l'accueil :
+
+- **Hero** : plus de carrousel. Portrait du président à gauche (`PresidentPanel`, image seule),
+  textes à droite sur fond clair `bg-paper` (`HeroIntro`). Le bandeau du menu de l'accueil est
+  passé en fond sombre (`variantStyles.home.header`) : sans lui, le menu blanc devenait illisible
+  sur la moitié droite claire.
+- **Les 3 volets de l'ancien carrousel sont devenus des sections** juste sous le hero
+  (`mainActivities` dans `src/data/home.ts`, rendues par `PageTeaser`). Leurs titres et textes
+  viennent toujours de `content/textes.json`, groupe « heroSlides » : **le back-office continue de
+  les modifier au même endroit**. Les aperçus `apercu-studio` et `apercu-hostesses` ont été
+  supprimés de `pageTeasers` (ils faisaient doublon) ; l'assistant pointe désormais sur
+  `activite-studio` et `activite-hotesses`.
+- **« Le Groupe Baruck en Guinée »** est une **bande sans image** (`band: true` dans `PageTeaser`),
+  fond clair, titre à gauche et texte à droite, sans lien — demandé par Mohamed le 2026-09-16.
+- **Grille des activités** : titre « Nos autres activités », sur-titre supprimé, plus de flèche
+  dans les cartes, titre remonté à droite du numéro, description passée de `text-caption` à
+  `text-small`.
+- **Moins de flèches** : 12 sur l'accueil. Celles qui se répétaient dans les listes et les cartes
+  ont été retirées (activités, fonctions du président, cartes actualités, cartes du Groupe,
+  lignes de contact, réseaux Facebook, médiathèque, grande flèche décorative d'Espoir de Vie).
+  Gardées : une par grand bouton de section, et toutes les flèches qui servent (‹ › des galeries,
+  retour en haut, croix). Les flèches de la chatbox n'ont pas été touchées.
+- **Menu latéral** : le bloc « Restons en contact » (5 numéros + e-mail) est retiré ; l'export
+  `sideNavContacts` de `src/data/site.ts` a disparu avec lui. Les coordonnées restent sur `/contact/`.
+- **Police des titres** : Fraunces variable, auto-hébergée (`src/app/fonts/fraunces-latin.woff2` et
+  `-italic`), à la place de Georgia qui n'était installée nulle part de façon fiable. Inter ne bouge
+  pas. Benchmark : `docs/benchmark-typographie-2026-09-16.md`.
+- **Repères Espoir de Vie** : « Pays d'intervention » devient « Pays de présence ». À noter pour la
+  suite : ce compteur est **celui d'Espoir de Vie** (Côte d'Ivoire, Guinée, Burkina Faso), pas celui
+  du Groupe (Guinée, Sénégal, Côte d'Ivoire, page « Le Groupe », section « Trois pays »).
+
+Vérifié le 2026-09-16 : `lint`, `typecheck`, `build` avec `basePath`, 21 tests, et un test Chrome
+headless à 1440 / 1280 / 1024 / 768 / 390 px (aucune erreur console, aucun débordement horizontal,
+Fraunces bien chargée, bande Guinée sans image ni lien sur fond `#f1eee7`).
+
+À décider avec Mohamed :
+
+1. **Photo manquante** : il n'existe aucune vraie photo des locaux du Groupe en Guinée dans le dépôt.
+   La bande « Groupe Baruck en Guinée » s'en passe pour l'instant.
+2. Trois blocs clairs se suivent (panneau droit du hero, bande Guinée, aperçu Studio, tous en
+   `bg-paper`) : à revoir si Mohamed trouve que ça manque de contraste.
+3. Les flèches de la chatbox : gardées volontairement, à enlever sur demande.
 
 ## Méthode de travail
 Claude planifie et relit (code et faits), Codex implémente, Mohamed est seul juge du rendu visuel. **Rôles inversés depuis le 2026-09-05** : Codex relit et rédige les briefs, Claude implémente en vérifiant chaque consigne avant de l'appliquer, Mohamed reste seul juge du rendu. Une étape = un brief collé dans Codex = un commit = un compte rendu ; Codex s'arrête ; Claude vérifie contre les fichiers réels (et rebuild avec Turbopack + `basePath`, voir ci-dessous) avant d'écrire le brief suivant. Les briefs se donnent dans la conversation, pas dans un fichier. Contrôles au niveau du code uniquement (`lint`, `typecheck`, `build`, greps ciblés, et au besoin un test fonctionnel en Chrome headless via le DevTools Protocol, sans jugement de rendu), aucun jugement visuel par les agents. Mohamed a autorisé Claude à pousser sur `main` après vérification.

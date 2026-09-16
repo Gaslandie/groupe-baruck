@@ -91,6 +91,9 @@ check(count($inactive) === 1 && str_contains($inactive[0]['text'], 'pas encore a
 $chart = Baruck\barChart([['label' => '1 sept.', 'visitors' => 0], ['label' => '2 sept.', 'visitors' => 7], ['label' => '3 sept.', 'visitors' => 14]], 'visitors', 'visiteurs');
 check(substr_count($chart, '<rect') === 3 && str_contains($chart, 'height="100"') && str_contains($chart, 'height="50"') && str_contains($chart, 'Maximum : 14 visiteurs') && !str_contains($chart, 'style='), 'graphique SVG proportionnel sans style en ligne');
 check(str_contains(Baruck\shareBar(1, 4), 'width="25"'), 'barre de part proportionnelle');
+// Un site sans aucune visite : les séries sont vides et `max(1, ...[])` ferait échouer la page.
+check(Baruck\topValue([]) === 1 && Baruck\topValue([0, 0]) === 1 && Baruck\topValue([3, 14, 7]) === 14, 'maximum d’une série vide ramené à 1');
+check(str_contains(Baruck\barChart([['label' => '1 sept.', 'visitors' => 0], ['label' => '2 sept.', 'visitors' => 0]], 'visitors', 'visiteurs'), 'Maximum : 1 visiteurs'), 'graphique d’une série entièrement à zéro');
 // Boutique : identifiants déduits du nom, rayons et photos.
 check(Baruck\slugify('Sac à main noir') === 'sac-a-main-noir', 'accents et espaces transformés en identifiant');
 check(Baruck\slugify('Chemise  —  «  Été 2026  »') === 'chemise-ete-2026', 'ponctuation et espaces multiples réduits');

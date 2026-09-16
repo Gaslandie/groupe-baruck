@@ -13,6 +13,7 @@ import { studioHero } from "@/data/media";
 import { studioFaq, studioTags } from "@/data/services";
 import { contacts, hqAddress, routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
   title: "Studio Photo Baruck la Prospérité",
@@ -59,7 +60,7 @@ export default function StudioPhotoPage() {
         actions={
           <>
             <a href="#tarifs" className="button button-accent">
-              Connaître les prix <span>↓</span>
+              Connaître les prix <span><Icon name="arrow-down" /></span>
             </a>
             <a href={contacts.landline.href} className="button button-ghost">
               Appeler le studio

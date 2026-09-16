@@ -1,6 +1,7 @@
 import { contacts } from "@/data/site";
 
 import { ContactForm } from "./ContactForm";
+import { Icon } from "../ui/Icon";
 
 type ChannelRowProps = {
   label: string;
@@ -16,7 +17,7 @@ function ChannelRow({ label, value, href, external = false, withBorderBottom = f
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noreferrer" : undefined}
-      className={`group grid grid-cols-[1fr_auto] items-center gap-4 border-t border-line py-[1.15rem] transition-[padding,color] duration-[220ms] hover:pl-[.5rem] hover:text-accent focus-visible:pl-[.5rem] focus-visible:text-accent${
+      className={`group block border-t border-line py-[1.15rem] transition-[padding,color] duration-[220ms] hover:pl-[.5rem] hover:text-accent focus-visible:pl-[.5rem] focus-visible:text-accent${
         withBorderBottom ? " border-b" : ""
       }`}
     >
@@ -24,9 +25,6 @@ function ChannelRow({ label, value, href, external = false, withBorderBottom = f
         <small className="mb-[.35rem] block text-micro uppercase tracking-[.16em] text-accent">{label}</small>
         <span className="font-display text-display-sm leading-none">{value}</span>
       </span>
-      <i aria-hidden="true" className="text-small not-italic text-accent transition-transform duration-[220ms] group-hover:translate-x-1">
-        ↗
-      </i>
     </a>
   );
 }
@@ -52,7 +50,7 @@ export function ContactDetails() {
         <details className="group/more mt-6">
           <summary className="text-link w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">
             Autres lignes directes{" "}
-            <span className="transition-transform duration-[220ms] group-open/more:rotate-180">↓</span>
+            <span className="transition-transform duration-[220ms] group-open/more:rotate-180"><Icon name="arrow-down" /></span>
           </summary>
           <div className="mt-4">
             <ChannelRow label="Téléphone mobile" value={contacts.mobile.value} href={contacts.mobile.href} />

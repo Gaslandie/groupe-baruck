@@ -7,10 +7,6 @@ export function EdvImpact() {
       className="grid grid-cols-[42%_58%] bg-edv-ember-deep text-white max-[1100px]:grid-cols-[46%_54%] max-tablet:block"
     >
       <div className="reveal relative overflow-hidden bg-edv-ink px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:px-[1.3rem] max-tablet:py-20">
-        <span
-          aria-hidden="true"
-          className="absolute bottom-[-160px] right-[-160px] aspect-square w-[330px] rounded-full border border-[rgba(240,165,29,.18)] shadow-[0_0_0_65px_rgba(240,165,29,.035)]"
-        />
         <p className="edv-kicker edv-kicker-light">Nos actions en chiffres</p>
         <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
           Des gestes concrets,

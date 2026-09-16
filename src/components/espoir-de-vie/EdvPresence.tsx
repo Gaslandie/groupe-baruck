@@ -1,4 +1,5 @@
 import { edvCountries } from "@/data/espoir-de-vie";
+import { imageUrl } from "@/lib/asset";
 
 import { EdvSectionHead } from "./EdvSectionHead";
 
@@ -24,7 +25,7 @@ export function EdvPresence() {
             <span
               aria-hidden="true"
               style={{
-                backgroundImage: `url("${country.photo.src}")`,
+                backgroundImage: `url("${imageUrl(country.photo.src)}")`,
                 backgroundPosition: country.photo.position,
               }}
               className="absolute inset-0 z-[-2] bg-cover saturate-[.6] transition-transform duration-[600ms] group-hover:scale-[1.04]"

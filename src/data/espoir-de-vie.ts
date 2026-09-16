@@ -1,4 +1,4 @@
-import { placeholderPhotos, type RemotePhoto } from "./media";
+import { placeholderPhotos, type ImageAsset, type RemotePhoto } from "./media";
 
 type EdvSectionNavItem = {
   href: `#${string}`;
@@ -28,6 +28,7 @@ type EdvTimelineItem = {
   step?: string;
   title: string;
   text: string;
+  photo?: ImageAsset;
 };
 
 type EdvAction = {
@@ -39,14 +40,23 @@ type EdvAction = {
   text: string;
   highlight?: string;
   tone?: "featured" | "dark";
+  photo?: ImageAsset;
 };
+
+/** Visuel cadré par `background-position`, local (ImageAsset) ou distant (RemotePhoto). */
+export type EdvPositionedPhoto = (ImageAsset | RemotePhoto) & { position: string };
 
 type EdvCountry = {
   code: "CI" | "GN" | "BF";
   number: string;
   title: string;
   text: string;
-  photo: RemotePhoto;
+  photo: EdvPositionedPhoto;
+};
+
+export type EdvGalleryItem = {
+  photo: ImageAsset;
+  caption: string;
 };
 
 type EdvCollaboration = {
@@ -54,6 +64,46 @@ type EdvCollaboration = {
   title: string;
   text: string;
 };
+
+/**
+ * Photos d'archives de la fondation remises par le client, retaillées en WebP
+ * dans `public/images/espoir-de-vie/`. Un même fichier peut servir à plusieurs
+ * endroits : rien n'est dupliqué.
+ */
+export const edvPhotos = {
+  orphelinatVueAerienne: { src: "/images/espoir-de-vie/orphelinat-vue-aerienne.webp", alt: "Vue aérienne de l’orphelinat Espoir de Vie et de sa cour", width: 2000, height: 1444 },
+  orphelinatVueAerienneCour: { src: "/images/espoir-de-vie/orphelinat-vue-aerienne-cour.webp", alt: "L’orphelinat Espoir de Vie vu depuis les airs, devant son portail", width: 1400, height: 1011 },
+  orphelinatChantier: { src: "/images/espoir-de-vie/orphelinat-chantier.webp", alt: "Le bâtiment de l’orphelinat pendant sa construction", width: 1400, height: 1011 },
+  orphelinatChantierVisite: { src: "/images/espoir-de-vie/orphelinat-chantier-visite.webp", alt: "Le président fondateur sur le chantier de l’orphelinat", width: 1100, height: 1524 },
+  orphelinatDortoir: { src: "/images/espoir-de-vie/orphelinat-dortoir.webp", alt: "Dortoir de l’orphelinat : lits superposés et berceaux devant une fresque", width: 1400, height: 1011 },
+  orphelinatCuisine: { src: "/images/espoir-de-vie/orphelinat-cuisine.webp", alt: "La cuisine équipée de l’orphelinat", width: 1100, height: 794 },
+  orphelinatAccueilFamilles: { src: "/images/espoir-de-vie/orphelinat-accueil-familles.webp", alt: "Familles et enfants accueillis dans une salle de l’orphelinat", width: 1100, height: 733 },
+  orphelinatInaugurationRuban: { src: "/images/espoir-de-vie/orphelinat-inauguration-ruban.webp", alt: "Coupure du ruban devant le portail de l’orphelinat le jour de l’ouverture", width: 1100, height: 733 },
+  orphelinatInaugurationCortege: { src: "/images/espoir-de-vie/orphelinat-inauguration-cortege.webp", alt: "Cortège accompagné d’une fanfare le jour de l’ouverture de l’orphelinat", width: 1400, height: 933 },
+  orphelinatDiscoursFondateur: { src: "/images/espoir-de-vie/orphelinat-discours-fondateur.webp", alt: "Prise de parole devant l’affiche des dix principes de la Déclaration des droits de l’enfant", width: 1100, height: 733 },
+  orphelinatDroitsDeLEnfant: { src: "/images/espoir-de-vie/orphelinat-droits-de-l-enfant.webp", alt: "Salle de l’orphelinat où un mur rappelle qu’un enfant a droit à la vie et à l’éducation", width: 1800, height: 1300 },
+  orphelinatRemiseVetements: { src: "/images/espoir-de-vie/orphelinat-remise-vetements.webp", alt: "Remise de vêtements aux enfants, devant une valise ouverte", width: 1100, height: 794 },
+  orphelinatRepasPartage: { src: "/images/espoir-de-vie/orphelinat-repas-partage.webp", alt: "Repas partagé autour de la grande table de l’orphelinat", width: 1400, height: 933 },
+  orphelinatRepasService: { src: "/images/espoir-de-vie/orphelinat-repas-service.webp", alt: "Service du repas aux enfants accueillis à l’orphelinat", width: 1100, height: 733 },
+  grohRemiseJouets: { src: "/images/espoir-de-vie/groh-remise-jouets.webp", alt: "Remise de jouets aux enfants du village de Grôh", width: 1400, height: 1011 },
+  grohJouets: { src: "/images/espoir-de-vie/groh-jouets.webp", alt: "Les jouets rassemblés avant la distribution aux enfants de Grôh", width: 1100, height: 794 },
+  grohArbreDeNoel: { src: "/images/espoir-de-vie/groh-arbre-de-noel.webp", alt: "Distribution de jouets devant l’arbre de Noël, à Grôh", width: 1100, height: 794 },
+  kitsScolairesCartables: { src: "/images/espoir-de-vie/kits-scolaires-cartables.webp", alt: "Cartables empilés avant la distribution des kits scolaires", width: 1100, height: 794 },
+  kitsScolairesEleves: { src: "/images/espoir-de-vie/kits-scolaires-eleves.webp", alt: "Élèves rassemblés pour la distribution des kits scolaires à Zaroko", width: 1400, height: 1011 },
+  kitsScolairesRemise: { src: "/images/espoir-de-vie/kits-scolaires-remise.webp", alt: "Remise d’un cartable à un enfant du village de Zaroko", width: 1100, height: 733 },
+  divoKitsScolaires: { src: "/images/espoir-de-vie/divo-kits-scolaires.webp", alt: "Enfants du quartier Dialogue de Divo avec leurs cartables", width: 1400, height: 1011 },
+  divoFournitures: { src: "/images/espoir-de-vie/divo-fournitures.webp", alt: "Carton de fournitures scolaires prêtes à être distribuées", width: 1100, height: 794 },
+  veuvesRemiseVivres: { src: "/images/espoir-de-vie/veuves-remise-vivres.webp", alt: "Remise de vivres à une femme veuve", width: 1100, height: 794 },
+  veuvesVivres: { src: "/images/espoir-de-vie/veuves-vivres.webp", alt: "Femmes veuves réunies avec les vivres reçus", width: 1100, height: 794 },
+  feteDesMeres: { src: "/images/espoir-de-vie/fete-des-meres.webp", alt: "Mamans réunies avec les présents remis à l’occasion de la fête des Mères", width: 1100, height: 825 },
+  fondationRoseGuiro: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1100, height: 794 },
+} as const satisfies Record<string, ImageAsset>;
+
+/** Photo de fond du hero : l'orphelinat vu du ciel. */
+export const edvHeroPhoto = { ...edvPhotos.orphelinatVueAerienne, position: "center 58%" } satisfies EdvPositionedPhoto;
+
+/** Bandeau de la section « Notre mission ». */
+export const edvMissionPhoto = { ...edvPhotos.orphelinatDroitsDeLEnfant, position: "center 42%" } satisfies EdvPositionedPhoto;
 
 export const edvSectionNav = [
   { href: "#mission", number: "01", title: "Notre mission", subtitle: "Protéger et accompagner" },
@@ -87,7 +137,7 @@ export const edvImpact = [
   { value: "100", label: "Jouets remis aux enfants de Grôh" },
   { value: "200", label: "Orphelins accompagnés à la rentrée 2016–2017" },
   { value: "2017", label: "Accueil des premiers pensionnaires" },
-  { value: "03", label: "Pays d’intervention" },
+  { value: "03", label: "Pays de présence" },
 ] satisfies EdvImpactItem[];
 
 export const edvTimeline = [
@@ -95,26 +145,31 @@ export const edvTimeline = [
     step: "Étape 01",
     title: "Construction",
     text: "Édification du bâtiment destiné à accueillir et accompagner les enfants.",
+    photo: edvPhotos.orphelinatChantier,
   },
   {
     step: "Étape 02",
     title: "Aménagement",
     text: "Préparation des dortoirs, des berceaux, de la cuisine et des espaces de vie.",
+    photo: edvPhotos.orphelinatDortoir,
   },
   {
     date: { iso: "2017-02-11", label: "11 février 2017" },
     title: "Premiers pensionnaires",
     text: "Accueil des premiers enfants avant l’ouverture officielle de l’établissement.",
+    photo: edvPhotos.orphelinatAccueilFamilles,
   },
   {
     date: { iso: "2017-02-15", label: "15 février 2017" },
     title: "Inauguration",
     text: "Ouverture officielle en présence des communautés et des autorités invitées.",
+    photo: edvPhotos.orphelinatInaugurationRuban,
   },
   {
     date: { iso: "2017-03-04", label: "04 mars 2017" },
     title: "Un repas partagé",
     text: "Le président fondateur partage un moment de convivialité avec les enfants accueillis.",
+    photo: edvPhotos.orphelinatRepasPartage,
   },
 ] satisfies EdvTimelineItem[];
 
@@ -127,6 +182,7 @@ export const edvActions = [
     text: "Cent jouets remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
     highlight: "100 jouets",
     tone: "featured",
+    photo: edvPhotos.grohRemiseJouets,
   },
   {
     number: "02",
@@ -134,6 +190,7 @@ export const edvActions = [
     place: "Zaroko et Divo · Côte d’Ivoire",
     title: "Favoriser l’accès à l’école",
     text: "Distribution de cartables, cahiers, fournitures et vivres aux enfants orphelins, dont 200 bénéficiaires au quartier Dialogue de Divo pour la rentrée 2016–2017.",
+    photo: edvPhotos.divoKitsScolaires,
   },
   {
     number: "03",
@@ -141,6 +198,7 @@ export const edvActions = [
     place: "Côte d’Ivoire",
     title: "Soutenir les femmes et les familles",
     text: "Dons aux mères, aide alimentaire aux veuves et accompagnement de petites initiatives génératrices de revenus.",
+    photo: edvPhotos.veuvesRemiseVivres,
   },
   {
     number: "04",
@@ -149,6 +207,7 @@ export const edvActions = [
     title: "Vêtir et chausser dignement",
     text: "Des vêtements ont été remis aux enfants de l’orphelinat. Des chaussures ont ensuite été distribuées aux enfants démunis de Divo, puis, le 3 juin 2017, aux enfants du village de Zaroko.",
     highlight: "4 000 chaussures à Divo · 2 000 à Zaroko",
+    photo: edvPhotos.orphelinatRemiseVetements,
   },
   {
     number: "05",
@@ -156,6 +215,7 @@ export const edvActions = [
     place: "Fondation Marie Rose Guiro",
     title: "Unir les forces",
     text: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro pour accompagner ses bénéficiaires.",
+    photo: edvPhotos.fondationRoseGuiro,
   },
   {
     number: "06",
@@ -173,7 +233,7 @@ export const edvCountries = [
     number: "01",
     title: "Côte d’Ivoire",
     text: "Grôh, Hiré, Zaroko et Divo : jouets, kits scolaires, aide aux familles, vêtements, chaussures et construction de l’orphelinat.",
-    photo: placeholderPhotos.divo,
+    photo: { ...edvPhotos.kitsScolairesEleves, position: "center 45%" },
   },
   {
     code: "GN",
@@ -190,6 +250,24 @@ export const edvCountries = [
     photo: placeholderPhotos.ouagadougou,
   },
 ] satisfies EdvCountry[];
+
+/** Galerie de la section « Mémoire d'actions » (reprise aussi par la médiathèque). */
+export const edvGallery = [
+  { photo: edvPhotos.orphelinatVueAerienneCour, caption: "L’orphelinat" },
+  { photo: edvPhotos.orphelinatChantierVisite, caption: "Le chantier" },
+  { photo: edvPhotos.orphelinatInaugurationCortege, caption: "Jour d’ouverture" },
+  { photo: edvPhotos.orphelinatDiscoursFondateur, caption: "Les droits de l’enfant" },
+  { photo: edvPhotos.orphelinatCuisine, caption: "La cuisine" },
+  { photo: edvPhotos.orphelinatRepasService, caption: "Un repas partagé" },
+  { photo: edvPhotos.grohJouets, caption: "Grôh · Les jouets" },
+  { photo: edvPhotos.grohArbreDeNoel, caption: "Grôh · Un Noël" },
+  { photo: edvPhotos.kitsScolairesCartables, caption: "Les cartables" },
+  { photo: edvPhotos.kitsScolairesRemise, caption: "Zaroko · Rentrée" },
+  { photo: edvPhotos.divoFournitures, caption: "Les fournitures" },
+  { photo: edvPhotos.feteDesMeres, caption: "Fête des Mères" },
+  { photo: edvPhotos.veuvesVivres, caption: "Soutien aux veuves" },
+  { photo: edvPhotos.fondationRoseGuiro, caption: "Fondation Marie Rose Guiro" },
+] satisfies EdvGalleryItem[];
 
 export const edvCollaborations = [
   {

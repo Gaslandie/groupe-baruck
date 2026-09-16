@@ -7,7 +7,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { NewsPreview } from "@/components/home/NewsPreview";
 import { PageTeaser } from "@/components/home/PageTeaser";
 import { EdvImpactHighlights } from "@/components/espoir-de-vie/EdvImpactHighlights";
-import { pageTeasers } from "@/data/home";
+import { mainActivities, pageTeasers } from "@/data/home";
 import { presidentPortrait } from "@/data/media";
 import { site } from "@/data/site";
 import { StructuredData } from "@/components/ui/StructuredData";
@@ -19,18 +19,18 @@ export const metadata: Metadata = {
   openGraph: socialMetadata(presidentPortrait),
 };
 
-/** Les aperçus alternent image / texte d'un bloc à l'autre, dans l'ordre de la page. */
-const studioTeaser = pageTeasers.find((teaser) => teaser.id === "apercu-studio");
-const otherTeasers = pageTeasers.filter((teaser) => teaser.id !== "apercu-studio");
-
 export default function Home() {
   return (
     <PageShell variant="home" current="home" footer="home">
       <StructuredData data={organizationSchema} />
       <HeroSection />
-      {studioTeaser ? <PageTeaser {...studioTeaser} reverse /> : null}
+      {/* Activités principales : les trois volets de l'ancien carrousel du hero. */}
+      {mainActivities.map((activity, index) => (
+        <PageTeaser key={activity.id} {...activity} reverse={index % 2 === 0} />
+      ))}
       <ActivitiesSection />
-      {otherTeasers.map((teaser, index) => (
+      {/* Les aperçus alternent image / texte d'un bloc à l'autre. */}
+      {pageTeasers.map((teaser, index) => (
         <PageTeaser key={teaser.id} {...teaser} reverse={index % 2 === 1} />
       ))}
       <EdvImpactHighlights />

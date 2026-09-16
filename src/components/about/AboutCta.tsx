@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { placeholderPhotos } from "@/data/media";
 import { routes } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 export function AboutCta() {
   return (
@@ -25,7 +26,7 @@ export function AboutCta() {
       </h2>
       <p className="mx-auto my-0 max-w-[540px] text-body leading-[1.75] text-[rgba(255,255,255,.62)]">Partenariat, collaboration ou simple demande d’information : l’équipe du Groupe Baruck vous répond.</p>
       <div className="mt-[2.2rem] flex flex-wrap justify-center gap-[.8rem] max-tablet:[&_.button]:w-full">
-        <Link href={routes.contact} className="button button-accent">Nous contacter <span>↗</span></Link>
+        <Link href={routes.contact} className="button button-accent">Nous contacter <span><Icon name="arrow-up-right" /></span></Link>
       </div>
     </section>
   );

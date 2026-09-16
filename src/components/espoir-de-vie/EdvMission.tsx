@@ -1,4 +1,5 @@
-import { edvPillars } from "@/data/espoir-de-vie";
+import { edvMissionPhoto, edvPillars } from "@/data/espoir-de-vie";
+import { asset } from "@/lib/asset";
 
 const headingClass =
   "m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]";
@@ -35,6 +36,17 @@ export function EdvMission() {
           </p>
         </aside>
       </div>
+      <figure className="reveal reveal-media col-span-full m-0 mt-12 overflow-hidden max-tablet:mt-10">
+        <img
+          src={asset(edvMissionPhoto.src)}
+          alt={edvMissionPhoto.alt}
+          width={edvMissionPhoto.width}
+          height={edvMissionPhoto.height}
+          loading="lazy"
+          style={{ objectPosition: edvMissionPhoto.position }}
+          className="aspect-[21/9] w-full bg-edv-cream object-cover max-tablet:aspect-[4/3]"
+        />
+      </figure>
       <div
         aria-label="Les cinq piliers d’Espoir de Vie"
         className="reveal-stagger col-span-full mt-12 grid grid-cols-5 border-t border-edv-line max-[1100px]:grid-cols-3 max-[1100px]:[&>article:nth-child(3)]:border-r-0 max-[1100px]:[&>article:nth-child(n+4)]:border-t max-[1100px]:[&>article:nth-child(n+4)]:border-edv-line max-tablet:mt-12 max-tablet:grid-cols-1 max-tablet:[&>article:nth-child(n+4)]:border-t-0"

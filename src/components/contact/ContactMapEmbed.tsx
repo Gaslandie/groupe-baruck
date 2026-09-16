@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Icon } from "../ui/Icon";
 
 type ContactMapEmbedProps = { embedUrl: string };
 const frameClass = "min-h-[420px] border border-line bg-[#cac5bb] max-tablet:min-h-[320px]";
@@ -24,7 +25,7 @@ export function ContactMapEmbed({ embedUrl }: ContactMapEmbedProps) {
           recevoir des données techniques, dont votre adresse IP, et d’utiliser ses propres
           cookies ou traceurs. La carte reste bloquée tant que vous ne l’autorisez pas.
         </p>
-        <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noreferrer" className="mt-3 text-caption underline underline-offset-4">Politique de confidentialité de Google ↗</a>
+        <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noreferrer" className="mt-3 text-caption underline underline-offset-4">Politique de confidentialité de Google <Icon name="arrow-up-right" /></a>
         <div className="mt-6 flex flex-wrap justify-center gap-3 max-tablet:w-full">
           <button ref={allowRef} type="button" aria-describedby="map-privacy-info" onClick={() => setChoice("allowed")} className="button button-outline max-tablet:w-full">Autoriser Google Maps</button>
           {choice === "pending" ? <button type="button" onClick={() => setChoice("declined")} className="button button-outline max-tablet:w-full">Ne pas afficher</button> : null}

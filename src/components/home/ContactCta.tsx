@@ -3,6 +3,7 @@ import Link from "next/link";
 import { placeholderImages } from "@/data/media";
 import { contacts, routes } from "@/data/site";
 import { imageUrl } from "@/lib/asset";
+import { Icon } from "../ui/Icon";
 
 const ctaImage = placeholderImages.contactEquipe.src;
 
@@ -18,13 +19,6 @@ export function ContactCta() {
         aria-hidden="true"
         className="absolute inset-0 z-[-1] bg-[linear-gradient(180deg,rgba(13,14,16,.84),rgba(13,14,16,.9)),radial-gradient(circle_at_center,rgba(220,91,43,.13),transparent_56%)]"
       />
-      <div
-        aria-hidden="true"
-        className="absolute aspect-square w-[min(70vw,800px)] rounded-full border border-[rgba(255,255,255,.07)]"
-      >
-        <span className="absolute inset-[13%] rounded-full border border-[rgba(255,255,255,.07)]" />
-        <span className="absolute inset-[27%] rounded-full border border-[rgba(255,255,255,.07)] bg-[radial-gradient(circle,rgba(220,91,43,.13),transparent_68%)]" />
-      </div>
       <p className="eyebrow light before:hidden">Une ambition en commun ?</p>
       <h2 className="relative z-[1] mx-auto mb-[1.6rem] mt-2 max-w-[1100px] font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
         Construisons ensemble
@@ -36,7 +30,7 @@ export function ContactCta() {
       </p>
       <div className="relative z-[1] flex flex-wrap items-center justify-center gap-[.8rem]">
         <Link href={routes.contact} className="button button-accent">
-          Contacter le Groupe <span>↘</span>
+          Contacter le Groupe <span><Icon name="arrow-down-right" /></span>
         </Link>
         <a
           href={contacts.whatsappHq.href}

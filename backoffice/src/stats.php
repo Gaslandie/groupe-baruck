@@ -98,6 +98,13 @@ function frenchDate(string $day, bool $withYear = false): string
     return $date . ' ' . $months[$month - 1] . ($withYear ? ' ' . $year : '');
 }
 
+/** Plus grande valeur d’une série, au moins 1. Une liste vide ne doit pas casser la page :
+ * `max(1, ...[])` devient `max(1)`, que PHP refuse. Cas réel d’un site sans aucune visite. */
+function topValue(array $values): int
+{
+    return $values === [] ? 1 : (int) max(1, ...array_map('intval', $values));
+}
+
 function percent(int|float $part, int|float $total): int
 {
     return $total > 0 ? (int) round($part * 100 / $total) : 0;
@@ -261,7 +268,7 @@ function insights(array $audience, array $editorial, bool $admin): array
 /** Barres d’une seule série. Les valeurs restent lisibles au survol et dans le tableau associé. */
 function barChart(array $points, string $key, string $unit): string
 {
-    $max = max(1, ...array_map(fn($point) => (int) $point[$key], $points));
+    $max = topValue(array_map(fn($point) => (int) $point[$key], $points));
     $count = count($points);
     $svg = '<svg viewBox="0 0 ' . $count . ' 100" preserveAspectRatio="none" class="h-40 w-full" role="img" aria-label="' . e($unit . ' par période, maximum ' . $max) . '">';
     $svg .= '<line x1="0" y1="50" x2="' . $count . '" y2="50" stroke="rgba(11,12,14,0.12)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>';

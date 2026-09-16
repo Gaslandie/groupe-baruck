@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { placeholderPhotos, unsplashCredit, type RemotePhoto } from "@/data/media";
 import { contacts, hqAddress, routes, site } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 const paragraphClass = "m-0 text-body leading-[1.75] text-[#65645f]";
 const inlineLinkClass =
@@ -46,7 +47,7 @@ function LegalSection({ id, number, title, children }: LegalSectionProps) {
 function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <a href={href} target="_blank" rel="noreferrer" className="text-link w-fit">
-      {children} <span>↗</span>
+      {children} <span><Icon name="arrow-up-right" /></span>
     </a>
   );
 }

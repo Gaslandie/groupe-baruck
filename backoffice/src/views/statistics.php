@@ -6,7 +6,7 @@ $editorial = editorialSummary($today);
 $advice = insights($audience, $editorial, $user['role'] === 'admin');
 $deviceTotal = array_sum($audience['devices']);
 $sourceTotal = array_sum(array_column($audience['sources'], 'visitors'));
-$topViews = max(1, ...array_column($audience['pages'], 'views'));
+$topViews = topValue(array_column($audience['pages'], 'views'));
 $period = AUDIENCE_PERIODS[$audience['days']];
 function statsTable(string $title, array $rows, string $unit, int $total, int $max, string $empty): void {
     global $cardClass;
@@ -36,9 +36,9 @@ function statsTable(string $title, array $rows, string $unit, int $total, int $m
 <section class="mt-6 <?= $cardClass ?> p-6"><h2 class="font-display text-2xl">Visiteurs par <?= $audience['days'] > 90 ? 'mois' : 'jour' ?></h2><p class="mt-1 text-caption text-ink/60">Du <?= e(frenchDate($audience['start'], true)) ?> au <?= e(frenchDate($audience['end'], true)) ?>. Survolez une barre pour lire sa valeur.</p><div class="mt-4"><?= barChart($audience['series'], 'visitors', 'visiteurs') ?></div></section>
 <div class="mt-6 grid gap-6 wide:grid-cols-2">
     <?php statsTable('Pages les plus vues', array_map(fn($row) => ['label' => $row['label'], 'value' => $row['views']], $audience['pages']), 'Vues', max(1, $audience['views']), $topViews, 'Aucune page vue sur cette période.'); ?>
-    <?php statsTable('D’où viennent les visiteurs', array_map(fn($row) => ['label' => $row['label'], 'value' => $row['visitors']], $audience['sources']), 'Visiteurs', max(1, $sourceTotal), max(1, ...array_column($audience['sources'], 'visitors')), 'Aucune visite sur cette période.'); ?>
-    <?php $deviceRows = []; foreach (deviceNames() as $key => $label) if (($audience['devices'][$key] ?? 0) > 0) $deviceRows[] = ['label' => $label, 'value' => $audience['devices'][$key]]; statsTable('Appareils utilisés', $deviceRows, 'Visiteurs', max(1, $deviceTotal), max(1, ...array_column($deviceRows, 'value')), 'Aucune visite sur cette période.'); ?>
-    <?php $categoryRows = []; foreach (categories() as $key => $label) $categoryRows[] = ['label' => $label . ' · ' . $editorial['byCategory'][$key] . ' validée' . ($editorial['byCategory'][$key] > 1 ? 's' : ''), 'value' => $audience['categoryViews'][$key]]; usort($categoryRows, fn($first, $second) => $second['value'] <=> $first['value']); statsTable('Lectures d’articles par catégorie', $audience['articleViews'] > 0 ? $categoryRows : [], 'Vues', max(1, $audience['articleViews']), max(1, ...array_column($categoryRows, 'value')), 'Aucune lecture d’article mesurée sur cette période.'); ?>
+    <?php statsTable('D’où viennent les visiteurs', array_map(fn($row) => ['label' => $row['label'], 'value' => $row['visitors']], $audience['sources']), 'Visiteurs', max(1, $sourceTotal), topValue(array_column($audience['sources'], 'visitors')), 'Aucune visite sur cette période.'); ?>
+    <?php $deviceRows = []; foreach (deviceNames() as $key => $label) if (($audience['devices'][$key] ?? 0) > 0) $deviceRows[] = ['label' => $label, 'value' => $audience['devices'][$key]]; statsTable('Appareils utilisés', $deviceRows, 'Visiteurs', max(1, $deviceTotal), topValue(array_column($deviceRows, 'value')), 'Aucune visite sur cette période.'); ?>
+    <?php $categoryRows = []; foreach (categories() as $key => $label) $categoryRows[] = ['label' => $label . ' · ' . $editorial['byCategory'][$key] . ' validée' . ($editorial['byCategory'][$key] > 1 ? 's' : ''), 'value' => $audience['categoryViews'][$key]]; usort($categoryRows, fn($first, $second) => $second['value'] <=> $first['value']); statsTable('Lectures d’articles par catégorie', $audience['articleViews'] > 0 ? $categoryRows : [], 'Vues', max(1, $audience['articleViews']), topValue(array_column($categoryRows, 'value')), 'Aucune lecture d’article mesurée sur cette période.'); ?>
 </div>
 <section class="mt-6 <?= $cardClass ?> p-6"><h2 class="font-display text-2xl">Rythme de publication</h2><p class="mt-1 text-caption text-ink/60">Actualités validées par mois de parution, douze derniers mois. <?= $editorial['validated'] ?> validée(s) au total.</p><div class="mt-4"><?= barChart($editorial['months'], 'value', 'actualités') ?></div></section>
 <?php if ($user['role'] === 'admin'): ?>

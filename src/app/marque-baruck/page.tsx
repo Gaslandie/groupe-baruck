@@ -8,6 +8,7 @@ import { asset } from "@/lib/asset";
 import { brandOrderHref } from "@/lib/brand-order";
 import { loadProducts } from "@/lib/boutique";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
+import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
   title: "La marque Baruck — L’élégance, notre affaire",
@@ -30,8 +31,8 @@ export default function BrandPage() {
           <h1 className="font-display text-display-xl font-normal leading-[.96] tracking-[-.05em]">L’élégance,<br /><em className="font-normal text-gold">notre affaire.</em></h1>
           <p className="mb-9 mt-7 max-w-[490px] text-lead leading-[1.75] text-[rgba(255,255,255,.72)]">Vêtements, accessoires, chaussures et parfums. Entrez dans l’univers Baruck et trouvez les pièces qui expriment votre style.</p>
           <div className="flex flex-wrap gap-3">
-            <a href="#collection" className="button button-primary">Découvrir la collection <span aria-hidden="true">↓</span></a>
-            <a href={brandOrderHref()} target="_blank" rel="noreferrer" className="button button-ghost">Nous écrire <span aria-hidden="true">↗</span></a>
+            <a href="#collection" className="button button-primary">Découvrir la collection <span aria-hidden="true"><Icon name="arrow-down" /></span></a>
+            <a href={brandOrderHref()} target="_blank" rel="noreferrer" className="button button-ghost">Nous écrire <span aria-hidden="true"><Icon name="arrow-up-right" /></span></a>
           </div>
         </div>
         <figure className="m-0 min-w-0 self-stretch">
@@ -61,7 +62,7 @@ export default function BrandPage() {
             <p className="eyebrow light">Parfums Baruck</p>
             <h2 className="font-display text-display-lg font-normal leading-[1.05] tracking-[-.04em]">Une empreinte<br /><em className="font-normal text-gold">inoubliable.</em></h2>
             <p className="mb-8 mt-6 max-w-[520px] text-lead leading-[1.8] text-[rgba(255,255,255,.72)]">{brandStory.perfume}</p>
-            <a href={`#produit-${perfume.id}`} className="text-link w-fit">Découvrir le parfum <span aria-hidden="true">↑</span></a>
+            <a href={`#produit-${perfume.id}`} className="text-link w-fit">Découvrir le parfum <span aria-hidden="true"><Icon name="arrow-up" /></span></a>
           </div>
         </section>
       )}
@@ -88,7 +89,7 @@ export default function BrandPage() {
             <p className="mt-3 max-w-[540px] text-body leading-[1.75] text-[#64645f]">{hqAddress}</p>
             <p className="mt-2 text-small">WhatsApp : {contacts.whatsappHq.value}</p>
           </div>
-          <a href={brandOrderHref()} target="_blank" rel="noreferrer" className="button button-dark">Commander sur WhatsApp <span aria-hidden="true">↗</span></a>
+          <a href={brandOrderHref()} target="_blank" rel="noreferrer" className="button button-dark">Commander sur WhatsApp <span aria-hidden="true"><Icon name="arrow-up-right" /></span></a>
         </div>
       </section>
 

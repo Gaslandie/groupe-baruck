@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { edvImpact } from "@/data/espoir-de-vie";
 import { routes } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 /**
  * Bandeau compact des repères déjà publiés d'Espoir de Vie, pour l'accueil et
@@ -26,7 +27,7 @@ export function EdvImpactHighlights() {
             Ces repères proviennent des actions déjà présentées sur la page Espoir de Vie.
           </p>
           <Link href={`${routes.edv}#actions`} className="edv-button edv-button-line">
-            Découvrir les actions <span>↗</span>
+            Découvrir les actions <span><Icon name="arrow-up-right" /></span>
           </Link>
         </div>
       </div>

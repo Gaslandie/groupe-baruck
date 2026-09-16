@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { brandCategories, type BrandCategory, type BrandProduct } from "@/data/marque-baruck";
 import { asset } from "@/lib/asset";
 import { brandOrderHref } from "@/lib/brand-order";
+import { Icon } from "../ui/Icon";
 
 function ProductCard({ product }: { product: BrandProduct }) {
   const [preferences, setPreferences] = useState("");
@@ -36,7 +37,7 @@ function ProductCard({ product }: { product: BrandProduct }) {
           <p className="mt-2 text-caption leading-[1.6] text-[#64645f]">Ces précisions seront ajoutées à votre message WhatsApp.</p>
         </details>
         <a href={brandOrderHref(product, preferences)} target="_blank" rel="noreferrer" aria-label={`Commander sur WhatsApp : ${product.name}`} className="button button-dark mt-auto w-full gap-3 text-center">
-          Commander sur WhatsApp <span aria-hidden="true">↗</span>
+          Commander sur WhatsApp <span aria-hidden="true"><Icon name="arrow-up-right" /></span>
         </a>
       </div>
     </article>

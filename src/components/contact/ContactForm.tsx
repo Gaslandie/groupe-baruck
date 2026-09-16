@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 
 import { contactSubjects } from "@/data/contact";
 import { contacts } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
 
@@ -107,7 +108,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
           rel="noreferrer"
           className="button button-accent col-span-full w-fit max-tablet:col-auto max-tablet:w-full"
         >
-          WhatsApp Baruck Siège Guinée <span>↗</span>
+          WhatsApp Baruck Siège Guinée <span><Icon name="arrow-up-right" /></span>
         </a>
       </div>
     );
@@ -195,7 +196,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         disabled={isSubmitting}
         className="form-button col-span-full flex min-h-[58px] w-full cursor-pointer items-center justify-between border-0 bg-ink px-6 text-label uppercase tracking-[.13em] text-ivory transition-colors duration-[250ms] disabled:cursor-wait disabled:opacity-70 max-tablet:col-auto"
       >
-        {isSubmitting ? "Envoi…" : "Envoyer le message"} <span>↗</span>
+        {isSubmitting ? "Envoi…" : "Envoyer le message"} <span><Icon name="arrow-up-right" /></span>
       </button>
       <p
         aria-live="polite"

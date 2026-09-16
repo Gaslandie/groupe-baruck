@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { placeholderPhotos } from "@/data/media";
 import { routes } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 export function AboutHero() {
   return (
@@ -33,7 +34,7 @@ export function AboutHero() {
         </p>
         <div className="flex flex-wrap gap-[.8rem] max-tablet:[&_.button]:w-full">
           <a href="#identite" className="button button-primary">
-            Notre identité <span>↓</span>
+            Notre identité <span><Icon name="arrow-down" /></span>
           </a>
           <Link href={routes.contact} className="button button-ghost">
             Nous contacter

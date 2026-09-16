@@ -4,6 +4,7 @@ import { facebookPages } from "@/data/contact";
 import { footers, hqAddress, routes, site, type FooterLink, type FooterVariant } from "@/data/site";
 
 import { Brand } from "./Brand";
+import { Icon } from "../ui/Icon";
 
 type SiteFooterProps = {
   variant: FooterVariant;
@@ -101,7 +102,7 @@ export function SiteFooter({ variant }: SiteFooterProps) {
           Mentions légales
         </Link>
         <Link href={routes.brand} className="hover:text-accent">La marque Baruck</Link>
-        <a href={content.backToTop}>Retour en haut ↑</a>
+        <a href={content.backToTop}>Retour en haut <Icon name="arrow-up" /></a>
       </div>
     </footer>
   );

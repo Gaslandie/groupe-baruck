@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import type { ArticleSummary } from "@/data/actualites";
 import { routes } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 type ArticleNavigationProps = {
   /** Article plus récent. */
@@ -26,7 +27,7 @@ export function ArticleNavigation({ previous, next }: ArticleNavigationProps) {
         <Link href={`${routes.news}${previous.slug}/`} className="group flex flex-col gap-3">
           <span className={labelClass}>
             <span aria-hidden="true" className="mr-3 text-accent">
-              ←
+              <Icon name="arrow-left" />
             </span>
             Article précédent
           </span>
@@ -41,7 +42,7 @@ export function ArticleNavigation({ previous, next }: ArticleNavigationProps) {
           <span className={labelClass}>
             Article suivant
             <span aria-hidden="true" className="ml-3 text-accent">
-              →
+              <Icon name="arrow-right" />
             </span>
           </span>
           <span className={titleClass}>{next.title}</span>

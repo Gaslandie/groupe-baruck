@@ -1,8 +1,9 @@
+import { edvGallery } from "./espoir-de-vie";
 import { jecaGalleries } from "./jeca";
 import { studioGallery } from "./services";
 import { routes } from "./site";
 
-export type MediaCategory = "jeca" | "studio-photo";
+export type MediaCategory = "jeca" | "studio-photo" | "espoir-de-vie";
 
 export type MediaPhoto = {
   src: `/${string}`;
@@ -24,6 +25,7 @@ export type MediaCollection = {
 export const mediaCategoryLabels: Record<MediaCategory, string> = {
   jeca: "JECA",
   "studio-photo": "Studio photo",
+  "espoir-de-vie": "Espoir de Vie",
 };
 
 /**
@@ -46,6 +48,19 @@ export const mediaCollections: MediaCollection[] = [
       })),
     }),
   ),
+  {
+    id: "espoir-de-vie",
+    category: "espoir-de-vie",
+    title: "Les actions d’Espoir de Vie",
+    href: `${routes.edv}#galerie`,
+    photos: edvGallery.map(({ photo, caption }) => ({
+      src: photo.src,
+      alt: photo.alt,
+      width: photo.width,
+      height: photo.height,
+      caption,
+    })),
+  },
   {
     id: "studio-photo",
     category: "studio-photo",

@@ -5,7 +5,6 @@ import { routes } from "@/data/site";
 import { asset } from "@/lib/asset";
 
 import { AboutSectionHead } from "./AboutSectionHead";
-
 export function AboutCommitments() {
   return (
     <section className="bg-paper px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
@@ -25,7 +24,6 @@ export function AboutCommitments() {
             <span className="text-micro uppercase tracking-[.15em] text-accent">Entrepreneuriat</span>
             <h3 className="mb-[.8rem] mt-[1.2rem] font-display text-title-lg font-normal">JECA</h3>
             <p className="m-0 max-w-[380px] text-small leading-[1.7] text-[#676661]">Une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.</p>
-            <i aria-hidden="true" className="absolute bottom-[1.6rem] right-[1.6rem] grid h-[42px] w-[42px] place-items-center border border-line not-italic transition-[background,color] duration-[250ms] group-hover:bg-ink group-hover:text-ivory">↗</i>
           </div>
         </Link>
         <Link href={routes.edv} className="group reveal flex flex-col border border-line bg-ivory transition-[transform,box-shadow] duration-[350ms] hover:translate-y-[-8px] hover:shadow-[0_24px_60px_rgba(23,21,16,.12)]">
@@ -36,7 +34,6 @@ export function AboutCommitments() {
             <span className="text-micro uppercase tracking-[.15em] text-accent">Engagement social</span>
             <h3 className="mb-[.8rem] mt-[1.2rem] font-display text-title-lg font-normal">Espoir de Vie</h3>
             <p className="m-0 max-w-[380px] text-small leading-[1.7] text-[#676661]">Protéger les enfants, accompagner les familles et apporter une aide concrète aux personnes vulnérables.</p>
-            <i aria-hidden="true" className="absolute bottom-[1.6rem] right-[1.6rem] grid h-[42px] w-[42px] place-items-center border border-line not-italic transition-[background,color] duration-[250ms] group-hover:bg-ink group-hover:text-ivory">↗</i>
           </div>
         </Link>
       </div>

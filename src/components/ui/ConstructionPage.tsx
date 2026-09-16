@@ -3,6 +3,7 @@ import Link from "next/link";
 import { routes } from "@/data/site";
 
 import { Brand } from "../layout/Brand";
+import { Icon } from "./Icon";
 
 type ConstructionPageProps = {
   index: string;
@@ -32,7 +33,7 @@ export function ConstructionPage({
           <span className="max-tablet:hidden">Retour à l’accueil</span>
           <span className="hidden max-tablet:inline">Accueil</span>
           <span aria-hidden="true" className="text-small text-accent">
-            ↗
+            <Icon name="arrow-up-right" />
           </span>
         </Link>
       </header>
@@ -41,10 +42,6 @@ export function ConstructionPage({
         id="main-content"
         className="relative isolate grid min-h-svh place-items-center overflow-hidden px-6 pb-16 pt-32 max-tablet:px-[1.2rem]"
       >
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute right-[-12%] top-[-22%] z-[-2] aspect-square w-[min(55vw,720px)] rounded-full border border-[rgba(255,255,255,.09)] shadow-[0_0_0_90px_rgba(255,255,255,.018),0_0_0_180px_rgba(255,255,255,.012)]"
-        />
         <span
           aria-hidden="true"
           className="pointer-events-none absolute bottom-[-28%] left-[-14%] z-[-2] aspect-square w-[min(42vw,560px)] rounded-full bg-[radial-gradient(circle_at_50%_50%,rgba(220,91,43,.3),rgba(220,91,43,.04)_44%,transparent_70%)] blur-[3px]"
@@ -68,7 +65,7 @@ export function ConstructionPage({
             href={routes.home}
             className="inline-flex min-h-[54px] items-center justify-center gap-8 bg-[#fffdf8] px-[1.4rem] text-label uppercase tracking-[.13em] text-[#0b0c0e] transition-[background,color,transform] duration-[250ms] hover:translate-y-[-2px] hover:bg-accent hover:text-white"
           >
-            Retourner à l’accueil <span aria-hidden="true">↖</span>
+            Retourner à l’accueil <span aria-hidden="true"><Icon name="arrow-up-left" /></span>
           </Link>
         </div>
 

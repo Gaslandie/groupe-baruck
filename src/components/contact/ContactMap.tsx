@@ -1,6 +1,7 @@
 import { facebookPages, hqHours, hqMap } from "@/data/contact";
 import { hqAddress } from "@/data/site";
 import { ContactMapEmbed } from "@/components/contact/ContactMapEmbed";
+import { Icon } from "../ui/Icon";
 
 export function ContactMap() {
   return (
@@ -34,7 +35,7 @@ export function ContactMap() {
           rel="noreferrer"
           className="button button-accent mt-6 w-fit max-tablet:w-full"
         >
-          Itinéraire Google Maps <span>↗</span>
+          Itinéraire Google Maps <span><Icon name="arrow-up-right" /></span>
         </a>
         <div className="mt-8 grid grid-cols-2 gap-6 max-[430px]:grid-cols-1">
           <div>
@@ -54,7 +55,7 @@ export function ContactMap() {
                     rel="noreferrer"
                     className="inline-flex items-center gap-[.6rem] font-display text-lead transition-colors duration-[220ms] hover:text-accent focus-visible:text-accent"
                   >
-                    Facebook · {country} <span className="text-accent">↗</span>
+                    Facebook · {country}
                   </a>
                 </li>
               ))}

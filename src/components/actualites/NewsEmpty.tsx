@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { routes } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 export function NewsEmpty() {
   return (
@@ -13,7 +14,7 @@ export function NewsEmpty() {
         Revenez prochainement : les nouvelles du Groupe Baruck seront publiées ici.
       </p>
       <Link href={routes.home} className="text-link mt-6">
-        Retour à l’accueil <span>↗</span>
+        Retour à l’accueil <span><Icon name="arrow-up-right" /></span>
       </Link>
     </div>
   );

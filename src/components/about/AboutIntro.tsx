@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "../ui/Icon";
 
 const values = [
   { number: "01", title: "Vision", text: "Voir plus loin et ouvrir de nouvelles perspectives." },
@@ -35,7 +36,7 @@ export function AboutIntro() {
           vulnérables.
         </p>
         <Link href="/#activites" className="text-link mt-[.8rem]">
-          Explorer nos domaines <span>↘</span>
+          Explorer nos domaines <span><Icon name="arrow-down-right" /></span>
         </Link>
       </div>
       <div

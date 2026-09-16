@@ -1,28 +1,46 @@
-import { edvTimeline } from "@/data/espoir-de-vie";
+import { edvPhotos, edvTimeline } from "@/data/espoir-de-vie";
+import { asset } from "@/lib/asset";
 
+const panelPhoto = edvPhotos.orphelinatVueAerienneCour;
+
+/**
+ * Deux lignes plutôt que deux colonnes : un bandeau de présentation pleine
+ * largeur, puis la frise des étapes déroulée horizontalement.
+ */
 export function EdvOrphanage() {
   return (
-    <section
-      id="orphelinat"
-      className="grid scroll-mt-[72px] grid-cols-[43%_57%] bg-edv-cream max-[1100px]:grid-cols-[46%_54%] max-tablet:block"
-    >
-      <div className="reveal relative isolate flex min-h-[760px] flex-col justify-center overflow-hidden bg-[linear-gradient(145deg,#24130b,#4a1e0d)] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,8vw,9rem)] text-white max-tablet:min-h-[580px] max-tablet:px-[1.3rem] max-tablet:py-20">
-        <p className="edv-kicker">Un projet fondateur</p>
-        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
-          Construire un lieu
-          <br />
-          <em className="font-[inherit] text-edv-gold">où grandir en sécurité.</em>
-        </h2>
-        <p className="mb-0 mt-8 max-w-[600px] text-body leading-[1.8] text-[rgba(255,255,255,.7)]">
-          De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple
-          : offrir protection, stabilité et attention.
-        </p>
+    <section id="orphelinat" className="scroll-mt-[72px] bg-edv-cream">
+      <div className="reveal relative isolate overflow-hidden bg-[linear-gradient(145deg,#24130b,#4a1e0d)] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4.5rem,8vw,8rem)] text-white max-tablet:px-[1.3rem] max-tablet:py-20">
+        {/* Le bâtiment en fond, sous un voile sombre qui garde le texte lisible. */}
+        <span
+          aria-hidden="true"
+          style={{ backgroundImage: `url("${asset(panelPhoto.src)}")` }}
+          className="absolute inset-0 z-[-2] bg-cover bg-[center_38%] saturate-[.7]"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 z-[-1] bg-[linear-gradient(145deg,rgba(36,19,11,.93),rgba(74,30,13,.86))]"
+        />
+        <div className="flex items-end justify-between gap-[clamp(2rem,5vw,5rem)] max-[1100px]:flex-col max-[1100px]:items-start max-[1100px]:gap-8">
+          <div>
+            <p className="edv-kicker">Un projet fondateur</p>
+            <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
+              Construire un lieu
+              <br />
+              <em className="font-[inherit] text-edv-gold">où grandir en sécurité.</em>
+            </h2>
+          </div>
+          <p className="mb-0 mt-0 w-[min(600px,46%)] text-body leading-[1.8] text-[rgba(255,255,255,.7)] max-[1100px]:w-full">
+            De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple
+            : offrir protection, stabilité et attention.
+          </p>
+        </div>
       </div>
-      <ol className="reveal-stagger m-0 list-none p-[clamp(4rem,7vw,7rem)] max-[1100px]:px-12 max-tablet:px-[1.3rem] max-tablet:pb-16 max-tablet:pl-8 max-tablet:pt-16">
+      <ol className="reveal-stagger m-0 grid list-none grid-cols-5 gap-[clamp(1rem,2vw,2rem)] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,7vw,7rem)] max-[1100px]:grid-cols-3 max-tablet:grid-cols-2 max-tablet:px-[1.3rem] max-tablet:py-16 max-[430px]:grid-cols-1">
         {edvTimeline.map((item) => (
           <li
             key={item.title}
-            className="reveal relative grid min-h-[150px] grid-cols-[145px_1fr] gap-8 border-l border-edv-line pb-[2.8rem] pl-[2.2rem] before:absolute before:left-[-6px] before:top-1 before:h-[11px] before:w-[11px] before:rounded-full before:bg-edv-ember before:shadow-[0_0_0_7px_var(--color-edv-cream)] last:min-h-0 last:pb-0 max-[1100px]:grid-cols-[120px_1fr] max-tablet:min-h-[170px] max-tablet:grid-cols-1 max-tablet:gap-[.7rem] max-tablet:pl-6"
+            className="reveal relative flex flex-col border-t border-edv-line pt-8 before:absolute before:left-0 before:top-[-6px] before:h-[11px] before:w-[11px] before:rounded-full before:bg-edv-ember before:shadow-[0_0_0_7px_var(--color-edv-cream)] max-tablet:pt-7"
           >
             {item.date ? (
               <time
@@ -36,12 +54,23 @@ export function EdvOrphanage() {
                 {item.step}
               </span>
             )}
-            <div>
-              <h3 className="mb-[.65rem] mt-0 font-display text-display-md font-normal leading-none">
-                {item.title}
-              </h3>
-              <p className="m-0 max-w-[520px] text-small leading-[1.7] text-edv-muted">{item.text}</p>
-            </div>
+            <h3 className="mb-[.65rem] mt-[.9rem] font-display text-display-md font-normal leading-none">
+              {item.title}
+            </h3>
+            <p className="m-0 text-small leading-[1.7] text-edv-muted">{item.text}</p>
+            {item.photo ? (
+              // `mt-auto` aligne les photos entre elles, quelle que soit la longueur du texte.
+              <div className="mt-auto pt-6">
+                <img
+                  src={asset(item.photo.src)}
+                  alt={item.photo.alt}
+                  width={item.photo.width}
+                  height={item.photo.height}
+                  loading="lazy"
+                  className="aspect-[4/3] w-full bg-edv-paper-deep object-cover"
+                />
+              </div>
+            ) : null}
           </li>
         ))}
       </ol>

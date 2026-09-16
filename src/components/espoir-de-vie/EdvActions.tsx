@@ -1,4 +1,5 @@
 import { edvActions } from "@/data/espoir-de-vie";
+import { asset } from "@/lib/asset";
 
 import { EdvSectionHead } from "./EdvSectionHead";
 
@@ -41,6 +42,16 @@ export function EdvActions() {
                   <span className="text-[inherit] font-[inherit] tracking-[inherit]">{action.period}</span>
                 )}
               </div>
+              {action.photo ? (
+                <img
+                  src={asset(action.photo.src)}
+                  alt={action.photo.alt}
+                  width={action.photo.width}
+                  height={action.photo.height}
+                  loading="lazy"
+                  className="mt-6 aspect-[16/10] w-full bg-edv-paper-deep object-cover"
+                />
+              ) : null}
               <p
                 className={`mb-[.9rem] mt-auto text-micro font-extrabold uppercase tracking-[.13em] ${isColored ? "text-edv-gold" : "text-edv-ember"}`}
               >

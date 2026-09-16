@@ -10,13 +10,13 @@ import {
 } from "@/data/mediatheque";
 import { asset } from "@/lib/asset";
 import { revealWithin } from "@/lib/reveal";
-
 type MediaFilter = "all" | MediaCategory;
 
 const filters: { value: MediaFilter; label: string }[] = [
   { value: "all", label: "Toutes" },
   { value: "jeca", label: mediaCategoryLabels.jeca },
   { value: "studio-photo", label: mediaCategoryLabels["studio-photo"] },
+  { value: "espoir-de-vie", label: mediaCategoryLabels["espoir-de-vie"] },
 ];
 
 const filterButtonClass =
@@ -82,7 +82,7 @@ export function MediaLibrary() {
               </h2>
             </div>
             <Link href={collection.href} className="text-link">
-              Voir la galerie d’origine <span>↗</span>
+              Voir la galerie d’origine
             </Link>
           </div>
           <div className="grid grid-cols-3 gap-[.8rem] max-desktop:grid-cols-2 max-[430px]:grid-cols-1">

@@ -65,13 +65,6 @@ export const placeholderPhotos = {
     licence: "CC BY-SA 4.0",
     href: "https://commons.wikimedia.org/wiki/File:Madina_1.jpg",
   },
-  divo: {
-    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Rue_de_Divo.jpg/1280px-Rue_de_Divo.jpg",
-    position: "center 60%",
-    author: "Aman ADO",
-    licence: "CC BY-SA 4.0",
-    href: "https://commons.wikimedia.org/wiki/File:Rue_de_Divo.jpg",
-  },
   conakryBay: {
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Un_aper%C3%A7u_de_la_ville_de_conakry.jpg/1280px-Un_aper%C3%A7u_de_la_ville_de_conakry.jpg",
     position: "center 60%",

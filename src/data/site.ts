@@ -157,14 +157,6 @@ export const mainNav: NavItem[] = [
   { number: "08", label: "Contact", href: routes.contact },
 ];
 
-export const sideNavContacts: ContactLink[] = [
-  contacts.landline,
-  contacts.whatsappHq,
-  contacts.whatsappCeo,
-  contacts.mobile,
-  contacts.email,
-];
-
 export const footers = {
   home: {
     blurb:

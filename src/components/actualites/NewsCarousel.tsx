@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import type { NewsImage } from "@/data/actualites";
 import { asset } from "@/lib/asset";
+import { Icon } from "../ui/Icon";
 
 type NewsCarouselProps = {
   gallery: NewsImage[];
@@ -99,7 +100,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
           onClick={() => scrollBySlide(-1)}
           className="h-12 w-12 cursor-pointer border border-line transition-[background,color] duration-[250ms] hover:bg-ink hover:text-ivory disabled:cursor-default disabled:opacity-30"
         >
-          ←
+          <Icon name="arrow-left" />
         </button>
         <button
           type="button"
@@ -108,7 +109,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
           onClick={() => scrollBySlide(1)}
           className="h-12 w-12 cursor-pointer border border-line transition-[background,color] duration-[250ms] hover:bg-ink hover:text-ivory disabled:cursor-default disabled:opacity-30"
         >
-          →
+          <Icon name="arrow-right" />
         </button>
       </div>
     </div>

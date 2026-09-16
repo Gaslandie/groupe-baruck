@@ -5,7 +5,6 @@ import { routes } from "@/data/site";
 
 import { NewsImage } from "./NewsImage";
 import { NewsMeta } from "./NewsMeta";
-
 type NewsCardProps = {
   article: ArticleSummary;
 };
@@ -24,7 +23,7 @@ export function NewsCard({ article }: NewsCardProps) {
         {article.title}
       </h3>
       <p className="mt-3 text-small leading-[1.65] text-[#696963]">{article.excerpt}</p>
-      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">Lire ↗</span>
+      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">Lire l’article</span>
     </Link>
   );
 }

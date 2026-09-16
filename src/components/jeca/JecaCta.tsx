@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { contacts, routes } from "@/data/site";
+import { Icon } from "../ui/Icon";
 
 export function JecaCta() {
   return (
@@ -13,7 +14,7 @@ export function JecaCta() {
       </h2>
       <div className="jeca-actions">
         <Link href={routes.contact} className="jeca-button jeca-button-white">
-          Nous contacter <span>↗</span>
+          Nous contacter <span><Icon name="arrow-up-right" /></span>
         </Link>
         <a
           href={contacts.whatsappHq.href}

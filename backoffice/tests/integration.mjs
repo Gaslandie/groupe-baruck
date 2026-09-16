@@ -329,6 +329,14 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal((await collect({ p: '/../config.php', w: 390 })).status, 204);
     const count = () => sql(`SELECT COUNT(*) AS n FROM ${database}.page_views;`).split('\n')[1];
     assert.equal(count(), '0', 'robots et chemins hors site ignorés');
+    // Un site neuf n'a aucune visite : la page ne doit pas tomber sur des séries vides,
+    // et une panne de rendu ne doit jamais publier les chemins des fichiers du serveur.
+    for (const query of ['', '&days=7', '&days=365']) {
+      const empty = await admin.request('/?page=stats' + query);
+      assert.equal(empty.status, 200, 'statistiques lisibles sans aucune visite' + query);
+      assert.match(empty.html, /Mesure d’audience non active/);
+      assert.doesNotMatch(empty.html, /headers already sent|\/app\/|Warning<\/b>|indisponible/, 'ni avertissement PHP ni chemin serveur dans la page');
+    }
     for (const [p, r, agent] of [['/', 'https://l.facebook.com/l.php?u=1', phone], ['/actualites/recette-mysql/', 'https://groupebaruck.com/', phone], ['/actualites/recette-mysql', '', 'Mozilla/5.0 (X11; Linux x86_64) Firefox/130.0']]) {
       assert.equal((await collect({ p, r, w: agent === phone ? 390 : 1440 }, { 'User-Agent': agent })).status, 204);
     }

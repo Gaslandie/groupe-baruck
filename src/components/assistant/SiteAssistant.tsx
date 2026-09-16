@@ -17,6 +17,7 @@ import {
   type AssistantOption,
 } from "@/data/assistant";
 import { searchAssistant } from "@/lib/assistant-search";
+import { Icon } from "../ui/Icon";
 
 export type AssistantVariant = "home" | "about" | "service" | "jeca" | "edv";
 
@@ -53,7 +54,7 @@ const themes: Record<AssistantVariant, CSSProperties> = {
 
 /* Le fil est conservé pendant la session de navigation (onglet) pour survivre aux liens
    internes proposés par l'assistant. Il ne quitte jamais le navigateur : identifiants de
-   nœuds, libellés d'options et questions saisies. Stockage bloqué → l'assistant repart de zéro. */
+   nœuds, libellés d'options et questions saisies. Stockage bloqué <Icon name="arrow-right" /> l'assistant repart de zéro. */
 function isNextOption(value: unknown): value is NextOption {
   return (
     !!value &&
@@ -399,7 +400,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
     if (target.href.startsWith("/")) {
       return (
         <Link key={option.label} href={target.href} onClick={() => choose(option)} className={optionClass}>
-          {option.label} <span className="text-[var(--asst-accent)]">→</span>
+          {option.label} <span className="text-[var(--asst-accent)]"><Icon name="arrow-right" /></span>
         </Link>
       );
     }
@@ -412,7 +413,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
         onClick={() => choose(option)}
         className={optionClass}
       >
-        {option.label} <span className="text-[var(--asst-accent)]">↗</span>
+        {option.label} <span className="text-[var(--asst-accent)]"><Icon name="arrow-up-right" /></span>
       </a>
     );
   };
@@ -467,7 +468,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
             >
               <span className="max-tablet:hidden">Fermer</span>
               <span aria-hidden="true" className="font-sans text-[1.6rem] font-normal leading-none">
-                ×
+                <Icon name="close" />
               </span>
             </button>
           </div>
@@ -551,7 +552,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               aria-label={assistantMeta.sendLabel}
               className="flex h-[36px] w-[36px] shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(255,255,255,.28)] bg-transparent text-body text-ivory transition-[background,border-color,opacity] duration-[200ms] hover:border-ivory hover:bg-[rgba(255,255,255,.08)] disabled:cursor-default disabled:opacity-40"
             >
-              <span aria-hidden="true">↑</span>
+              <span aria-hidden="true"><Icon name="arrow-up" /></span>
             </button>
           </form>
 
@@ -564,7 +565,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               onClick={talkToHuman}
               className={[footerActionClass, "text-[var(--asst-accent)] hover:text-ivory"].join(" ")}
             >
-              {assistantMeta.humanLabel} <span aria-hidden="true">↗</span>
+              {assistantMeta.humanLabel} <span aria-hidden="true"><Icon name="arrow-up-right" /></span>
             </button>
           </div>
         </section>

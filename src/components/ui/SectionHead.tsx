@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 type SectionHeadProps = {
-  eyebrow: string;
+  /** Facultatif : une section peut se passer de sur-titre. */
+  eyebrow?: string;
   title: ReactNode;
   text: string;
   tone: "light" | "dark";
@@ -11,7 +12,7 @@ export function SectionHead({ eyebrow, title, text, tone }: SectionHeadProps) {
   return (
     <div className="reveal mb-[clamp(3rem,6vw,6rem)] flex items-end justify-between gap-12 max-tablet:mb-[2.8rem] max-tablet:block">
       <div>
-        <p className={tone === "light" ? "eyebrow light" : "eyebrow"}>{eyebrow}</p>
+        {eyebrow ? <p className={tone === "light" ? "eyebrow light" : "eyebrow"}>{eyebrow}</p> : null}
         <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
           {title}
         </h2>
