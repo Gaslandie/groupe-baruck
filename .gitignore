@@ -12,7 +12,7 @@ backoffice/storage/
 backoffice/seed.json
 backoffice/seed-media/
 backoffice/public/admin.css
-backoffice/public/inter.woff2
+backoffice/public/*.woff2
 backoffice/dist/
 .backoffice-content/
 tools/dewatermark/planches/
