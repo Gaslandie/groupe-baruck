@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { studioHero } from "@/data/media";
+import { hostessesHero } from "@/data/media";
 import { routes } from "@/data/site";
 import { siteTexts } from "@/data/textes";
 import { asset } from "@/lib/asset";
@@ -9,7 +9,8 @@ import { Icon } from "../ui/Icon";
 /**
  * Hero repris sur la logique des autres pages le 2026-09-16 : textes dans le
  * panneau clair de gauche, photo pleine hauteur à droite — une activité phare
- * du Groupe (le Studio Photo Baruck), pas le portrait du président. Le texte
+ * du Groupe (les hôtesses événementielles ; la photo du studio est déjà le
+ * hero de sa propre page), pas le portrait du président. Le texte
  * d'introduction est celui du back-office (`heroSlides.guinee`), et les trois
  * activités phares sont des liens.
  */
@@ -22,12 +23,12 @@ export function AboutHero() {
     >
       <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-ink max-tablet:h-[clamp(600px,100svh,860px)] max-tablet:min-h-0 max-tablet:w-full max-tablet:flex-none">
         <img
-          src={asset(studioHero.src)}
-          alt={studioHero.alt}
-          width={studioHero.width}
-          height={studioHero.height}
+          src={asset(hostessesHero.src)}
+          alt={hostessesHero.alt}
+          width={hostessesHero.width}
+          height={hostessesHero.height}
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-center saturate-[.92] contrast-[1.02]"
+          className="absolute inset-0 h-full w-full object-cover object-[center_38%] saturate-[.92] contrast-[1.02]"
         />
         <div
           aria-hidden="true"
@@ -37,7 +38,7 @@ export function AboutHero() {
           <span className="mb-[.65rem] block font-sans text-micro font-bold uppercase leading-none tracking-[.18em] text-accent">
             Baruck Communication · Guinée
           </span>
-          {siteTexts.heroSlides["studio-photo"].title}
+          {siteTexts.heroSlides["hotesses"].title}
         </p>
       </div>
       <div className="hero-in relative col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(1.3rem,6vw,7.5rem)] pr-[clamp(1.3rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1100px]:px-10 max-tablet:w-full max-tablet:px-[1.3rem] max-tablet:pb-14 max-tablet:pt-16">
