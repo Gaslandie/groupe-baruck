@@ -99,8 +99,8 @@ export const edvPhotos = {
   fondationRoseGuiro: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1100, height: 794 },
 } as const satisfies Record<string, ImageAsset>;
 
-/** Photo de fond du hero : l'orphelinat vu du ciel. */
-export const edvHeroPhoto = { ...edvPhotos.orphelinatVueAerienne, position: "center 58%" } satisfies EdvPositionedPhoto;
+/** Photo du panneau droit du hero : le repas partagé à l'orphelinat. */
+export const edvHeroPhoto = { ...edvPhotos.orphelinatRepasPartage, position: "center 42%" } satisfies EdvPositionedPhoto;
 
 /** Bandeau de la section « Notre mission ». */
 export const edvMissionPhoto = { ...edvPhotos.orphelinatDroitsDeLEnfant, position: "center 42%" } satisfies EdvPositionedPhoto;
@@ -137,7 +137,6 @@ export const edvImpact = [
   { value: "100", label: "Jouets remis aux enfants de Grôh" },
   { value: "200", label: "Orphelins accompagnés à la rentrée 2016–2017" },
   { value: "2017", label: "Accueil des premiers pensionnaires" },
-  { value: "03", label: "Pays de présence" },
 ] satisfies EdvImpactItem[];
 
 export const edvTimeline = [

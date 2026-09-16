@@ -22,21 +22,21 @@ export function AboutIntro() {
       </div>
       <div className="reveal max-w-[640px]">
         <p className="lead mb-6 mt-0">
-          Le Groupe Baruck réunit des activités complémentaires dans l’hôtellerie, la restauration,
-          l’agro-business, la mobilité, la communication digitale et les industries créatives.
+          Le Groupe Baruck est ancré en Guinée. Il y développe au quotidien, à travers Baruck Communication,
+          le Studio Photo Baruck, ses services d’hôtesses événementielles et ses activités de communication.
         </p>
         <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">
-          La Guinée en constitue le point d’ancrage : c’est là que le groupe opère aujourd’hui ses services au
-          quotidien, à travers Baruck Communication. Le Sénégal et la Côte d’Ivoire complètent une ambition
-          régionale assumée — bâtir des projets solides, modernes et créateurs de valeur.
+          Autour de cette base, le groupe réunit des domaines complémentaires — hôtellerie, restauration,
+          agro-business, mobilité, industries créatives — et porte une ambition régionale assumée, du Sénégal
+          à la Côte d’Ivoire : bâtir des projets solides, modernes et créateurs de valeur.
         </p>
         <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">
           À cette activité économique répond une seconde dimension, indissociable du parcours de son dirigeant :
           l’engagement, porté par la JECA auprès des jeunes entrepreneurs et par l’ONG Espoir de Vie auprès des plus
           vulnérables.
         </p>
-        <Link href="/#activites" className="text-link mt-[.8rem]">
-          Explorer nos domaines <span><Icon name="arrow-down-right" /></span>
+        <Link href="/#activite-studio" className="text-link mt-[.8rem]">
+          Découvrir nos activités <span><Icon name="arrow-down-right" /></span>
         </Link>
       </div>
       <div

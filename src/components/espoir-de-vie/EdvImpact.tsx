@@ -18,7 +18,7 @@ export function EdvImpact() {
         {edvImpact.map((item) => (
           <div
             key={item.value + item.label}
-            className="reveal flex min-h-[230px] flex-col justify-center border-b border-r border-[rgba(255,255,255,.15)] p-[clamp(1.8rem,4vw,4.5rem)] last:col-span-2 last:min-h-[190px] last:border-b-0 max-tablet:min-h-[190px] max-tablet:px-[1.3rem] max-tablet:py-8 max-tablet:last:min-h-[160px] max-[430px]:min-h-[150px] max-[430px]:border-r-0 max-[430px]:last:col-auto max-[430px]:last:min-h-[150px]"
+            className="reveal flex min-h-[230px] flex-col justify-center border-b border-r border-[rgba(255,255,255,.15)] p-[clamp(1.8rem,4vw,4.5rem)] last:border-b-0 [&:nth-last-child(2)]:border-b-0 max-tablet:min-h-[190px] max-tablet:px-[1.3rem] max-tablet:py-8 max-[430px]:min-h-[150px] max-[430px]:border-r-0 max-[430px]:[&:nth-last-child(2)]:border-b"
           >
             <dt className="font-display text-display-xl font-normal italic leading-[.9] tracking-[-.05em] text-edv-gold">
               {item.value}

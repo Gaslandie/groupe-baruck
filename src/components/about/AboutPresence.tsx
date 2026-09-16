@@ -55,7 +55,10 @@ export function AboutPresence() {
           />
           <span className="text-micro tracking-[.15em] text-accent">02</span>
           <h3 className="mb-4 mt-6 font-display text-display-md font-normal">Sénégal</h3>
-          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.62)]">Présence validée par la direction du groupe. Les activités et implantations locales seront précisées prochainement.</p>
+          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.62)]">Horizon de développement du groupe. C’est à Dakar que la JECA a réuni la diaspora lors de ses deux premiers forums, en 2022 et 2023.</p>
+          <div className="mb-0 mt-auto flex flex-wrap gap-2 pt-[1.8rem]">
+            <Link href={routes.jeca} className="border border-[rgba(255,255,255,.24)] px-[.8rem] py-[.6rem] text-label uppercase tracking-[.1em] transition-[background,color,border-color] duration-[250ms] hover:border-accent hover:bg-accent hover:text-ivory">Les forums JECA <Icon name="arrow-up-right" /></Link>
+          </div>
         </article>
         <article className="group reveal relative isolate flex min-h-[380px] flex-col overflow-hidden bg-ink p-[clamp(1.8rem,2.6vw,2.6rem)]">
           <span
@@ -72,7 +75,10 @@ export function AboutPresence() {
           />
           <span className="text-micro tracking-[.15em] text-accent">03</span>
           <h3 className="mb-4 mt-6 font-display text-display-md font-normal">Côte d’Ivoire</h3>
-          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.62)]">Présence validée par la direction du groupe. Les activités et implantations locales seront précisées prochainement.</p>
+          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.62)]">Horizon de développement du groupe et terre d’engagement d’Espoir de Vie : à Grôh, Hiré, Zaroko et Divo — jouets, kits scolaires, aide aux familles et construction de l’orphelinat.</p>
+          <div className="mb-0 mt-auto flex flex-wrap gap-2 pt-[1.8rem]">
+            <Link href={routes.edv} className="border border-[rgba(255,255,255,.24)] px-[.8rem] py-[.6rem] text-label uppercase tracking-[.1em] transition-[background,color,border-color] duration-[250ms] hover:border-accent hover:bg-accent hover:text-ivory">Espoir de Vie <Icon name="arrow-up-right" /></Link>
+          </div>
         </article>
       </div>
     </section>

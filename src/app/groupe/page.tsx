@@ -12,7 +12,6 @@ import { AboutPresence } from "@/components/about/AboutPresence";
 import { AboutQuote } from "@/components/about/AboutQuote";
 import { AboutRoles } from "@/components/about/AboutRoles";
 import { PageShell } from "@/components/layout/PageShell";
-import { Marquee } from "@/components/ui/Marquee";
 import { presidentOnu1 } from "@/data/media";
 import { routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
@@ -25,20 +24,11 @@ export const metadata: Metadata = {
   openGraph: socialMetadata(presidentOnu1),
 };
 
-const marqueeItems = [
-  "Leadership",
-  "Entrepreneuriat",
-  "Impact social",
-  "Guinée",
-  "Sénégal",
-  "Côte d’Ivoire",
-];
-
 export default function GroupPage() {
+  // Bandeau d’en-tête plein (variante home) : le hero est désormais sur fond crème.
   return (
-    <PageShell variant="about" current="group" footer="about">
+    <PageShell variant="home" current="group" footer="about">
       <AboutHero />
-      <Marquee items={marqueeItems} label="Repères du Groupe Baruck" />
       <AboutIntro />
       <AboutCommunication />
       <AboutMilestones />

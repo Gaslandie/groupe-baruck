@@ -349,7 +349,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           </button>
         </div>
 
-        <nav aria-label="Menu principal" className="my-auto flex flex-col">
+        <nav aria-label="Menu principal" className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-col">
           {mainNav.map((item) => {
             const itemCurrent = currentAttributes(item.href);
             const featuredChildren = item.children?.filter((child) => child.featured) ?? [];
@@ -362,7 +362,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                 {item.children ? <span aria-hidden="true" className="nav-disclosure-arrow ml-3 inline-block align-middle font-sans text-lead text-accent">⌄</span> : null}
               </>
             );
-            const headingClass = ["block py-[.34rem] font-display text-display-md leading-[1.06] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem]", itemCurrent.isCurrent ? styles.sideCurrent : ""].join(" ");
+            const headingClass = ["block py-[.34rem] font-display text-display-md leading-[1.06] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem]", itemCurrent.isCurrent ? styles.sideCurrent : ""].join(" ");
             if (!visibleChildren) return (
               <Link key={item.href} href={item.href} aria-current={itemCurrent["aria-current"]} data-current={itemCurrent["data-current"]} onClick={() => setIsOpen(false)} className={headingClass}>{heading}</Link>
             );
@@ -373,10 +373,10 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                   {visibleChildren.map((child) => {
                     const childCurrent = currentAttributes(child.href);
                     return (
-                      <Link key={child.href} href={child.href} aria-current={childCurrent["aria-current"]} data-current={childCurrent["data-current"]} onClick={() => setIsOpen(false)} className={["py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent", childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]"].join(" ")}>{child.label}</Link>
+                      <Link key={child.href} href={child.href} aria-current={childCurrent["aria-current"]} data-current={childCurrent["data-current"]} onClick={() => setIsOpen(false)} className={["py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent", childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]"].join(" ")}>{child.label}</Link>
                     );
                   })}
-                  {hasOtherChildren ? <Link href={item.href} onClick={() => setIsOpen(false)} className="py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] text-[#6f6f6b] transition-[color,transform] duration-[250ms] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent">Tous nos domaines</Link> : null}
+                  {hasOtherChildren ? <Link href={item.href} onClick={() => setIsOpen(false)} className="py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] text-[#6f6f6b] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent">Tous nos domaines</Link> : null}
                 </div>
               </details>
             );

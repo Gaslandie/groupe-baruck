@@ -9,7 +9,7 @@ import { asset } from "@/lib/asset";
  */
 export function PresidentPanel() {
   return (
-    <div id="president" className="relative min-h-[max(100svh,760px)] overflow-hidden bg-ink max-tablet:min-h-[64svh]">
+    <div id="president" className="relative min-h-[clamp(640px,82svh,800px)] overflow-hidden bg-ink max-tablet:min-h-[64svh]">
       <img
         src={asset(presidentPortrait.src)}
         alt={presidentPortrait.alt}

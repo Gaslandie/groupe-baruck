@@ -5,16 +5,15 @@ import { routes } from "@/data/site";
 /**
  * Moitié droite du hero, sur fond clair : les textes qui étaient auparavant
  * posés sur le portrait. Les quatre fonctions restent des liens, sans flèche —
- * la puce accentuée et le décalage au survol suffisent à les signaler.
+ * la puce accentuée et le décalage au survol (`.role-link`, globals.css)
+ * suffisent à les signaler.
  */
-const roleClassName =
-  "group flex w-fit items-center gap-[.7rem] transition-[color,transform] duration-[220ms] before:h-1 before:w-1 before:shrink-0 before:rounded-full before:bg-accent before:content-[''] hover:translate-x-[5px] hover:text-accent focus-visible:translate-x-[5px] focus-visible:text-accent max-tablet:items-start max-tablet:before:mt-[.4em]";
+const roleClassName = "role-link";
 
 export function HeroIntro() {
   return (
-    <div className="relative flex min-h-[max(100svh,760px)] flex-col justify-center bg-paper px-[clamp(1.5rem,4vw,4.8rem)] py-[clamp(6rem,10vh,8rem)] text-ink max-tablet:min-h-0 max-tablet:px-[1.3rem] max-tablet:py-14">
+    <div className="relative flex min-h-[clamp(640px,82svh,800px)] flex-col justify-center bg-paper px-[clamp(1.5rem,4vw,4.8rem)] py-[clamp(6rem,10vh,8rem)] text-ink max-tablet:min-h-0 max-tablet:px-[1.3rem] max-tablet:py-14">
       <div className="hero-in">
-        <p className="eyebrow text-caption max-tablet:text-label">Direction du Groupe Baruck</p>
         <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.9] tracking-[-.04em]">
           <span className="text-muted">MR</span> Djoro Joël
           <br />
@@ -42,9 +41,6 @@ export function HeroIntro() {
             Nous contacter
           </Link>
         </div>
-        <p className="mb-0 mt-[clamp(2.5rem,5vh,4rem)] border-t border-line pt-[1.1rem] text-micro uppercase tracking-[.18em] text-[#8d8a84]">
-          Leadership · Entrepreneuriat · Engagement
-        </p>
       </div>
     </div>
   );

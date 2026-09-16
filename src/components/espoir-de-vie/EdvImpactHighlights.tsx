@@ -32,7 +32,7 @@ export function EdvImpactHighlights() {
         </div>
       </div>
 
-      <dl className="reveal-stagger m-0 grid grid-cols-5 border-l border-t border-[rgba(255,255,255,.15)] max-[1100px]:grid-cols-3 max-tablet:grid-cols-2 max-[430px]:grid-cols-1">
+      <dl className="reveal-stagger m-0 grid grid-cols-4 border-l border-t border-[rgba(255,255,255,.15)] max-[1100px]:grid-cols-2 max-[430px]:grid-cols-1">
         {edvImpact.map((item) => (
           <div
             key={item.value + item.label}
