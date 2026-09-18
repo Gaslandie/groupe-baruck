@@ -110,6 +110,7 @@ export const edvSectionNav = [
   { href: "#orphelinat", number: "02", title: "L’orphelinat", subtitle: "Une histoire depuis 2017" },
   { href: "#actions", number: "03", title: "Nos actions", subtitle: "Des engagements concrets" },
   { href: "#presence", number: "04", title: "Notre présence", subtitle: "Trois pays d’engagement" },
+  { href: "#galerie", number: "05", title: "Les galeries", subtitle: "Onze actions en images" },
 ] satisfies EdvSectionNavItem[];
 
 export const edvPillars = [

@@ -4,6 +4,7 @@ import { EdvActions } from "@/components/espoir-de-vie/EdvActions";
 import { EdvArchives } from "@/components/espoir-de-vie/EdvArchives";
 import { EdvCollaborations } from "@/components/espoir-de-vie/EdvCollaborations";
 import { EdvCta } from "@/components/espoir-de-vie/EdvCta";
+import { EdvGalleries } from "@/components/espoir-de-vie/EdvGalleries";
 import { EdvHero } from "@/components/espoir-de-vie/EdvHero";
 import { EdvImpact } from "@/components/espoir-de-vie/EdvImpact";
 import { EdvMission } from "@/components/espoir-de-vie/EdvMission";
@@ -45,6 +46,7 @@ export default function EspoirDeViePage() {
       <EdvActions />
       <EdvPresence />
       <EdvArchives />
+      <EdvGalleries />
       <EdvCollaborations />
       <EdvCta />
     </PageShell>

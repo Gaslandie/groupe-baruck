@@ -4,7 +4,7 @@ export function EdvSectionNav() {
   return (
     <nav
       aria-label="Accès direct au contenu"
-      className="grid grid-cols-4 border-b border-edv-line bg-edv-cream max-tablet:block"
+      className="grid grid-cols-5 border-b border-edv-line bg-edv-cream max-[1180px]:grid-cols-3 max-tablet:block"
     >
       {edvSectionNav.map((item) => (
         <a
