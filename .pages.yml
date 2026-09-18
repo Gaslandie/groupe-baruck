@@ -122,6 +122,22 @@ content:
             label: Précision
             type: string
             description: "Facultative. Courte mention affichée à côté de l’intitulé, par exemple un pays."
+          - name: video
+            label: Vidéo du groupe
+            type: object
+            fields:
+              - name: src
+                label: Fichier vidéo
+                type: string
+                description: "Chemin d’une vidéo MP4 déposée dans public/videos, par exemple /videos/top-modele-2026/candidat-01.mp4. Les vidéos ne se téléversent pas ici : elles sont ajoutées au dépôt."
+              - name: poster
+                label: Affiche de la vidéo
+                type: image
+                options:
+                  media: images
+                  path: public/images/actualites
+                description: "Image affichée avant la lecture. Obligatoire lorsqu’une vidéo est renseignée."
+            description: "Facultative. Elle s’affiche avant les photos du groupe."
           - name: photos
             label: Photos du groupe
             type: object

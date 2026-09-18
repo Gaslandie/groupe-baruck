@@ -12,6 +12,7 @@ const fixture = fs.mkdtempSync(path.join(os.tmpdir(), "baruck-content-test-"));
 const articles = path.join(fixture, "content/actualites");
 fs.mkdirSync(articles, { recursive: true });
 fs.cpSync(path.join(project, "public/images"), path.join(fixture, "public/images"), { recursive: true });
+fs.cpSync(path.join(project, "public/videos"), path.join(fixture, "public/videos"), { recursive: true });
 fs.mkdirSync(path.join(fixture, "public/images/actualites"), { recursive: true });
 fs.writeFileSync(path.join(fixture, "public/images/actualites/test.png"), Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aB9sAAAAASUVORK5CYII=", "base64",
@@ -109,6 +110,63 @@ test("les couvertures et galeries exigent une description et une image existante
   assert.throws(getAllArticles, /gallery\[0\].alt/);
   write({ cover: "/images/absent.jpg", coverAlt: "Image absente" });
   assert.throws(getAllArticles, /n’existe pas/);
+});
+test("les groupes de photos sont validés comme le reste de l’article", () => {
+  const photos = [{ src: "/images/actualites/test.png", alt: "Image de test" }];
+
+  write({ groupsTitle: "Voici nos candidats", groups: [{ label: "Candidat n°1", note: "Guinée", photos }] });
+  const [group] = getAllArticles()[0].groups;
+  assert.equal(group.label, "Candidat n°1");
+  assert.equal(group.note, "Guinée");
+  assert.equal(group.photos.length, 1);
+  assert.equal(group.video, undefined);
+
+  // Sans groupe, les deux textes n’ont rien à titrer ; avec des groupes, le titre est dû.
+  write({ groupsTitle: "Titre orphelin" });
+  assert.throws(getAllArticles, /groupsTitle/);
+  write({ groups: [{ label: "Candidat n°1", photos }] });
+  assert.throws(getAllArticles, /groupsTitle/);
+
+  write({ groupsTitle: "Titre", groups: [{ label: "", photos }] });
+  assert.throws(getAllArticles, /groups\[0\].label/);
+  write({ groupsTitle: "Titre", groups: [{ label: "Candidat n°1", photos: [] }] });
+  assert.throws(getAllArticles, /au moins une photo/);
+  write({ groupsTitle: "Titre", groups: [{ label: "Candidat n°1", photos: [{ src: "/images/absent.jpg", alt: "Absente" }] }] });
+  assert.throws(getAllArticles, /n’existe pas/);
+  write({ groupsTitle: "Titre", groups: "Candidat n°1" });
+  assert.throws(getAllArticles, /"groups" doit être une liste/);
+});
+test("une vidéo de groupe reste dans /videos/ et exige une affiche existante", () => {
+  const photos = [{ src: "/images/actualites/test.png", alt: "Image de test" }];
+  const poster = "/images/actualites/test.png";
+  const groups = (video) => ({ groupsTitle: "Titre", groups: [{ label: "Candidat n°1", video, photos }] });
+
+  write(groups({ src: "/videos/top-modele-2026/candidat-01.mp4", poster }));
+  const { video } = getAllArticles()[0].groups[0];
+  assert.equal(video.src, "/videos/top-modele-2026/candidat-01.mp4");
+  assert.equal(video.poster, poster);
+  assert.equal(video.width, 1);
+  assert.equal(video.height, 1);
+
+  // Une sortie du dossier des vidéos est refusée, quelle que soit sa forme.
+  for (const src of [
+    "/images/actualites/test.png",
+    "/videos/../images/actualites/test.png",
+    "/videos/top-modele-2026/../../secret.mp4",
+    "videos/top-modele-2026/candidat-01.mp4",
+  ]) {
+    write(groups({ src, poster }));
+    assert.throws(getAllArticles, /vidéo/, src);
+  }
+
+  write(groups({ src: "/videos/absente.mp4", poster }));
+  assert.throws(getAllArticles, /n’existe pas/);
+  write(groups({ src: "/videos/top-modele-2026/candidat-01.mp4", poster: "/images/absente.jpg" }));
+  assert.throws(getAllArticles, /n’existe pas/);
+  write(groups({ src: "/videos/top-modele-2026/candidat-01.mp4" }));
+  assert.throws(getAllArticles, /video.poster/);
+  write(groups("/videos/top-modele-2026/candidat-01.mp4"));
+  assert.throws(getAllArticles, /"video" doit être un objet/);
 });
 test("les catégories héritées, dates impossibles et contenus vides sont refusés", () => {
   for (const category of ["constructor", "toString", "autre"]) {

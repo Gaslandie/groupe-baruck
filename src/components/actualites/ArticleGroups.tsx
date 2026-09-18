@@ -5,6 +5,8 @@ import { useState } from "react";
 import type { NewsGroup } from "@/data/actualites";
 import { asset } from "@/lib/asset";
 
+import { VideoPlayer } from "../ui/VideoPlayer";
+
 type ArticleGroupsProps = {
   title?: string;
   intro?: string;
@@ -24,6 +26,11 @@ type ArticleGroupsProps = {
  * Les onglets sont de vrais boutons dans une liste `tablist` ; les flèches du
  * clavier sont gérées par le navigateur via `tabIndex`, comme attendu d'un
  * motif d'onglets accessible.
+ *
+ * Un groupe peut porter une vidéo, placée avant ses photos : c'est le passage
+ * lui-même, les photos le complètent. Le lecteur est celui du site, en
+ * `preload="none"` — seule l'affiche se charge tant qu'on ne lance pas la
+ * lecture, et rien du tout tant que l'onglet reste fermé.
  */
 const tabClass =
   "inline-flex min-h-11 items-center border px-[.9rem] text-label uppercase tracking-[.13em] transition-[background,color,border-color] duration-[250ms]";
@@ -110,6 +117,18 @@ export function ArticleGroups({ title, intro, groups }: ArticleGroupsProps) {
               </p>
             ) : null}
           </div>
+
+          {group.video ? (
+            <div className="mb-[clamp(1rem,2vw,1.4rem)]">
+              <VideoPlayer
+                src={asset(group.video.src as `/${string}`)}
+                poster={asset(group.video.poster as `/${string}`)}
+                width={group.video.width}
+                height={group.video.height}
+                className="aspect-video"
+              />
+            </div>
+          ) : null}
 
           <div className={`grid gap-[.9rem] max-tablet:gap-[.6rem] ${photoGridClass(group.photos.length)}`}>
             {group.photos.map((photo) => (

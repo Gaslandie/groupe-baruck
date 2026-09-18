@@ -12,6 +12,7 @@ import {
   type NewsCategory,
   type NewsGroup,
   type NewsImage,
+  type NewsVideo,
 } from "@/data/actualites";
 import { asset } from "@/lib/asset";
 
@@ -135,6 +136,46 @@ function parseGallery(value: unknown, filename: string): NewsImage[] {
   });
 }
 
+function parseVideo(value: unknown, filename: string): NewsVideo | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (typeof value !== "object" || Array.isArray(value)) {
+    error(filename, 'le champ "video" doit être un objet.');
+  }
+
+  const video = value as Record<string, unknown>;
+  const src = requiredString(video.src, "video.src", filename);
+  const posterSrc = requiredString(video.poster, "video.poster", filename);
+
+  if (!src.startsWith("/videos/")) {
+    error(filename, `le chemin de vidéo "${src}" doit commencer par "/videos/".`);
+  }
+  if (!/\.mp4$/i.test(src)) {
+    error(filename, `l’extension de la vidéo "${src}" doit être .mp4.`);
+  }
+
+  const file = path.join(process.cwd(), "public", src.slice(1));
+  const videosRoot = path.join(process.cwd(), "public", "videos");
+  if (
+    src.includes("\\") ||
+    src.split("/").some((segment) => segment === "." || segment === "..") ||
+    !file.startsWith(`${videosRoot}${path.sep}`)
+  ) {
+    error(filename, `le chemin de vidéo "${src}" doit rester dans "/videos/".`);
+  }
+  if (!fs.existsSync(file)) {
+    error(filename, `le fichier vidéo "${src}" n’existe pas.`);
+  }
+  if (!fs.realpathSync(file).startsWith(`${fs.realpathSync(videosRoot)}${path.sep}`)) {
+    error(filename, `le fichier vidéo "${src}" doit rester dans "/videos/".`);
+  }
+
+  // L’affiche suit la validation des images de l’article ; sa description ne
+  // sert qu’à cette vérification, l’attribut `poster` d’une vidéo n’en a pas.
+  const poster = resolveImage(posterSrc, "Affiche de la vidéo", filename);
+
+  return { src, poster: poster.src, width: poster.width, height: poster.height };
+}
+
 function parseGroups(value: unknown, filename: string): NewsGroup[] {
   if (value === undefined || value === null) return [];
   if (!Array.isArray(value)) {
@@ -150,12 +191,13 @@ function parseGroups(value: unknown, filename: string): NewsGroup[] {
     const label = requiredString(group.label, `groups[${index}].label`, filename);
     const note = optionalString(group.note, `groups[${index}].note`, filename);
     const photos = parseGallery(group.photos, filename);
+    const video = parseVideo(group.video, filename);
 
     if (photos.length === 0) {
       error(filename, `le groupe groups[${index}] doit contenir au moins une photo.`);
     }
 
-    return { label, ...(note ? { note } : {}), photos };
+    return { label, ...(note ? { note } : {}), photos, ...(video ? { video } : {}) };
   });
 }
 

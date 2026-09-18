@@ -30,6 +30,17 @@ export type NewsImage = {
 };
 
 /**
+ * Vidéo auto-hébergée d’un groupe. Les dimensions sont celles de l’affiche,
+ * qui est une image du film : le cadre garde le bon rapport avant la lecture.
+ */
+export type NewsVideo = {
+  src: string;
+  poster: string;
+  width: number;
+  height: number;
+};
+
+/**
  * Photos regroupées sous un intitulé, affichées après le corps de l’article
  * (passage d’un candidat, étape d’une action…). Complément de `gallery`, qui
  * reste une suite d’images sans regroupement.
@@ -39,6 +50,8 @@ export type NewsGroup = {
   /** Précision courte affichée à côté de l’intitulé, p. ex. un pays. */
   note?: string;
   photos: NewsImage[];
+  /** Facultative : tous les groupes n’ont pas de film de leur passage. */
+  video?: NewsVideo;
 };
 
 export type Article = {
