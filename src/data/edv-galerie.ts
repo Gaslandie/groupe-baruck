@@ -26,6 +26,12 @@ export type EdvGalleryCategory = {
  *
  * Ce fichier est écrit à la main pour les textes et engendré pour la liste des
  * fichiers : ne pas renuméroter les images sans refaire les deux.
+ *
+ * Le repas partagé n'affiche aucune date : le dossier du client s'appelle
+ * « PATAGE DU REPAS 11 03 2017 » alors que la frise de l'orphelinat
+ * (`edvTimeline`) annonce le 04 mars 2017. Tant que la direction n'a pas
+ * tranché, mieux vaut ne rien dater que publier deux dates différentes
+ * (question ouverte du 2026-09-18).
  */
 export const edvGalleryCategories: EdvGalleryCategory[] = [
   {
@@ -50,16 +56,16 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
   },
   {
     id: "fondation-rose-guiro",
-    label: "Fondation Marie Rose Guiro",
-    title: "Unir les forces avec la Fondation Marie Rose Guiro",
+    label: "Fondation Marie Rose Guiraud",
+    title: "Unir les forces avec la Fondation Marie Rose Guiraud",
     place: "Côte d’Ivoire",
-    text: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro, pour accompagner ses bénéficiaires.",
+    text: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud, pour accompagner ses bénéficiaires.",
     photos: [
-      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/01.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1200, height: 866 },
-      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/02.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1200, height: 866 },
-      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/03.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1200, height: 866 },
-      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/04.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1200, height: 866 },
-      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/05.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1200, height: 866 },
+      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/01.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1200, height: 866 },
+      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/02.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1200, height: 866 },
+      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/03.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1200, height: 866 },
+      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/04.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1200, height: 866 },
+      { src: "/images/espoir-de-vie/galerie/fondation-rose-guiro/05.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1200, height: 866 },
     ],
   },
   {
@@ -135,6 +141,7 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     label: "Fête des mères",
     title: "La fête des mères au village",
     place: "Zaroko · Côte d’Ivoire",
+    date: "2015",
     text: "Une journée pour les mères du village, avec des présents remis à chacune.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/fete-des-meres/01.webp", alt: "Célébration de la fête des mères avec les femmes du village de Zaroko", width: 1200, height: 900 },
@@ -248,7 +255,6 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     label: "Le repas partagé",
     title: "Le partage du repas",
     place: "Divo · Côte d’Ivoire",
-    date: "11 mars 2017",
     text: "Un repas préparé et servi aux enfants de l’orphelinat, partagé autour de la même table.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/repas-partage/01.webp", alt: "Repas préparé et partagé avec les enfants de l’orphelinat Espoir de Vie", width: 1200, height: 800 },

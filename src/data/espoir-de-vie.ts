@@ -96,7 +96,7 @@ export const edvPhotos = {
   veuvesRemiseVivres: { src: "/images/espoir-de-vie/veuves-remise-vivres.webp", alt: "Remise de vivres à une femme veuve", width: 1100, height: 794 },
   veuvesVivres: { src: "/images/espoir-de-vie/veuves-vivres.webp", alt: "Femmes veuves réunies avec les vivres reçus", width: 1100, height: 794 },
   feteDesMeres: { src: "/images/espoir-de-vie/fete-des-meres.webp", alt: "Mamans réunies avec les présents remis à l’occasion de la fête des Mères", width: 1100, height: 825 },
-  fondationRoseGuiro: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro", width: 1100, height: 794 },
+  fondationRoseGuiraud: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1100, height: 794 },
 } as const satisfies Record<string, ImageAsset>;
 
 /** Photo du panneau droit du hero : le repas partagé à l'orphelinat. */
@@ -135,7 +135,7 @@ export const edvPillars = [
 
 export const edvImpact = [
   { value: "2015", label: "Premières actions de solidarité" },
-  { value: "100", label: "Jouets remis aux enfants de Grôh" },
+  { value: "1000", label: "Jouets remis aux enfants de Grôh" },
   { value: "200", label: "Orphelins accompagnés à la rentrée 2016–2017" },
   { value: "2017", label: "Accueil des premiers pensionnaires" },
 ] satisfies EdvImpactItem[];
@@ -179,8 +179,8 @@ export const edvActions = [
     date: { iso: "2015-12-23", label: "23 décembre 2015" },
     place: "Grôh · Département d’Hiré · Côte d’Ivoire",
     title: "Un Noël pour les enfants",
-    text: "Cent jouets remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
-    highlight: "100 jouets",
+    text: "Mille jouets remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
+    highlight: "1 000 jouets",
     tone: "featured",
     photo: edvPhotos.grohRemiseJouets,
   },
@@ -212,10 +212,10 @@ export const edvActions = [
   {
     number: "05",
     period: "Solidarité associative",
-    place: "Fondation Marie Rose Guiro",
+    place: "Fondation Marie Rose Guiraud",
     title: "Unir les forces",
-    text: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiro pour accompagner ses bénéficiaires.",
-    photo: edvPhotos.fondationRoseGuiro,
+    text: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud pour accompagner ses bénéficiaires.",
+    photo: edvPhotos.fondationRoseGuiraud,
   },
   {
     number: "06",
@@ -266,13 +266,13 @@ export const edvGallery = [
   { photo: edvPhotos.divoFournitures, caption: "Les fournitures" },
   { photo: edvPhotos.feteDesMeres, caption: "Fête des Mères" },
   { photo: edvPhotos.veuvesVivres, caption: "Soutien aux veuves" },
-  { photo: edvPhotos.fondationRoseGuiro, caption: "Fondation Marie Rose Guiro" },
+  { photo: edvPhotos.fondationRoseGuiraud, caption: "Fondation Marie Rose Guiraud" },
 ] satisfies EdvGalleryItem[];
 
 export const edvCollaborations = [
   {
     number: "01",
-    title: "Fondation Marie Rose Guiro",
+    title: "Fondation Marie Rose Guiraud",
     text: "Des vivres et des produits non alimentaires ont été remis pour accompagner ses bénéficiaires.",
   },
   {

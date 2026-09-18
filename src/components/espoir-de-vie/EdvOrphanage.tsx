@@ -54,7 +54,7 @@ export function EdvOrphanage() {
                 {item.step}
               </span>
             )}
-            <h3 className="mb-[.65rem] mt-[.9rem] font-display text-display-md font-normal leading-none">
+            <h3 className="mb-[.65rem] mt-[.9rem] text-balance font-display text-display-sm font-normal leading-[1.08] [overflow-wrap:anywhere]">
               {item.title}
             </h3>
             <p className="m-0 text-small leading-[1.7] text-edv-muted">{item.text}</p>

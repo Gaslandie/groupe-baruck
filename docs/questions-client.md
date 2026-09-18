@@ -134,3 +134,45 @@ Merci de fournir la liste des prix, distinctions, mandats ou fonctions officiell
 - organisme ;
 - date ;
 - document, lien ou photo justificative.
+
+## 14. Espoir de Vie — galeries d'archives (2026-09-18)
+
+136 photos du dossier « HISTORIQUE DE LA FONDATION JOEL KRASSO ORPHELINAT » sont
+désormais publiées sur la page Espoir de Vie, classées en onze actions. Quatre
+points restent à confirmer par la direction.
+
+### 14.1 Date du repas partagé
+
+Le dossier des photos s'appelle « PATAGE DU REPAS 11 03 2017 », mais la frise de
+l'orphelinat publiée sur le site annonce le 04 mars 2017. La galerie n'affiche
+aucune date tant que ce point n'est pas tranché.
+
+- [ ] 11 mars 2017
+- [ ] 04 mars 2017
+- [ ] Autre date :
+
+### 14.2 Lieu du soutien aux femmes veuves
+
+Le dossier s'appelle « soutien au femme veuves du village de Zaroko », mais le
+montage qu'il contient annonce « les femmes veuves de Divo ».
+
+- [ ] Zaroko
+- [ ] Divo
+- [ ] Les deux villages
+
+### 14.3 Photo manquante pour « Porter l'espoir au-delà des frontières »
+
+Cette action (Guinée et Burkina Faso) est la seule sans photo : aucun des
+dossiers fournis n'en contient. Merci d'envoyer une ou plusieurs photos prises
+en Guinée ou au Burkina Faso, sans quoi la carte reste sans image. Aucune photo
+de Côte d'Ivoire n'y sera mise, elle donnerait une fausse indication de lieu.
+
+### 14.4 Accord de publication des photos d'enfants
+
+Les galeries montrent des enfants reconnaissables, dont des pensionnaires de
+l'orphelinat. Merci de confirmer que la fondation dispose de l'accord des
+familles ou des tuteurs pour la publication de ces images sur le site public, et
+d'indiquer les photos à retirer le cas échéant.
+
+- [ ] Accord confirmé pour toutes les photos
+- [ ] Accord confirmé sauf pour les photos suivantes :

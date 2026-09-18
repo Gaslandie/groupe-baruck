@@ -17,7 +17,7 @@ export const milestones: Milestone[] = [
     year: "2015",
     dateTime: "2015-12-23",
     title: "Premières actions de solidarité",
-    text: "À Grôh, cent jouets sont remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
+    text: "À Grôh, mille jouets sont remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
     href: "/espoir-de-vie/#actions",
   },
   {
