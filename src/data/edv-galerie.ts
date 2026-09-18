@@ -27,11 +27,11 @@ export type EdvGalleryCategory = {
  * Ce fichier est écrit à la main pour les textes et engendré pour la liste des
  * fichiers : ne pas renuméroter les images sans refaire les deux.
  *
- * Le repas partagé n'affiche aucune date : le dossier du client s'appelle
- * « PATAGE DU REPAS 11 03 2017 » alors que la frise de l'orphelinat
- * (`edvTimeline`) annonce le 04 mars 2017. Tant que la direction n'a pas
- * tranché, mieux vaut ne rien dater que publier deux dates différentes
- * (question ouverte du 2026-09-18).
+ * Deux formulations volontairement prudentes, arrêtées avec Mohamed le
+ * 2026-09-18 : le repas partagé est daté du seul mois (« mars 2017 »), parce que
+ * le dossier du client dit le 11 et la frise de l'orphelinat le 04 ; et le
+ * soutien aux veuves nomme les deux villages, le dossier disant Zaroko et le
+ * montage qu'il contient Divo, sans affirmer de lien entre les deux.
  */
 export const edvGalleryCategories: EdvGalleryCategory[] = [
   {
@@ -121,7 +121,7 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     id: "veuves-zaroko",
     label: "Veuves de Zaroko",
     title: "Soutien aux femmes veuves",
-    place: "Zaroko · Côte d’Ivoire",
+    place: "Zaroko et Divo · Côte d’Ivoire",
     text: "Des vivres remis aux femmes veuves du village, en soutien aux familles qu’elles portent seules.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/veuves-zaroko/01.webp", alt: "Remise de vivres aux femmes veuves du village de Zaroko", width: 1200, height: 866 },
@@ -255,6 +255,7 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     label: "Le repas partagé",
     title: "Le partage du repas",
     place: "Divo · Côte d’Ivoire",
+    date: "mars 2017",
     text: "Un repas préparé et servi aux enfants de l’orphelinat, partagé autour de la même table.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/repas-partage/01.webp", alt: "Repas préparé et partagé avec les enfants de l’orphelinat Espoir de Vie", width: 1200, height: 800 },

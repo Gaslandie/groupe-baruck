@@ -57,7 +57,7 @@ export function EdvMission() {
             className="reveal min-h-[270px] border-r border-edv-line px-[clamp(1rem,1.7vw,1.8rem)] py-8 first:pl-0 last:border-r-0 max-tablet:min-h-0 max-tablet:border-b max-tablet:border-r-0 max-tablet:px-0 max-tablet:pb-[2.2rem] max-tablet:pt-[1.7rem] max-tablet:last:border-b-0"
           >
             <span className="text-micro font-extrabold tracking-[.16em] text-edv-ember">{pillar.number}</span>
-            <h3 className="mb-[.8rem] mt-[4.5rem] font-display text-display-md font-normal leading-none tracking-[-.035em] max-tablet:mt-[1.8rem]">
+            <h3 className="mb-[.8rem] mt-[4.5rem] text-balance font-display text-display-sm font-normal leading-[1.08] tracking-[-.03em] [overflow-wrap:anywhere] max-tablet:mt-[1.8rem]">
               {pillar.title}
             </h3>
             <p className="m-0 max-w-[260px] text-caption leading-[1.65] text-edv-muted">{pillar.text}</p>

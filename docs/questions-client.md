@@ -144,8 +144,8 @@ points restent à confirmer par la direction.
 ### 14.1 Date du repas partagé
 
 Le dossier des photos s'appelle « PATAGE DU REPAS 11 03 2017 », mais la frise de
-l'orphelinat publiée sur le site annonce le 04 mars 2017. La galerie n'affiche
-aucune date tant que ce point n'est pas tranché.
+l'orphelinat publiée sur le site annonce le 04 mars 2017. En attendant, la
+galerie affiche seulement « mars 2017 », sans le jour.
 
 - [ ] 11 mars 2017
 - [ ] 04 mars 2017
@@ -154,7 +154,8 @@ aucune date tant que ce point n'est pas tranché.
 ### 14.2 Lieu du soutien aux femmes veuves
 
 Le dossier s'appelle « soutien au femme veuves du village de Zaroko », mais le
-montage qu'il contient annonce « les femmes veuves de Divo ».
+montage qu'il contient annonce « les femmes veuves de Divo ». La galerie nomme
+donc les deux villages, sans dire comment ils se rattachent l'un à l'autre.
 
 - [ ] Zaroko
 - [ ] Divo
@@ -162,10 +163,10 @@ montage qu'il contient annonce « les femmes veuves de Divo ».
 
 ### 14.3 Photo manquante pour « Porter l'espoir au-delà des frontières »
 
-Cette action (Guinée et Burkina Faso) est la seule sans photo : aucun des
-dossiers fournis n'en contient. Merci d'envoyer une ou plusieurs photos prises
-en Guinée ou au Burkina Faso, sans quoi la carte reste sans image. Aucune photo
-de Côte d'Ivoire n'y sera mise, elle donnerait une fausse indication de lieu.
+Aucun des dossiers fournis ne contient de photo prise en Guinée ou au Burkina
+Faso. La carte restait vide, donc une photo d'archive y a été placée à titre
+provisoire, avec un texte alternatif qui ne nomme aucun lieu. Merci d'envoyer
+une vraie photo prise sur place, pour la remplacer.
 
 ### 14.4 Accord de publication des photos d'enfants
 

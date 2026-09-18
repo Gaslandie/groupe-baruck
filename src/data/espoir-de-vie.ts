@@ -173,6 +173,14 @@ export const edvTimeline = [
   },
 ] satisfies EdvTimelineItem[];
 
+/** Photo d'archive servant l'action 06, sans lieu annoncé : voir le commentaire dans `edvActions`. */
+const partageSolidarite = {
+  src: "/images/espoir-de-vie/galerie/veuves-zaroko/06.webp",
+  alt: "Remise de dons aux familles réunies lors d’une action de solidarité d’Espoir de Vie",
+  width: 1200,
+  height: 866,
+} as const satisfies ImageAsset;
+
 export const edvActions = [
   {
     number: "01",
@@ -222,6 +230,10 @@ export const edvActions = [
     period: "Rayonnement africain",
     place: "Guinée et Burkina Faso",
     title: "Porter l’espoir au-delà des frontières",
+    // Photo prise dans les archives faute de cliché de Guinée ou du Burkina Faso
+    // (2026-09-18). Son texte alternatif ne nomme donc aucun lieu ; une vraie
+    // photo prise là-bas reste demandée (docs/questions-client.md, 14.3).
+    photo: partageSolidarite,
     text: "Soutien aux enfants de la rue, partage avec des personnes sans-abri et actions en faveur de la santé, de l’alimentation et de l’éducation.",
     tone: "dark",
   },
