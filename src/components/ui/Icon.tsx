@@ -6,6 +6,7 @@ export type IconName =
   | "arrow-down"
   | "arrow-left"
   | "arrow-right"
+  | "chevron-down"
   | "close";
 
 /**
@@ -22,6 +23,7 @@ const paths: Record<IconName, string> = {
   "arrow-down": "M12 5v13.4M5.8 12.2 12 18.4l6.2-6.2",
   "arrow-left": "M19 12H5.6M11.8 5.8 5.6 12l6.2 6.2",
   "arrow-right": "M5 12h13.4M12.2 5.8 18.4 12l-6.2 6.2",
+  "chevron-down": "M5.8 9.2 12 15.4l6.2-6.2",
   close: "M6 6l12 12M18 6 6 18",
 };
 

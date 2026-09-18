@@ -120,13 +120,23 @@
     details[open] > .nav-disclosure-content { animation: navigation-in .22s ease both; }
   }
 
+  /* Passage d'une page à l'autre (2026-09-17) : le contenu s'estompe au clic,
+     puis la page d'arrivée revient en fondu avec une petite montée. Seules
+     l'opacité et la position sont animées, donc c'est fluide même sur mobile. */
   @media (prefers-reduced-motion: no-preference) {
+    #main-content { transition: opacity .32s cubic-bezier(.2,.7,.2,1); }
+    html[data-page-leave] #main-content { opacity: .38; }
     html[data-page-enter] #main-content {
-      animation: navigation-in .36s cubic-bezier(.2,.7,.2,1) both;
+      animation: page-enter .52s cubic-bezier(.2,.7,.2,1) both;
     }
   }
 
   @keyframes navigation-in { from { opacity: 0; } to { opacity: 1; } }
+
+  @keyframes page-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
 
   /* Barre d'attente pendant qu'une page se charge : purement indicative. */
   .nav-progress {
@@ -243,6 +253,54 @@
   .hero-in > :nth-child(6) { animation-delay: .4s; }
   .hero-in > :nth-child(7) { animation-delay: .48s; }
   .hero-in > :nth-child(8) { animation-delay: .56s; }
+
+  /* Invitation à descendre, en bas du hero de l'accueil (2026-09-17).
+     Un trait accent glisse le long d'un filet vertical, puis le chevron
+     s'allume quand il arrive en bas. Aucun texte, aucun cercle. */
+  .hero-cue { transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+  .hero-cue:hover,
+  .hero-cue:focus-visible { transform: translateY(3px); }
+
+  .hero-cue-rail {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 58px;
+    overflow: hidden;
+    background: color-mix(in srgb, currentColor 24%, transparent);
+  }
+
+  .hero-cue-rail::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: var(--color-accent);
+    animation: heroCueSpark 2.6s cubic-bezier(.65, 0, .35, 1) infinite;
+  }
+
+  .hero-cue-arrow { animation: heroCueArrow 2.6s cubic-bezier(.65, 0, .35, 1) infinite; }
+
+  @keyframes heroCueSpark {
+    0% { transform: translateY(-100%); opacity: 0; }
+    16% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: translateY(363%); opacity: 0; }
+  }
+
+  @keyframes heroCueArrow {
+    0%, 52% { opacity: .3; transform: translateY(-2px); }
+    76% { opacity: 1; transform: translateY(3px); }
+    100% { opacity: .3; transform: translateY(-2px); }
+  }
+
+  /* Sans animation : le trait reste en bas du filet et le chevron reste net. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cue-rail::after { top: auto; bottom: 0; }
+    .hero-cue-arrow { opacity: 1; }
+  }
 
   aside#side-nav nav > div:nth-child(1) { --n: 0; }
   aside#side-nav nav > div:nth-child(2) { --n: 1; }

@@ -103,7 +103,7 @@ export function PageTeaser({
     return (
       <section
         id={id}
-        className={`reveal-stagger px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4.5rem,8vw,8rem)] max-tablet:px-[1.3rem] max-tablet:py-16 ${toneClasses[tone]}`}
+        className={`reveal-stagger scroll-mt-[92px] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4.5rem,8vw,8rem)] max-tablet:px-[1.3rem] max-tablet:py-16 ${toneClasses[tone]}`}
       >
         <div className="grid grid-cols-2 items-end gap-x-[clamp(2.5rem,6vw,6rem)] gap-y-10 max-desktop:grid-cols-1 max-desktop:items-start">
           <div className="reveal">{heading}</div>
@@ -125,7 +125,7 @@ export function PageTeaser({
   return (
     <section
       id={id}
-      className={`reveal-stagger grid min-h-[620px] grid-cols-2 gap-[clamp(0px,3.5vw,4.5rem)] px-[clamp(0px,3vw,4rem)] py-[clamp(0px,2.5vw,3.5rem)] max-tablet:grid-cols-1 max-tablet:gap-0 max-tablet:p-0 ${toneClasses[tone]}`}
+      className={`reveal-stagger grid min-h-[620px] scroll-mt-[92px] grid-cols-2 gap-[clamp(0px,3.5vw,4.5rem)] px-[clamp(0px,3vw,4rem)] py-[clamp(0px,2.5vw,3.5rem)] max-tablet:grid-cols-1 max-tablet:gap-0 max-tablet:p-0 ${toneClasses[tone]}`}
     >
       <figure
         className={`reveal-media relative m-0 min-h-[560px] overflow-hidden max-tablet:order-first max-tablet:min-h-0 max-tablet:aspect-[4/3] ${

@@ -12,9 +12,14 @@ function normalize(pathname: string) {
 }
 
 /**
- * Entrée de page animée et barre d'attente.
+ * Passage d'une page à l'autre en douceur, et barre d'attente.
+ *
+ * Trois temps (2026-09-17) : au clic le contenu s'estompe sans disparaître
+ * (`data-page-leave`), la barre d'attente avance pendant le chargement, puis la
+ * page d'arrivée revient en fondu avec une petite montée (`data-page-enter`).
  * Aucun clic n'est intercepté : la page reste réactive dès le premier clic,
- * même quand l'hébergement met plusieurs secondes à répondre.
+ * même quand l'hébergement met plusieurs secondes à répondre. Sans animations
+ * (réglage système « moins d'animations »), il ne reste que la barre.
  */
 export function NavigationTransitions() {
   const pathname = usePathname();
@@ -48,13 +53,23 @@ export function NavigationTransitions() {
     return () => window.clearTimeout(timer);
   }, [isPending]);
 
-  // La page d'arrivée est montée : son contenu apparaît en fondu.
+  // Le départ : le contenu s'estompe tant que la page suivante n'est pas là.
+  useEffect(() => {
+    if (!isPending || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    document.documentElement.dataset.pageLeave = "true";
+    return () => {
+      delete document.documentElement.dataset.pageLeave;
+    };
+  }, [isPending]);
+
+  // La page d'arrivée est montée : son contenu revient en fondu.
   useEffect(() => {
     if (previousPath.current === pathname) return;
     previousPath.current = pathname;
+    delete document.documentElement.dataset.pageLeave;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     document.documentElement.dataset.pageEnter = "true";
-    const timer = window.setTimeout(() => delete document.documentElement.dataset.pageEnter, 360);
+    const timer = window.setTimeout(() => delete document.documentElement.dataset.pageEnter, 560);
     return () => {
       window.clearTimeout(timer);
       delete document.documentElement.dataset.pageEnter;
