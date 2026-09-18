@@ -10,6 +10,7 @@ import {
   type Article,
   type ArticleSummary,
   type NewsCategory,
+  type NewsGroup,
   type NewsImage,
 } from "@/data/actualites";
 import { asset } from "@/lib/asset";
@@ -134,6 +135,30 @@ function parseGallery(value: unknown, filename: string): NewsImage[] {
   });
 }
 
+function parseGroups(value: unknown, filename: string): NewsGroup[] {
+  if (value === undefined || value === null) return [];
+  if (!Array.isArray(value)) {
+    error(filename, 'le champ "groups" doit être une liste.');
+  }
+
+  return value.map((item, index) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) {
+      error(filename, `le groupe groups[${index}] est invalide.`);
+    }
+
+    const group = item as Record<string, unknown>;
+    const label = requiredString(group.label, `groups[${index}].label`, filename);
+    const note = optionalString(group.note, `groups[${index}].note`, filename);
+    const photos = parseGallery(group.photos, filename);
+
+    if (photos.length === 0) {
+      error(filename, `le groupe groups[${index}] doit contenir au moins une photo.`);
+    }
+
+    return { label, ...(note ? { note } : {}), photos };
+  });
+}
+
 function renderArticle(content: string, filename: string): string {
   const renderer = new Renderer();
   const renderLink = renderer.link;
@@ -193,6 +218,17 @@ function parseArticle(filename: string): Article | undefined {
   if (coverSrc && !coverAlt) {
     error(filename, 'le champ requis "coverAlt" est manquant pour cette cover.');
   }
+  const groups = parseGroups(data.groups, filename);
+  const groupsTitle = optionalString(data.groupsTitle, "groupsTitle", filename);
+  const groupsIntro = optionalString(data.groupsIntro, "groupsIntro", filename);
+
+  if (groups.length === 0 && (groupsTitle || groupsIntro)) {
+    error(filename, 'les champs "groupsTitle" et "groupsIntro" demandent un champ "groups".');
+  }
+  if (groups.length > 0 && !groupsTitle) {
+    error(filename, 'le champ requis "groupsTitle" est manquant pour ces "groups".');
+  }
+
   const html = renderArticle(requiredString(content, "body", filename), filename);
 
   return {
@@ -203,6 +239,9 @@ function parseArticle(filename: string): Article | undefined {
     excerpt: requiredString(data.excerpt, "excerpt", filename),
     cover: coverSrc && coverAlt ? resolveImage(coverSrc, coverAlt, filename) : undefined,
     gallery: parseGallery(data.gallery, filename),
+    ...(groupsTitle ? { groupsTitle } : {}),
+    ...(groupsIntro ? { groupsIntro } : {}),
+    groups,
     draft: data.draft ?? false,
     html,
   };

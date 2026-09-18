@@ -29,6 +29,18 @@ export type NewsImage = {
   caption?: string;
 };
 
+/**
+ * Photos regroupées sous un intitulé, affichées après le corps de l’article
+ * (passage d’un candidat, étape d’une action…). Complément de `gallery`, qui
+ * reste une suite d’images sans regroupement.
+ */
+export type NewsGroup = {
+  label: string;
+  /** Précision courte affichée à côté de l’intitulé, p. ex. un pays. */
+  note?: string;
+  photos: NewsImage[];
+};
+
 export type Article = {
   slug: string;
   title: string;
@@ -37,6 +49,9 @@ export type Article = {
   excerpt: string;
   cover?: NewsImage;
   gallery: NewsImage[];
+  groupsTitle?: string;
+  groupsIntro?: string;
+  groups: NewsGroup[];
   draft: boolean;
   html: string;
 };

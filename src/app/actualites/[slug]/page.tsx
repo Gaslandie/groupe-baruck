@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import { ArticleBody } from "@/components/actualites/ArticleBody";
 import { ArticleCover } from "@/components/actualites/ArticleCover";
+import { ArticleGroups } from "@/components/actualites/ArticleGroups";
 import { ArticleHeader } from "@/components/actualites/ArticleHeader";
 import { ArticleNavigation } from "@/components/actualites/ArticleNavigation";
 import { ArticleShare } from "@/components/actualites/ArticleShare";
@@ -84,6 +85,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <section className="bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(3rem,6vw,6rem)]">
         <ArticleBody html={article.html} />
         <NewsCarousel gallery={article.gallery} />
+        <ArticleGroups
+          title={article.groupsTitle}
+          intro={article.groupsIntro}
+          groups={article.groups}
+        />
         <ArticleShare
           title={article.title}
           url={`${site.url}actualites/${article.slug}/`}

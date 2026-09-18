@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/layout/PageShell";
 import { ActivitiesSection } from "@/components/home/ActivitiesSection";
 import { ContactCta } from "@/components/home/ContactCta";
+import { FeaturedEvent } from "@/components/home/FeaturedEvent";
 import { HeroSection } from "@/components/home/HeroSection";
 import { NewsPreview } from "@/components/home/NewsPreview";
 import { PageTeaser } from "@/components/home/PageTeaser";
@@ -32,6 +33,7 @@ export default function Home() {
       {pageTeasers.map((teaser, index) => (
         <PageTeaser key={teaser.id} {...teaser} reverse={index % 2 === 1} />
       ))}
+      <FeaturedEvent />
       <NewsPreview />
       <ContactCta />
     </PageShell>

@@ -101,6 +101,47 @@ content:
             label: Légende
             type: string
         description: "Ajouter et réordonner les images du carrousel. La légende est facultative."
+      - name: groupsTitle
+        label: Titre des groupes de photos
+        type: string
+        description: "Obligatoire lorsque des groupes de photos sont ajoutés. Exemple : « Voici nos candidats »."
+      - name: groupsIntro
+        label: Introduction des groupes de photos
+        type: text
+        description: "Facultative. Court texte affiché sous le titre des groupes."
+      - name: groups
+        label: Groupes de photos
+        type: object
+        list: true
+        fields:
+          - name: label
+            label: Intitulé du groupe
+            type: string
+            required: true
+          - name: note
+            label: Précision
+            type: string
+            description: "Facultative. Courte mention affichée à côté de l’intitulé, par exemple un pays."
+          - name: photos
+            label: Photos du groupe
+            type: object
+            list: true
+            fields:
+              - name: src
+                label: Image
+                type: image
+                required: true
+                options:
+                  media: images
+                  path: public/images/actualites
+              - name: alt
+                label: Description de l’image
+                type: string
+                required: true
+              - name: caption
+                label: Légende
+                type: string
+        description: "Facultatif. Chaque groupe s’affiche dans son propre onglet, après le contenu de l’article : un passage, une étape, une personne. Au moins une photo par groupe."
       - name: body
         label: Contenu de l’article
         type: rich-text

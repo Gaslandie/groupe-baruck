@@ -172,3 +172,13 @@ export const pageTeasers: PageTeaser[] = [
     linkLabel: "Découvrir les actions",
   },
 ];
+
+/**
+ * Événement mis en avant sur l'accueil, avant les dernières actualités.
+ * La section reprend l'article portant ce slug : titre, chapeau, photos et lien.
+ * Slug inconnu ou article retiré : la section disparaît, l'accueil reste entier.
+ */
+export const featuredEventSlug = "top-modele-baruck-guinee-2026";
+
+/** Sur-titre de la section : ce que l'on met en avant, pas le titre de l'article. */
+export const featuredEventEyebrow = "L’événement";
