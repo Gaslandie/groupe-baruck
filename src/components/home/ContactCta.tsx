@@ -30,7 +30,7 @@ export function ContactCta() {
       </p>
       <div className="relative z-[1] flex flex-wrap items-center justify-center gap-[.8rem]">
         <Link href={routes.contact} className="button button-accent">
-          Contacter le Groupe <span><Icon name="arrow-down-right" /></span>
+          Contacter le Groupe <span><Icon name="arrow-up-right" /></span>
         </Link>
         <a
           href={contacts.whatsappHq.href}

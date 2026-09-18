@@ -32,7 +32,7 @@ export function ServiceHero({
       : "text-display-xl";
 
   return (
-    <section className="relative isolate flex min-h-[92svh] items-end overflow-hidden bg-[#161719] px-[clamp(1.3rem,7vw,8rem)] pb-[clamp(4rem,8vw,7rem)] pt-[clamp(8rem,13vw,13rem)] text-ivory max-tablet:min-h-[86svh] max-tablet:pb-12">
+    <section className="relative isolate flex min-h-[92svh] items-end overflow-hidden bg-[#161719] px-[clamp(1.3rem,7vw,8rem)] pb-[clamp(4rem,8vw,7rem)] max-tablet:pb-[clamp(5rem,15vh,8rem)] pt-[clamp(8rem,13vw,13rem)] text-ivory max-tablet:min-h-[86svh] max-tablet:pb-12">
       <div
         aria-hidden="true"
         style={{

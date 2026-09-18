@@ -1,6 +1,5 @@
 export type IconName =
   | "arrow-up-right"
-  | "arrow-down-right"
   | "arrow-up-left"
   | "arrow-up"
   | "arrow-down"
@@ -14,10 +13,21 @@ export type IconName =
  * Les flèches Unicode ont une variante emoji : iOS les affiche en couleur et
  * décalées. Le tracé suit la taille du texte (`1em`) et sa couleur
  * (`currentColor`), donc les styles existants continuent de s'appliquer.
+ *
+ * Sens des flèches, règle unique du site (2026-09-18) — une flèche dit où l'on
+ * va, donc la même destination donne toujours la même pointe :
+ * - `arrow-up-right` : on quitte la page (autre page du site, lien externe) ;
+ * - `arrow-down` : on descend dans la page où l'on est déjà (ancre `#…`) ;
+ * - `arrow-up-left` : on revient en arrière (accueil, liste des actualités) ;
+ * - `arrow-up` : on remonte en haut de la page ;
+ * - `arrow-left` / `arrow-right` : on fait défiler un carrousel ou on passe à
+ *   l'article voisin, jamais pour un lien ordinaire.
+ * La diagonale descendante `arrow-down-right` a été retirée le 2026-09-18 :
+ * elle servait aux mêmes cas que `arrow-down` et donnait deux pointes
+ * différentes côte à côte dans un même bloc de boutons.
  */
 const paths: Record<IconName, string> = {
   "arrow-up-right": "M6.5 17.5 17.5 6.5M8.6 6.5h8.9v8.9",
-  "arrow-down-right": "M6.5 6.5l11 11M17.5 8.6v8.9H8.6",
   "arrow-up-left": "M17.5 17.5 6.5 6.5M15.4 6.5H6.5v8.9",
   "arrow-up": "M12 19V5.6M5.8 11.8 12 5.6l6.2 6.2",
   "arrow-down": "M12 5v13.4M5.8 12.2 12 18.4l6.2-6.2",

@@ -36,7 +36,7 @@ export function AboutIntro() {
           vulnérables.
         </p>
         <Link href="/#activite-studio" className="text-link mt-[.8rem]">
-          Découvrir nos activités <span><Icon name="arrow-down-right" /></span>
+          Découvrir nos activités <span><Icon name="arrow-up-right" /></span>
         </Link>
       </div>
       <div

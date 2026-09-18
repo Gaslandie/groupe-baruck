@@ -3,13 +3,22 @@ import { jecaPortrait } from "@/data/jeca";
 import { asset } from "@/lib/asset";
 import { Icon } from "../ui/Icon";
 
+/**
+ * Hero de la JECA : logo et textes à gauche, portrait du président fondateur à
+ * droite.
+ *
+ * Mobile (2026-09-18) : plus d'empilement photo puis texte. Le portrait devient
+ * le fond de la section et les textes passent par-dessus, en bas, comme sur
+ * l'accueil et sur les pages de services. La légende posée sur la photo est
+ * masquée à cette taille : elle tomberait sous le titre.
+ */
 export function JecaHero() {
   return (
     <section
       id="accueil"
-      className="grid min-h-[clamp(640px,82svh,800px)] scroll-mt-[74px] grid-cols-[58%_42%] overflow-hidden bg-jeca-paper text-jeca-ink max-[1080px]:grid-cols-[55%_45%] max-tablet:relative max-tablet:flex max-tablet:h-auto max-tablet:min-h-0 max-tablet:flex-col max-tablet:bg-jeca-blue max-tablet:text-white"
+      className="grid min-h-[clamp(640px,82svh,800px)] scroll-mt-[74px] grid-cols-[58%_42%] overflow-hidden bg-jeca-paper text-jeca-ink max-[1080px]:grid-cols-[55%_45%] max-tablet:relative max-tablet:block max-tablet:min-h-[100svh] max-tablet:bg-jeca-blue max-tablet:text-white"
     >
-      <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-[#111a2f] max-tablet:relative max-tablet:h-[clamp(600px,100svh,860px)] max-tablet:min-h-0 max-tablet:w-full max-tablet:flex-none">
+      <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-[#111a2f] max-tablet:absolute max-tablet:inset-0 max-tablet:z-0 max-tablet:h-full max-tablet:w-full">
         <img
           src={asset(jecaPortrait.src)}
           alt={jecaPortrait.alt}
@@ -20,16 +29,16 @@ export function JecaHero() {
         />
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[linear-gradient(180deg,transparent_56%,rgba(3,12,37,.1)_72%,rgba(3,12,37,.84))] max-tablet:bg-[linear-gradient(180deg,rgba(3,12,37,.08)_48%,rgba(3,12,37,.82)_100%)]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,transparent_56%,rgba(3,12,37,.1)_72%,rgba(3,12,37,.84))] max-tablet:bg-[linear-gradient(180deg,rgba(3,12,37,.36)_12%,rgba(3,12,37,.62)_48%,rgba(3,12,37,.95)_100%)]"
         />
-        <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:bottom-8 max-tablet:left-[1.3rem] max-tablet:right-[1.3rem]">
+        <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
           <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-jeca-yellow">
             Président fondateur
           </span>
           MR Djoro Joël Shaloom Krasso
         </p>
       </div>
-      <div className="hero-in relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(2rem,6vw,7.5rem)] pr-[clamp(2rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1080px]:px-10 max-tablet:z-[2] max-tablet:h-auto max-tablet:min-h-0 max-tablet:w-full max-tablet:px-[1.3rem] max-tablet:pb-14 max-tablet:pt-16">
+      <div className="hero-in relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(2rem,6vw,7.5rem)] pr-[clamp(2rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1080px]:px-10 max-tablet:z-10 max-tablet:min-h-[100svh] max-tablet:w-full max-tablet:justify-end max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5rem,15vh,8rem)] max-tablet:pt-[7rem]">
         <span
           aria-hidden="true"
           className="absolute inset-0 z-[-1] bg-[linear-gradient(rgba(7,21,55,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(7,21,55,.06)_1px,transparent_1px)] bg-[size:70px_70px] opacity-[.38] [mask-image:linear-gradient(135deg,#000,transparent_75%)] max-tablet:hidden"
@@ -59,7 +68,7 @@ export function JecaHero() {
             Voir les éditions <span><Icon name="arrow-down" /></span>
           </a>
           <a href="#vision" className="jeca-button jeca-button-line">
-            Notre vision <span><Icon name="arrow-down-right" /></span>
+            Notre vision <span><Icon name="arrow-down" /></span>
           </a>
         </div>
         <dl className="mb-0 mt-[clamp(2rem,4vh,3.2rem)] grid max-w-[420px] grid-cols-[repeat(2,minmax(0,150px))] border-t border-jeca-line pt-[1.1rem] max-tablet:mt-8 max-tablet:border-[rgba(255,255,255,.22)] [@media(max-width:760px)_and_(max-height:700px)]:mt-[1.2rem]">

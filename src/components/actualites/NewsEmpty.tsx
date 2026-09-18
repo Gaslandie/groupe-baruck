@@ -14,7 +14,7 @@ export function NewsEmpty() {
         Revenez prochainement : les nouvelles du Groupe Baruck seront publiées ici.
       </p>
       <Link href={routes.home} className="text-link mt-6">
-        Retour à l’accueil <span><Icon name="arrow-up-right" /></span>
+        Retour à l’accueil <span><Icon name="arrow-up-left" /></span>
       </Link>
     </div>
   );

@@ -3,6 +3,12 @@ import { placeholderPhotos } from "@/data/media";
 import { contacts } from "@/data/site";
 import { Icon } from "../ui/Icon";
 
+/**
+ * Hero de la page Contact. Le retrait du haut ne descend jamais sous 7,5 rem :
+ * le bandeau de navigation est `fixed` (92 px, 72 px sur mobile) et passait
+ * par-dessus le sur-titre, donc le logo chevauchait le texte (corrigé le
+ * 2026-09-18).
+ */
 export function ContactHero() {
   return (
     <section className="relative isolate grid min-h-[92svh] grid-cols-[1.05fr_.95fr] overflow-hidden bg-ink text-ivory max-[1080px]:grid-cols-1">
@@ -18,7 +24,7 @@ export function ContactHero() {
         aria-hidden="true"
         className="absolute inset-0 z-[-1] bg-[linear-gradient(90deg,rgba(8,9,10,.94),rgba(8,9,10,.72)_50%,rgba(8,9,10,.55)),linear-gradient(180deg,rgba(8,9,10,.2),rgba(8,9,10,.85))]"
       />
-      <div className="hero-in flex flex-col justify-center px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pl-[clamp(1.3rem,7vw,8rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:px-[clamp(1.3rem,6vw,4rem)] max-[1080px]:pb-[clamp(3.5rem,7vw,5rem)] max-[1080px]:pt-[clamp(2.5rem,6vw,4rem)]">
+      <div className="hero-in flex flex-col justify-center px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pl-[clamp(1.3rem,7vw,8rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:px-[clamp(1.3rem,6vw,4rem)] max-[1080px]:pb-[clamp(3.5rem,7vw,5rem)] max-[1080px]:pt-[clamp(7.5rem,14vw,9.5rem)]">
         <p className="eyebrow light">Contact · Groupe Baruck</p>
         <h1 className="mb-[1.6rem] mt-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
           Parlons de votre

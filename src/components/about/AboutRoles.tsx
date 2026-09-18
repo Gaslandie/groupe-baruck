@@ -10,7 +10,7 @@ export function AboutRoles() {
   return (
     <section id="fonctions" className="bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
       <AboutSectionHead
-        eyebrow="Le président"
+        eyebrow="Ses fonctions"
         title="Quatre fonctions,"
         emphasis="une même exigence."
         text="Seules les fonctions confirmées par la direction figurent sur cette page. Le parcours détaillé du président sera ajouté après validation."
