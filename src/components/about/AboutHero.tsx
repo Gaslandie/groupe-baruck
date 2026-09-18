@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { hostessesHero } from "@/data/media";
+import { presidentWorking } from "@/data/media";
 import { routes } from "@/data/site";
 import { siteTexts } from "@/data/textes";
 import { asset } from "@/lib/asset";
@@ -8,11 +8,14 @@ import { Icon } from "../ui/Icon";
 
 /**
  * Hero repris sur la logique des autres pages le 2026-09-16 : textes dans le
- * panneau clair de gauche, photo pleine hauteur à droite — une activité phare
- * du Groupe (les hôtesses événementielles ; la photo du studio est déjà le
- * hero de sa propre page), pas le portrait du président. Le texte
+ * panneau clair de gauche, photo pleine hauteur à droite. Le texte
  * d'introduction est celui du back-office (`heroSlides.guinee`), et les trois
  * activités phares sont des liens.
+ *
+ * Photo (2026-09-18) : le PDG à son poste de travail, à la place de la photo
+ * des hôtesses événementielles. Celle-ci est déjà le hero de sa propre page :
+ * la page du Groupe annonçait donc une de ses activités au lieu du Groupe. Le
+ * cadrage `center 12%` garde la casquette entière sur un panneau large.
  *
  * Mobile (2026-09-18) : plus d'empilement photo puis texte. La photo devient le
  * fond de la section et les textes passent par-dessus, en bas, comme sur
@@ -29,12 +32,12 @@ export function AboutHero() {
     >
       <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-ink max-tablet:absolute max-tablet:inset-0 max-tablet:z-0 max-tablet:h-full max-tablet:w-full">
         <img
-          src={asset(hostessesHero.src)}
-          alt={hostessesHero.alt}
-          width={hostessesHero.width}
-          height={hostessesHero.height}
+          src={asset(presidentWorking.src)}
+          alt={presidentWorking.alt}
+          width={presidentWorking.width}
+          height={presidentWorking.height}
           fetchPriority="high"
-          className="absolute inset-0 h-full w-full object-cover object-[center_38%] saturate-[.92] contrast-[1.02]"
+          className="absolute inset-0 h-full w-full object-cover object-[center_12%] saturate-[.92] contrast-[1.02]"
         />
         <div
           aria-hidden="true"
@@ -42,9 +45,9 @@ export function AboutHero() {
         />
         <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-ivory [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
           <span className="mb-[.65rem] block font-sans text-micro font-bold uppercase leading-none tracking-[.18em] text-accent">
-            Baruck Communication · Guinée
+            Président-directeur général
           </span>
-          {siteTexts.heroSlides["hotesses"].title}
+          MR Djoro Joël Shaloom Krasso
         </p>
       </div>
       <div className="hero-in relative col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(1.3rem,6vw,7.5rem)] pr-[clamp(1.3rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1100px]:px-10 max-tablet:z-10 max-tablet:min-h-[100svh] max-tablet:w-full max-tablet:justify-end max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5rem,15vh,8rem)] max-tablet:pt-[7rem]">

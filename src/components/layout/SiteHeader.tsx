@@ -194,10 +194,8 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
 
             if (item.children) {
               const featuredChildren = item.children.filter((child) => child.featured);
-              const otherChildren = item.children.filter((child) => !child.featured);
               const hasFeaturedChildren = featuredChildren.length > 0;
               const primaryChildren = hasFeaturedChildren ? featuredChildren : item.children;
-              const hasOtherChildren = hasFeaturedChildren && otherChildren.length > 0;
 
               return (
                 <details key={item.href} name="desktop-nav-groups" data-nav-group className="relative">
@@ -218,10 +216,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                     </span>
                   </summary>
                   <div
-                    className={[
-                      "nav-disclosure-content absolute left-1/2 top-[calc(100%-.2rem)] translate-x-[-50%] border border-[rgba(255,255,255,.14)] bg-[rgba(11,12,14,.96)] p-[.7rem] shadow-[0_20px_50px_rgba(0,0,0,.24)]",
-                      hasOtherChildren ? "w-[320px]" : "w-[220px]",
-                    ].join(" ")}
+                    className="nav-disclosure-content absolute left-1/2 top-[calc(100%-.2rem)] w-[240px] translate-x-[-50%] border border-[rgba(255,255,255,.14)] bg-[rgba(11,12,14,.96)] p-[.7rem] shadow-[0_20px_50px_rgba(0,0,0,.24)]"
                   >
                     {primaryChildren.map((child) => {
                       const childCurrent = currentAttributes(child.href);
@@ -240,30 +235,6 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                         </Link>
                       );
                     })}
-                    {hasOtherChildren ? (
-                      <>
-                        <span className="mt-[.4rem] block border-t border-[rgba(255,255,255,.14)] px-[.8rem] pb-[.2rem] pt-[.7rem] text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.4)]">
-                          Autres domaines
-                        </span>
-                        <div className="grid grid-cols-2">
-                          {otherChildren.map((child) => {
-                            const childCurrent = currentAttributes(child.href);
-                            return (
-                              <Link
-                                key={child.href}
-                                href={child.href}
-                                aria-current={childCurrent["aria-current"]}
-                                data-current={childCurrent["data-current"]}
-                                className="block px-[.8rem] py-[.75rem] text-label normal-case tracking-[.06em] text-[rgba(255,255,255,.72)] hover:bg-[rgba(255,255,255,.06)] hover:text-ivory focus-visible:bg-[rgba(255,255,255,.06)] focus-visible:text-ivory"
-                              >
-                                {child.label}
-                              </Link>
-                            );
-                          })}
-                        </div>
-                        <Link href={item.href} className="mt-2 block border-t border-ivory/15 px-[.8rem] py-[.75rem] text-caption normal-case tracking-[.06em] hover:text-accent focus-visible:text-accent">Tous nos services</Link>
-                      </>
-                    ) : null}
                   </div>
                 </details>
               );
@@ -354,7 +325,6 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             const itemCurrent = currentAttributes(item.href);
             const featuredChildren = item.children?.filter((child) => child.featured) ?? [];
             const visibleChildren = featuredChildren.length ? featuredChildren : item.children;
-            const hasOtherChildren = featuredChildren.length > 0 && item.children?.some((child) => !child.featured);
             const heading = (
               <>
                 <span className={["inline-block w-[2.3rem] align-middle font-sans text-micro tracking-[.1em]", itemCurrent.isCurrent ? styles.sideCurrentNumber : "text-accent"].join(" ")}>{item.number}</span>
@@ -376,7 +346,6 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                       <Link key={child.href} href={child.href} aria-current={childCurrent["aria-current"]} data-current={childCurrent["data-current"]} onClick={() => setIsOpen(false)} className={["py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent", childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]"].join(" ")}>{child.label}</Link>
                     );
                   })}
-                  {hasOtherChildren ? <Link href={item.href} onClick={() => setIsOpen(false)} className="py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] text-[#6f6f6b] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent">Tous nos domaines</Link> : null}
                 </div>
               </details>
             );

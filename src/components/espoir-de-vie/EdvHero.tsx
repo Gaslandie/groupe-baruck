@@ -15,6 +15,11 @@ import { Icon } from "../ui/Icon";
  * masquée à cette taille : elle tomberait sous le titre. Le logo Espoir de Vie
  * est masqué lui aussi sur mobile et tablette, à la demande du 2026-09-18 : il
  * mangeait la hauteur utile au-dessus du titre.
+ *
+ * Alignement du logo (2026-09-18) : `self-start`. Sans lui, la colonne flex
+ * étire l'image sur toute la largeur et `object-contain` recentre le dessin —
+ * le logo paraissait flotter au milieu du panneau. Il est maintenant calé au
+ * bord du texte, comme celui de la JECA sur sa page.
  */
 export function EdvHero() {
   return (
@@ -56,7 +61,7 @@ export function EdvHero() {
           width={edvLogo.width}
           height={edvLogo.height}
           fetchPriority="high"
-          className="mb-6 h-20 w-auto object-contain mix-blend-screen drop-shadow-[0_18px_30px_rgba(0,0,0,.35)] max-tablet:hidden"
+          className="mb-6 h-20 w-auto self-start object-contain mix-blend-screen drop-shadow-[0_18px_30px_rgba(0,0,0,.35)] max-tablet:hidden"
         />
         <p className="edv-kicker edv-kicker-light">Engagement humanitaire · Afrique de l’Ouest</p>
         <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">

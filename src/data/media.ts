@@ -130,6 +130,20 @@ export const presidentOnu2: ImageAsset = {
   height: 540,
 };
 
+/**
+ * Photo du PDG à son poste de travail, retenue le 2026-09-18 pour le hero de la
+ * page Groupe : elle montre le Groupe lui-même au lieu d'emprunter la photo
+ * d'une de ses activités. Source transmise par WhatsApp, donc déjà compressée
+ * et limitée à 638 px de large — à remplacer par l'original si le client le
+ * retrouve.
+ */
+export const presidentWorking: ImageAsset = {
+  src: "/images/president/pdg-au-travail.webp",
+  alt: "MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, à son poste de travail",
+  width: 638,
+  height: 960,
+};
+
 /** Photos complémentaires fournies par le client, sans date déduite des fichiers. */
 export const presidentOnuGallery: ImageAsset[] = [
   { src: "/images/president/onu-seance-travail.jpg", alt: "MR Djoro Joël Shaloom Krasso à une table de travail aux Nations Unies", width: 720, height: 540 },

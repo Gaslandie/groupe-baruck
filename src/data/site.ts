@@ -131,15 +131,9 @@ export const mainNav: NavItem[] = [
     children: [
       { label: "Studio photo", href: routes.studio, featured: true },
       { label: "Hôtesses événementielles", href: routes.hostesses, featured: true },
-      { label: "Hôtellerie", href: "/#hotellerie" },
-      { label: "Restauration", href: "/#restauration" },
-      { label: "Agro-business", href: "/#agrobusiness" },
-      { label: "Studio d’enregistrement", href: "/#studio" },
-      { label: "Cinéma", href: "/#cinema" },
-      { label: "Voitures de luxe", href: "/#mobilite" },
-      { label: "Communication digitale", href: "/#communication" },
-      { label: "Production d’artistes", href: "/#artistes" },
-      { label: "Clips vidéo", href: "/#clips" },
+      // Les autres domaines ne sont plus listés un à un dans le menu
+      // (demande du 2026-09-18) : ce lien mène à leurs cartes sur l'accueil.
+      { label: "Nos autres services", href: routes.services, featured: true },
     ],
   },
   { number: "04", label: "JECA", href: routes.jeca },
