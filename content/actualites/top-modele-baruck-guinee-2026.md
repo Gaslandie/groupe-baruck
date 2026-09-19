@@ -156,4 +156,18 @@ La soirée s’est achevée par la remise des prix : les lauréats ont reçu leu
 
 Parrain de l’événement : le PDG du Groupe Baruck.
 
+## L’esprit du concours
+
+Dans une vidéo publiée sur la page Facebook du groupe, le PDG est revenu sur le sens de l’événement. Baruck n’est pas une agence de mannequinat : c’est une maison de communication, et le concours n’a pas été monté pour concurrencer les agences.
+
+Pour lui, le mannequinat est un métier noble : c’est le mannequin qui valorise les marques de fabrique, c’est lui qui fait comprendre les collections qui sortent. Les concours servent donc à honorer les mannequins, et à leur permettre de vivre de leur métier.
+
+Les dotations vont dans ce sens : 20 millions de francs guinéens à partager pour la première édition, Miss Baruck Guinée en 2025, puis 80 millions de francs guinéens pour cette deuxième édition.
+
+## Après les concours, les défilés
+
+Cette deuxième édition est la dernière du genre. La suite passera par des défilés de mode, adossés à la maison de vêtements que le groupe s’apprête à ouvrir : les mannequins y mettront ses collections en avant.
+
+Les tenues seront commandées auprès de stylistes, chaque mannequin présentant le travail de l’un d’eux. Les anciens mannequins seront eux aussi honorés, pour avoir fait connaître ce métier aux générations qui suivent.
+
 [Découvrir le Groupe Baruck](/groupe/)
