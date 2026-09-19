@@ -112,13 +112,18 @@ export const presidentOnu2: ImageAsset = {
 /**
  * Photo du PDG à son poste de travail, retenue le 2026-09-18 pour le hero de la
  * page Groupe : elle montre le Groupe lui-même au lieu d'emprunter la photo
- * d'une de ses activités. Source transmise par WhatsApp, donc déjà compressée
- * et limitée à 638 px de large — à remplacer par l'original si le client le
+ * d'une de ses activités.
+ *
+ * Photo remplacée le 2026-09-19 à la demande du client : plan plus large, le
+ * PDG en séance de travail à sa table. La précédente (`pdg-au-travail.webp`,
+ * portrait serré à la casquette « P.D.G. ») reste dans le dépôt pour pouvoir
+ * revenir en arrière. Source transmise par WhatsApp, donc déjà compressée et
+ * limitée à 638 px de large — à remplacer par l'original si le client le
  * retrouve.
  */
 export const presidentWorking: ImageAsset = {
-  src: "/images/president/pdg-au-travail.webp",
-  alt: "MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, à son poste de travail",
+  src: "/images/president/pdg-au-travail-02.webp",
+  alt: "MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, en séance de travail à sa table",
   width: 638,
   height: 960,
 };

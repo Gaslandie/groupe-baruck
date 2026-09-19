@@ -14,8 +14,10 @@ import { Icon } from "../ui/Icon";
  *
  * Photo (2026-09-18) : le PDG à son poste de travail, à la place de la photo
  * des hôtesses événementielles. Celle-ci est déjà le hero de sa propre page :
- * la page du Groupe annonçait donc une de ses activités au lieu du Groupe. Le
- * cadrage `center 12%` garde la casquette entière sur un panneau large.
+ * la page du Groupe annonçait donc une de ses activités au lieu du Groupe.
+ * Remplacée le 2026-09-19 par un plan plus large (cf. `presidentWorking`). Le
+ * cadrage `center 12%` garde le haut de la tête sur un panneau large ; sur
+ * mobile la hauteur est déjà remplie, donc ce 12% n'y joue pas.
  *
  * Mobile (2026-09-18) : plus d'empilement photo puis texte. La photo devient le
  * fond de la section et les textes passent par-dessus, en bas, comme sur
