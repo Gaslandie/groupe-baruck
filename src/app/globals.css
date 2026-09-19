@@ -93,8 +93,28 @@
 }
 
 @layer base {
+  /*
+   * Pas d'`overflow-x` ici : `clip` comme `hidden` sur `html` décroche le
+   * `position: sticky` du repère de hero (vérifié le 2026-09-19). Le
+   * débordement horizontal se corrige donc à la source, pas en le masquant —
+   * voir la césure des grands titres plus bas.
+   */
   html { scroll-behavior: smooth; }
   body { @apply bg-paper text-ink font-sans overflow-x-hidden; }
+
+  /*
+   * Les grands titres viennent en partie du back-office : « Hôtesses
+   * événementielles » ne tenait pas sur une ligne de 360 px et débordait.
+   * La césure automatique (le document est en `lang="fr"`) coupe proprement
+   * plutôt que de laisser le mot sortir de l'écran ; `break-word` reste le
+   * filet pour un mot qu'aucun dictionnaire ne sait couper.
+   */
+  @media (max-width: 760px) {
+    h1, h2, h3 {
+      overflow-wrap: break-word;
+      hyphens: auto;
+    }
+  }
   img { @apply block max-w-full; }
   a { color: inherit; text-decoration: none; }
   button, input, textarea { font: inherit; }

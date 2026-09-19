@@ -19,7 +19,7 @@ const footerVariantStyles: Record<FooterVariant, { footer: string; title: string
 };
 
 function FooterAnchor({ link }: { link: FooterLink }) {
-  const className = "w-fit text-[rgba(255,255,255,.7)] hover:text-accent";
+  const className = "w-fit max-w-full break-words text-[rgba(255,255,255,.7)] hover:text-accent";
 
   if (link.href.startsWith("/")) {
     return (
