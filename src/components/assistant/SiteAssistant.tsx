@@ -430,7 +430,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
         aria-controls="site-assistant"
         onClick={toggle}
         className={[
-          "fixed bottom-[calc(clamp(1rem,3vw,1.75rem)+env(safe-area-inset-bottom,0px))] right-[clamp(1rem,3vw,1.75rem)] z-[70] flex h-[56px] cursor-pointer items-center gap-[.7rem] rounded-full border border-[rgba(255,255,255,.18)] bg-[var(--asst-bg)] pl-[.6rem] pr-[1.25rem] text-label uppercase tracking-[.16em] text-ivory shadow-[0_18px_40px_rgba(0,0,0,.28)] transition-[transform,opacity] duration-[250ms] hover:translate-y-[-2px] disabled:cursor-wait disabled:opacity-70 max-tablet:h-[52px] max-tablet:w-[52px] max-tablet:justify-center max-tablet:p-0",
+          "fixed bottom-[calc(clamp(1.5rem,3vw,2rem)+env(safe-area-inset-bottom,0px))] right-[clamp(1.25rem,3vw,2rem)] z-[70] flex h-[56px] cursor-pointer items-center gap-[.7rem] rounded-full border border-[rgba(255,255,255,.18)] bg-[var(--asst-bg)] pl-[.6rem] pr-[1.25rem] text-label uppercase tracking-[.16em] text-ivory shadow-[0_18px_40px_rgba(0,0,0,.28)] transition-[transform,opacity] duration-[250ms] hover:translate-y-[-2px] disabled:cursor-wait disabled:opacity-70 max-tablet:bottom-[calc(2rem+env(safe-area-inset-bottom,0px))] max-tablet:right-[1.1rem] max-tablet:h-[52px] max-tablet:w-[52px] max-tablet:justify-center max-tablet:p-0",
           open ? "max-tablet:hidden" : "",
         ].join(" ")}
       >
@@ -444,7 +444,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
           role="dialog"
           aria-labelledby="site-assistant-title"
           style={theme}
-          className="animate-assistant-in fixed bottom-[calc(clamp(1rem,3vw,1.75rem)+68px+env(safe-area-inset-bottom,0px))] right-[clamp(1rem,3vw,1.75rem)] z-[70] flex max-h-[min(680px,calc(100svh-120px))] w-[390px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden border border-[rgba(255,255,255,.14)] bg-[var(--asst-bg)] text-ivory shadow-[0_30px_70px_rgba(0,0,0,.35)] max-tablet:inset-x-0 max-tablet:bottom-0 max-tablet:max-h-[84svh] max-tablet:w-auto max-tablet:max-w-none max-tablet:border-x-0 max-tablet:border-b-0 max-tablet:pb-[env(safe-area-inset-bottom,0px)]"
+          className="animate-assistant-in fixed bottom-[calc(clamp(1.5rem,3vw,2rem)+68px+env(safe-area-inset-bottom,0px))] right-[clamp(1.25rem,3vw,2rem)] z-[70] flex max-h-[min(680px,calc(100svh-120px))] w-[390px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden border border-[rgba(255,255,255,.14)] bg-[var(--asst-bg)] text-ivory shadow-[0_30px_70px_rgba(0,0,0,.35)] max-tablet:inset-x-0 max-tablet:bottom-0 max-tablet:max-h-[84svh] max-tablet:w-auto max-tablet:max-w-none max-tablet:border-x-0 max-tablet:border-b-0 max-tablet:pb-[env(safe-area-inset-bottom,0px)]"
         >
           <div className="flex items-center justify-between gap-4 border-b border-[rgba(255,255,255,.14)] px-[1.1rem] py-[.85rem]">
             <div className="flex items-center gap-[.75rem]">

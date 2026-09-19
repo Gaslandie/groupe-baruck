@@ -13,9 +13,10 @@ import { routes } from "@/data/site";
  *
  * Le sur-titre « Direction du Groupe Baruck » et la ligne « Leadership ·
  * Entrepreneuriat · Engagement » ont été retirés (2026-09-16 et 2026-09-17) :
- * le bloc commence directement par le nom. Le haut de colonne est plus généreux
- * que le bas (`pt` > `pb`), ce qui descend l'ensemble du texte d'environ 5 % de
- * la hauteur de l'écran, comme demandé le 2026-09-17. Le bas de la colonne
+ * le bloc commence directement par le nom. Le haut de colonne reste plus
+ * généreux que le bas (`pt` > `pb`), ce qui descend légèrement l'ensemble du
+ * texte. Cet écart, fixé à 20 vh le 2026-09-17, est ramené à 15 vh le
+ * 2026-09-19 : sur grand écran le bloc tombait trop bas. Le bas de la colonne
  * réserve en plus une bande d'environ 9 % de la hauteur de l'écran : c'est la
  * place du repère de défilement, qui sans elle venait toucher le texte
  * (corrigé le 2026-09-18).
@@ -24,7 +25,7 @@ const roleClassName = "role-link";
 
 export function HeroIntro() {
   return (
-    <div className="relative z-10 flex flex-col bg-paper px-[clamp(1.5rem,4vw,4.8rem)] pb-[clamp(5.5rem,9vh,7.5rem)] pt-[clamp(9.5rem,20vh,15rem)] text-ink max-tablet:min-h-[100svh] max-tablet:bg-transparent max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5.5rem,13vh,7.5rem)] max-tablet:pt-[8rem] max-tablet:text-ivory">
+    <div className="relative z-10 flex flex-col bg-paper px-[clamp(1.5rem,4vw,4.8rem)] pb-[clamp(5.5rem,9vh,7.5rem)] pt-[clamp(7.5rem,15vh,11.5rem)] text-ink max-tablet:min-h-[100svh] max-tablet:bg-transparent max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5.5rem,13vh,7.5rem)] max-tablet:pt-[8rem] max-tablet:text-ivory">
       <div className="hero-in flex flex-1 flex-col justify-center max-tablet:justify-end">
         <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.9] tracking-[-.04em]">
           <span className="text-muted max-tablet:text-[#d8c8aa]">MR</span> Djoro Joël
