@@ -44,7 +44,7 @@ export function EdvVideo() {
           {edvVisitVideo.text}
         </p>
       </div>
-      <figure className="reveal m-0 w-full max-w-[460px] justify-self-end max-tablet:justify-self-start">
+      <figure className="reveal m-0 w-full max-w-[560px] justify-self-center max-tablet:max-w-[460px] max-tablet:justify-self-start">
         <VideoPlayer
           src={asset(edvVisitVideo.src)}
           poster={poster ? asset(poster) : undefined}
