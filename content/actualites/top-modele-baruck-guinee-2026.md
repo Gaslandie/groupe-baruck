@@ -6,9 +6,22 @@ category: groupe
 excerpt: "La finale de la deuxième édition du Top Modèle Baruck Guinée s’est tenue le samedi 8 août 2026 à l’Université Kofi Annan de Guinée, avec des candidats venus de plusieurs pays de la sous-région."
 cover: "/images/actualites/top-modele-2026/candidat-01-b.webp"
 coverAlt: "Le candidat n°1 coiffé d’une parure dorée, devant l’affiche du concours"
-groupsTitle: "Voici nos candidats"
-groupsIntro: "Quelques sorties de nos candidats, en images et en vidéo. Choisissez un candidat pour voir son passage sur le podium."
+groupsTitle: "Les lauréats, puis nos candidats"
+groupsIntro: "Le palmarès de la soirée, puis quelques sorties de nos candidats, en images et en vidéo. Choisissez un onglet pour voir ses photos."
 groups:
+  - label: "Les lauréats"
+    note: "Palmarès de la deuxième édition"
+    photos:
+      - src: "/images/actualites/top-modele-2026/laureats-01.webp"
+        alt: "Les deux lauréats, écharpe Top Modèle Baruck Guinée 2026 sur les épaules, devant le photocall du concours"
+      - src: "/images/actualites/top-modele-2026/laureats-02.webp"
+        alt: "Les deux lauréats en pied, écharpe Top Modèle Baruck Guinée 2026, devant le photocall Baruck Communication"
+      - src: "/images/actualites/top-modele-2026/laureats-03.webp"
+        alt: "Les lauréats alignés sur scène, écharpes Top Modèle Baruck Guinée 2026 et cadeaux à la main"
+      - src: "/images/actualites/top-modele-2026/laureats-04.webp"
+        alt: "Une lauréate en écharpe Top Modèle félicitée sur scène pendant la remise des prix"
+      - src: "/images/actualites/top-modele-2026/laureats-05.webp"
+        alt: "Une lauréate recevant son lot des mains des organisateurs, sur scène"
   - label: "Candidat n°1"
     video:
       src: "/videos/top-modele-2026/candidat-01.mp4"
@@ -138,6 +151,8 @@ groups:
 La finale de la deuxième édition du Top Modèle Baruck Guinée s’est tenue le samedi 8 août 2026 à l’Université Kofi Annan de Guinée, à partir de 19 h.
 
 L’édition a réuni des candidats venus de plusieurs pays de la sous-région. Sur le podium, chacun a présenté sa sortie devant le public, en tenue traditionnelle comme en création contemporaine.
+
+La soirée s’est achevée par la remise des prix : les lauréats ont reçu leur écharpe Top Modèle Baruck Guinée 2026 et leurs cadeaux sur scène.
 
 Parrain de l’événement : le PDG du Groupe Baruck.
 
