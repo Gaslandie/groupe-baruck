@@ -21,6 +21,19 @@ const sixPlacements = [
   "col-[4] row-[2] max-tablet:col-[2] max-tablet:row-[4]",
 ];
 
+// Le motif de `sixPlacements`, joué deux fois : deux rangées de plus sur écran
+// large, quatre sur mobile. Une édition de douze photos garde ainsi le rythme
+// des autres galeries plutôt qu'une grille inventée pour elle seule.
+const twelvePlacements = [
+  ...sixPlacements,
+  "col-[1/3] row-[3] max-tablet:col-[1/3] max-tablet:row-[5]",
+  "col-[3] row-[3] max-tablet:col-[1] max-tablet:row-[6]",
+  "col-[4] row-[3] max-tablet:col-[2] max-tablet:row-[6]",
+  "col-[1] row-[4] max-tablet:col-[1/3] max-tablet:row-[7]",
+  "col-[2/4] row-[4] max-tablet:col-[1] max-tablet:row-[8]",
+  "col-[4] row-[4] max-tablet:col-[2] max-tablet:row-[8]",
+];
+
 const galleryLabels = {
   1: "Photos de la première édition",
   2: "Photos de la deuxième édition",
@@ -34,9 +47,10 @@ export function PhotoGrid({
 }: {
   gallery: JecaGallery;
   offset: number;
-  grid: "seven" | "six";
+  grid: "seven" | "six" | "twelve";
 }) {
-  const placements = grid === "seven" ? sevenPlacements : sixPlacements;
+  const placements =
+    grid === "seven" ? sevenPlacements : grid === "twelve" ? twelvePlacements : sixPlacements;
 
   return (
     <div

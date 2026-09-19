@@ -27,7 +27,7 @@ export type JecaEdition = {
     label: string;
   };
   tone: "paper" | "dark" | "white";
-  grid: "seven" | "six";
+  grid: "seven" | "six" | "twelve";
   story?: {
     lead: string;
     paragraphs: string[];
@@ -92,9 +92,9 @@ export const jecaEditions: JecaEdition[] = [
     title: "La JECA à Conakry",
     date: { iso: "2026-07-30", endIso: "2026-08-04", label: "Du 30 juillet au 04 août 2026" },
     tone: "white",
-    grid: "six",
+    grid: "twelve",
     simpleLead:
-      "La troisième édition s’est tenue à Conakry. Les images présentent principalement le président et le vice-président.",
+      "La troisième édition s’est tenue à Conakry, du 30 juillet au 04 août 2026 : les échanges entre responsables, puis l’accueil des invités et la remise des présents de la JECA.",
   },
 ];
 
@@ -278,6 +278,54 @@ export const jecaGalleries: JecaGallery[] = [
         alt: "Le président et le vice-président se saluant lors de la troisième édition",
         width: 1280,
         height: 720,
+        layout: "standard",
+        caption: "Troisième édition · Conakry · 2026",
+      },
+      {
+        src: "/images/jeca/edition-3/07.webp",
+        alt: "Poignée de main devant le visuel de la conférence de la JECA, à Conakry",
+        width: 1400,
+        height: 1058,
+        layout: "wide",
+        caption: "Troisième édition · Conakry · 2026",
+      },
+      {
+        src: "/images/jeca/edition-3/08.webp",
+        alt: "Remise d’un tee-shirt de la JECA floqué au nom de Mme Noah Marie Françoise",
+        width: 1400,
+        height: 1027,
+        layout: "standard",
+        caption: "Troisième édition · Conakry · 2026",
+      },
+      {
+        src: "/images/jeca/edition-3/09.webp",
+        alt: "Remise d’une casquette aux couleurs de la troisième édition",
+        width: 1400,
+        height: 1042,
+        layout: "standard",
+        caption: "Troisième édition · Conakry · 2026",
+      },
+      {
+        src: "/images/jeca/edition-3/10.webp",
+        alt: "Prise de parole lors de l’accueil des invités à Conakry",
+        width: 1163,
+        height: 1280,
+        layout: "tall",
+        caption: "Troisième édition · Conakry · 2026",
+      },
+      {
+        src: "/images/jeca/edition-3/11.webp",
+        alt: "Échange avant la conférence, dans les locaux de Baruck Communication à Conakry",
+        width: 1400,
+        height: 912,
+        layout: "wide",
+        caption: "Troisième édition · Conakry · 2026",
+      },
+      {
+        src: "/images/jeca/edition-3/12.webp",
+        alt: "Prise de parole devant la presse, aux côtés d’une hôtesse Baruck",
+        width: 1280,
+        height: 1118,
         layout: "standard",
         caption: "Troisième édition · Conakry · 2026",
       },
