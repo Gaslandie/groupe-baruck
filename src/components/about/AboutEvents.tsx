@@ -9,15 +9,41 @@ import { AboutSectionHead } from "./AboutSectionHead";
 /**
  * Les rendez-vous organisés, ajoutés à la page Le Groupe le 2026-09-18.
  *
- * Seules les éditions du forum de la JECA sont listées : ce sont les
- * rassemblements que le dirigeant organise, et leurs villes et dates sont déjà
- * publiées sur la page JECA (`jecaEditionNav`, source unique). Les actions de
- * terrain d'Espoir de Vie, qui ne sont pas des rendez-vous du même ordre,
- * restent sur leur page ; un lien y conduit.
+ * Deux familles depuis le 2026-09-19 : le forum de la JECA, dont les villes et
+ * les dates viennent de la page JECA (`jecaEditionNav`, source unique), et les
+ * concours organisés en Guinée par Baruck Communication. Ces derniers ont été
+ * ajoutés après les précisions du PDG en vidéo : deux éditions, leurs dotations,
+ * et le passage aux défilés de mode pour la suite.
  *
- * Une seule flèche pour la section, sur le lien final, et aucune dans les
- * cartes (règle des flèches du site).
+ * Les actions de terrain d'Espoir de Vie, qui ne sont pas des rendez-vous du
+ * même ordre, restent sur leur page ; un lien y conduit.
+ *
+ * Une seule flèche par lien de bas de section, et aucune dans les cartes
+ * (règle des flèches du site).
  */
+
+/**
+ * Les concours ne sont pas des cartes cliquables : seule la deuxième édition a
+ * une page sur le site, un lien la donne sous la liste.
+ */
+const baruckContests = [
+  {
+    number: "01",
+    title: "Miss Baruck Guinée",
+    dates: "Première édition · 2025",
+    text: "Vingt millions de francs guinéens à partager entre les lauréats.",
+  },
+  {
+    number: "02",
+    title: "Top Modèle Baruck Guinée",
+    dates: "Deuxième édition · 8 août 2026",
+    text: "Quatre-vingts millions de francs guinéens, et la dernière édition du genre : la suite passera par des défilés de mode, adossés à la maison de vêtements du groupe.",
+  },
+];
+
+const familyTitleClass =
+  "m-0 mb-[clamp(1.2rem,2vw,1.8rem)] font-display text-display-sm font-normal leading-[1.15]";
+
 export function AboutEvents() {
   return (
     <section
@@ -27,11 +53,12 @@ export function AboutEvents() {
       <AboutSectionHead
         eyebrow="Événements organisés"
         title="Le forum de la JECA,"
-        emphasis="trois éditions."
-        text="Depuis 2022, la JECA réunit la diaspora africaine autour de l’investissement sur le continent, à Dakar puis à Conakry."
+        emphasis="les concours Baruck."
+        text="Depuis 2022, la JECA réunit la diaspora africaine autour de l’investissement sur le continent. En Guinée, Baruck Communication organise ses propres rendez-vous."
         tone="dark"
       />
 
+      <h3 className={`reveal ${familyTitleClass}`}>Le forum de la JECA</h3>
       <ol className="reveal-stagger m-0 grid list-none grid-cols-3 gap-[1.1rem] p-0 max-[1080px]:grid-cols-1">
         {jecaEditionNav.map((edition) => (
           <li key={edition.href}>
@@ -54,6 +81,30 @@ export function AboutEvents() {
           </li>
         ))}
       </ol>
+
+      <h3 className={`reveal mt-[clamp(3rem,5vw,4.5rem)] ${familyTitleClass}`}>Les concours Baruck</h3>
+      <ol className="reveal-stagger m-0 grid list-none grid-cols-2 gap-[1.1rem] p-0 max-[1080px]:grid-cols-1">
+        {baruckContests.map((contest) => (
+          <li
+            key={contest.number}
+            className="reveal flex h-full flex-col border border-line bg-ivory px-[1.7rem] pb-[1.7rem] pt-[1.8rem]"
+          >
+            <span className="text-micro tracking-[.15em] text-accent">Édition {contest.number}</span>
+            <span className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">
+              {contest.title}
+            </span>
+            <span className="text-label uppercase tracking-[.13em] text-[#8d8a84]">{contest.dates}</span>
+            <p className="mb-0 mt-[.9rem] text-small leading-[1.7] text-[#65645f]">{contest.text}</p>
+          </li>
+        ))}
+      </ol>
+
+      <Link
+        href={`${routes.news}top-modele-baruck-guinee-2026/`}
+        className="text-link reveal mt-[clamp(1.4rem,2.5vw,2rem)]"
+      >
+        Lire la finale du Top Modèle 2026
+      </Link>
 
       <div className="reveal mt-[clamp(2rem,4vw,3rem)] flex flex-wrap items-center gap-[.8rem]">
         <Link href={routes.jeca} className="button button-dark">

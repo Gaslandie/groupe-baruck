@@ -12,7 +12,8 @@ import { Icon } from "../ui/Icon";
  * le voyait pas et sa vision n'était écrite nulle part en toutes lettres.
  *
  * Rien n'est inventé ici : le portrait est celui de l'accueil, les quatre
- * fonctions sont celles déjà publiées, et la phrase reprise en grand est la
+ * fonctions sont celles déjà publiées (elles restent dans `AboutRoles`, où le
+ * bouton conduit), et la phrase reprise en grand est la
  * citation qui occupait la section `AboutQuote`, retirée de la page le même
  * jour pour ne pas la dire deux fois. Le parcours détaillé reste à fournir par
  * la direction (voir `AboutRoles`).
@@ -26,7 +27,7 @@ const visionPoints = [
   {
     number: "02",
     title: "Ouvrir vers la région",
-    text: "Porter cette base vers le Sénégal et la Côte d’Ivoire, où le dirigeant conduit déjà ses engagements.",
+    text: "Porter cette base vers le Sénégal et la Côte d’Ivoire, où le dirigeant conduit déjà ses engagements, et jusqu’aux représentations de France et du Cap-Vert.",
   },
   {
     number: "03",
@@ -63,7 +64,7 @@ export function AboutPresident() {
         <p className="eyebrow light">Le président</p>
         <h2 className="m-[.4rem_0_0] text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.04em]">
           Un dirigeant,
-          <em className="block font-normal text-accent">quatre engagements.</em>
+          <em className="block font-normal text-accent">une vision.</em>
         </h2>
         <p className="mb-0 mt-[1.6rem] max-w-[620px] text-lead leading-[1.7] text-[rgba(255,255,255,.74)]">
           MR Djoro Joël Shaloom Krasso dirige le Groupe Baruck. Il préside la JECA, qui réunit la diaspora autour de
@@ -75,7 +76,11 @@ export function AboutPresident() {
           « Construire, entreprendre et créer un impact durable. »
         </blockquote>
 
-        <dl className="m-0 mt-[clamp(2rem,4vw,3rem)] grid grid-cols-3 gap-[clamp(1rem,2vw,2rem)] border-t border-[rgba(255,255,255,.18)] pt-[1.6rem] max-tablet:grid-cols-1 max-tablet:gap-6">
+        <p className="mb-0 mt-[clamp(2rem,4vw,3rem)] border-t border-[rgba(255,255,255,.18)] pt-[1.6rem] text-label uppercase tracking-[.14em] text-accent">
+          Sa vision, en trois axes
+        </p>
+
+        <dl className="m-0 mt-[1.4rem] grid grid-cols-3 gap-[clamp(1rem,2vw,2rem)] max-tablet:grid-cols-1 max-tablet:gap-6">
           {visionPoints.map((point) => (
             <div key={point.number}>
               <dt className="text-micro uppercase tracking-[.15em] text-accent">{point.number}</dt>

@@ -18,7 +18,9 @@ Pour finaliser le site du Groupe Baruck, merci de compléter les éléments suiv
 - Année de création :
 - Nombre d’activités réellement opérationnelles :
 - Nombre de collaborateurs :
-- Pays de présence confirmés :
+- Pays de présence confirmés : Guinée, Sénégal, Côte d’Ivoire (Abidjan), France, Cap-Vert
+  — cités par le PDG dans une vidéo de la page Facebook du groupe, publiés le 19 septembre 2026.
+  Reste à préciser ce que le groupe fait en France et au Cap-Vert.
 - Date exacte à afficher dans la frise pour la création du Groupe :
 
 ## 3. Statut des neuf domaines
@@ -27,8 +29,8 @@ Pour chaque domaine, indiquer son statut — **Opérationnel**, **En lancement**
 
 - Hôtellerie :
 - Restauration :
-- Agro-business :
-- Studio d’enregistrement :
+- Agro-business : culture du piment, de l’oignon et du manioc (vidéo du PDG) — statut à confirmer
+- Studio d’enregistrement : annoncé « très bientôt » par le PDG — date à confirmer
 - Cinéma :
 - Voitures de luxe :
 - Communication digitale :

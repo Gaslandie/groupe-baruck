@@ -27,8 +27,10 @@ export function AboutIntro() {
         </p>
         <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">
           Autour de cette base, le groupe réunit des domaines complémentaires — hôtellerie, restauration,
-          agro-business, mobilité, industries créatives — et porte une ambition régionale assumée, du Sénégal
-          à la Côte d’Ivoire : bâtir des projets solides, modernes et créateurs de valeur.
+          agro-business avec la culture du piment, de l’oignon et du manioc, mobilité, industries créatives,
+          sans oublier la marque de vêtements Baruck. Il porte une ambition assumée, du Sénégal à la Côte
+          d’Ivoire et jusqu’à la France et au Cap-Vert : bâtir des projets solides, modernes et créateurs de
+          valeur.
         </p>
         <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">
           À cette activité économique répond une seconde dimension, indissociable du parcours de son dirigeant :

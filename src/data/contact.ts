@@ -75,6 +75,6 @@ export const contactFaq: ContactFaqItem[] = [
   },
   {
     question: "Dans quels pays le Groupe Baruck est-il présent ?",
-    answer: "La présence du Groupe Baruck est validée en Guinée, au Sénégal et en Côte d’Ivoire.",
+    answer: "Le Groupe Baruck est présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert. La Guinée est son point d’ancrage : le siège et les activités de Baruck Communication s’y trouvent.",
   },
 ];

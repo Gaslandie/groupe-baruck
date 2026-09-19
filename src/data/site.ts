@@ -154,7 +154,7 @@ export const mainNav: NavItem[] = [
 export const footers = {
   home: {
     blurb:
-      "Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal et en Côte d’Ivoire.",
+      "Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert.",
     columns: [
       {
         title: "Navigation",
@@ -196,7 +196,7 @@ export const footers = {
   },
   about: {
     blurb:
-      "Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal et en Côte d’Ivoire.",
+      "Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert.",
     columns: [
       {
         title: "Navigation",
@@ -238,7 +238,7 @@ export const footers = {
   },
   service: {
     blurb:
-      "Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal et en Côte d’Ivoire.",
+      "Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert.",
     columns: [
       {
         title: "Navigation",

@@ -85,9 +85,9 @@ export const baruckCommunication: BaruckCommunication = {
   eyebrow: "Pôle opérationnel · Guinée",
   name: "Baruck Communication",
   description:
-    "En Guinée, Baruck Communication opère le Studio Photo Baruck la Prospérité ainsi que les services d’hôtesses événementielles présentés sur ce site.",
+    "Baruck Communication est une maison de communication, pas une agence de mannequinat : la distinction est celle du PDG lui-même. En Guinée, elle opère le Studio Photo Baruck la Prospérité et les services d’hôtesses événementielles présentés sur ce site, et organise les rendez-vous du groupe.",
   presence: "Guinée",
-  servicesLabel: "Studio photo · Hôtesses événementielles",
+  servicesLabel: "Studio photo · Hôtesses événementielles · Événements",
   services: [
     {
       title: "Studio Photo Baruck la Prospérité",
@@ -103,3 +103,70 @@ export const baruckCommunication: BaruckCommunication = {
     },
   ],
 };
+
+export type PresenceLink = {
+  label: string;
+  href: string;
+};
+
+export type PresenceCountry = {
+  /** Rang affiché, dans l'ordre de la liste. */
+  number: string;
+  name: string;
+  /** Nature de la présence, en une formule courte. */
+  role: string;
+  text: string;
+  /** Pages du site consacrées à ce qui s'y passe ; absentes quand il n'y en a pas. */
+  links?: PresenceLink[];
+};
+
+/**
+ * Les cinq pays, au même niveau (2026-09-19).
+ *
+ * Le PDG a cité la France et le Cap-Vert en plus des trois pays déjà publiés,
+ * dans une vidéo diffusée sur la page Facebook du groupe. La carte d'Afrique de
+ * l'Ouest qui portait cette section ne pouvait pas les accueillir — la France
+ * en sort, et le Cap-Vert est absent du fond de carte Natural Earth à cette
+ * échelle — elle a donc été retirée au profit de cette liste.
+ *
+ * Ce qui est écrit de la France et du Cap-Vert s'arrête à ce qui est su : le
+ * groupe y est représenté. Le détail des activités viendra du client.
+ */
+export const presenceCountries: PresenceCountry[] = [
+  {
+    number: "01",
+    name: "Guinée",
+    role: "Point d’ancrage",
+    text: "Siège du groupe. Baruck Communication y opère le Studio Photo Baruck la Prospérité, à Kobayah (Conakry), ainsi que ses équipes d’hôtesses événementielles.",
+    links: [
+      { label: "Studio photo", href: routes.studio },
+      { label: "Hôtesses événementielles", href: routes.hostesses },
+    ],
+  },
+  {
+    number: "02",
+    name: "Sénégal",
+    role: "Présence régionale",
+    text: "C’est à Dakar que la JECA a réuni la diaspora lors de ses deux premiers forums, en 2022 et 2023.",
+    links: [{ label: "Les forums JECA", href: routes.jeca }],
+  },
+  {
+    number: "03",
+    name: "Côte d’Ivoire",
+    role: "Présence régionale · Abidjan",
+    text: "Terre d’engagement d’Espoir de Vie : à Grôh, Hiré, Zaroko et Divo — jouets, kits scolaires, aide aux familles et construction de l’orphelinat.",
+    links: [{ label: "Espoir de Vie", href: routes.edv }],
+  },
+  {
+    number: "04",
+    name: "France",
+    role: "Représentation",
+    text: "Le Groupe Baruck y est représenté, hors du continent africain.",
+  },
+  {
+    number: "05",
+    name: "Cap-Vert",
+    role: "Représentation",
+    text: "Le Groupe Baruck y est représenté, dans l’archipel au large du Sénégal.",
+  },
+];

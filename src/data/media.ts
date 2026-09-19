@@ -37,27 +37,6 @@ export const placeholderPhotos = {
     licence: "CC BY-SA 4.0",
     href: "https://commons.wikimedia.org/wiki/File:Ville_de_Conaky.jpg",
   },
-  conakry: {
-    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Ville_de_Conaky.jpg/1280px-Ville_de_Conaky.jpg",
-    position: "center 40%",
-    author: "Boubacar Bila Diao Balde",
-    licence: "CC BY-SA 4.0",
-    href: "https://commons.wikimedia.org/wiki/File:Ville_de_Conaky.jpg",
-  },
-  dakar: {
-    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Pointe_des_Almadies_-_Senegal.jpg/1280px-Pointe_des_Almadies_-_Senegal.jpg",
-    position: "center 55%",
-    author: "Jeff Attaway",
-    licence: "CC BY 2.0",
-    href: "https://commons.wikimedia.org/wiki/File:Pointe_des_Almadies_-_Senegal.jpg",
-  },
-  abidjan: {
-    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/PlateauSudAbidjanApril2016.JPG/1280px-PlateauSudAbidjanApril2016.JPG",
-    position: "center 30%",
-    author: "Citizen59",
-    licence: "CC BY 3.0",
-    href: "https://commons.wikimedia.org/wiki/File:PlateauSudAbidjanApril2016.JPG",
-  },
   madina: {
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Madina_1.jpg/1920px-Madina_1.jpg",
     position: "center",
