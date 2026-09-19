@@ -71,6 +71,37 @@ export const milestones: Milestone[] = [
   },
 ];
 
+/**
+ * Les ambassadeurs de la marque Baruck, ajoutés à la page Le Groupe le
+ * 2026-09-19. Le client a fourni ces photos sans date : elles sont donc
+ * présentées comme une galerie, pas comme une actualité datée.
+ *
+ * Douze photos retenues sur les vingt-six reçues, pour ne pas alourdir la
+ * page : la rencontre avec le PDG, l'équipe au complet, puis des passages de
+ * la séance au Studio Photo Baruck.
+ */
+export type AmbassadorPhoto = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+export const ambassadorPhotos: AmbassadorPhoto[] = [
+  { src: "/images/groupe/ambassadeurs/01.webp", alt: "Le PDG du Groupe Baruck entouré des ambassadeurs de la marque, tous vêtus de noir, devant le siège de Baruck Communication", width: 1000, height: 667 },
+  { src: "/images/groupe/ambassadeurs/02.webp", alt: "Le PDG du Groupe Baruck posant avec deux ambassadeurs de la marque dans son bureau", width: 1000, height: 667 },
+  { src: "/images/groupe/ambassadeurs/03.webp", alt: "Les ambassadeurs brandissant les flyers du Studio Photo Baruck devant le mur Baruck Communication", width: 1000, height: 667 },
+  { src: "/images/groupe/ambassadeurs/04.webp", alt: "Les ambassadeurs rassemblés, l’un d’eux agenouillé au premier plan", width: 1000, height: 667 },
+  { src: "/images/groupe/ambassadeurs/05.webp", alt: "L’équipe des ambassadeurs réunie en studio, un membre agenouillé au premier plan", width: 668, height: 667 },
+  { src: "/images/groupe/ambassadeurs/06.webp", alt: "L’équipe des ambassadeurs en studio, certains portant le tee-shirt aux couleurs de Baruck", width: 1000, height: 667 },
+  { src: "/images/groupe/ambassadeurs/07.webp", alt: "Un ambassadeur assis en tailleur, capuche et gants noirs, un chapeau posé sur un sac de voyage", width: 716, height: 1080 },
+  { src: "/images/groupe/ambassadeurs/08.webp", alt: "Un ambassadeur soulevant le bord de son chapeau noir, en studio", width: 1000, height: 667 },
+  { src: "/images/groupe/ambassadeurs/09.webp", alt: "Une ambassadrice en trench noir, les mains dans les poches, sur fond sombre", width: 720, height: 1080 },
+  { src: "/images/groupe/ambassadeurs/10.webp", alt: "Un ambassadeur en veste de cuir noire et casquette plate, en studio", width: 720, height: 1080 },
+  { src: "/images/groupe/ambassadeurs/11.webp", alt: "Un ambassadeur les bras croisés tenant un sac de voyage noir, en studio", width: 720, height: 1080 },
+  { src: "/images/groupe/ambassadeurs/12.webp", alt: "Deux ambassadeurs accroupis de part et d’autre d’un sac de voyage noir, en studio", width: 1000, height: 667 },
+];
+
 export type CommunicationService = {
   title: string;
   text: string;

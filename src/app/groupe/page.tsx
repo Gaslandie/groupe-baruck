@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AboutActivities } from "@/components/about/AboutActivities";
+import { AboutAmbassadors } from "@/components/about/AboutAmbassadors";
 import { AboutCommitments } from "@/components/about/AboutCommitments";
 import { AboutCommunication } from "@/components/about/AboutCommunication";
 import { AboutCta } from "@/components/about/AboutCta";
@@ -42,6 +43,8 @@ export default function GroupPage() {
       {/* Ce que fait le groupe : le pôle guinéen, puis tous ses domaines. */}
       <AboutCommunication />
       <AboutActivities />
+      {/* Les ambassadeurs de la marque : une galerie, faute de date fournie. */}
+      <AboutAmbassadors />
       {/* Les rendez-vous organisés, puis la chronologie et la présence. */}
       <AboutEvents />
       <AboutMilestones />
