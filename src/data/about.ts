@@ -56,6 +56,13 @@ export const milestones: Milestone[] = [
     href: "/jeca/#edition-2",
   },
   {
+    year: "2025",
+    dateTime: "2025-07-26",
+    title: "Les premiers concours Baruck",
+    text: "Baruck Communication lance ses propres rendez-vous en Guinée : Miss Baruck Guinée le 26 juillet, puis le Top Modèle Baruck Guinée le 27 septembre.",
+    href: "/actualites/miss-baruck-guinee-2025/",
+  },
+  {
     year: "2026",
     dateTime: "2026-07-30",
     title: "Troisième édition de la JECA",

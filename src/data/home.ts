@@ -182,3 +182,17 @@ export const featuredEventSlug = "top-modele-baruck-guinee-2026";
 
 /** Sur-titre de la section : ce que l'on met en avant, pas le titre de l'article. */
 export const featuredEventEyebrow = "L’événement";
+
+/**
+ * Les autres concours organisés en Guinée, montrés en petit sous l'événement
+ * principal depuis le 2026-09-19 : ils ont chacun leur article, mais la page
+ * d'accueil ne les annonçait nulle part. Ordre du plus récent au plus ancien.
+ * Un slug inconnu est simplement ignoré, la section reste entière.
+ */
+export const featuredAlsoSlugs = [
+  "top-modele-baruck-guinee-2025",
+  "miss-baruck-guinee-2025",
+];
+
+/** Sur-titre de la liste secondaire. */
+export const featuredAlsoTitle = "Les autres concours Baruck";

@@ -1,7 +1,12 @@
 import Link from "next/link";
 
 import type { NewsImage } from "@/data/actualites";
-import { featuredEventEyebrow, featuredEventSlug } from "@/data/home";
+import {
+  featuredAlsoSlugs,
+  featuredAlsoTitle,
+  featuredEventEyebrow,
+  featuredEventSlug,
+} from "@/data/home";
 import { routes } from "@/data/site";
 import { getArticle } from "@/lib/actualites";
 import { asset } from "@/lib/asset";
@@ -22,6 +27,11 @@ const previewCount = 4;
  *
  * Les photos ne sont qu'un avant-goût : le lien mène à l'article, où chaque
  * candidat a son passage complet.
+ *
+ * Depuis le 2026-09-19, les autres concours du groupe (`featuredAlsoSlugs`)
+ * apparaissent en petit sous l'événement principal : ils avaient chacun leur
+ * article, mais l'accueil ne les mentionnait nulle part. Même principe que
+ * ci-dessus : tout vient de l'article, un slug inconnu est ignoré.
  */
 function previewPhotos(groups: { photos: NewsImage[] }[], cover?: NewsImage): NewsImage[] {
   // Une photo par groupe : l'aperçu montre des passages différents, pas deux
@@ -39,6 +49,11 @@ export function FeaturedEvent() {
 
   const photos = previewPhotos(article.groups, article.cover);
   const href = `${routes.news}${article.slug}/`;
+  // `flatMap` plutôt que `filter` : TypeScript garde ainsi le type sans `undefined`.
+  const alsoArticles = featuredAlsoSlugs.flatMap((slug) => {
+    const item = getArticle(slug);
+    return item && item.slug !== article.slug ? [item] : [];
+  });
 
   return (
     <section
@@ -90,6 +105,45 @@ export function FeaturedEvent() {
       <Link href={href} className="text-link mt-[clamp(2.2rem,4vw,3.2rem)]">
         Voir l’événement <span><Icon name="arrow-up-right" /></span>
       </Link>
+
+      {alsoArticles.length > 0 ? (
+        <div className="reveal mt-[clamp(2.8rem,5vw,4.2rem)] border-t border-[rgba(255,255,255,.14)] pt-[clamp(1.8rem,3vw,2.6rem)]">
+          <p className="eyebrow light">{featuredAlsoTitle}</p>
+          <ul className="m-0 mt-[clamp(1.2rem,2vw,1.8rem)] grid list-none grid-cols-2 gap-[clamp(1.2rem,3vw,2.4rem)] p-0 max-tablet:grid-cols-1">
+            {alsoArticles.map((item) => (
+              <li key={item.slug}>
+                <Link
+                  href={`${routes.news}${item.slug}/`}
+                  className="group grid grid-cols-[clamp(96px,10vw,132px)_1fr] items-center gap-[clamp(.9rem,2vw,1.4rem)] no-underline transition-opacity duration-300 hover:opacity-80 focus-visible:opacity-80"
+                >
+                  {item.cover ? (
+                    <img
+                      src={asset(item.cover.src as `/${string}`)}
+                      alt=""
+                      width={item.cover.width}
+                      height={item.cover.height}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[4/5] w-full bg-ink-soft object-cover"
+                    />
+                  ) : null}
+                  <span className="block min-w-0">
+                    <time
+                      dateTime={item.date}
+                      className="block text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.55)]"
+                    >
+                      {formatDate(item.date)}
+                    </time>
+                    <span className="mt-[.6rem] block text-balance font-display text-display-sm font-normal leading-[1.15] text-ivory">
+                      {item.title}
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </section>
   );
 }

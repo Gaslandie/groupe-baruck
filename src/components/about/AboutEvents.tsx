@@ -23,21 +23,31 @@ import { AboutSectionHead } from "./AboutSectionHead";
  */
 
 /**
- * Les concours ne sont pas des cartes cliquables : seule la deuxième édition a
- * une page sur le site, un lien la donne sous la liste.
+ * Depuis le 2026-09-19, les trois concours ont chacun leur article : les cartes
+ * sont donc devenues cliquables, comme celles de la JECA, et le lien isolé qui
+ * renvoyait vers la seule finale 2026 a été retiré (il faisait doublon).
  */
 const baruckContests = [
   {
     number: "01",
     title: "Miss Baruck Guinée",
-    dates: "Première édition · 2025",
-    text: "Vingt millions de francs guinéens à partager entre les lauréats.",
+    dates: "Première édition · 26 juillet 2025",
+    text: "Vingt millions de francs guinéens à partager entre les lauréats. Mama Adama Bangoura est couronnée Miss Baruck Guinée 2025.",
+    href: `${routes.news}miss-baruck-guinee-2025/`,
   },
   {
     number: "02",
     title: "Top Modèle Baruck Guinée",
+    dates: "Première édition · 27 septembre 2025",
+    text: "La grande finale se tient à 22 h dans la salle Malick Condé de l’Université Kofi Annan, sous le parrainage du PDG du Groupe Baruck.",
+    href: `${routes.news}top-modele-baruck-guinee-2025/`,
+  },
+  {
+    number: "03",
+    title: "Top Modèle Baruck Guinée",
     dates: "Deuxième édition · 8 août 2026",
     text: "Quatre-vingts millions de francs guinéens, et la dernière édition du genre : la suite passera par des défilés de mode, adossés à la maison de vêtements du groupe.",
+    href: `${routes.news}top-modele-baruck-guinee-2026/`,
   },
 ];
 
@@ -83,28 +93,29 @@ export function AboutEvents() {
       </ol>
 
       <h3 className={`reveal mt-[clamp(3rem,5vw,4.5rem)] ${familyTitleClass}`}>Les concours Baruck</h3>
-      <ol className="reveal-stagger m-0 grid list-none grid-cols-2 gap-[1.1rem] p-0 max-[1080px]:grid-cols-1">
+      <ol className="reveal-stagger m-0 grid list-none grid-cols-3 gap-[1.1rem] p-0 max-[1080px]:grid-cols-1">
         {baruckContests.map((contest) => (
-          <li
-            key={contest.number}
-            className="reveal flex h-full flex-col border border-line bg-ivory px-[1.7rem] pb-[1.7rem] pt-[1.8rem]"
-          >
-            <span className="text-micro tracking-[.15em] text-accent">Édition {contest.number}</span>
-            <span className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">
-              {contest.title}
-            </span>
-            <span className="text-label uppercase tracking-[.13em] text-[#8d8a84]">{contest.dates}</span>
-            <p className="mb-0 mt-[.9rem] text-small leading-[1.7] text-[#65645f]">{contest.text}</p>
+          <li key={contest.number}>
+            <Link
+              href={contest.href}
+              className="group flex h-full flex-col border border-line bg-ivory px-[1.7rem] pb-[1.7rem] pt-[1.8rem] transition-[transform,box-shadow] duration-[320ms] hover:translate-y-[-6px] hover:shadow-[0_18px_40px_rgba(11,12,14,.12)] focus-visible:translate-y-[-6px] focus-visible:shadow-[0_18px_40px_rgba(11,12,14,.12)]"
+            >
+              <span className="text-micro tracking-[.15em] text-accent">Concours {contest.number}</span>
+              <span className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">
+                {contest.title}
+              </span>
+              <span className="text-label uppercase tracking-[.13em] text-[#8d8a84]">{contest.dates}</span>
+              <p className="mb-0 mt-[.9rem] text-small leading-[1.7] text-[#65645f]">{contest.text}</p>
+              <i
+                aria-hidden="true"
+                className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent"
+              >
+                Lire l’article
+              </i>
+            </Link>
           </li>
         ))}
       </ol>
-
-      <Link
-        href={`${routes.news}top-modele-baruck-guinee-2026/`}
-        className="text-link reveal mt-[clamp(1.4rem,2.5vw,2rem)]"
-      >
-        Lire la finale du Top Modèle 2026
-      </Link>
 
       <div className="reveal mt-[clamp(2rem,4vw,3rem)] flex flex-wrap items-center gap-[.8rem]">
         <Link href={routes.jeca} className="button button-dark">
