@@ -22,6 +22,17 @@ groups:
         alt: "Une lauréate en écharpe Top Modèle félicitée sur scène pendant la remise des prix"
       - src: "/images/actualites/top-modele-2026/laureats-05.webp"
         alt: "Une lauréate recevant son lot des mains des organisateurs, sur scène"
+  - label: "En marge : la RTG"
+    note: "L’entretien accordé à la télévision nationale"
+    photos:
+      - src: "/images/actualites/top-modele-2026/rtg-01.webp"
+        alt: "Une journaliste de la RTG tendant son micro au PDG du Groupe Baruck, assis à son bureau"
+      - src: "/images/actualites/top-modele-2026/rtg-02.webp"
+        alt: "La journaliste de la RTG face au PDG du Groupe Baruck dans son bureau"
+      - src: "/images/actualites/top-modele-2026/rtg-03.webp"
+        alt: "Le PDG du Groupe Baruck répondant aux questions, le micro de la RTG tendu vers lui"
+      - src: "/images/actualites/top-modele-2026/rtg-04.webp"
+        alt: "Le PDG du Groupe Baruck expliquant un point face au micro de la RTG"
   - label: "Candidat n°1"
     video:
       src: "/videos/top-modele-2026/candidat-01.mp4"
@@ -155,6 +166,8 @@ L’édition a réuni des candidats venus de plusieurs pays de la sous-région. 
 La soirée s’est achevée par la remise des prix : les lauréats ont reçu leur écharpe Top Modèle Baruck Guinée 2026 et leurs cadeaux sur scène.
 
 Parrain de l’événement : le PDG du Groupe Baruck.
+
+En amont de la finale, il avait reçu la Radiodiffusion Télévision Guinéenne (RTG), la télévision nationale, au siège de Baruck Communication à Conakry, pour présenter les domaines d’activité du groupe et les préparatifs du concours.
 
 ## L’esprit du concours
 
