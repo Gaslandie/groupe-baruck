@@ -24,6 +24,12 @@ export default function Home() {
     <PageShell variant="home" current="home" footer="home">
       <StructuredData data={organizationSchema} />
       <HeroSection />
+      {/*
+        Les concours organisés par le groupe passent juste sous le hero
+        (2026-09-22) : le client veut que l'on voie ses réalisations en image
+        dès la sortie du hero, avant la présentation des activités.
+      */}
+      <FeaturedEvent />
       {/* Activités principales : les trois volets de l'ancien carrousel du hero. */}
       {mainActivities.map((activity, index) => (
         <PageTeaser key={activity.id} {...activity} reverse={index % 2 === 0} />
@@ -33,7 +39,6 @@ export default function Home() {
       {pageTeasers.map((teaser, index) => (
         <PageTeaser key={teaser.id} {...teaser} reverse={index % 2 === 1} />
       ))}
-      <FeaturedEvent />
       <NewsPreview />
       <ContactCta />
     </PageShell>

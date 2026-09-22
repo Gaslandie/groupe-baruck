@@ -174,7 +174,8 @@ export const pageTeasers: PageTeaser[] = [
 ];
 
 /**
- * Événement mis en avant sur l'accueil, avant les dernières actualités.
+ * Événement mis en avant sur l'accueil, juste sous le hero depuis le
+ * 2026-09-22 : les réalisations du groupe ouvrent la page, avant les activités.
  * La section reprend l'article portant ce slug : titre, chapeau, photos et lien.
  * Slug inconnu ou article retiré : la section disparaît, l'accueil reste entier.
  */
