@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import type { NewsImage } from "@/data/actualites";
+import type { Article, NewsImage } from "@/data/actualites";
 import {
   featuredAlsoSlugs,
   featuredAlsoTitle,
@@ -18,51 +18,49 @@ import { Icon } from "../ui/Icon";
 const previewCount = 4;
 
 /**
- * Aperçu de l'événement mis en avant sur l'accueil (2026-09-18).
+ * Photos d'aperçu d'un concours : une par groupe, pour montrer des passages
+ * différents plutôt que deux fois le même.
  *
- * Tout vient de l'article : titre, chapeau, date et photos. Rien n'est recopié
- * ici, donc corriger l'article corrige aussi l'accueil. Si l'article n'existe
- * pas ou passe en brouillon, la section ne s'affiche pas plutôt que de casser
- * la page.
- *
- * Les photos ne sont qu'un avant-goût : le lien mène à l'article, où chaque
- * candidat a son passage complet.
- *
- * Depuis le 2026-09-19, les autres concours du groupe (`featuredAlsoSlugs`)
- * apparaissent en petit sous l'événement principal : ils avaient chacun leur
- * article, mais l'accueil ne les mentionnait nulle part. Même principe que
- * ci-dessus : tout vient de l'article, un slug inconnu est ignoré.
+ * Un article qui a moins de quatre groupes est complété par sa couverture, puis
+ * par les photos suivantes de chaque groupe, prises à tour de rôle (2026-09-22).
+ * Sans ce complément, la grille de quatre colonnes restait trouée : la première
+ * édition du Top Modèle n'a que deux groupes.
  */
 function previewPhotos(groups: { photos: NewsImage[] }[], cover?: NewsImage): NewsImage[] {
-  // Une photo par groupe : l'aperçu montre des passages différents, pas deux
-  // fois le même. Complété par la couverture si l'article a peu de groupes.
   const photos = groups.map((group) => group.photos[0]).slice(0, previewCount);
   if (photos.length < previewCount && cover) photos.unshift(cover);
+
+  const seen = new Set(photos.map((photo) => photo.src));
+  const deepest = Math.max(0, ...groups.map((group) => group.photos.length));
+  for (let rank = 1; rank < deepest && photos.length < previewCount; rank += 1) {
+    for (const group of groups) {
+      const photo = group.photos[rank];
+      if (photos.length >= previewCount || !photo || seen.has(photo.src)) continue;
+      seen.add(photo.src);
+      photos.push(photo);
+    }
+  }
 
   return photos.slice(0, previewCount);
 }
 
-export function FeaturedEvent() {
-  const article = getArticle(featuredEventSlug);
-
-  if (!article) return null;
-
+/**
+ * Un concours présenté en entier : titre, date, chapeau, quatre photos et le
+ * lien vers l'article. Tout vient de l'article, donc le corriger corrige aussi
+ * l'accueil.
+ *
+ * Le sur-titre n'existe que pour l'événement de tête : les autres concours sont
+ * déjà annoncés par l'intitulé de leur liste.
+ */
+function EventBlock({ article, eyebrow }: { article: Article; eyebrow?: string }) {
   const photos = previewPhotos(article.groups, article.cover);
   const href = `${routes.news}${article.slug}/`;
-  // `flatMap` plutôt que `filter` : TypeScript garde ainsi le type sans `undefined`.
-  const alsoArticles = featuredAlsoSlugs.flatMap((slug) => {
-    const item = getArticle(slug);
-    return item && item.slug !== article.slug ? [item] : [];
-  });
 
   return (
-    <section
-      id="evenement"
-      className="reveal-stagger scroll-mt-[92px] bg-ink px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4.5rem,9vw,9rem)] text-ivory max-tablet:px-[1.3rem] max-tablet:py-16"
-    >
+    <article className="reveal-stagger">
       <div className="reveal grid grid-cols-2 items-end gap-x-[clamp(2.5rem,6vw,6rem)] gap-y-8 max-desktop:grid-cols-1 max-desktop:items-start">
         <div>
-          <p className="eyebrow light">{featuredEventEyebrow}</p>
+          {eyebrow ? <p className="eyebrow light">{eyebrow}</p> : null}
           <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
             {article.title}
           </h2>
@@ -105,43 +103,52 @@ export function FeaturedEvent() {
       <Link href={href} className="text-link mt-[clamp(2.2rem,4vw,3.2rem)]">
         Voir l’événement <span><Icon name="arrow-up-right" /></span>
       </Link>
+    </article>
+  );
+}
+
+/**
+ * Les concours organisés par le groupe, sur l'accueil (2026-09-18), remontés
+ * sous le hero le 2026-09-22.
+ *
+ * L'événement de tête (`featuredEventSlug`) ouvre la section, puis les autres
+ * concours (`featuredAlsoSlugs`) suivent sous leur intitulé. Depuis le
+ * 2026-09-22, ils sont présentés comme lui — titre, date, chapeau et photos —
+ * là où ils n'étaient qu'une liste de vignettes : le client veut voir ce que le
+ * groupe a organisé, pas seulement en lire les titres.
+ *
+ * Rien n'est recopié ici : si un article passe en brouillon ou disparaît, son
+ * bloc disparaît aussi, et la section reste entière. Sans l'événement de tête,
+ * la section ne s'affiche pas plutôt que de casser la page.
+ */
+export function FeaturedEvent() {
+  const article = getArticle(featuredEventSlug);
+
+  if (!article) return null;
+
+  // `flatMap` plutôt que `filter` : TypeScript garde ainsi le type sans `undefined`.
+  const alsoArticles = featuredAlsoSlugs.flatMap((slug) => {
+    const item = getArticle(slug);
+    return item && item.slug !== article.slug ? [item] : [];
+  });
+
+  return (
+    <section
+      id="evenement"
+      className="scroll-mt-[92px] bg-ink px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4.5rem,9vw,9rem)] text-ivory max-tablet:px-[1.3rem] max-tablet:py-16"
+    >
+      <EventBlock article={article} eyebrow={featuredEventEyebrow} />
 
       {alsoArticles.length > 0 ? (
-        <div className="reveal mt-[clamp(2.8rem,5vw,4.2rem)] border-t border-[rgba(255,255,255,.14)] pt-[clamp(1.8rem,3vw,2.6rem)]">
-          <p className="eyebrow light">{featuredAlsoTitle}</p>
-          <ul className="m-0 mt-[clamp(1.2rem,2vw,1.8rem)] grid list-none grid-cols-2 gap-[clamp(1.2rem,3vw,2.4rem)] p-0 max-tablet:grid-cols-1">
+        <div className="mt-[clamp(3.5rem,7vw,6rem)] border-t border-[rgba(255,255,255,.14)] pt-[clamp(2.4rem,4vw,3.6rem)]">
+          <div className="reveal">
+            <p className="eyebrow light">{featuredAlsoTitle}</p>
+          </div>
+          <div className="grid gap-[clamp(3.2rem,6vw,5rem)]">
             {alsoArticles.map((item) => (
-              <li key={item.slug}>
-                <Link
-                  href={`${routes.news}${item.slug}/`}
-                  className="group grid grid-cols-[clamp(96px,10vw,132px)_1fr] items-center gap-[clamp(.9rem,2vw,1.4rem)] no-underline transition-opacity duration-300 hover:opacity-80 focus-visible:opacity-80"
-                >
-                  {item.cover ? (
-                    <img
-                      src={asset(item.cover.src as `/${string}`)}
-                      alt=""
-                      width={item.cover.width}
-                      height={item.cover.height}
-                      loading="lazy"
-                      decoding="async"
-                      className="aspect-[4/5] w-full bg-ink-soft object-cover"
-                    />
-                  ) : null}
-                  <span className="block min-w-0">
-                    <time
-                      dateTime={item.date}
-                      className="block text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.55)]"
-                    >
-                      {formatDate(item.date)}
-                    </time>
-                    <span className="mt-[.6rem] block text-balance font-display text-display-sm font-normal leading-[1.15] text-ivory">
-                      {item.title}
-                    </span>
-                  </span>
-                </Link>
-              </li>
+              <EventBlock key={item.slug} article={item} />
             ))}
-          </ul>
+          </div>
         </div>
       ) : null}
     </section>
