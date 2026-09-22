@@ -53,10 +53,17 @@ export function PageTeaser({
 }: PageTeaserProps) {
   const externalProps = { target: "_blank", rel: "noreferrer" } as const;
 
+  /*
+   * `hyphens-auto` (2026-09-22) : « Hôtesses événementielles » débordait de sa
+   * colonne et passait sous la photo. Le mot « événementielles » est plus large
+   * que la demi-colonne à toutes les largeurs d'écran courantes ; la césure le
+   * coupe plutôt que de le laisser sortir. Elle ne se déclenche que lorsqu'un
+   * mot ne tient pas : les autres titres sont rendus à l'identique.
+   */
   const heading = (
     <>
       <p className={eyebrowClasses[tone]}>{eyebrow}</p>
-      <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.9] tracking-[-.05em]">
+      <h2 className="m-0 hyphens-auto text-balance font-display text-display-xl font-normal leading-[.9] tracking-[-.05em]">
         {title}
         {emphasis ? <em className={`block font-normal ${accentClasses[tone]}`}>{emphasis}</em> : null}
       </h2>
