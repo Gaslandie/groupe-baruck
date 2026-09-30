@@ -2,7 +2,9 @@ import Link from "next/link";
 
 import type { PageTeaser as PageTeaserProps } from "@/data/home";
 import { asset } from "@/lib/asset";
+import { publicFileExists } from "@/lib/public-file";
 import { Icon } from "../ui/Icon";
+import { VideoPlayer } from "../ui/VideoPlayer";
 
 const toneClasses = {
   paper: "bg-paper text-ink",
@@ -49,6 +51,7 @@ export function PageTeaser({
   externalLink = false,
   secondary,
   image,
+  video,
   logo,
 }: PageTeaserProps) {
   const externalProps = { target: "_blank", rel: "noreferrer" } as const;
@@ -80,12 +83,12 @@ export function PageTeaser({
           </span>
         </a>
       ) : (
-        <Link href={href} className="text-link w-fit">
-          {linkLabel}{" "}
-          <span className={tone === "jeca" ? "text-jeca-yellow" : tone === "edv" ? "text-edv-gold" : ""}>
-            <Icon name="arrow-up-right" />
-          </span>
-        </Link>
+          <Link href={href} className="text-link w-fit">
+            {linkLabel}{" "}
+            <span className={tone === "jeca" ? "text-jeca-yellow" : tone === "edv" ? "text-edv-gold" : ""}>
+              <Icon name="arrow-up-right" />
+            </span>
+          </Link>
       )}
       {secondary ? (
         secondary.external ? (
@@ -134,6 +137,23 @@ export function PageTeaser({
       id={id}
       className={`reveal-stagger grid min-h-[620px] scroll-mt-[92px] grid-cols-2 gap-[clamp(0px,3.5vw,4.5rem)] px-[clamp(0px,3vw,4rem)] py-[clamp(0px,2.5vw,3.5rem)] max-tablet:grid-cols-1 max-tablet:gap-0 max-tablet:p-0 ${toneClasses[tone]}`}
     >
+      {/*
+        Vidéo (2026-09-30) : montrée entière, dans son format, au lieu d'être
+        rognée pour remplir la colonne comme une photo ; elle se centre en
+        hauteur face au texte. Rien n'est téléchargé avant la lecture.
+      */}
+      {video && publicFileExists(video.src) ? (
+        <figure className="reveal m-0 self-center max-tablet:order-first">
+          <VideoPlayer
+            src={asset(video.src)}
+            poster={asset(video.poster)}
+            width={video.width}
+            height={video.height}
+            label={video.label}
+            className="aspect-video"
+          />
+        </figure>
+      ) : (
       <figure
         className={`reveal-media relative m-0 min-h-[560px] overflow-hidden max-tablet:order-first max-tablet:min-h-0 max-tablet:aspect-[4/3] ${
           logo
@@ -163,6 +183,7 @@ export function PageTeaser({
           />
         ) : null}
       </figure>
+      )}
       <div
         className={`reveal flex flex-col justify-center px-[clamp(1.5rem,4vw,4.5rem)] py-[clamp(4rem,6vw,6rem)] max-tablet:px-[1.3rem] max-tablet:py-14 ${
           reverse ? "order-first max-tablet:order-none" : ""

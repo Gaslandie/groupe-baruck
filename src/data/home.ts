@@ -26,6 +26,15 @@ export type Activity = {
   description: string;
 };
 
+/** Vidéo d'une section, déposée dans `public/videos/` ; l'image reste affichée tant qu'elle manque. */
+export type TeaserVideo = {
+  src: `/${string}`;
+  poster: `/${string}`;
+  width: number;
+  height: number;
+  label: string;
+};
+
 export type PageTeaser = {
   id: string;
   tone: "paper" | "ink" | "jeca" | "edv";
@@ -42,6 +51,8 @@ export type PageTeaser = {
   externalLink?: boolean;
   secondary?: TeaserAction;
   image?: ImageAsset & { position?: string };
+  /** Prend la place de l'image quand le fichier est présent. */
+  video?: TeaserVideo;
   logo?: ImageAsset;
 };
 
@@ -68,6 +79,18 @@ export const mainActivities: PageTeaser[] = [
     text: siteTexts.heroSlides["studio-photo"].description,
     eyebrow: "Baruck Communication · Guinée",
     image: { ...studioHero, position: "center" },
+    /*
+     * Visite du studio filmée par le client (2026-09-30) : elle remplace la
+     * photo. Source 640 × 360, 60 s, avec le son ; l'image d'attente est tirée
+     * de la première seconde.
+     */
+    video: {
+      src: "/videos/presentation-studio-photo.mp4",
+      poster: "/images/services/studio-photo-video.webp",
+      width: 640,
+      height: 360,
+      label: "Vidéo de présentation du Studio Photo Baruck la Prospérité",
+    },
     href: whatsappRequests.studioPrices,
     linkLabel: "Connaître les prix",
     externalLink: true,

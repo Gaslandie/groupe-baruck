@@ -7,6 +7,8 @@ type VideoPlayerProps = {
   height: number;
   /** Rapport d'affichage du cadre, p. ex. "aspect-square" ou "aspect-video". */
   className?: string;
+  /** Nom lu par les lecteurs d'écran, quand aucune légende visible ne décrit la vidéo. */
+  label?: string;
 };
 
 /**
@@ -15,9 +17,10 @@ type VideoPlayerProps = {
  * Le bouton de téléchargement du lecteur et le menu clic droit sont retirés ; la
  * protection reste partielle, un navigateur doit télécharger la vidéo pour la lire.
  */
-export function VideoPlayer({ src, poster, width, height, className = "" }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, width, height, className = "", label }: VideoPlayerProps) {
   return (
     <video
+      aria-label={label}
       controls
       controlsList="nodownload noplaybackrate noremoteplayback"
       disablePictureInPicture
