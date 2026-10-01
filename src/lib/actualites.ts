@@ -66,6 +66,15 @@ function parseDate(value: unknown, filename: string, frontmatter: string): strin
   return date;
 }
 
+function parseDatePrecision(value: unknown, filename: string): Article["datePrecision"] {
+  if (value === undefined || value === null || value === "") return undefined;
+  if (value !== "year") {
+    error(filename, 'le champ "datePrecision" ne peut valoir que "year".');
+  }
+
+  return value;
+}
+
 function parseCategory(value: unknown, filename: string): NewsCategory {
   const category = requiredString(value, "category", filename);
 
@@ -271,12 +280,14 @@ function parseArticle(filename: string): Article | undefined {
     error(filename, 'le champ requis "groupsTitle" est manquant pour ces "groups".');
   }
 
+  const datePrecision = parseDatePrecision(data.datePrecision, filename);
   const html = renderArticle(requiredString(content, "body", filename), filename);
 
   return {
     slug,
     title: requiredString(data.title, "title", filename),
     date: parseDate(data.date, filename, frontmatter),
+    ...(datePrecision ? { datePrecision } : {}),
     category: parseCategory(data.category, filename),
     excerpt: requiredString(data.excerpt, "excerpt", filename),
     cover: coverSrc && coverAlt ? resolveImage(coverSrc, coverAlt, filename) : undefined,
@@ -315,11 +326,12 @@ export function toArticleSummary({
   slug,
   title,
   date,
+  datePrecision,
   category,
   excerpt,
   cover,
 }: Article): ArticleSummary {
-  return { slug, title, date, category, excerpt, cover };
+  return { slug, title, date, ...(datePrecision ? { datePrecision } : {}), category, excerpt, cover };
 }
 
 export type AdjacentArticles = {

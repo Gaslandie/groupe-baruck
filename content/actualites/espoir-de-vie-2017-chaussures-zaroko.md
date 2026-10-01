@@ -10,6 +10,6 @@ coverAlt: "Remise de vêtements aux enfants, devant une valise ouverte"
 
 Des vêtements ont été remis aux enfants de l’orphelinat. Des chaussures ont ensuite été distribuées aux enfants démunis de Divo, puis, le 3 juin 2017, aux enfants du village de Zaroko.
 
-4 000 chaussures à Divo · 2 000 à Zaroko
+4 500 enfants chaussés à Divo
 
 [Découvrir les actions d’Espoir de Vie](/espoir-de-vie/#actions)

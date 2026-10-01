@@ -19,7 +19,8 @@ type EdvImpactItem = {
 };
 
 type EdvDate = {
-  iso: `${number}-${number}-${number}`;
+  /** Jour complet, ou année seule quand le jour n'est pas confirmé. */
+  iso: `${number}-${number}-${number}` | `${number}`;
   label: string;
 };
 
@@ -96,18 +97,23 @@ export const edvPhotos = {
   veuvesRemiseVivres: { src: "/images/espoir-de-vie/veuves-remise-vivres.webp", alt: "Remise de vivres à une femme veuve", width: 1100, height: 794 },
   veuvesVivres: { src: "/images/espoir-de-vie/veuves-vivres.webp", alt: "Femmes veuves réunies avec les vivres reçus", width: 1100, height: 794 },
   feteDesMeres: { src: "/images/espoir-de-vie/fete-des-meres.webp", alt: "Mamans réunies avec les présents remis à l’occasion de la fête des Mères", width: 1100, height: 825 },
+  presidentFondateurEnfants: { src: "/images/espoir-de-vie/president-fondateur-enfants.webp", alt: "Le président fondateur remet un cartable à un enfant, entouré d’enfants et d’habitants", width: 1256, height: 937 },
   fondationRoseGuiraud: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1100, height: 794 },
 } as const satisfies Record<string, ImageAsset>;
 
 /** Photo du panneau droit du hero : le repas partagé à l'orphelinat. */
 export const edvHeroPhoto = { ...edvPhotos.orphelinatRepasPartage, position: "center 42%" } satisfies EdvPositionedPhoto;
 
-/** Bandeau de la section « Notre mission ». */
-export const edvMissionPhoto = { ...edvPhotos.orphelinatDroitsDeLEnfant, position: "center 42%" } satisfies EdvPositionedPhoto;
+/**
+ * Bandeau de la section « Notre mission » : le président fondateur entouré
+ * d'enfants, photo choisie par Mohamed le 1er octobre 2026. Cadrage haut pour
+ * garder son visage et les enfants derrière lui dans le bandeau large.
+ */
+export const edvMissionPhoto = { ...edvPhotos.presidentFondateurEnfants, position: "center 14%" } satisfies EdvPositionedPhoto;
 
 export const edvSectionNav = [
   { href: "#mission", number: "01", title: "Notre mission", subtitle: "Protéger et accompagner" },
-  { href: "#orphelinat", number: "02", title: "L’orphelinat", subtitle: "Une histoire depuis 2017" },
+  { href: "#orphelinat", number: "02", title: "L’orphelinat", subtitle: "Une histoire depuis 2015" },
   { href: "#actions", number: "03", title: "Nos actions", subtitle: "Des engagements concrets" },
   { href: "#presence", number: "04", title: "Notre présence", subtitle: "Trois pays d’engagement" },
   { href: "#galerie", number: "05", title: "Les galeries", subtitle: "Onze actions en images" },
@@ -118,7 +124,7 @@ export const edvPillars = [
   {
     number: "02",
     title: "Éduquer",
-    text: "Faciliter la scolarisation par la remise de fournitures et de kits scolaires.",
+    text: "Scolariser les enfants : de 2016 à 2019, 2 000 enfants l’ont été sur les fonds propres de la fondation.",
   },
   { number: "03", title: "Nourrir & soigner", text: "Apporter une aide alimentaire et soutenir l’accès aux soins." },
   {
@@ -135,14 +141,18 @@ export const edvPillars = [
 
 export const edvImpact = [
   { value: "2015", label: "Premières actions de solidarité" },
-  { value: "1000", label: "Jouets remis aux enfants de Grôh" },
-  { value: "200", label: "Orphelins accompagnés à la rentrée 2016–2017" },
-  { value: "2017", label: "Accueil des premiers pensionnaires" },
+  { value: "2 000", label: "Enfants scolarisés de 2016 à 2019 sur fonds propres" },
+  { value: "60", label: "Orphelins accueillis à l’orphelinat" },
+  { value: "4 500", label: "Enfants chaussés à Divo" },
 ] satisfies EdvImpactItem[];
 
+/*
+ * Dates corrigées par le client le 29 septembre 2026 : construction en 2015,
+ * ouverture en 2016 (et non 2017). Années seules, faute de jour confirmé.
+ */
 export const edvTimeline = [
   {
-    step: "Étape 01",
+    date: { iso: "2015", label: "2015" },
     title: "Construction",
     text: "Édification du bâtiment destiné à accueillir et accompagner les enfants.",
     photo: edvPhotos.orphelinatChantier,
@@ -154,13 +164,13 @@ export const edvTimeline = [
     photo: edvPhotos.orphelinatDortoir,
   },
   {
-    date: { iso: "2017-02-11", label: "11 février 2017" },
+    date: { iso: "2016", label: "2016" },
     title: "Premiers pensionnaires",
     text: "Accueil des premiers enfants avant l’ouverture officielle de l’établissement.",
     photo: edvPhotos.orphelinatAccueilFamilles,
   },
   {
-    date: { iso: "2017-02-15", label: "15 février 2017" },
+    date: { iso: "2016", label: "2016" },
     title: "Inauguration",
     text: "Ouverture officielle en présence des communautés et des autorités invitées.",
     photo: edvPhotos.orphelinatInaugurationRuban,
@@ -203,9 +213,10 @@ export const edvActions = [
   {
     number: "03",
     period: "Actions communautaires",
-    place: "Côte d’Ivoire",
-    title: "Soutenir les femmes et les familles",
-    text: "Dons aux mères, aide alimentaire aux veuves et accompagnement de petites initiatives génératrices de revenus.",
+    place: "Zaroko · Région de Divo · Côte d’Ivoire",
+    title: "Soutenir les veuves",
+    text: "Aide alimentaire et dons aux veuves du village de Zaroko, toutes confessions religieuses confondues.",
+    highlight: "Environ 300 veuves",
     photo: edvPhotos.veuvesRemiseVivres,
   },
   {
@@ -214,7 +225,7 @@ export const edvActions = [
     place: "Orphelinat · Divo · Zaroko · Côte d’Ivoire",
     title: "Vêtir et chausser dignement",
     text: "Des vêtements ont été remis aux enfants de l’orphelinat. Des chaussures ont ensuite été distribuées aux enfants démunis de Divo, puis, le 3 juin 2017, aux enfants du village de Zaroko.",
-    highlight: "4 000 chaussures à Divo · 2 000 à Zaroko",
+    highlight: "4 500 enfants chaussés à Divo",
     photo: edvPhotos.orphelinatRemiseVetements,
   },
   {

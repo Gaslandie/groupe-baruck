@@ -21,7 +21,7 @@ export function NewsFeature({ article }: NewsFeatureProps) {
         <NewsImage cover={article.cover} category={article.category} />
       </div>
       <div>
-        <NewsMeta category={article.category} date={article.date} />
+        <NewsMeta category={article.category} date={article.date} datePrecision={article.datePrecision} />
         <h2 className="mt-5 font-display text-display-lg font-normal leading-[.95] tracking-[-.045em]">
           {article.title}
         </h2>

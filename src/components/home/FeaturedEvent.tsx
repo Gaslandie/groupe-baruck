@@ -70,7 +70,7 @@ function EventBlock({ article, eyebrow }: { article: Article; eyebrow?: string }
             dateTime={article.date}
             className="text-micro uppercase tracking-[.16em] text-[rgba(255,255,255,.55)]"
           >
-            {formatDate(article.date)}
+            {formatDate(article.date, article.datePrecision)}
           </time>
           <p className="mb-0 mt-4 max-w-[560px] text-lead leading-[1.75] text-[rgba(255,255,255,.7)]">
             {article.excerpt}

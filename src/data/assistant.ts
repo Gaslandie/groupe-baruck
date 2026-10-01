@@ -394,9 +394,9 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
   "edv-orphelinat": {
     topic: "edv",
     question: "L’orphelinat",
-    keywords: ["orphelinat", "orphelins", "inauguration", "pensionnaires", "2017", "batiment", "dortoirs"],
+    keywords: ["orphelinat", "orphelins", "inauguration", "pensionnaires", "2015", "2016", "batiment", "dortoirs", "agrement", "infirmerie", "internat"],
     messages: [
-      `Les premiers pensionnaires ont été accueillis le ${timelineDate("Premiers pensionnaires")}, avant l’inauguration officielle le ${timelineDate("Inauguration")}.`,
+      `L’orphelinat a été construit en ${timelineDate("Construction")} et inauguré en ${timelineDate("Inauguration")}. Agréé par l’État de Côte d’Ivoire depuis 2019, il accueille 60 orphelins et dispose d’un internat et d’une infirmerie.`,
     ],
     options: [{ label: "L’histoire de l’orphelinat", href: `${routes.edv}#orphelinat` }, ...edvBack],
   },

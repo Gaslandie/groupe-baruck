@@ -1,9 +1,10 @@
 ---
 draft: false
 title: "Inauguration de l’orphelinat"
-date: 2017-02-15
+date: 2016-02-15
+datePrecision: year
 category: espoir-de-vie
-excerpt: "Ouverture officielle de l’orphelinat le 15 février 2017, en présence des communautés et des autorités invitées."
+excerpt: "Ouverture officielle de l’orphelinat en 2016, en présence des communautés et des autorités invitées."
 cover: "/images/espoir-de-vie/orphelinat-inauguration-ruban.webp"
 coverAlt: "Coupure du ruban devant le portail de l’orphelinat le jour de l’ouverture"
 gallery:
@@ -29,8 +30,9 @@ gallery:
 
 ## Les premières étapes
 
-- 11 février 2017 — Premiers pensionnaires : accueil des premiers enfants avant l’ouverture officielle de l’établissement.
-- 15 février 2017 — Inauguration : ouverture officielle en présence des communautés et des autorités invitées.
+- 2015 — Construction : édification du bâtiment destiné à accueillir et accompagner les enfants.
+- 2016 — Premiers pensionnaires : accueil des premiers enfants avant l’ouverture officielle de l’établissement.
+- 2016 — Inauguration : ouverture officielle en présence des communautés et des autorités invitées.
 - 04 mars 2017 — Un repas partagé : le président fondateur partage un moment de convivialité avec les enfants accueillis.
 
 [Découvrir l’orphelinat](/espoir-de-vie/#orphelinat)

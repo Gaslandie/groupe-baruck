@@ -4,10 +4,11 @@ import { formatDate } from "@/lib/date";
 type NewsMetaProps = {
   category: NewsCategory;
   date: string;
+  datePrecision?: "year";
   light?: boolean;
 };
 
-export function NewsMeta({ category, date, light = false }: NewsMetaProps) {
+export function NewsMeta({ category, date, datePrecision, light = false }: NewsMetaProps) {
   return (
     <div className="flex items-center gap-3 text-micro uppercase tracking-[.16em]">
       <span className="text-accent">{categoryLabels[category]}</span>
@@ -15,10 +16,10 @@ export function NewsMeta({ category, date, light = false }: NewsMetaProps) {
         ·
       </span>
       <time
-        dateTime={date}
+        dateTime={datePrecision === "year" ? date.slice(0, 4) : date}
         className={light ? "text-[rgba(255,255,255,.55)]" : "text-[#77746e]"}
       >
-        {formatDate(date)}
+        {formatDate(date, datePrecision)}
       </time>
     </div>
   );

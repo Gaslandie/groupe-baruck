@@ -32,6 +32,7 @@ export type EdvGalleryCategory = {
  * le dossier du client dit le 11 et la frise de l'orphelinat le 04 ; et le
  * soutien aux veuves nomme les deux villages, le dossier disant Zaroko et le
  * montage qu'il contient Divo, sans affirmer de lien entre les deux.
+ * Le client a tranché le 29 septembre 2026 : Zaroko, dans la région de Divo.
  */
 export const edvGalleryCategories: EdvGalleryCategory[] = [
   {
@@ -121,8 +122,8 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     id: "veuves-zaroko",
     label: "Veuves de Zaroko",
     title: "Soutien aux femmes veuves",
-    place: "Zaroko et Divo · Côte d’Ivoire",
-    text: "Des vivres remis aux femmes veuves du village, en soutien aux familles qu’elles portent seules.",
+    place: "Zaroko · Région de Divo · Côte d’Ivoire",
+    text: "Des vivres remis à environ 300 femmes veuves du village, toutes confessions religieuses confondues.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/veuves-zaroko/01.webp", alt: "Remise de vivres aux femmes veuves du village de Zaroko", width: 1200, height: 866 },
       { src: "/images/espoir-de-vie/galerie/veuves-zaroko/02.webp", alt: "Remise de vivres aux femmes veuves du village de Zaroko", width: 1200, height: 866 },
@@ -203,8 +204,8 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     label: "Premiers pensionnaires",
     title: "Les premiers enfants accueillis",
     place: "Divo · Côte d’Ivoire",
-    date: "11 février 2017",
-    text: "L’orphelinat accueille ses premiers pensionnaires, quelques jours avant son ouverture officielle.",
+    date: "2016",
+    text: "L’orphelinat accueille ses premiers pensionnaires, avant son ouverture officielle.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/premiers-pensionnaires/01.webp", alt: "Accueil des premiers pensionnaires de l’orphelinat Espoir de Vie", width: 1200, height: 800 },
       { src: "/images/espoir-de-vie/galerie/premiers-pensionnaires/02.webp", alt: "Accueil des premiers pensionnaires de l’orphelinat Espoir de Vie", width: 1200, height: 800 },
@@ -227,7 +228,7 @@ export const edvGalleryCategories: EdvGalleryCategory[] = [
     label: "L’ouverture officielle",
     title: "L’ouverture officielle de l’orphelinat",
     place: "Divo · Côte d’Ivoire",
-    date: "15 février 2017",
+    date: "2016",
     text: "L’orphelinat ouvre ses portes en présence des autorités de la ville, avec cortège, discours et rappel des droits de l’enfant.",
     photos: [
       { src: "/images/espoir-de-vie/galerie/orphelinat-ouverture/01.webp", alt: "Ouverture officielle de l’orphelinat Espoir de Vie en présence des autorités", width: 1200, height: 800 },

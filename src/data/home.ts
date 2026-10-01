@@ -57,6 +57,20 @@ export type PageTeaser = {
 };
 
 /**
+ * Visite du studio filmée par le client (2026-09-30). Source 640 × 360, 60 s,
+ * avec le son ; l'image d'attente est tirée de la première seconde. Montrée
+ * deux fois sur l'accueil (2026-10-01) : juste sous le hero, puis à la place
+ * de la photo dans la section du studio.
+ */
+export const studioVideo: TeaserVideo = {
+  src: "/videos/presentation-studio-photo.mp4",
+  poster: "/images/services/studio-photo-video.webp",
+  width: 640,
+  height: 360,
+  label: "Vidéo de présentation du Studio Photo Baruck la Prospérité",
+};
+
+/**
  * Activités principales du Groupe : les trois volets qui défilaient dans le
  * carrousel du hero sont devenus des sections à part entière, juste sous le
  * hero (2026-09-16). Les titres et les textes restent ceux du back-office
@@ -79,18 +93,7 @@ export const mainActivities: PageTeaser[] = [
     text: siteTexts.heroSlides["studio-photo"].description,
     eyebrow: "Baruck Communication · Guinée",
     image: { ...studioHero, position: "center" },
-    /*
-     * Visite du studio filmée par le client (2026-09-30) : elle remplace la
-     * photo. Source 640 × 360, 60 s, avec le son ; l'image d'attente est tirée
-     * de la première seconde.
-     */
-    video: {
-      src: "/videos/presentation-studio-photo.mp4",
-      poster: "/images/services/studio-photo-video.webp",
-      width: 640,
-      height: 360,
-      label: "Vidéo de présentation du Studio Photo Baruck la Prospérité",
-    },
+    video: studioVideo,
     href: whatsappRequests.studioPrices,
     linkLabel: "Connaître les prix",
     externalLink: true,

@@ -18,7 +18,7 @@ export function NewsCard({ article }: NewsCardProps) {
       <div className="mb-5 aspect-[4/3] overflow-hidden bg-[#cac5bb]">
         <NewsImage cover={article.cover} category={article.category} />
       </div>
-      <NewsMeta category={article.category} date={article.date} />
+      <NewsMeta category={article.category} date={article.date} datePrecision={article.datePrecision} />
       <h3 className="mt-4 font-display text-display-sm font-normal leading-[1.05] tracking-[-.035em]">
         {article.title}
       </h3>

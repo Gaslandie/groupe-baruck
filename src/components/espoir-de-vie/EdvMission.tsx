@@ -21,19 +21,23 @@ export function EdvMission() {
       <div className="reveal max-w-[650px] self-end max-tablet:mt-10">
         <p className="mb-6 mt-0 font-display text-display-xs font-normal leading-[1.5]">
           Espoir de Vie s’engage auprès des enfants orphelins, des familles fragilisées, des femmes et des personnes
-          sans-abri.
+          sans-abri. L’éducation et la formation sont au cœur de son action.
         </p>
         <p className="m-0 text-body leading-[1.8] text-edv-muted">
           L’action de la fondation s’inscrit dans l’esprit de la Déclaration des droits de l’enfant : le droit à la
           vie, à l’éducation, à la santé, à une alimentation suffisante et à la protection.
         </p>
+        {/* Conviction du président fondateur, donnée par le client le 29 septembre 2026. */}
         <aside className="mt-8 grid grid-cols-[110px_1fr] gap-6 border-y border-edv-line py-6 max-tablet:grid-cols-1 max-tablet:gap-[.8rem]">
           <span className="text-micro font-extrabold uppercase tracking-[.14em] text-edv-ember">
             Notre conviction
           </span>
-          <p className="m-0 font-display text-base italic leading-[1.5]">
-            Répondre aux besoins immédiats tout en créant les conditions d’un avenir plus digne.
-          </p>
+          <figure className="m-0">
+            <blockquote className="m-0 font-display text-base italic leading-[1.5]">
+              « Le problème de l’Afrique n’est pas la pauvreté, mais le manque d’éducation et de formation. »
+            </blockquote>
+            <figcaption className="mt-3 text-caption leading-[1.6] text-edv-muted">Le président fondateur</figcaption>
+          </figure>
         </aside>
       </div>
       <figure className="reveal reveal-media col-span-full m-0 mt-12 overflow-hidden max-tablet:mt-10">

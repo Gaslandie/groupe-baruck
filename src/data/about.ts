@@ -28,10 +28,10 @@ export const milestones: Milestone[] = [
     href: "#experience-onu",
   },
   {
-    year: "2017",
-    dateTime: "2017-02-11",
+    year: "2016",
+    dateTime: "2016",
     title: "Premiers pensionnaires",
-    text: "L’orphelinat accueille ses premiers enfants avant son inauguration officielle.",
+    text: "L’orphelinat, construit en 2015, accueille ses premiers enfants et ouvre officiellement ses portes.",
     href: "/espoir-de-vie/#orphelinat",
   },
   {

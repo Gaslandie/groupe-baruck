@@ -58,6 +58,8 @@ export type Article = {
   slug: string;
   title: string;
   date: string;
+  /** "year" : seule l'année est sûre ; le jour de `date` ne sert qu'au tri et n'est pas affiché. */
+  datePrecision?: "year";
   category: NewsCategory;
   excerpt: string;
   cover?: NewsImage;
@@ -72,7 +74,7 @@ export type Article = {
 /** Sous-ensemble d’Article transmis aux composants client : ni html, ni gallery, ni draft. */
 export type ArticleSummary = Pick<
   Article,
-  "slug" | "title" | "date" | "category" | "excerpt" | "cover"
+  "slug" | "title" | "date" | "datePrecision" | "category" | "excerpt" | "cover"
 >;
 
 /** Ancre de la liste filtrable sur /actualites/ (cible des liens de filtre). */

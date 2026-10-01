@@ -7,6 +7,7 @@ import { FeaturedEvent } from "@/components/home/FeaturedEvent";
 import { HeroSection } from "@/components/home/HeroSection";
 import { NewsPreview } from "@/components/home/NewsPreview";
 import { PageTeaser } from "@/components/home/PageTeaser";
+import { StudioVideo } from "@/components/home/StudioVideo";
 import { mainActivities, pageTeasers } from "@/data/home";
 import { presidentPortrait } from "@/data/media";
 import { site } from "@/data/site";
@@ -24,6 +25,8 @@ export default function Home() {
     <PageShell variant="home" current="home" footer="home">
       <StructuredData data={organizationSchema} />
       <HeroSection />
+      {/* La visite du studio en vidéo, avant tout le reste (2026-10-01). */}
+      <StudioVideo />
       {/*
         Les concours organisés par le groupe passent juste sous le hero
         (2026-09-22) : le client veut que l'on voie ses réalisations en image

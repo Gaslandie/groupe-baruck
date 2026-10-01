@@ -44,7 +44,7 @@ export function EdvHero() {
         />
         <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
           <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-edv-gold">
-            Depuis 2017
+            Depuis 2016
           </span>
           L’orphelinat Espoir de Vie
         </p>

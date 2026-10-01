@@ -30,10 +30,17 @@ export function EdvOrphanage() {
               <em className="font-[inherit] text-edv-gold">où grandir en sécurité.</em>
             </h2>
           </div>
-          <p className="mb-0 mt-0 w-[min(600px,46%)] text-body leading-[1.8] text-[rgba(255,255,255,.7)] max-[1100px]:w-full">
-            De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple
-            : offrir protection, stabilité et attention.
-          </p>
+          <div className="w-[min(600px,46%)] text-body leading-[1.8] text-[rgba(255,255,255,.7)] max-[1100px]:w-full">
+            <p className="m-0">
+              De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté
+              simple : offrir protection, stabilité et attention.
+            </p>
+            {/* Faits donnés par le client le 29 septembre 2026. */}
+            <p className="mb-0 mt-4">
+              Agréé par l’État de Côte d’Ivoire depuis 2019, il accueille 60 orphelins. Il dispose d’un internat et
+              d’une infirmerie.
+            </p>
+          </div>
         </div>
       </div>
       <ol className="reveal-stagger m-0 grid list-none grid-cols-5 gap-[clamp(1rem,2vw,2rem)] px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,7vw,7rem)] max-[1100px]:grid-cols-3 max-tablet:grid-cols-2 max-tablet:px-[1.3rem] max-tablet:py-16 max-[430px]:grid-cols-1">
