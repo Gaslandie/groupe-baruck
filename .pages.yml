@@ -49,6 +49,15 @@ content:
           time: false
           format: yyyy-MM-dd
         description: "Renseigner une date validée. Ce champ ne programme pas la publication."
+      - name: datePrecision
+        label: Afficher l’année seule
+        type: select
+        required: false
+        options:
+          values:
+            - name: year
+              label: Oui, le jour n’est pas confirmé
+        description: "À choisir quand le jour n’est pas confirmé : le site affiche l’année seule, la date ne sert qu’au classement."
       - name: category
         label: Catégorie
         type: select
