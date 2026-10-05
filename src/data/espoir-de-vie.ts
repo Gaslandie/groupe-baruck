@@ -353,7 +353,21 @@ export const edvNzerekoreVideo = {
   caption: "Prise de parole sur l’éducation et le suivi des enfants dans la région de N’Zérékoré, en 2021.",
 } satisfies EdvVideo;
 
+/** Année confirmée par Mohamed ; aucun diagnostic ni résultat médical ajouté. */
+export const edvMedicalSupportVideo = {
+  id: "aide-medicale-2021",
+  src: "/videos/espoir-de-vie-aide-medicale-2021.mp4",
+  width: 640,
+  height: 352,
+  eyebrow: "Sur le terrain · Aide médicale",
+  title: "Accompagner une femme",
+  emphasis: "dans ses soins.",
+  text: "En 2021, l’ONG Espoir de Vie apporte une aide médicale à une femme, en partenariat avec une clinique privée. Le reportage présente la signature d’un engagement et son accompagnement à la clinique pour une intervention chirurgicale, puis les remerciements de la bénéficiaire et de sa famille.",
+  date: { iso: "2021", label: "2021" },
+  caption: "Reportage sur l’accompagnement médical d’une femme par Espoir de Vie, en 2021.",
+} satisfies EdvVideo;
+
 /** Les témoignages vidéo sont présentés du plus récent au plus ancien. */
-export const edvFieldVideos: EdvVideo[] = [edvVisitVideo, edvNzerekoreVideo].sort((a, b) =>
-  b.date.iso.localeCompare(a.date.iso),
+export const edvFieldVideos: EdvVideo[] = [edvVisitVideo, edvNzerekoreVideo, edvMedicalSupportVideo].sort(
+  (a, b) => b.date.iso.localeCompare(a.date.iso),
 );
