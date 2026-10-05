@@ -311,20 +311,26 @@ export const edvCollaborations = [
 ] satisfies EdvCollaboration[];
 
 export type EdvVideo = {
+  id: string;
   /** Fichier déposé dans `public/videos/` ; la section n'existe que s'il est présent. */
   src: `/${string}`;
   poster?: `/${string}`;
+  width: number;
+  height: number;
   eyebrow: string;
   title: string;
   emphasis: string;
   text: string;
-  date: { iso: string; label: string };
+  date: EdvDate;
   caption: string;
 };
 
 export const edvVisitVideo = {
+  id: "visite",
   src: "/videos/don-orphelinat-precieux-soleils.mp4",
   poster: "/images/espoir-de-vie/don-orphelinat-precieux-soleils.jpg",
+  width: 368,
+  height: 368,
   eyebrow: "Sur le terrain · Conakry",
   title: "Un don à l’orphelinat",
   emphasis: "des Précieux Soleils.",
@@ -332,3 +338,22 @@ export const edvVisitVideo = {
   date: { iso: "2026-09-11", label: "Vendredi 11 septembre 2026" },
   caption: "Remise d’un don aux enfants et à l’équipe de l’orphelinat des Précieux Soleils, à Sonfonia T7.",
 } satisfies EdvVideo;
+
+/** Année et région confirmées par Mohamed ; résumé de la transcription fournie. */
+export const edvNzerekoreVideo = {
+  id: "visite-nzerekore",
+  src: "/videos/espoir-de-vie-nzerekore-2021.mp4",
+  width: 640,
+  height: 512,
+  eyebrow: "Sur le terrain · Région de N’Zérékoré",
+  title: "Accompagner les enfants",
+  emphasis: "par l’éducation.",
+  text: "En 2021, dans la région de N’Zérékoré, une prise de parole souligne l’importance de l’éducation et de l’accompagnement des enfants. L’ONG annonce un suivi des enfants et une prise en charge des problèmes de santé en lien avec une clinique, en évoquant aussi un soutien aux enseignants malades.",
+  date: { iso: "2021", label: "2021" },
+  caption: "Prise de parole sur l’éducation et le suivi des enfants dans la région de N’Zérékoré, en 2021.",
+} satisfies EdvVideo;
+
+/** Les témoignages vidéo sont présentés du plus récent au plus ancien. */
+export const edvFieldVideos: EdvVideo[] = [edvVisitVideo, edvNzerekoreVideo].sort((a, b) =>
+  b.date.iso.localeCompare(a.date.iso),
+);
