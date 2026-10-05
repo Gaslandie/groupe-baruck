@@ -343,6 +343,7 @@ export const edvVisitVideo = {
 export const edvNzerekoreVideo = {
   id: "visite-nzerekore",
   src: "/videos/espoir-de-vie-nzerekore-2021.mp4",
+  poster: "/images/espoir-de-vie/espoir-de-vie-nzerekore-2021.jpg",
   width: 640,
   height: 512,
   eyebrow: "Sur le terrain · Région de N’Zérékoré",
@@ -357,6 +358,7 @@ export const edvNzerekoreVideo = {
 export const edvMedicalSupportVideo = {
   id: "aide-medicale-2021",
   src: "/videos/espoir-de-vie-aide-medicale-2021.mp4",
+  poster: "/images/espoir-de-vie/espoir-de-vie-aide-medicale-2021.jpg",
   width: 640,
   height: 352,
   eyebrow: "Sur le terrain · Aide médicale",
