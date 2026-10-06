@@ -36,6 +36,10 @@ type StoredState = { open: boolean; entries: Entry[] };
 const startEntry: Entry = { kind: "bot", node: "start" };
 
 const STORAGE_KEY = "baruck-assistant";
+const VISIBILITY_STORAGE_KEY = "baruck-assistant-ready-at";
+const LAUNCHER_DELAY = 5000;
+// Repli pour les liens internes lorsque le navigateur refuse sessionStorage.
+let sessionReadyAt: number | null = null;
 /* Temps de « réflexion » avant chaque réponse (demande de Mohamed, 2026-09-06) :
    les trois points s'animent pendant ce délai. Retour au menu des sujets plus court. */
 const ANSWER_DELAY = 5000;
@@ -235,6 +239,7 @@ const footerActionClass =
 export function SiteAssistant({ variant }: SiteAssistantProps) {
   const pathname = usePathname();
   const hydrated = useHydrated();
+  const [available, setAvailable] = useState(false);
   const [open, setOpen] = useState(false);
   const [entries, setEntries] = useState<Entry[]>([]);
   const [typing, setTyping] = useState(false);
@@ -246,6 +251,24 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
   const restoredRef = useRef(false);
   const focusOnCloseRef = useRef(false);
   const theme = themes[variant];
+
+  /* Une seule attente par onglet, conservée même si la page change pendant le délai. */
+  useEffect(() => {
+    const now = Date.now();
+    let readyAt = sessionReadyAt ?? now + LAUNCHER_DELAY;
+    try {
+      const stored = Number(window.sessionStorage.getItem(VISIBILITY_STORAGE_KEY));
+      if (Number.isFinite(stored) && stored > 0 && stored <= now + LAUNCHER_DELAY) {
+        readyAt = stored;
+      }
+      window.sessionStorage.setItem(VISIBILITY_STORAGE_KEY, String(readyAt));
+    } catch {
+      // Le bouton reste utilisable si le stockage est bloqué.
+    }
+    sessionReadyAt = readyAt;
+    const timer = window.setTimeout(() => setAvailable(true), Math.max(0, readyAt - now));
+    return () => window.clearTimeout(timer);
+  }, []);
 
   /* Restauration de la session (système externe : sessionStorage), une seule fois après le montage. */
   useEffect(() => {
@@ -274,6 +297,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
 
   /* Ouverture : focus sur le titre, Échap ferme. Fermeture demandée par le visiteur : focus au lanceur. */
   useEffect(() => {
+    if (!available) return;
     if (!open) {
       if (focusOnCloseRef.current) {
         focusOnCloseRef.current = false;
@@ -293,12 +317,12 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
       window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [open]);
+  }, [open, available]);
 
   useEffect(() => {
     const log = logRef.current;
     if (log) log.scrollTop = log.scrollHeight;
-  }, [entries, typing, open]);
+  }, [entries, typing, open, available]);
 
   const pushBot = useCallback((entry: Extract<Entry, { kind: "bot" }>, base: Entry[]) => {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -417,6 +441,8 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
       </a>
     );
   };
+
+  if (!available) return null;
 
   return (
     <>
