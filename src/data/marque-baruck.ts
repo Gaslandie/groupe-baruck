@@ -29,8 +29,8 @@ export const brandStory = {
 
 /** Visuel d’ouverture de la page : choix de mise en page, indépendant du catalogue. */
 export const brandHero: ImageAsset = {
-  src: "/images/marque-baruck/sac-main-noir.jpg",
+  src: "/images/marque-baruck/sac-main-noir-hero.jpg",
   alt: "Sac à main noir Baruck",
-  width: 1024,
-  height: 1024,
+  width: 928,
+  height: 928,
 };
