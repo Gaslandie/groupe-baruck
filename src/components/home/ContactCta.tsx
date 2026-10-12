@@ -2,12 +2,11 @@ import { translate as t } from "../../lib/language.ts";
 
 import Link from "next/link";
 
-import { placeholderImages } from "@/data/media";
 import { contacts, routes } from "@/data/site";
 import { imageUrl } from "@/lib/asset";
 import { Icon } from "../ui/Icon";
 
-const ctaImage = placeholderImages.contactEquipe.src;
+const ctaImage = "/images/placeholders/contact-collaboration.webp";
 
 export function ContactCta() {
   return (
