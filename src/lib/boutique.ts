@@ -106,9 +106,6 @@ export function loadProducts(): BrandProduct[] {
   if (!Array.isArray(list)) {
     error("le fichier doit contenir une liste « products ».");
   }
-  if (list.length === 0) {
-    error("la boutique doit présenter au moins un article.");
-  }
   if (list.length > 500) {
     error("la boutique accepte au maximum 500 articles.");
   }

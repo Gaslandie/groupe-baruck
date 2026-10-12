@@ -1,81 +1,90 @@
 name: Deploy to Bluehost
 
-# À chaque push sur main : construit le site pour groupebaruck.com et envoie par FTP
-# le site et le back-office, chacun avec un compte FTP cPanel enfermé dans son dossier
-# (groupebaruck.com et baruck-admin). Secrets GitHub : FTP_SERVER, SITE_FTP_USERNAME,
-# SITE_FTP_PASSWORD, ADMIN_FTP_USERNAME, ADMIN_FTP_PASSWORD. Sans eux, l'envoi est ignoré.
-
+# Une demande garde une copie fixe des contenus validés. Les déploiements du
+# code conservent les derniers contenus publiés, sans récupérer les brouillons.
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      publication:
+        description: Process an explicit back-office publication request
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
   group: bluehost
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   SITE_DOMAIN: groupebaruck.com
   ADMIN_DOMAIN: admin.groupebaruck.com
+  BARUCK_PUBLICATION_URL: https://admin.groupebaruck.com/publication.php
+  BARUCK_SITE_URL: https://groupebaruck.com
+  BARUCK_PUBLICATION_ONLY: ${{ inputs.publication }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
+      - name: Check for a requested publication
+        id: pending
+        if: inputs.publication
+        env:
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+        run: node backoffice/bin/publication-client.mjs probe
       - uses: actions/setup-node@v4
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
-      - run: npm test
-      - name: Build the site for the client domain
-        run: npm run build
+      - name: Check deployment configuration
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
         env:
-          NEXT_PUBLIC_SITE_URL: https://${{ env.SITE_DOMAIN }}/
-          NEXT_PUBLIC_BASE_PATH: ""
-          NEXT_PUBLIC_AUDIENCE_URL: https://${{ env.ADMIN_DOMAIN }}/collect.php
-          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
-      - name: Package the back office
-        run: npm run backoffice:package
-      - name: Assemble the files to send
-        run: |
-          set -euo pipefail
-          rm -rf dist && mkdir -p dist/site
-          cp -R out/. dist/site/ && rm -f dist/site/.nojekyll
-          escaped="${SITE_DOMAIN//./\\\\.}"
-          sed -e "s/__SITE_DOMAIN_RE__/$escaped/g" -e "s/__SITE_DOMAIN__/$SITE_DOMAIN/g" deploy/site.htaccess > dist/site/.htaccess
-          if ! curl -s -o /dev/null -m 20 "https://$SITE_DOMAIN/"; then
-            sed -i '/# >>> https/,/# <<< https/d' dist/site/.htaccess
-            echo "::warning::HTTPS ne répond pas sur $SITE_DOMAIN : redirection HTTPS omise, relancer ce workflow une fois le certificat actif."
-          fi
-          tar -xzf backoffice/dist/baruck-backoffice-bluehost.tar.gz -C dist backoffice
-          test -f dist/site/index.html && test -f dist/site/404.html && test -f dist/backoffice/public/index.php
-          ! grep -rl 'gaslandie.github.io' dist/site
-          echo "deployed_at=$(date -u +'%Y-%m-%dT%H:%M:%SZ') commit=${GITHUB_SHA}" > dist/site/deploy-check.txt
-          du -sh dist/site dist/backoffice
-      - name: Send the site (FTP account limited to groupebaruck.com)
-        if: env.SITE_FTP_PASSWORD != ''
-        env:
+          PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+          GITHUB_PUBLICATION_TOKEN: ${{ secrets.BACKOFFICE_GITHUB_TOKEN }}
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          SITE_FTP_USERNAME: ${{ secrets.SITE_FTP_USERNAME }}
           SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.SITE_FTP_USERNAME }}
-          password: ${{ secrets.SITE_FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./dist/site/
-          server-dir: /
-          exclude: |
-            .well-known/**
-            cgi-bin/**
-      - name: Send the back office (FTP account limited to baruck-admin)
-        if: env.ADMIN_FTP_PASSWORD != ''
-        env:
+          ADMIN_FTP_USERNAME: ${{ secrets.ADMIN_FTP_USERNAME }}
           ADMIN_FTP_PASSWORD: ${{ secrets.ADMIN_FTP_PASSWORD }}
+        run: |
+          test -n "$PUBLICATION_KEY" && test -n "$GITHUB_PUBLICATION_TOKEN" && test -n "$FTP_SERVER"
+          test -n "$SITE_FTP_USERNAME" && test -n "$SITE_FTP_PASSWORD"
+          test -n "$ADMIN_FTP_USERNAME" && test -n "$ADMIN_FTP_PASSWORD"
+      - name: Install dependencies
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        run: npm ci
+      - name: Test editorial content
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        run: npm test && npm run backoffice:prepare && npm run backoffice:test
+      - name: Package the back office
+        if: ${{ !inputs.publication }}
+        run: |
+          npm run backoffice:package
+          mkdir -p dist
+          tar -xzf backoffice/dist/baruck-backoffice-bluehost.tar.gz -C dist backoffice
+      - name: Prepare private publication configuration
+        if: ${{ !inputs.publication }}
+        env:
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+          BARUCK_GITHUB_TOKEN: ${{ secrets.BACKOFFICE_GITHUB_TOKEN }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const key = process.env.BARUCK_PUBLICATION_KEY;
+          if (!/^[a-f0-9]{64}$/.test(key ?? '')) throw new Error('Publication key missing or invalid');
+          const token = process.env.BARUCK_GITHUB_TOKEN;
+          if (!/^[A-Za-z0-9_]{20,512}$/.test(token ?? '')) throw new Error('GitHub publication token missing or invalid');
+          fs.writeFileSync('dist/backoffice/publication.local.php', `<?php return ['key'=>'${key}','github_token'=>'${token}'];\n`, { mode: 0o600 });
+          NODE
+      - name: Send the back office (FTP account limited to baruck-admin)
+        if: ${{ !inputs.publication }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.6
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -87,11 +96,71 @@ jobs:
           exclude: |
             config.local.php
             storage/**
-      - name: Check the site online
-        if: env.SITE_FTP_PASSWORD != ''
+      - name: Fetch the private publication snapshot
+        id: snapshot
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
         env:
-          SITE_FTP_PASSWORD: ${{ secrets.SITE_FTP_PASSWORD }}
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+        run: node backoffice/bin/publication-client.mjs fetch
+      - name: Build the client site from the back office
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        env:
+          NEXT_PUBLIC_SITE_URL: https://${{ env.SITE_DOMAIN }}/
+          NEXT_PUBLIC_BASE_PATH: ""
+          NEXT_PUBLIC_AUDIENCE_URL: https://${{ env.ADMIN_DOMAIN }}/collect.php
+          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
+        run: npm run backoffice:publish-build -- "$RUNNER_TEMP/baruck-publication.json" --webpack
+      - name: Assemble the public files
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        env:
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
         run: |
-          code=$(curl -s -o /dev/null -m 30 -w '%{http_code}' "http://$SITE_DOMAIN/deploy-check.txt" || true)
-          echo "deploy-check.txt : HTTP $code"
-          curl -s -m 30 "http://$SITE_DOMAIN/deploy-check.txt" || true
+          mkdir -p dist/site
+          cp -R out/. dist/site/ && rm -f dist/site/.nojekyll
+          escaped="${SITE_DOMAIN//./\\\\.}"
+          sed -e "s/__SITE_DOMAIN_RE__/$escaped/g" -e "s/__SITE_DOMAIN__/$SITE_DOMAIN/g" deploy/site.htaccess > dist/site/.htaccess
+          test -f dist/site/index.html && test -f dist/site/404.html
+          ! grep -rl 'gaslandie.github.io' dist/site
+          echo "deployed_at=$(date -u +'%Y-%m-%dT%H:%M:%SZ') commit=${GITHUB_SHA}" > dist/site/deploy-check.txt
+          node backoffice/bin/publication-client.mjs marker
+      - name: Keep a public build for recovery
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: baruck-site-${{ github.run_id }}
+          path: dist/site/
+          include-hidden-files: true
+          retention-days: 14
+      - name: Recheck publication permissions before transfer
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        env:
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+        run: node backoffice/bin/publication-client.mjs authorize
+      - name: Send the site (FTP account limited to groupebaruck.com)
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.SITE_FTP_USERNAME }}
+          password: ${{ secrets.SITE_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/site/
+          server-dir: /
+          exclude: |
+            .well-known/**
+            cgi-bin/**
+      - name: Confirm the publication on the public site
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        env:
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+        run: |
+          node backoffice/bin/publication-client.mjs verify
+          node backoffice/bin/publication-client.mjs complete
+      - name: Report a failed or interrupted publication
+        if: always() && (failure() || cancelled())
+        env:
+          BARUCK_PUBLICATION_KEY: ${{ secrets.BACKOFFICE_PUBLICATION_KEY }}
+        run: node backoffice/bin/publication-client.mjs fail
+      - name: Remove private temporary files
+        if: always()
+        run: rm -f "$RUNNER_TEMP/baruck-publication.json" "$RUNNER_TEMP/baruck-publication-state.json" dist/backoffice/publication.local.php

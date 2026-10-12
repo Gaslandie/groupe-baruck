@@ -106,11 +106,20 @@ function uploadMedia(array $file, string $alt, array $user): array
     return ['id' => $id, 'path' => '/images/actualites/uploads/' . $filename, 'alt' => $alt, 'label' => $alt, 'width' => $dimensions[0], 'height' => $dimensions[1], 'preview' => url('image', ['id' => $id])];
 }
 
-function exportContent(array $user): array
+function exportContent(array $user, bool $record = true): array
 {
     requireAdmin($user);
     $articles = query('SELECT payload FROM article_publications')->fetchAll();
     $data = array_map(fn($row) => json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR), $articles);
+    foreach ($data as &$article) {
+        foreach (seed()['articles'] as $reference) {
+            if ($reference['slug'] === $article['slug'] && $reference['date'] === $article['date'] && ($reference['datePrecision'] ?? '') === 'year') {
+                $article['datePrecision'] = 'year';
+                break;
+            }
+        }
+    }
+    unset($article);
     usort($data, fn($first, $second) => strcmp($second['date'], $first['date']) ?: strcmp($first['slug'], $second['slug']));
     $products = publishedProducts();
     $encoded = json_encode([$data, $products], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
@@ -124,6 +133,6 @@ function exportContent(array $user): array
         if ($total > 32 * 1024 * 1024) throw new ValidationError('Les images à exporter dépassent 32 Mo. Réduisez leur taille avant de préparer la publication.');
         $media[] = ['path' => $path, 'sha256' => hash_file('sha256', $file), 'data' => base64_encode(file_get_contents($file))];
     }
-    audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
+    if ($record) audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
     return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => setting('coordonnees'), 'texts' => setting('textes'), 'media' => $media];
 }

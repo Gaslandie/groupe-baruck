@@ -1,4 +1,7 @@
 (() => {
+  if (document.querySelector('[data-publication-pending]')) {
+    setTimeout(() => window.location.reload(), 15000);
+  }
   const confirmDialog = document.querySelector('#confirm-dialog');
   let pending = null;
   document.addEventListener('click', (event) => {

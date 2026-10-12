@@ -49,6 +49,10 @@ export async function importExport(file, destination) {
         coverAlt: string(article.coverAlt, 'coverAlt', 500, true),
         gallery: gallery.map((image) => ({ src: string(image?.src, 'src', 255), alt: string(image?.alt, 'alt', 500), caption: string(image?.caption, 'caption', 500, true) })),
       };
+      if (article.datePrecision !== undefined) {
+        if (article.datePrecision !== 'year') throw new Error('Précision de date invalide.');
+        clean.datePrecision = article.datePrecision;
+      }
       // JSON est un sous-ensemble de YAML : valeurs systématiquement citées,
       // aucune interpolation de YAML/frontmatter fourni par un utilisateur.
       const yaml = Object.entries(clean).map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join('\n');
@@ -67,7 +71,7 @@ export async function importExport(file, destination) {
         images: product.images.map((image) => ({ src: string(image?.src, 'src', 255), alt: string(image?.alt, 'alt', 500) })),
       };
     });
-    if (products.length) await fs.writeFile(path.join(destination, 'content/boutique.json'), JSON.stringify({ products }, null, 2) + '\n');
+    if (source.products !== undefined) await fs.writeFile(path.join(destination, 'content/boutique.json'), JSON.stringify({ products }, null, 2) + '\n');
     // Une publication sans coordonnées laisse celles du dépôt en place.
     const contacts = source.contacts;
     if (contacts) {

@@ -89,6 +89,18 @@ test('laisse la boutique du dépôt quand la publication n’en porte aucune', a
   assert.deepEqual(await importExport(file, out), { articles: 1, images: 0, products: 0, contacts: true, texts: true });
   await assert.rejects(fs.stat(path.join(out, 'content/boutique.json')), { code: 'ENOENT' });
 });
+test('un catalogue explicitement vide retire tous les articles du site', async (t) => {
+  const { file, out } = await fixture(t, (input) => { input.products = []; });
+  await importExport(file, out);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(out, 'content/boutique.json'), 'utf8')), { products: [] });
+});
+test('conserve la précision des dates et refuse une valeur inventée', async (t) => {
+  const { file, out } = await fixture(t, input => { input.articles[0].datePrecision = 'year'; });
+  await importExport(file, out);
+  assert.match(await fs.readFile(path.join(out, 'content/actualites/actualite-test.md'), 'utf8'), /datePrecision: "year"/);
+  const invalid = await fixture(t, input => { input.articles[0].datePrecision = 'invented'; });
+  await assert.rejects(importExport(invalid.file, invalid.out));
+});
 test('refuse un catalogue dupliqué, sans photo ou mal identifié', async (t) => {
   const changes = [
     (input) => input.products.push(structuredClone(product)),

@@ -126,6 +126,10 @@ try {
                     header('Content-Type: application/json; charset=utf-8');
                     header('Content-Disposition: attachment; filename="baruck-publication-' . gmdate('Y-m-d-His') . '.json"');
                     echo json_encode($export, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR); exit;
+                case 'publish':
+                    requestPublication($user);
+                    $_SESSION['flash'] = 'Demande enregistrée. La mise en ligne va démarrer automatiquement.';
+                    redirect('publication');
                 default: throw new ValidationError('Action inconnue.');
             }
         } catch (ValidationError | ConflictError $exception) {
