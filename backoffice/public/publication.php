@@ -36,6 +36,9 @@ try {
         echo json($result);
     }
     ob_end_flush();
+} catch (ConflictError $error) {
+    while (ob_get_level() > $buffers) ob_end_clean();
+    http_response_code(409); echo '{"error":"Une relecture de cet article est nécessaire."}';
 } catch (ValidationError | \JsonException $error) {
     while (ob_get_level() > $buffers) ob_end_clean();
     http_response_code(422); echo '{"error":"Requête de publication invalide."}';

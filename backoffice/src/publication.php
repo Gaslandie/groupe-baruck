@@ -121,10 +121,47 @@ function publicationSnapshot(array $job): string
     return $snapshot;
 }
 
+/** Correction ponctuelle autorisée : seules les trois références retirées le 19/09/2026. */
+function repairRivieraPublication(): array
+{
+    $migration = 'retired-riviera-photos-2026-09-19';
+    if (query('SELECT name FROM schema_migrations WHERE name=?', [$migration])->fetch()) return ['ok' => true, 'already_repaired' => true];
+    $job = publicationState()['job'];
+    $user = $job ? publicationAuthor($job) : null;
+    if (!$user || ($job['status'] ?? '') !== 'failed') throw new ConflictError('La correction exige un envoi arrêté et un administrateur toujours autorisé.');
+    $row = query('SELECT * FROM articles WHERE slug=?', ['top-modele-2026-rencontre-riviera'])->fetch();
+    if (!$row || $row['status'] !== 'ready') throw new ConflictError('Une révision est en cours. Un administrateur doit relire cet article.');
+    $saved = query('SELECT payload FROM article_publications WHERE article_id=?', [$row['id']])->fetchColumn();
+    $data = articleData($row);
+    $validated = publicationData($data);
+    $published = $saved ? json_decode($saved, true, 512, JSON_THROW_ON_ERROR) : [];
+    unset($validated['datePrecision'], $published['datePrecision']);
+    if ($validated != $published) throw new ConflictError('La version validée et la fiche diffèrent. Une relecture est nécessaire.');
+    $retired = array_map(fn($number) => '/images/actualites/top-modele-2026-riviera/rencontre-' . $number . '.webp', ['03', '05', '06']);
+    $gallery = array_values(array_filter($data['gallery'], fn($image) => !in_array($image['src'], $retired, true)));
+    $removed = count($data['gallery']) - count($gallery);
+    if ($removed) {
+        // L'enregistrement normal garde une révision et refuse une édition concurrente.
+        saveArticle([...$data, 'gallery' => $gallery, 'id' => $row['id'], 'version' => (string) $row['version'], 'status' => 'ready'], $user);
+        audit('Références de photos retirées corrigées', $row['title'], $user['id']);
+    }
+    requestPublication($user);
+    query('INSERT IGNORE INTO schema_migrations (name,applied_at) VALUES (?,?)', [$migration, now()]);
+    return ['ok' => true, 'removed' => $removed];
+}
+
 /** Appel réservé au robot de déploiement, avec une clé privée et HTTPS en production. */
 function publicationWorker(array $input): array
 {
     $action = text($input, 'action', 16);
+    if ($action === 'repair_riviera') return repairRivieraPublication();
+    if ($action === 'inspect') {
+        // Diagnostic strictement en lecture : ni réservation, ni changement d'état.
+        $state = publicationState();
+        $job = $state['job'];
+        if (!$job) return ['error' => 'Aucune copie de publication.', 'code' => 404];
+        return ['snapshot' => publicationSnapshot($job), 'id' => $job['id'], 'sha256' => $job['sha256'], 'claimed' => false];
+    }
     if (!in_array($action, ['status', 'claim', 'authorize', 'complete', 'fail'], true)) throw new ValidationError('Action inconnue.');
     return changePublication(function (array &$state) use ($input, $action) {
         $job = $state['job'];
