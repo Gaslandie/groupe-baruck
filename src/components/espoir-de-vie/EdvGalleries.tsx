@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import { useState } from "react";
 
 import { edvGalleryCategories, edvGalleryPhotoCount } from "@/data/edv-galerie";
@@ -33,21 +35,18 @@ export function EdvGalleries() {
       className="scroll-mt-[72px] border-t border-edv-line bg-edv-cream px-[clamp(1.3rem,7vw,8rem)] py-[clamp(4.5rem,8vw,8rem)] max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <div className="reveal mb-[clamp(2rem,4vw,3rem)]">
-        <p className="edv-kicker">Les actions en images</p>
+        <p className="edv-kicker">{t("Les actions en images")}</p>
         <h2
           id="galerie-titre"
           className="m-0 text-balance font-display text-display-lg font-normal leading-[.92] tracking-[-.05em]"
         >
           {edvGalleryPhotoCount} photos,
-          <em className="font-[inherit] text-edv-ember"> onze rendez-vous.</em>
+          <em className="font-[inherit] text-edv-ember">{t(" onze rendez-vous.")}</em>
         </h2>
-        <p className="mb-0 mt-6 max-w-[680px] text-body leading-[1.8] text-edv-muted">
-          Les archives de la fondation, classées par action : du premier Noël au village de Grôh à l’ouverture de
-          l’orphelinat, puis aux repas partagés avec les enfants.
-        </p>
+        <p className="mb-0 mt-6 max-w-[680px] text-body leading-[1.8] text-edv-muted">{t("Les archives de la fondation, classées par action : du premier Noël au village de Grôh à l’ouverture de l’orphelinat, puis aux repas partagés avec les enfants.")}</p>
       </div>
 
-      <div role="tablist" aria-label="Choisir une action" className="reveal mb-[clamp(1.8rem,3vw,2.6rem)] flex flex-wrap gap-[.5rem]">
+      <div role="tablist" aria-label={t("Choisir une action")} className="reveal mb-[clamp(1.8rem,3vw,2.6rem)] flex flex-wrap gap-[.5rem]">
         {edvGalleryCategories.map((category) => {
           const selected = category.id === active;
           return (

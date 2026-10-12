@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { JecaGallery } from "@/data/jeca";
 
 import { GalleryPhoto } from "./JecaGallery";
@@ -35,9 +37,9 @@ const twelvePlacements = [
 ];
 
 const galleryLabels = {
-  1: "Photos de la première édition",
-  2: "Photos de la deuxième édition",
-  3: "Photos de la troisième édition",
+  1: t("Photos de la première édition"),
+  2: t("Photos de la deuxième édition"),
+  3: t("Photos de la troisième édition"),
 };
 
 export function PhotoGrid({

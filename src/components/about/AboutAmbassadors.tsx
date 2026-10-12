@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { ambassadorPhotos } from "@/data/about";
@@ -28,10 +30,10 @@ export function AboutAmbassadors() {
       className="scroll-mt-[92px] bg-ink px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] text-ivory max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow="La marque en représentation"
-        title="Les ambassadeurs"
-        emphasis="de la marque Baruck."
-        text="Vêtus de noir des pieds à la tête, les ambassadeurs portent l’image de la marque lors de ses sorties et de ses campagnes. Reçus par le PDG au siège de Baruck Communication, ils posent ensuite devant l’objectif du Studio Photo Baruck la Prospérité."
+        eyebrow={t("La marque en représentation")}
+        title={t("Les ambassadeurs")}
+        emphasis={t("de la marque Baruck.")}
+        text={t("Vêtus de noir des pieds à la tête, les ambassadeurs portent l’image de la marque lors de ses sorties et de ses campagnes. Reçus par le PDG au siège de Baruck Communication, ils posent ensuite devant l’objectif du Studio Photo Baruck la Prospérité.")}
         tone="light"
       />
 
@@ -52,12 +54,9 @@ export function AboutAmbassadors() {
       </ul>
 
       <div className="reveal mt-[clamp(2rem,4vw,3rem)] flex flex-wrap items-center gap-[.8rem]">
-        <Link href={routes.brand} className="button button-primary">
-          Découvrir la marque Baruck <span><Icon name="arrow-up-right" /></span>
+        <Link href={routes.brand} className="button button-primary">{t("Découvrir la marque Baruck ")}<span><Icon name="arrow-up-right" /></span>
         </Link>
-        <Link href={routes.studio} className="button button-ghost">
-          Le Studio Photo Baruck
-        </Link>
+        <Link href={routes.studio} className="button button-ghost">{t("Le Studio Photo Baruck")}</Link>
       </div>
     </section>
   );

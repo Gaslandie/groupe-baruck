@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { routes } from "@/data/site";
@@ -11,8 +13,7 @@ export function ArticleBody({ html }: ArticleBodyProps) {
   return (
     <div className="mx-auto max-w-[720px]">
       <div className="article-body" dangerouslySetInnerHTML={{ __html: html }} />
-      <Link href={routes.news} className="text-link mt-12">
-        Toutes les actualités <span><Icon name="arrow-up-left" /></span>
+      <Link href={routes.news} className="text-link mt-12">{t("Toutes les actualités ")}<span><Icon name="arrow-up-left" /></span>
       </Link>
     </div>
   );

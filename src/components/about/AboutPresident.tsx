@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { presidentPortrait } from "@/data/media";
@@ -21,18 +23,18 @@ import { Icon } from "../ui/Icon";
 const visionPoints = [
   {
     number: "01",
-    title: "Entreprendre en Guinée",
-    text: "Faire de la Guinée le point d’ancrage du groupe et y développer des activités qui tiennent dans la durée.",
+    title: t("Entreprendre en Guinée"),
+    text: t("Faire de la Guinée le point d’ancrage du groupe et y développer des activités qui tiennent dans la durée."),
   },
   {
     number: "02",
-    title: "Ouvrir vers la région",
-    text: "Porter cette base vers le Sénégal et la Côte d’Ivoire, où le dirigeant conduit déjà ses engagements, et jusqu’aux représentations de France et du Cap-Vert.",
+    title: t("Ouvrir vers la région"),
+    text: t("Porter cette base vers le Sénégal et la Côte d’Ivoire, où le dirigeant conduit déjà ses engagements, et jusqu’aux représentations de France et du Cap-Vert."),
   },
   {
     number: "03",
-    title: "Rendre à la société",
-    text: "Faire répondre à l’activité économique un engagement social, par la JECA et par l’ONG Espoir de Vie.",
+    title: t("Rendre à la société"),
+    text: t("Faire répondre à l’activité économique un engagement social, par la JECA et par l’ONG Espoir de Vie."),
   },
 ];
 
@@ -61,24 +63,14 @@ export function AboutPresident() {
       </figure>
 
       <div className="reveal">
-        <p className="eyebrow light">Le président</p>
-        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.04em]">
-          Un dirigeant,
-          <em className="block font-normal text-accent">une vision.</em>
+        <p className="eyebrow light">{t("Le président")}</p>
+        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.04em]">{t("Un dirigeant,")}<em className="block font-normal text-accent">{t("une vision.")}</em>
         </h2>
-        <p className="mb-0 mt-[1.6rem] max-w-[620px] text-lead leading-[1.7] text-[rgba(255,255,255,.74)]">
-          MR Djoro Joël Shaloom Krasso dirige le Groupe Baruck. Il préside la JECA, qui réunit la diaspora autour de
-          l’investissement en Afrique, et l’ONG Espoir de Vie, qui protège les enfants et accompagne les familles. En
-          2016, il exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.
-        </p>
+        <p className="mb-0 mt-[1.6rem] max-w-[620px] text-lead leading-[1.7] text-[rgba(255,255,255,.74)]">{t("MR Djoro Joël Shaloom Krasso dirige le Groupe Baruck. Il préside la JECA, qui réunit la diaspora autour de l’investissement en Afrique, et l’ONG Espoir de Vie, qui protège les enfants et accompagne les familles. En 2016, il exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.")}</p>
 
-        <blockquote className="mb-0 mt-[clamp(2rem,4vw,3rem)] border-l border-[rgba(255,255,255,.22)] pl-[clamp(1.2rem,2.5vw,2rem)] font-display text-display-sm font-normal italic leading-[1.35] text-ivory">
-          « Construire, entreprendre et créer un impact durable. »
-        </blockquote>
+        <blockquote className="mb-0 mt-[clamp(2rem,4vw,3rem)] border-l border-[rgba(255,255,255,.22)] pl-[clamp(1.2rem,2.5vw,2rem)] font-display text-display-sm font-normal italic leading-[1.35] text-ivory">{t("« Construire, entreprendre et créer un impact durable. »")}</blockquote>
 
-        <p className="mb-0 mt-[clamp(2rem,4vw,3rem)] border-t border-[rgba(255,255,255,.18)] pt-[1.6rem] text-label uppercase tracking-[.14em] text-accent">
-          Sa vision, en trois axes
-        </p>
+        <p className="mb-0 mt-[clamp(2rem,4vw,3rem)] border-t border-[rgba(255,255,255,.18)] pt-[1.6rem] text-label uppercase tracking-[.14em] text-accent">{t("Sa vision, en trois axes")}</p>
 
         <dl className="m-0 mt-[1.4rem] grid grid-cols-3 gap-[clamp(1rem,2vw,2rem)] max-tablet:grid-cols-1 max-tablet:gap-6">
           {visionPoints.map((point) => (
@@ -91,11 +83,9 @@ export function AboutPresident() {
         </dl>
 
         <div className="mt-[clamp(2rem,4vw,2.6rem)] flex flex-wrap items-center gap-[.8rem]">
-          <a href="#fonctions" className="button button-primary">
-            Ses quatre fonctions <span><Icon name="arrow-down" /></span>
+          <a href="#fonctions" className="button button-primary">{t("Ses quatre fonctions ")}<span><Icon name="arrow-down" /></span>
           </a>
-          <Link href={routes.jeca} className="button button-ghost">
-            La JECA <span><Icon name="arrow-up-right" /></span>
+          <Link href={routes.jeca} className="button button-ghost">{t("La JECA ")}<span><Icon name="arrow-up-right" /></span>
           </Link>
         </div>
       </div>

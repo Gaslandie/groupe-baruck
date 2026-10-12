@@ -1,3 +1,5 @@
+import { translate as t } from "../lib/language.ts";
+
 import { placeholderPhotos, type ImageAsset, type RemotePhoto } from "./media";
 
 type EdvSectionNavItem = {
@@ -72,33 +74,33 @@ type EdvCollaboration = {
  * endroits : rien n'est dupliqué.
  */
 export const edvPhotos = {
-  orphelinatVueAerienne: { src: "/images/espoir-de-vie/orphelinat-vue-aerienne.webp", alt: "Vue aérienne de l’orphelinat Espoir de Vie et de sa cour", width: 2000, height: 1444 },
-  orphelinatVueAerienneCour: { src: "/images/espoir-de-vie/orphelinat-vue-aerienne-cour.webp", alt: "L’orphelinat Espoir de Vie vu depuis les airs, devant son portail", width: 1400, height: 1011 },
-  orphelinatChantier: { src: "/images/espoir-de-vie/orphelinat-chantier.webp", alt: "Le bâtiment de l’orphelinat pendant sa construction", width: 1400, height: 1011 },
-  orphelinatChantierVisite: { src: "/images/espoir-de-vie/orphelinat-chantier-visite.webp", alt: "Le président fondateur sur le chantier de l’orphelinat", width: 1100, height: 1524 },
-  orphelinatDortoir: { src: "/images/espoir-de-vie/orphelinat-dortoir.webp", alt: "Dortoir de l’orphelinat : lits superposés et berceaux devant une fresque", width: 1400, height: 1011 },
-  orphelinatCuisine: { src: "/images/espoir-de-vie/orphelinat-cuisine.webp", alt: "La cuisine équipée de l’orphelinat", width: 1100, height: 794 },
-  orphelinatAccueilFamilles: { src: "/images/espoir-de-vie/orphelinat-accueil-familles.webp", alt: "Familles et enfants accueillis dans une salle de l’orphelinat", width: 1100, height: 733 },
-  orphelinatInaugurationRuban: { src: "/images/espoir-de-vie/orphelinat-inauguration-ruban.webp", alt: "Coupure du ruban devant le portail de l’orphelinat le jour de l’ouverture", width: 1100, height: 733 },
-  orphelinatInaugurationCortege: { src: "/images/espoir-de-vie/orphelinat-inauguration-cortege.webp", alt: "Cortège accompagné d’une fanfare le jour de l’ouverture de l’orphelinat", width: 1400, height: 933 },
-  orphelinatDiscoursFondateur: { src: "/images/espoir-de-vie/orphelinat-discours-fondateur.webp", alt: "Prise de parole devant l’affiche des dix principes de la Déclaration des droits de l’enfant", width: 1100, height: 733 },
-  orphelinatDroitsDeLEnfant: { src: "/images/espoir-de-vie/orphelinat-droits-de-l-enfant.webp", alt: "Salle de l’orphelinat où un mur rappelle qu’un enfant a droit à la vie et à l’éducation", width: 1800, height: 1300 },
-  orphelinatRemiseVetements: { src: "/images/espoir-de-vie/orphelinat-remise-vetements.webp", alt: "Remise de vêtements aux enfants, devant une valise ouverte", width: 1100, height: 794 },
-  orphelinatRepasPartage: { src: "/images/espoir-de-vie/orphelinat-repas-partage.webp", alt: "Repas partagé autour de la grande table de l’orphelinat", width: 1400, height: 933 },
-  orphelinatRepasService: { src: "/images/espoir-de-vie/orphelinat-repas-service.webp", alt: "Service du repas aux enfants accueillis à l’orphelinat", width: 1100, height: 733 },
-  grohRemiseJouets: { src: "/images/espoir-de-vie/groh-remise-jouets.webp", alt: "Remise de jouets aux enfants du village de Grôh", width: 1400, height: 1011 },
-  grohJouets: { src: "/images/espoir-de-vie/groh-jouets.webp", alt: "Les jouets rassemblés avant la distribution aux enfants de Grôh", width: 1100, height: 794 },
-  grohArbreDeNoel: { src: "/images/espoir-de-vie/groh-arbre-de-noel.webp", alt: "Distribution de jouets devant l’arbre de Noël, à Grôh", width: 1100, height: 794 },
-  kitsScolairesCartables: { src: "/images/espoir-de-vie/kits-scolaires-cartables.webp", alt: "Cartables empilés avant la distribution des kits scolaires", width: 1100, height: 794 },
-  kitsScolairesEleves: { src: "/images/espoir-de-vie/kits-scolaires-eleves.webp", alt: "Élèves rassemblés pour la distribution des kits scolaires à Zaroko", width: 1400, height: 1011 },
-  kitsScolairesRemise: { src: "/images/espoir-de-vie/kits-scolaires-remise.webp", alt: "Remise d’un cartable à un enfant du village de Zaroko", width: 1100, height: 733 },
-  divoKitsScolaires: { src: "/images/espoir-de-vie/divo-kits-scolaires.webp", alt: "Enfants du quartier Dialogue de Divo avec leurs cartables", width: 1400, height: 1011 },
-  divoFournitures: { src: "/images/espoir-de-vie/divo-fournitures.webp", alt: "Carton de fournitures scolaires prêtes à être distribuées", width: 1100, height: 794 },
-  veuvesRemiseVivres: { src: "/images/espoir-de-vie/veuves-remise-vivres.webp", alt: "Remise de vivres à une femme veuve", width: 1100, height: 794 },
-  veuvesVivres: { src: "/images/espoir-de-vie/veuves-vivres.webp", alt: "Femmes veuves réunies avec les vivres reçus", width: 1100, height: 794 },
-  feteDesMeres: { src: "/images/espoir-de-vie/fete-des-meres.webp", alt: "Mamans réunies avec les présents remis à l’occasion de la fête des Mères", width: 1100, height: 825 },
-  presidentFondateurEnfants: { src: "/images/espoir-de-vie/president-fondateur-enfants.webp", alt: "Le président fondateur remet un cartable à un enfant, entouré d’enfants et d’habitants", width: 1256, height: 937 },
-  fondationRoseGuiraud: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud", width: 1100, height: 794 },
+  orphelinatVueAerienne: { src: "/images/espoir-de-vie/orphelinat-vue-aerienne.webp", alt: t("Vue aérienne de l’orphelinat Espoir de Vie et de sa cour"), width: 2000, height: 1444 },
+  orphelinatVueAerienneCour: { src: "/images/espoir-de-vie/orphelinat-vue-aerienne-cour.webp", alt: t("L’orphelinat Espoir de Vie vu depuis les airs, devant son portail"), width: 1400, height: 1011 },
+  orphelinatChantier: { src: "/images/espoir-de-vie/orphelinat-chantier.webp", alt: t("Le bâtiment de l’orphelinat pendant sa construction"), width: 1400, height: 1011 },
+  orphelinatChantierVisite: { src: "/images/espoir-de-vie/orphelinat-chantier-visite.webp", alt: t("Le président fondateur sur le chantier de l’orphelinat"), width: 1100, height: 1524 },
+  orphelinatDortoir: { src: "/images/espoir-de-vie/orphelinat-dortoir.webp", alt: t("Dortoir de l’orphelinat : lits superposés et berceaux devant une fresque"), width: 1400, height: 1011 },
+  orphelinatCuisine: { src: "/images/espoir-de-vie/orphelinat-cuisine.webp", alt: t("La cuisine équipée de l’orphelinat"), width: 1100, height: 794 },
+  orphelinatAccueilFamilles: { src: "/images/espoir-de-vie/orphelinat-accueil-familles.webp", alt: t("Familles et enfants accueillis dans une salle de l’orphelinat"), width: 1100, height: 733 },
+  orphelinatInaugurationRuban: { src: "/images/espoir-de-vie/orphelinat-inauguration-ruban.webp", alt: t("Coupure du ruban devant le portail de l’orphelinat le jour de l’ouverture"), width: 1100, height: 733 },
+  orphelinatInaugurationCortege: { src: "/images/espoir-de-vie/orphelinat-inauguration-cortege.webp", alt: t("Cortège accompagné d’une fanfare le jour de l’ouverture de l’orphelinat"), width: 1400, height: 933 },
+  orphelinatDiscoursFondateur: { src: "/images/espoir-de-vie/orphelinat-discours-fondateur.webp", alt: t("Prise de parole devant l’affiche des dix principes de la Déclaration des droits de l’enfant"), width: 1100, height: 733 },
+  orphelinatDroitsDeLEnfant: { src: "/images/espoir-de-vie/orphelinat-droits-de-l-enfant.webp", alt: t("Salle de l’orphelinat où un mur rappelle qu’un enfant a droit à la vie et à l’éducation"), width: 1800, height: 1300 },
+  orphelinatRemiseVetements: { src: "/images/espoir-de-vie/orphelinat-remise-vetements.webp", alt: t("Remise de vêtements aux enfants, devant une valise ouverte"), width: 1100, height: 794 },
+  orphelinatRepasPartage: { src: "/images/espoir-de-vie/orphelinat-repas-partage.webp", alt: t("Repas partagé autour de la grande table de l’orphelinat"), width: 1400, height: 933 },
+  orphelinatRepasService: { src: "/images/espoir-de-vie/orphelinat-repas-service.webp", alt: t("Service du repas aux enfants accueillis à l’orphelinat"), width: 1100, height: 733 },
+  grohRemiseJouets: { src: "/images/espoir-de-vie/groh-remise-jouets.webp", alt: t("Remise de jouets aux enfants du village de Grôh"), width: 1400, height: 1011 },
+  grohJouets: { src: "/images/espoir-de-vie/groh-jouets.webp", alt: t("Les jouets rassemblés avant la distribution aux enfants de Grôh"), width: 1100, height: 794 },
+  grohArbreDeNoel: { src: "/images/espoir-de-vie/groh-arbre-de-noel.webp", alt: t("Distribution de jouets devant l’arbre de Noël, à Grôh"), width: 1100, height: 794 },
+  kitsScolairesCartables: { src: "/images/espoir-de-vie/kits-scolaires-cartables.webp", alt: t("Cartables empilés avant la distribution des kits scolaires"), width: 1100, height: 794 },
+  kitsScolairesEleves: { src: "/images/espoir-de-vie/kits-scolaires-eleves.webp", alt: t("Élèves rassemblés pour la distribution des kits scolaires à Zaroko"), width: 1400, height: 1011 },
+  kitsScolairesRemise: { src: "/images/espoir-de-vie/kits-scolaires-remise.webp", alt: t("Remise d’un cartable à un enfant du village de Zaroko"), width: 1100, height: 733 },
+  divoKitsScolaires: { src: "/images/espoir-de-vie/divo-kits-scolaires.webp", alt: t("Enfants du quartier Dialogue de Divo avec leurs cartables"), width: 1400, height: 1011 },
+  divoFournitures: { src: "/images/espoir-de-vie/divo-fournitures.webp", alt: t("Carton de fournitures scolaires prêtes à être distribuées"), width: 1100, height: 794 },
+  veuvesRemiseVivres: { src: "/images/espoir-de-vie/veuves-remise-vivres.webp", alt: t("Remise de vivres à une femme veuve"), width: 1100, height: 794 },
+  veuvesVivres: { src: "/images/espoir-de-vie/veuves-vivres.webp", alt: t("Femmes veuves réunies avec les vivres reçus"), width: 1100, height: 794 },
+  feteDesMeres: { src: "/images/espoir-de-vie/fete-des-meres.webp", alt: t("Mamans réunies avec les présents remis à l’occasion de la fête des Mères"), width: 1100, height: 825 },
+  presidentFondateurEnfants: { src: "/images/espoir-de-vie/president-fondateur-enfants.webp", alt: t("Le président fondateur remet un cartable à un enfant, entouré d’enfants et d’habitants"), width: 1256, height: 937 },
+  fondationRoseGuiraud: { src: "/images/espoir-de-vie/fondation-rose-guiraud.webp", alt: t("Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud"), width: 1100, height: 794 },
 } as const satisfies Record<string, ImageAsset>;
 
 /** Photo du panneau droit du hero : le repas partagé à l'orphelinat. */
@@ -112,38 +114,38 @@ export const edvHeroPhoto = { ...edvPhotos.orphelinatRepasPartage, position: "ce
 export const edvMissionPhoto = { ...edvPhotos.presidentFondateurEnfants, position: "center 14%" } satisfies EdvPositionedPhoto;
 
 export const edvSectionNav = [
-  { href: "#mission", number: "01", title: "Notre mission", subtitle: "Protéger et accompagner" },
-  { href: "#orphelinat", number: "02", title: "L’orphelinat", subtitle: "Une histoire depuis 2015" },
-  { href: "#actions", number: "03", title: "Nos actions", subtitle: "Des engagements concrets" },
-  { href: "#presence", number: "04", title: "Notre présence", subtitle: "Trois pays d’engagement" },
-  { href: "#galerie", number: "05", title: "Les galeries", subtitle: "Onze actions en images" },
+  { href: "#mission", number: "01", title: t("Notre mission"), subtitle: t("Protéger et accompagner") },
+  { href: "#orphelinat", number: "02", title: t("L’orphelinat"), subtitle: t("Une histoire depuis 2015") },
+  { href: "#actions", number: "03", title: t("Nos actions"), subtitle: t("Des engagements concrets") },
+  { href: "#presence", number: "04", title: t("Notre présence"), subtitle: t("Trois pays d’engagement") },
+  { href: "#galerie", number: "05", title: t("Les galeries"), subtitle: t("Onze actions en images") },
 ] satisfies EdvSectionNavItem[];
 
 export const edvPillars = [
-  { number: "01", title: "Protéger", text: "Offrir un cadre sûr aux enfants orphelins et vulnérables." },
+  { number: "01", title: t("Protéger"), text: t("Offrir un cadre sûr aux enfants orphelins et vulnérables.") },
   {
     number: "02",
-    title: "Éduquer",
-    text: "Scolariser les enfants : de 2016 à 2019, 2 000 enfants l’ont été sur les fonds propres de la fondation.",
+    title: t("Éduquer"),
+    text: t("Scolariser les enfants : de 2016 à 2019, 2 000 enfants l’ont été sur les fonds propres de la fondation."),
   },
-  { number: "03", title: "Nourrir & soigner", text: "Apporter une aide alimentaire et soutenir l’accès aux soins." },
+  { number: "03", title: t("Nourrir & soigner"), text: t("Apporter une aide alimentaire et soutenir l’accès aux soins.") },
   {
     number: "04",
-    title: "Accompagner",
-    text: "Soutenir les veuves, les mères et les familles confrontées à la précarité.",
+    title: t("Accompagner"),
+    text: t("Soutenir les veuves, les mères et les familles confrontées à la précarité."),
   },
   {
     number: "05",
-    title: "Agir",
-    text: "Aller sur le terrain et fédérer les bonnes volontés autour d’actions concrètes.",
+    title: t("Agir"),
+    text: t("Aller sur le terrain et fédérer les bonnes volontés autour d’actions concrètes."),
   },
 ] satisfies EdvPillar[];
 
 export const edvImpact = [
-  { value: "2015", label: "Premières actions de solidarité" },
-  { value: "2 000", label: "Enfants scolarisés de 2016 à 2019 sur fonds propres" },
-  { value: "60", label: "Orphelins accueillis à l’orphelinat" },
-  { value: "4 500", label: "Enfants chaussés à Divo" },
+  { value: "2015", label: t("Premières actions de solidarité") },
+  { value: "2 000", label: t("Enfants scolarisés de 2016 à 2019 sur fonds propres") },
+  { value: "60", label: t("Orphelins accueillis à l’orphelinat") },
+  { value: "4 500", label: t("Enfants chaussés à Divo") },
 ] satisfies EdvImpactItem[];
 
 /*
@@ -154,31 +156,31 @@ export const edvTimeline = [
   {
     date: { iso: "2015", label: "2015" },
     title: "Construction",
-    text: "Édification du bâtiment destiné à accueillir et accompagner les enfants.",
+    text: t("Édification du bâtiment destiné à accueillir et accompagner les enfants."),
     photo: edvPhotos.orphelinatChantier,
   },
   {
-    step: "Étape 02",
-    title: "Aménagement",
-    text: "Préparation des dortoirs, des berceaux, de la cuisine et des espaces de vie.",
+    step: t("Étape 02"),
+    title: t("Aménagement"),
+    text: t("Préparation des dortoirs, des berceaux, de la cuisine et des espaces de vie."),
     photo: edvPhotos.orphelinatDortoir,
   },
   {
     date: { iso: "2016", label: "2016" },
-    title: "Premiers pensionnaires",
-    text: "Accueil des premiers enfants avant l’ouverture officielle de l’établissement.",
+    title: t("Premiers pensionnaires"),
+    text: t("Accueil des premiers enfants avant l’ouverture officielle de l’établissement."),
     photo: edvPhotos.orphelinatAccueilFamilles,
   },
   {
     date: { iso: "2016", label: "2016" },
     title: "Inauguration",
-    text: "Ouverture officielle en présence des communautés et des autorités invitées.",
+    text: t("Ouverture officielle en présence des communautés et des autorités invitées."),
     photo: edvPhotos.orphelinatInaugurationRuban,
   },
   {
-    date: { iso: "2017-03-04", label: "04 mars 2017" },
-    title: "Un repas partagé",
-    text: "Le président fondateur partage un moment de convivialité avec les enfants accueillis.",
+    date: { iso: "2017-03-04", label: t("04 mars 2017") },
+    title: t("Un repas partagé"),
+    text: t("Le président fondateur partage un moment de convivialité avec les enfants accueillis."),
     photo: edvPhotos.orphelinatRepasPartage,
   },
 ] satisfies EdvTimelineItem[];
@@ -186,7 +188,7 @@ export const edvTimeline = [
 /** Photo d'archive servant l'action 06, sans lieu annoncé : voir le commentaire dans `edvActions`. */
 const partageSolidarite = {
   src: "/images/espoir-de-vie/galerie/veuves-zaroko/06.webp",
-  alt: "Remise de dons aux familles réunies lors d’une action de solidarité d’Espoir de Vie",
+  alt: t("Remise de dons aux familles réunies lors d’une action de solidarité d’Espoir de Vie"),
   width: 1200,
   height: 866,
 } as const satisfies ImageAsset;
@@ -194,58 +196,58 @@ const partageSolidarite = {
 export const edvActions = [
   {
     number: "01",
-    date: { iso: "2015-12-23", label: "23 décembre 2015" },
-    place: "Grôh · Département d’Hiré · Côte d’Ivoire",
-    title: "Un Noël pour les enfants",
-    text: "Mille jouets remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
-    highlight: "1 000 jouets",
+    date: { iso: "2015-12-23", label: t("23 décembre 2015") },
+    place: t("Grôh · Département d’Hiré · Côte d’Ivoire"),
+    title: t("Un Noël pour les enfants"),
+    text: t("Mille jouets remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage."),
+    highlight: t("1 000 jouets"),
     tone: "featured",
     photo: edvPhotos.grohRemiseJouets,
   },
   {
     number: "02",
-    period: "Rentrées scolaires",
-    place: "Zaroko et Divo · Côte d’Ivoire",
-    title: "Favoriser l’accès à l’école",
-    text: "Distribution de cartables, cahiers, fournitures et vivres aux enfants orphelins, dont 200 bénéficiaires au quartier Dialogue de Divo pour la rentrée 2016–2017.",
+    period: t("Rentrées scolaires"),
+    place: t("Zaroko et Divo · Côte d’Ivoire"),
+    title: t("Favoriser l’accès à l’école"),
+    text: t("Distribution de cartables, cahiers, fournitures et vivres aux enfants orphelins, dont 200 bénéficiaires au quartier Dialogue de Divo pour la rentrée 2016–2017."),
     photo: edvPhotos.divoKitsScolaires,
   },
   {
     number: "03",
-    period: "Actions communautaires",
-    place: "Zaroko · Région de Divo · Côte d’Ivoire",
-    title: "Soutenir les veuves",
-    text: "Aide alimentaire et dons aux veuves du village de Zaroko, toutes confessions religieuses confondues.",
-    highlight: "Environ 300 veuves",
+    period: t("Actions communautaires"),
+    place: t("Zaroko · Région de Divo · Côte d’Ivoire"),
+    title: t("Soutenir les veuves"),
+    text: t("Aide alimentaire et dons aux veuves du village de Zaroko, toutes confessions religieuses confondues."),
+    highlight: t("Environ 300 veuves"),
     photo: edvPhotos.veuvesRemiseVivres,
   },
   {
     number: "04",
     period: "2017",
-    place: "Orphelinat · Divo · Zaroko · Côte d’Ivoire",
-    title: "Vêtir et chausser dignement",
-    text: "Des vêtements ont été remis aux enfants de l’orphelinat. Des chaussures ont ensuite été distribuées aux enfants démunis de Divo, puis, le 3 juin 2017, aux enfants du village de Zaroko.",
-    highlight: "4 500 enfants chaussés à Divo",
+    place: t("Orphelinat · Divo · Zaroko · Côte d’Ivoire"),
+    title: t("Vêtir et chausser dignement"),
+    text: t("Des vêtements ont été remis aux enfants de l’orphelinat. Des chaussures ont ensuite été distribuées aux enfants démunis de Divo, puis, le 3 juin 2017, aux enfants du village de Zaroko."),
+    highlight: t("4 500 enfants chaussés à Divo"),
     photo: edvPhotos.orphelinatRemiseVetements,
   },
   {
     number: "05",
-    period: "Solidarité associative",
+    period: t("Solidarité associative"),
     place: "Fondation Marie Rose Guiraud",
-    title: "Unir les forces",
-    text: "Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud pour accompagner ses bénéficiaires.",
+    title: t("Unir les forces"),
+    text: t("Remise de vivres et de produits non alimentaires à la Fondation Marie Rose Guiraud pour accompagner ses bénéficiaires."),
     photo: edvPhotos.fondationRoseGuiraud,
   },
   {
     number: "06",
-    period: "Rayonnement africain",
-    place: "Guinée et Burkina Faso",
-    title: "Porter l’espoir au-delà des frontières",
+    period: t("Rayonnement africain"),
+    place: t("Guinée et Burkina Faso"),
+    title: t("Porter l’espoir au-delà des frontières"),
     // Photo prise dans les archives faute de cliché de Guinée ou du Burkina Faso
     // (2026-09-18). Son texte alternatif ne nomme donc aucun lieu ; une vraie
     // photo prise là-bas reste demandée (docs/questions-client.md, 14.3).
     photo: partageSolidarite,
-    text: "Soutien aux enfants de la rue, partage avec des personnes sans-abri et actions en faveur de la santé, de l’alimentation et de l’éducation.",
+    text: t("Soutien aux enfants de la rue, partage avec des personnes sans-abri et actions en faveur de la santé, de l’alimentation et de l’éducation."),
     tone: "dark",
   },
 ] satisfies EdvAction[];
@@ -255,40 +257,40 @@ export const edvCountries = [
     code: "CI",
     number: "01",
     title: "Côte d’Ivoire",
-    text: "Grôh, Hiré, Zaroko et Divo : jouets, kits scolaires, aide aux familles, vêtements, chaussures et construction de l’orphelinat.",
+    text: t("Grôh, Hiré, Zaroko et Divo : jouets, kits scolaires, aide aux familles, vêtements, chaussures et construction de l’orphelinat."),
     photo: { ...edvPhotos.kitsScolairesEleves, position: "center 45%" },
   },
   {
     code: "GN",
     number: "02",
-    title: "Guinée",
-    text: "Des actions autour du droit à la santé, à une alimentation équilibrée, à la protection et à l’éducation.",
+    title: t("Guinée"),
+    text: t("Des actions autour du droit à la santé, à une alimentation équilibrée, à la protection et à l’éducation."),
     photo: placeholderPhotos.conakryBay,
   },
   {
     code: "BF",
     number: "03",
     title: "Burkina Faso",
-    text: "Soutien aux enfants de la rue et moments de partage avec des personnes sans-abri pendant une tournée africaine.",
+    text: t("Soutien aux enfants de la rue et moments de partage avec des personnes sans-abri pendant une tournée africaine."),
     photo: placeholderPhotos.ouagadougou,
   },
 ] satisfies EdvCountry[];
 
 /** Galerie de la section « Mémoire d'actions » (reprise aussi par la médiathèque). */
 export const edvGallery = [
-  { photo: edvPhotos.orphelinatVueAerienneCour, caption: "L’orphelinat" },
-  { photo: edvPhotos.orphelinatChantierVisite, caption: "Le chantier" },
-  { photo: edvPhotos.orphelinatInaugurationCortege, caption: "Jour d’ouverture" },
-  { photo: edvPhotos.orphelinatDiscoursFondateur, caption: "Les droits de l’enfant" },
-  { photo: edvPhotos.orphelinatCuisine, caption: "La cuisine" },
-  { photo: edvPhotos.orphelinatRepasService, caption: "Un repas partagé" },
-  { photo: edvPhotos.grohJouets, caption: "Grôh · Les jouets" },
-  { photo: edvPhotos.grohArbreDeNoel, caption: "Grôh · Un Noël" },
-  { photo: edvPhotos.kitsScolairesCartables, caption: "Les cartables" },
-  { photo: edvPhotos.kitsScolairesRemise, caption: "Zaroko · Rentrée" },
-  { photo: edvPhotos.divoFournitures, caption: "Les fournitures" },
-  { photo: edvPhotos.feteDesMeres, caption: "Fête des Mères" },
-  { photo: edvPhotos.veuvesVivres, caption: "Soutien aux veuves" },
+  { photo: edvPhotos.orphelinatVueAerienneCour, caption: t("L’orphelinat") },
+  { photo: edvPhotos.orphelinatChantierVisite, caption: t("Le chantier") },
+  { photo: edvPhotos.orphelinatInaugurationCortege, caption: t("Jour d’ouverture") },
+  { photo: edvPhotos.orphelinatDiscoursFondateur, caption: t("Les droits de l’enfant") },
+  { photo: edvPhotos.orphelinatCuisine, caption: t("La cuisine") },
+  { photo: edvPhotos.orphelinatRepasService, caption: t("Un repas partagé") },
+  { photo: edvPhotos.grohJouets, caption: t("Grôh · Les jouets") },
+  { photo: edvPhotos.grohArbreDeNoel, caption: t("Grôh · Un Noël") },
+  { photo: edvPhotos.kitsScolairesCartables, caption: t("Les cartables") },
+  { photo: edvPhotos.kitsScolairesRemise, caption: t("Zaroko · Rentrée") },
+  { photo: edvPhotos.divoFournitures, caption: t("Les fournitures") },
+  { photo: edvPhotos.feteDesMeres, caption: t("Fête des Mères") },
+  { photo: edvPhotos.veuvesVivres, caption: t("Soutien aux veuves") },
   { photo: edvPhotos.fondationRoseGuiraud, caption: "Fondation Marie Rose Guiraud" },
 ] satisfies EdvGalleryItem[];
 
@@ -296,17 +298,17 @@ export const edvCollaborations = [
   {
     number: "01",
     title: "Fondation Marie Rose Guiraud",
-    text: "Des vivres et des produits non alimentaires ont été remis pour accompagner ses bénéficiaires.",
+    text: t("Des vivres et des produits non alimentaires ont été remis pour accompagner ses bénéficiaires."),
   },
   {
     number: "02",
     title: "Église M.C.A",
-    text: "Des actions de solidarité ont été menées auprès des mamans à l’occasion de la fête des Mères.",
+    text: t("Des actions de solidarité ont été menées auprès des mamans à l’occasion de la fête des Mères."),
   },
   {
     number: "03",
-    title: "Ouverture associative",
-    text: "L’orphelinat a reçu la visite d’une organisation française venue rencontrer les enfants et les équipes.",
+    title: t("Ouverture associative"),
+    text: t("L’orphelinat a reçu la visite d’une organisation française venue rencontrer les enfants et les équipes."),
   },
 ] satisfies EdvCollaboration[];
 
@@ -331,12 +333,12 @@ export const edvVisitVideo = {
   poster: "/images/espoir-de-vie/don-orphelinat-precieux-soleils.jpg",
   width: 368,
   height: 368,
-  eyebrow: "Sur le terrain · Conakry",
-  title: "Un don à l’orphelinat",
-  emphasis: "des Précieux Soleils.",
-  text: "Le PDG du Groupe Baruck, également président de la JECA, s’est rendu dans le quartier de Sonfonia T7, à Conakry, auprès des enfants de l’orphelinat des Précieux Soleils.",
-  date: { iso: "2026-09-11", label: "Vendredi 11 septembre 2026" },
-  caption: "Remise d’un don aux enfants et à l’équipe de l’orphelinat des Précieux Soleils, à Sonfonia T7.",
+  eyebrow: t("Sur le terrain · Conakry"),
+  title: t("Un don à l’orphelinat"),
+  emphasis: t("des Précieux Soleils."),
+  text: t("Le PDG du Groupe Baruck, également président de la JECA, s’est rendu dans le quartier de Sonfonia T7, à Conakry, auprès des enfants de l’orphelinat des Précieux Soleils."),
+  date: { iso: "2026-09-11", label: t("Vendredi 11 septembre 2026") },
+  caption: t("Remise d’un don aux enfants et à l’équipe de l’orphelinat des Précieux Soleils, à Sonfonia T7."),
 } satisfies EdvVideo;
 
 /** Année et région confirmées par Mohamed ; résumé de la transcription fournie. */
@@ -346,12 +348,12 @@ export const edvNzerekoreVideo = {
   poster: "/images/espoir-de-vie/espoir-de-vie-nzerekore-2021.jpg",
   width: 640,
   height: 512,
-  eyebrow: "Sur le terrain · Région de N’Zérékoré",
-  title: "Accompagner les enfants",
-  emphasis: "par l’éducation.",
-  text: "En 2021, dans la région de N’Zérékoré, une prise de parole souligne l’importance de l’éducation et de l’accompagnement des enfants. L’ONG annonce un suivi des enfants et une prise en charge des problèmes de santé en lien avec une clinique, en évoquant aussi un soutien aux enseignants malades.",
+  eyebrow: t("Sur le terrain · Région de N’Zérékoré"),
+  title: t("Accompagner les enfants"),
+  emphasis: t("par l’éducation."),
+  text: t("En 2021, dans la région de N’Zérékoré, une prise de parole souligne l’importance de l’éducation et de l’accompagnement des enfants. L’ONG annonce un suivi des enfants et une prise en charge des problèmes de santé en lien avec une clinique, en évoquant aussi un soutien aux enseignants malades."),
   date: { iso: "2021", label: "2021" },
-  caption: "Prise de parole sur l’éducation et le suivi des enfants dans la région de N’Zérékoré, en 2021.",
+  caption: t("Prise de parole sur l’éducation et le suivi des enfants dans la région de N’Zérékoré, en 2021."),
 } satisfies EdvVideo;
 
 /** Année confirmée par Mohamed ; aucun diagnostic ni résultat médical ajouté. */
@@ -361,12 +363,12 @@ export const edvMedicalSupportVideo = {
   poster: "/images/espoir-de-vie/espoir-de-vie-aide-medicale-2021.jpg",
   width: 640,
   height: 352,
-  eyebrow: "Sur le terrain · Aide médicale",
-  title: "Accompagner une femme",
-  emphasis: "dans ses soins.",
-  text: "En 2021, l’ONG Espoir de Vie apporte une aide médicale à une femme, en partenariat avec une clinique privée. Le reportage présente la signature d’un engagement et son accompagnement à la clinique pour une intervention chirurgicale, puis les remerciements de la bénéficiaire et de sa famille.",
+  eyebrow: t("Sur le terrain · Aide médicale"),
+  title: t("Accompagner une femme"),
+  emphasis: t("dans ses soins."),
+  text: t("En 2021, l’ONG Espoir de Vie apporte une aide médicale à une femme, en partenariat avec une clinique privée. Le reportage présente la signature d’un engagement et son accompagnement à la clinique pour une intervention chirurgicale, puis les remerciements de la bénéficiaire et de sa famille."),
   date: { iso: "2021", label: "2021" },
-  caption: "Reportage sur l’accompagnement médical d’une femme par Espoir de Vie, en 2021.",
+  caption: t("Reportage sur l’accompagnement médical d’une femme par Espoir de Vie, en 2021."),
 } satisfies EdvVideo;
 
 /** Les témoignages vidéo sont présentés du plus récent au plus ancien. */

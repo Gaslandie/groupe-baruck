@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { baruckCommunication } from "@/data/about";
@@ -23,13 +25,11 @@ export function AboutCommunication() {
         <div className="reveal">
           <dl className="m-0 border-t border-line">
             <div className="grid grid-cols-[130px_1fr] gap-4 border-b border-line py-[1.05rem] max-tablet:grid-cols-1 max-tablet:gap-[.3rem]">
-              <dt className="self-center text-micro uppercase tracking-[.14em] text-accent">Présence</dt>
+              <dt className="self-center text-micro uppercase tracking-[.14em] text-accent">{t("Présence")}</dt>
               <dd className="m-0 font-display text-display-xs leading-[1.2]">{presence}</dd>
             </div>
             <div className="grid grid-cols-[130px_1fr] gap-4 border-b border-line py-[1.05rem] max-tablet:grid-cols-1 max-tablet:gap-[.3rem]">
-              <dt className="self-center text-micro uppercase tracking-[.14em] text-accent">
-                Services présentés
-              </dt>
+              <dt className="self-center text-micro uppercase tracking-[.14em] text-accent">{t("Services présentés")}</dt>
               <dd className="m-0 font-display text-display-xs leading-[1.2]">
                 {servicesLabel}
               </dd>

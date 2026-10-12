@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { edvImpact } from "@/data/espoir-de-vie";
@@ -16,18 +18,13 @@ export function EdvImpactHighlights() {
     >
       <div className="reveal mb-[clamp(2rem,4vw,3.2rem)] flex items-end justify-between gap-[clamp(2rem,5vw,5rem)] max-[1100px]:flex-col max-[1100px]:items-start max-[1100px]:gap-6">
         <div>
-          <p className="edv-kicker edv-kicker-light">Espoir de Vie · Repères documentés</p>
-          <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.05em]">
-            Des actions,
-            <em className="font-[inherit] text-edv-gold"> des repères concrets.</em>
+          <p className="edv-kicker edv-kicker-light">{t("Espoir de Vie · Repères documentés")}</p>
+          <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.05em]">{t("Des actions,")}<em className="font-[inherit] text-edv-gold">{t(" des repères concrets.")}</em>
           </h2>
         </div>
         <div className="flex w-[min(430px,42%)] flex-col items-start gap-5 max-[1100px]:w-full">
-          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.6)]">
-            Ces repères proviennent des actions déjà présentées sur la page Espoir de Vie.
-          </p>
-          <Link href={`${routes.edv}#actions`} className="edv-button edv-button-line">
-            Découvrir les actions <span><Icon name="arrow-up-right" /></span>
+          <p className="m-0 text-small leading-[1.75] text-[rgba(255,255,255,.6)]">{t("Ces repères proviennent des actions déjà présentées sur la page Espoir de Vie.")}</p>
+          <Link href={`${routes.edv}#actions`} className="edv-button edv-button-line">{t("Découvrir les actions ")}<span><Icon name="arrow-up-right" /></span>
           </Link>
         </div>
       </div>

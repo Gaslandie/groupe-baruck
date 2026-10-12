@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { JecaEdition, JecaGallery } from "@/data/jeca";
 
 import { PhotoGrid } from "./PhotoGrid";
@@ -31,9 +33,7 @@ export function ForumEdition({
         <div>
           <span
             className={`block text-micro font-extrabold uppercase tracking-[.17em] ${isDark ? "text-[rgba(255,255,255,.52)]" : "text-jeca-muted"}`}
-          >
-            Édition
-          </span>
+          >{t("Édition")}</span>
           <strong
             className={`mt-1 block font-display text-display-xl font-normal italic leading-[.85] ${isDark ? "text-jeca-yellow" : "text-jeca-red"}`}
           >
@@ -70,9 +70,7 @@ export function ForumEdition({
             ))}
           </div>
           <aside className="bg-jeca-green p-6 text-white">
-            <span className="mb-6 block text-micro font-extrabold uppercase tracking-[.15em] text-jeca-yellow">
-              Thème
-            </span>
+            <span className="mb-6 block text-micro font-extrabold uppercase tracking-[.15em] text-jeca-yellow">{t("Thème")}</span>
             <strong className="font-display text-display-sm font-normal leading-[1.3]">
               {edition.story.theme}
             </strong>

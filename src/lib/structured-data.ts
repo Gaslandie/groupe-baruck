@@ -1,3 +1,5 @@
+import { translate as t } from "./language.ts";
+
 import type { Article } from "@/data/actualites";
 import { facebookPages } from "@/data/contact";
 import { jecaEditions, type JecaEdition } from "@/data/jeca";
@@ -76,7 +78,7 @@ export function espoirDeVieSchema(description: string) {
     logo: imageObject(edvLogo),
     areaServed: [
       { "@type": "Country", name: "Côte d’Ivoire" },
-      { "@type": "Country", name: "Guinée" },
+      { "@type": "Country", name: t("Guinée") },
       { "@type": "Country", name: "Burkina Faso" },
     ],
   };

@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import { useEffect, useRef, useState } from "react";
 
 import type { NewsImage } from "@/data/actualites";
@@ -48,7 +50,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
   return (
     <div className="mx-auto mt-[clamp(3rem,5vw,5rem)] max-w-[1100px]">
       <div className="mb-6 flex items-end justify-between">
-        <p className="eyebrow mb-0">En images</p>
+        <p className="eyebrow mb-0">{t("En images")}</p>
         <span
           className="font-display text-small italic text-[#77746e]"
           aria-live="polite"
@@ -60,7 +62,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
         ref={trackRef}
         role="region"
         aria-roledescription="carrousel"
-        aria-label="Photos de l’article"
+        aria-label={t("Photos de l’article")}
         tabIndex={0}
         onKeyDown={(event) => {
           if (event.key === "ArrowLeft") {
@@ -95,7 +97,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
       <div className="mt-5 flex justify-end gap-3">
         <button
           type="button"
-          aria-label="Photo précédente"
+          aria-label={t("Photo précédente")}
           disabled={index === 0}
           onClick={() => scrollBySlide(-1)}
           className="h-12 w-12 cursor-pointer border border-line transition-[background,color] duration-[250ms] hover:bg-ink hover:text-ivory disabled:cursor-default disabled:opacity-30"
@@ -104,7 +106,7 @@ export function NewsCarousel({ gallery }: NewsCarouselProps) {
         </button>
         <button
           type="button"
-          aria-label="Photo suivante"
+          aria-label={t("Photo suivante")}
           disabled={index === total - 1}
           onClick={() => scrollBySlide(1)}
           className="h-12 w-12 cursor-pointer border border-line transition-[background,color] duration-[250ms] hover:bg-ink hover:text-ivory disabled:cursor-default disabled:opacity-30"

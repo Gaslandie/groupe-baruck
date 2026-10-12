@@ -1,10 +1,12 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 import { Icon } from "../ui/Icon";
 
 const values = [
-  { number: "01", title: "Vision", text: "Voir plus loin et ouvrir de nouvelles perspectives." },
-  { number: "02", title: "Excellence", text: "Placer la qualité au centre de chaque initiative." },
-  { number: "03", title: "Impact", text: "Créer une valeur durable pour la société." },
+  { number: "01", title: "Vision", text: t("Voir plus loin et ouvrir de nouvelles perspectives.") },
+  { number: "02", title: "Excellence", text: t("Placer la qualité au centre de chaque initiative.") },
+  { number: "03", title: "Impact", text: t("Créer une valeur durable pour la société.") },
 ];
 
 export function AboutIntro() {
@@ -14,35 +16,19 @@ export function AboutIntro() {
       className="reveal-stagger grid grid-cols-[minmax(260px,.85fr)_1.15fr] gap-x-[clamp(3rem,8vw,9rem)] gap-y-[clamp(2.5rem,6vw,6rem)] px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-[1080px]:grid-cols-1"
     >
       <div className="reveal">
-        <p className="eyebrow">Notre identité</p>
-        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
-          Entreprendre,
-          <em className="block font-normal text-accent">et créer de l’impact.</em>
+        <p className="eyebrow">{t("Notre identité")}</p>
+        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{t("Entreprendre,")}<em className="block font-normal text-accent">{t("et créer de l’impact.")}</em>
         </h2>
       </div>
       <div className="reveal max-w-[640px]">
-        <p className="lead mb-6 mt-0">
-          Le Groupe Baruck est ancré en Guinée. Il y développe au quotidien, à travers Baruck Communication,
-          le Studio Photo Baruck, ses services d’hôtesses événementielles et ses activités de communication.
-        </p>
-        <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">
-          Autour de cette base, le groupe réunit des domaines complémentaires — hôtellerie, restauration,
-          agro-business avec la culture du piment, de l’oignon et du manioc, mobilité, industries créatives,
-          sans oublier la marque de vêtements Baruck. Il porte une ambition assumée, du Sénégal à la Côte
-          d’Ivoire et jusqu’à la France et au Cap-Vert : bâtir des projets solides, modernes et créateurs de
-          valeur.
-        </p>
-        <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">
-          À cette activité économique répond une seconde dimension, indissociable du parcours de son dirigeant :
-          l’engagement, porté par la JECA auprès des jeunes entrepreneurs et par l’ONG Espoir de Vie auprès des plus
-          vulnérables.
-        </p>
-        <Link href="/#activite-studio" className="text-link mt-[.8rem]">
-          Découvrir nos activités <span><Icon name="arrow-up-right" /></span>
+        <p className="lead mb-6 mt-0">{t("Le Groupe Baruck est ancré en Guinée. Il y développe au quotidien, à travers Baruck Communication, le Studio Photo Baruck, ses services d’hôtesses événementielles et ses activités de communication.")}</p>
+        <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">{t("Autour de cette base, le groupe réunit des domaines complémentaires — hôtellerie, restauration, agro-business avec la culture du piment, de l’oignon et du manioc, mobilité, industries créatives, sans oublier la marque de vêtements Baruck. Il porte une ambition assumée, du Sénégal à la Côte d’Ivoire et jusqu’à la France et au Cap-Vert : bâtir des projets solides, modernes et créateurs de valeur.")}</p>
+        <p className="mb-[1.4rem] mt-0 text-body leading-[1.8] text-[#64645f]">{t("À cette activité économique répond une seconde dimension, indissociable du parcours de son dirigeant : l’engagement, porté par la JECA auprès des jeunes entrepreneurs et par l’ONG Espoir de Vie auprès des plus vulnérables.")}</p>
+        <Link href="/#activite-studio" className="text-link mt-[.8rem]">{t("Découvrir nos activités ")}<span><Icon name="arrow-up-right" /></span>
         </Link>
       </div>
       <div
-        aria-label="Valeurs du Groupe Baruck"
+        aria-label={t("Valeurs du Groupe Baruck")}
         className="reveal-stagger col-span-full grid grid-cols-3 border-t border-line max-tablet:grid-cols-1"
       >
         {values.map((value) => (

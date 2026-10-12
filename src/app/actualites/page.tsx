@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { Metadata } from "next";
 
 import { NewsHero } from "@/components/actualites/NewsHero";
@@ -13,7 +15,7 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 const firstCover = getAllArticles().find((article) => article.cover)?.cover;
 
 export const metadata: Metadata = {
-  title: "Actualités",
+  title: t("Actualités"),
   description: newsDescription,
   alternates: pageAlternates(site.url + routes.news.slice(1)),
   ...(firstCover ? { openGraph: socialMetadata(firstCover) } : {}),

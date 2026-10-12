@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { Metadata } from "next";
 
 import { ContactDetails } from "@/components/contact/ContactDetails";
@@ -12,7 +14,7 @@ import { pageAlternates } from "@/lib/metadata";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Contactez le Groupe Baruck — WhatsApp, téléphone, e-mail et formulaire : Studio photo, Hôtesses événementielles, JECA, Espoir de Vie, partenariats.",
+    t("Contactez le Groupe Baruck — WhatsApp, téléphone, e-mail et formulaire : Studio photo, Hôtesses événementielles, JECA, Espoir de Vie, partenariats."),
   alternates: pageAlternates(site.url + routes.contact.slice(1)),
 };
 
@@ -23,9 +25,9 @@ export default function ContactPage() {
       <ContactDetails />
       <ServiceFaq
         id="questions-frequentes"
-        eyebrow="Informations pratiques"
-        title={<>Vos questions,<br /></>}
-        emphasis="nos réponses."
+        eyebrow={t("Informations pratiques")}
+        title={<>{t("Vos questions,")}<br /></>}
+        emphasis={t("nos réponses.")}
         items={contactFaq}
       />
       <ContactMap />

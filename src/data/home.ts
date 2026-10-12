@@ -1,3 +1,5 @@
+import { translate as t } from "../lib/language.ts";
+
 import type { ReactNode } from "react";
 
 import { edvPhotos } from "./espoir-de-vie";
@@ -67,7 +69,7 @@ export const studioVideo: TeaserVideo = {
   poster: "/images/services/studio-photo-video.webp",
   width: 640,
   height: 360,
-  label: "Vidéo de présentation du Studio Photo Baruck la Prospérité",
+  label: t("Vidéo de présentation du Studio Photo Baruck la Prospérité"),
 };
 
 /**
@@ -84,32 +86,32 @@ export const mainActivities: PageTeaser[] = [
     band: true,
     title: siteTexts.heroSlides["guinee"].title,
     text: siteTexts.heroSlides["guinee"].description,
-    eyebrow: "Groupe Baruck · Guinée",
+    eyebrow: t("Groupe Baruck · Guinée"),
   },
   {
     id: "activite-studio",
     tone: "paper",
     title: siteTexts.heroSlides["studio-photo"].title,
     text: siteTexts.heroSlides["studio-photo"].description,
-    eyebrow: "Baruck Communication · Guinée",
+    eyebrow: t("Baruck Communication · Guinée"),
     image: { ...studioHero, position: "center" },
     video: studioVideo,
     href: whatsappRequests.studioPrices,
-    linkLabel: "Connaître les prix",
+    linkLabel: t("Connaître les prix"),
     externalLink: true,
-    secondary: { label: "Voir les détails", href: routes.studio },
+    secondary: { label: t("Voir les détails"), href: routes.studio },
   },
   {
     id: "activite-hotesses",
     tone: "ink",
     title: siteTexts.heroSlides["hotesses"].title,
     text: siteTexts.heroSlides["hotesses"].description,
-    eyebrow: "Baruck Communication · Guinée",
+    eyebrow: t("Baruck Communication · Guinée"),
     image: { ...hostessesHero, position: "center 38%" },
     href: whatsappRequests.hostessBooking,
-    linkLabel: "Réserver une équipe",
+    linkLabel: t("Réserver une équipe"),
     externalLink: true,
-    secondary: { label: "Voir les détails", href: routes.hostesses },
+    secondary: { label: t("Voir les détails"), href: routes.hostesses },
   },
 ];
 
@@ -157,45 +159,45 @@ export const pageTeasers: PageTeaser[] = [
     id: "apercu-marque",
     tone: "ink",
     image: brandHero,
-    eyebrow: "La marque Baruck",
-    title: "L’élégance,",
-    emphasis: "notre affaire.",
-    text: "Vêtements, sacs, chaussures, parfums et accessoires : découvrez l’univers Baruck et préparez votre commande par WhatsApp.",
+    eyebrow: t("La marque Baruck"),
+    title: t("L’élégance,"),
+    emphasis: t("notre affaire."),
+    text: t("Vêtements, sacs, chaussures, parfums et accessoires : découvrez l’univers Baruck et préparez votre commande par WhatsApp."),
     href: routes.brand,
-    linkLabel: "Découvrir la collection",
+    linkLabel: t("Découvrir la collection"),
   },
   {
     id: "apercu-about",
     tone: "ink",
     image: { ...presidentOnu1, position: "center 30%" },
-    eyebrow: "Le Groupe",
-    title: "Un homme, une vision,",
-    emphasis: "un groupe.",
-    text: "À la tête du Groupe Baruck, il porte une vision fondée sur l’entrepreneuriat, la création de valeur et l’engagement au service de la société.",
+    eyebrow: t("Le Groupe"),
+    title: t("Un homme, une vision,"),
+    emphasis: t("un groupe."),
+    text: t("À la tête du Groupe Baruck, il porte une vision fondée sur l’entrepreneuriat, la création de valeur et l’engagement au service de la société."),
     href: routes.group,
-    linkLabel: "Découvrir le Groupe",
+    linkLabel: t("Découvrir le Groupe"),
   },
   {
     id: "apercu-jeca",
     tone: "jeca",
     image: jecaGalleries[2].photos[0],
     eyebrow: "JECA · Jeunes Entrepreneurs Chrétiens Africains",
-    title: "Réunir la diaspora.",
-    emphasis: "Investir en Afrique.",
-    text: "La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique.",
+    title: t("Réunir la diaspora."),
+    emphasis: t("Investir en Afrique."),
+    text: t("La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique."),
     href: routes.jeca,
-    linkLabel: "Voir les éditions",
+    linkLabel: t("Voir les éditions"),
   },
   {
     id: "apercu-edv",
     tone: "edv",
     image: { ...edvPhotos.divoKitsScolaires, position: "center 40%" },
-    eyebrow: "Engagement humanitaire · Afrique de l’Ouest",
+    eyebrow: t("Engagement humanitaire · Afrique de l’Ouest"),
     title: "Espoir de Vie.",
-    emphasis: "Agir pour les plus vulnérables.",
-    text: "Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire.",
+    emphasis: t("Agir pour les plus vulnérables."),
+    text: t("Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire."),
     href: routes.edv,
-    linkLabel: "Découvrir les actions",
+    linkLabel: t("Découvrir les actions"),
   },
 ];
 
@@ -208,7 +210,7 @@ export const pageTeasers: PageTeaser[] = [
 export const featuredEventSlug = "top-modele-baruck-guinee-2026";
 
 /** Sur-titre de la section : ce que l'on met en avant, pas le titre de l'article. */
-export const featuredEventEyebrow = "L’événement";
+export const featuredEventEyebrow = t("L’événement");
 
 /**
  * Les autres concours organisés en Guinée, montrés en petit sous l'événement
@@ -222,4 +224,4 @@ export const featuredAlsoSlugs = [
 ];
 
 /** Sur-titre de la liste secondaire. */
-export const featuredAlsoTitle = "Les autres concours Baruck";
+export const featuredAlsoTitle = t("Les autres concours Baruck");

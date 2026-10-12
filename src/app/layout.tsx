@@ -1,3 +1,7 @@
+import { translate as t } from "../lib/language.ts";
+
+import { language } from "../lib/language.ts";
+
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 
@@ -49,7 +53,7 @@ export const metadata: Metadata = {
     template: "%s — Groupe Baruck",
   },
   description:
-    "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
+    t("Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée."),
   openGraph: socialMetadata(brandLogo, "Groupe Baruck"),
 };
 
@@ -63,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={`${lato.variable} ${montserrat.variable}`} data-scroll-behavior="smooth">
+    <html lang={language} className={`${lato.variable} ${montserrat.variable}`} data-scroll-behavior="smooth">
       <body>
         <NavigationTransitions />
         <Audience />

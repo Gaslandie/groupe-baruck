@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import {
   createContext,
   type KeyboardEvent,
@@ -50,7 +52,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
       {children}
       <dialog
         ref={dialogRef}
-        aria-label="Agrandissement de la photo"
+        aria-label={t("Agrandissement de la photo")}
         onClose={() => setActiveIndex(null)}
         onClick={handleBackdropClick}
         onKeyDown={handleKeyDown}
@@ -58,7 +60,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
       >
         <button
           type="button"
-          aria-label="Fermer l’image"
+          aria-label={t("Fermer l’image")}
           onClick={close}
           className="fixed right-6 top-[1.2rem] z-[2] h-12 w-12 cursor-pointer border border-[rgba(255,255,255,.4)] bg-[rgba(4,16,49,.65)] text-[1.8rem] text-white max-tablet:right-[.7rem] max-tablet:top-[.7rem]"
         >
@@ -66,7 +68,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
         </button>
         <button
           type="button"
-          aria-label="Photo précédente"
+          aria-label={t("Photo précédente")}
           onClick={() => move(-1)}
           className="fixed left-6 top-1/2 z-[2] h-12 w-12 translate-y-[-50%] cursor-pointer border border-[rgba(255,255,255,.4)] bg-[rgba(4,16,49,.65)] text-white transition-[background,color] duration-[250ms] hover:bg-white hover:text-jeca-blue max-tablet:bottom-[.6rem] max-tablet:left-[.7rem] max-tablet:top-auto max-tablet:h-11 max-tablet:w-11 max-tablet:translate-y-0"
         >
@@ -89,7 +91,7 @@ export function JecaGalleryProvider({ photos, children }: { photos: GalleryPhoto
         ) : null}
         <button
           type="button"
-          aria-label="Photo suivante"
+          aria-label={t("Photo suivante")}
           onClick={() => move(1)}
           className="fixed right-6 top-1/2 z-[2] h-12 w-12 translate-y-[-50%] cursor-pointer border border-[rgba(255,255,255,.4)] bg-[rgba(4,16,49,.65)] text-white transition-[background,color] duration-[250ms] hover:bg-white hover:text-jeca-blue max-tablet:bottom-[.6rem] max-tablet:right-[.7rem] max-tablet:top-auto max-tablet:h-11 max-tablet:w-11 max-tablet:translate-y-0"
         >

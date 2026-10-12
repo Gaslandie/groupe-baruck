@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import { useState, type FormEvent } from "react";
 
 import { contactSubjects } from "@/data/contact";
@@ -44,9 +46,9 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
     setStatus("idle");
 
     if (!accessKey) {
-      const subject = encodeURIComponent(`Site Groupe Baruck — ${objet}`);
+      const subject = encodeURIComponent((t("Site Groupe Baruck — ") + String(objet) + t("")));
       const body = encodeURIComponent(
-        [`Nom : ${name}`, `E-mail : ${email}`, `Téléphone ou WhatsApp : ${phone || "Non renseigné"}`, "", message].join(
+        [(t("Nom : ") + String(name) + t("")), (t("E-mail : ") + String(email) + t("")), (t("Téléphone ou WhatsApp : ") + String(phone || "Non renseigné") + t("")), "", message].join(
           "\n",
         ),
       );
@@ -68,8 +70,8 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         },
         body: JSON.stringify({
           access_key: accessKey,
-          subject: `Site Groupe Baruck — ${objet}`,
-          from_name: "Site Groupe Baruck",
+          subject: (t("Site Groupe Baruck — ") + String(objet) + t("")),
+          from_name: t("Site Groupe Baruck"),
           name,
           email,
           phone,
@@ -95,20 +97,15 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
   if (isSuccess) {
     return (
       <div role="status" id={id} className={containerClassName}>
-        <p className="eyebrow col-span-full">Message envoyé</p>
-        <h2 className="col-span-full m-0 max-w-[650px] font-display text-display-xl font-normal leading-[.95] tracking-[-.04em]">
-          Merci, votre message a bien été transmis.
-        </h2>
-        <p className="col-span-full m-0 max-w-[540px] text-small leading-[1.7] text-[#686762]">
-          Nous vous répondons par le canal que vous avez indiqué.
-        </p>
+        <p className="eyebrow col-span-full">{t("Message envoyé")}</p>
+        <h2 className="col-span-full m-0 max-w-[650px] font-display text-display-xl font-normal leading-[.95] tracking-[-.04em]">{t("Merci, votre message a bien été transmis.")}</h2>
+        <p className="col-span-full m-0 max-w-[540px] text-small leading-[1.7] text-[#686762]">{t("Nous vous répondons par le canal que vous avez indiqué.")}</p>
         <a
           href={contacts.whatsappHq.href}
           target="_blank"
           rel="noreferrer"
           className="button button-accent col-span-full w-fit max-tablet:col-auto max-tablet:w-full"
-        >
-          WhatsApp Baruck Siège Guinée <span><Icon name="arrow-up-right" /></span>
+        >{t("WhatsApp Baruck Siège Guinée ")}<span><Icon name="arrow-up-right" /></span>
         </a>
       </div>
     );
@@ -116,17 +113,13 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
 
   return (
     <form id={id} onSubmit={handleSubmit} className={containerClassName}>
-      {showTitle ? <p className="eyebrow col-span-full">Formulaire</p> : null}
+      {showTitle ? <p className="eyebrow col-span-full">{t("Formulaire")}</p> : null}
       <div className="flex flex-col gap-[.7rem]">
-        <label htmlFor={`${id}-name`} className={labelClassName}>
-          Nom complet
-        </label>
+        <label htmlFor={`${id}-name`} className={labelClassName}>{t("Nom complet")}</label>
         <input id={`${id}-name`} name="name" type="text" autoComplete="name" required className={fieldClassName} />
       </div>
       <div className="flex flex-col gap-[.7rem]">
-        <label htmlFor={`${id}-email`} className={labelClassName}>
-          E-mail
-        </label>
+        <label htmlFor={`${id}-email`} className={labelClassName}>{t("E-mail")}</label>
         <input
           id={`${id}-email`}
           name="email"
@@ -138,9 +131,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         />
       </div>
       <div className="flex flex-col gap-[.7rem]">
-        <label htmlFor={`${id}-phone`} className={labelClassName}>
-          Téléphone ou WhatsApp
-        </label>
+        <label htmlFor={`${id}-phone`} className={labelClassName}>{t("Téléphone ou WhatsApp")}</label>
         <input
           id={`${id}-phone`}
           name="phone"
@@ -152,9 +143,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         />
       </div>
       <div className="flex flex-col gap-[.7rem]">
-        <label htmlFor={`${id}-objet`} className={labelClassName}>
-          Objet
-        </label>
+        <label htmlFor={`${id}-objet`} className={labelClassName}>{t("Objet")}</label>
         <div className="relative">
           <select
             id={`${id}-objet`}
@@ -163,9 +152,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
             defaultValue=""
             className={`${fieldClassName} appearance-none pr-9`}
           >
-            <option value="" disabled>
-              Choisir un objet
-            </option>
+            <option value="" disabled>{t("Choisir un objet")}</option>
             {contactSubjects.map((subject) => (
               <option key={subject} value={subject}>
                 {subject}
@@ -196,20 +183,18 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         disabled={isSubmitting}
         className="form-button col-span-full flex min-h-[58px] w-full cursor-pointer items-center justify-between border-0 bg-ink px-6 text-label uppercase tracking-[.13em] text-ivory transition-colors duration-[250ms] disabled:cursor-wait disabled:opacity-70 max-tablet:col-auto"
       >
-        {isSubmitting ? "Envoi…" : "Envoyer le message"} <span><Icon name="arrow-up-right" /></span>
+        {isSubmitting ? t("Envoi…") : t("Envoyer le message")} <span><Icon name="arrow-up-right" /></span>
       </button>
       <p
         aria-live="polite"
         className="col-span-full mb-0 mt-[-.8rem] min-h-4 text-caption leading-[1.6] text-[#6c6a64] max-tablet:col-auto"
       >
-        {status === "fallback" ? "Votre messagerie s’ouvre avec le message prérempli." : null}
+        {status === "fallback" ? t("Votre messagerie s’ouvre avec le message prérempli.") : null}
         {status === "error" ? (
-          <>
-            L’envoi a échoué. Écrivez-nous directement par{" "}
+          <>{t("L’envoi a échoué. Écrivez-nous directement par")}{" "}
             <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="underline hover:text-accent">
               WhatsApp
-            </a>{" "}
-            ou par{" "}
+            </a>{" "}{t("ou par")}{" "}
             <a href={contacts.email.href} className="underline hover:text-accent">
               e-mail
             </a>.

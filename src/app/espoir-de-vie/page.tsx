@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { Metadata, Viewport } from "next";
 
 import { EdvActions } from "@/components/espoir-de-vie/EdvActions";
@@ -20,10 +22,10 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { espoirDeVieSchema } from "@/lib/structured-data";
 
 const description =
-  "Découvrez Espoir de Vie, ses actions en faveur des enfants, des familles et des personnes vulnérables en Côte d’Ivoire, en Guinée et au Burkina Faso.";
+  t("Découvrez Espoir de Vie, ses actions en faveur des enfants, des familles et des personnes vulnérables en Côte d’Ivoire, en Guinée et au Burkina Faso.");
 
 export const metadata: Metadata = {
-  title: { absolute: "Espoir de Vie — Protéger, accompagner, redonner espoir" },
+  title: { absolute: t("Espoir de Vie — Protéger, accompagner, redonner espoir") },
   description,
   alternates: pageAlternates(site.url + routes.edv.slice(1)),
   openGraph: socialMetadata(edvLogo),

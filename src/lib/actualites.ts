@@ -1,3 +1,5 @@
+import { isEnglish, hasEnglishMarkdown, translateContent, translateMarkdown } from "./language.ts";
+
 import fs from "node:fs";
 import path from "node:path";
 
@@ -248,7 +250,11 @@ function parseArticle(filename: string): Article | undefined {
   if (!/^---\r?\n/.test(source)) {
     error(filename, "le fichier doit commencer par un frontmatter YAML délimité par ---.");
   }
-  const { data, content, matter: frontmatter } = matter(source, { language: "yaml" });
+  const parsed = matter(source, { language: "yaml" });
+  const translationPending = isEnglish && !hasEnglishMarkdown(parsed.content);
+  const data = translationPending ? parsed.data : translateContent(parsed.data);
+  const content = translationPending ? parsed.content : translateMarkdown(parsed.content);
+  const frontmatter = parsed.matter;
   if (data.draft !== undefined && typeof data.draft !== "boolean") {
     error(filename, 'le champ "draft" doit être un booléen.');
   }
@@ -285,6 +291,7 @@ function parseArticle(filename: string): Article | undefined {
 
   return {
     slug,
+    ...(translationPending ? { translationPending: true } : {}),
     title: requiredString(data.title, "title", filename),
     date: parseDate(data.date, filename, frontmatter),
     ...(datePrecision ? { datePrecision } : {}),

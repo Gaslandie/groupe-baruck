@@ -1,17 +1,17 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { edvImpact } from "@/data/espoir-de-vie";
 
 export function EdvImpact() {
   return (
     <section
-      aria-label="Quelques repères sur nos actions"
+      aria-label={t("Quelques repères sur nos actions")}
       className="grid grid-cols-[42%_58%] bg-edv-ember-deep text-white max-[1100px]:grid-cols-[46%_54%] max-tablet:block"
     >
       <div className="reveal relative overflow-hidden bg-edv-ink px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:px-[1.3rem] max-tablet:py-20">
-        <p className="edv-kicker edv-kicker-light">Nos actions en chiffres</p>
-        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
-          Des gestes concrets,
-          <br />
-          <em className="font-[inherit] text-edv-gold">des vies accompagnées.</em>
+        <p className="edv-kicker edv-kicker-light">{t("Nos actions en chiffres")}</p>
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">{t("Des gestes concrets,")}<br />
+          <em className="font-[inherit] text-edv-gold">{t("des vies accompagnées.")}</em>
         </h2>
       </div>
       <dl className="reveal-stagger m-0 grid grid-cols-2 max-[430px]:grid-cols-1">

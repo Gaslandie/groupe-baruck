@@ -1,4 +1,8 @@
-import coordonnees from "@content/coordonnees.json" with { type: "json" };
+import { translateContent } from "../lib/language.ts";
+
+import source from "@content/coordonnees.json" with { type: "json" };
+
+const coordonnees = translateContent(source);
 
 /**
  * Coordonnées du Groupe : contenu modifiable depuis le back-office, importé

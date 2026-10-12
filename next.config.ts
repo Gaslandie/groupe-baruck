@@ -35,7 +35,7 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     // L'alias dépend de fichiers privés temporaires : une publication ne doit
     // pas réutiliser les modules JSON résolus vers le dépôt au build précédent.
-    if (process.env.BARUCK_EDITORIAL_ROOT) config.cache = false;
+    if (process.env.BARUCK_EDITORIAL_ROOT || process.env.NEXT_PUBLIC_SITE_LANGUAGE) config.cache = false;
     for (const [request, target] of Object.entries(contentAlias)) {
       config.resolve.alias[request] = path.resolve(target);
     }

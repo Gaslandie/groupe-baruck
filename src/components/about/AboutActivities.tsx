@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { activities } from "@/data/home";
 
 import { AboutSectionHead } from "./AboutSectionHead";
@@ -22,10 +24,10 @@ export function AboutActivities() {
       className="scroll-mt-[92px] bg-paper px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow="Activités principales"
-        title="Les domaines"
-        emphasis="du groupe."
-        text="Autour du pôle guinéen, le groupe réunit des domaines complémentaires : hospitalité, création, production et développement."
+        eyebrow={t("Activités principales")}
+        title={t("Les domaines")}
+        emphasis={t("du groupe.")}
+        text={t("Autour du pôle guinéen, le groupe réunit des domaines complémentaires : hospitalité, création, production et développement.")}
         tone="dark"
       />
 

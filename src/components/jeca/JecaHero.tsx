@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { jecaLogo } from "@/data/media";
 import { jecaPortrait } from "@/data/jeca";
 import { asset } from "@/lib/asset";
@@ -32,9 +34,7 @@ export function JecaHero() {
           className="absolute inset-0 bg-[linear-gradient(180deg,transparent_56%,rgba(3,12,37,.1)_72%,rgba(3,12,37,.84))] max-tablet:bg-[linear-gradient(180deg,rgba(3,12,37,.36)_12%,rgba(3,12,37,.62)_48%,rgba(3,12,37,.95)_100%)]"
         />
         <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
-          <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-jeca-yellow">
-            Président fondateur
-          </span>
+          <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-jeca-yellow">{t("Président fondateur")}</span>
           MR Djoro Joël Shaloom Krasso
         </p>
       </div>
@@ -51,34 +51,25 @@ export function JecaHero() {
           fetchPriority="high"
           className="mb-6 h-16 w-24 bg-white p-1 object-contain max-tablet:mb-5 max-tablet:h-[59px] max-tablet:w-[88px] [@media(max-width:760px)_and_(max-height:700px)]:mb-[.8rem] [@media(max-width:760px)_and_(max-height:700px)]:h-[51px] [@media(max-width:760px)_and_(max-height:700px)]:w-[76px]"
         />
-        <p className="jeca-kicker max-tablet:text-[rgba(255,255,255,.72)] max-tablet:before:bg-jeca-yellow [@media(max-width:760px)_and_(max-height:700px)]:mb-[.8rem]">
-          Créée en 2019
-        </p>
-        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.045em] max-tablet:max-w-[470px] max-tablet:text-white">
-          Réunir la diaspora.
-          <br />
-          <em className="font-normal text-jeca-red max-tablet:text-jeca-yellow">Investir en Afrique.</em>
+        <p className="jeca-kicker max-tablet:text-[rgba(255,255,255,.72)] max-tablet:before:bg-jeca-yellow [@media(max-width:760px)_and_(max-height:700px)]:mb-[.8rem]">{t("Créée en 2019")}</p>
+        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.045em] max-tablet:max-w-[470px] max-tablet:text-white">{t("Réunir la diaspora.")}<br />
+          <em className="font-normal text-jeca-red max-tablet:text-jeca-yellow">{t("Investir en Afrique.")}</em>
         </h1>
-        <p className="mb-[1.6rem] mt-[1.4rem] max-w-[560px] text-body leading-[1.7] text-jeca-muted max-tablet:mb-6 max-tablet:mt-[1.3rem] max-tablet:max-w-[520px] max-tablet:text-small max-tablet:text-[rgba(255,255,255,.74)] [@media(max-width:760px)_and_(max-height:700px)]:mb-[1.1rem] [@media(max-width:760px)_and_(max-height:700px)]:mt-4 [@media(max-width:760px)_and_(max-height:700px)]:leading-[1.6]">
-          La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un
-          lien entre la diaspora et l’Afrique.
-        </p>
+        <p className="mb-[1.6rem] mt-[1.4rem] max-w-[560px] text-body leading-[1.7] text-jeca-muted max-tablet:mb-6 max-tablet:mt-[1.3rem] max-tablet:max-w-[520px] max-tablet:text-small max-tablet:text-[rgba(255,255,255,.74)] [@media(max-width:760px)_and_(max-height:700px)]:mb-[1.1rem] [@media(max-width:760px)_and_(max-height:700px)]:mt-4 [@media(max-width:760px)_and_(max-height:700px)]:leading-[1.6]">{t("La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique.")}</p>
         <div className="jeca-actions">
-          <a href="#editions" className="jeca-button jeca-button-primary">
-            Voir les éditions <span><Icon name="arrow-down" /></span>
+          <a href="#editions" className="jeca-button jeca-button-primary">{t("Voir les éditions ")}<span><Icon name="arrow-down" /></span>
           </a>
-          <a href="#vision" className="jeca-button jeca-button-line">
-            Notre vision <span><Icon name="arrow-down" /></span>
+          <a href="#vision" className="jeca-button jeca-button-line">{t("Notre vision ")}<span><Icon name="arrow-down" /></span>
           </a>
         </div>
         <dl className="mb-0 mt-[clamp(2rem,4vh,3.2rem)] grid max-w-[420px] grid-cols-[repeat(2,minmax(0,150px))] border-t border-jeca-line pt-[1.1rem] max-tablet:mt-8 max-tablet:border-[rgba(255,255,255,.22)] [@media(max-width:760px)_and_(max-height:700px)]:mt-[1.2rem]">
           <div className="pr-[.8rem]">
             <dt className="font-display text-display-sm font-normal leading-none text-jeca-blue max-tablet:text-lead max-tablet:text-white">2019</dt>
-            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">Création de la JECA</dd>
+            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">{t("Création de la JECA")}</dd>
           </div>
           <div className="pr-[.8rem]">
             <dt className="font-display text-display-sm font-normal leading-none text-jeca-blue max-tablet:text-lead max-tablet:text-white">03</dt>
-            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">Éditions du forum</dd>
+            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">{t("Éditions du forum")}</dd>
           </div>
         </dl>
       </div>

@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { activities } from "@/data/home";
@@ -22,8 +24,8 @@ export function ActivitiesSection() {
       className="bg-paper-deep px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,10vw,10rem)] text-ink max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <SectionHead
-        title="Nos autres activités"
-        text="Des domaines complémentaires réunis autour de l’hospitalité, de la création, de la production et du développement."
+        title={t("Nos autres activités")}
+        text={t("Des domaines complémentaires réunis autour de l’hospitalité, de la création, de la production et du développement.")}
         tone="dark"
       />
       <div className="reveal-stagger grid grid-cols-3 gap-[clamp(.9rem,1.6vw,1.4rem)] max-desktop:grid-cols-2 max-tablet:grid-cols-1">
@@ -32,7 +34,7 @@ export function ActivitiesSection() {
             key={activity.id}
             id={activity.id}
             href={`${routes.home}#activites`}
-            aria-label={`Découvrir l’activité ${activity.title}`}
+            aria-label={(t("Découvrir l’activité ") + String(activity.title) + t(""))}
             className="group reveal flex min-h-[170px] scroll-mt-[92px] flex-col rounded-[10px] border border-[rgba(11,12,14,.09)] bg-ivory p-[1.7rem] shadow-[0_1px_2px_rgba(11,12,14,.05)] transition-[transform,border-color,box-shadow] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-y-[-4px] hover:border-[rgba(11,12,14,.18)] hover:shadow-[0_18px_40px_rgba(11,12,14,.12)] focus-visible:translate-y-[-4px] focus-visible:border-[rgba(11,12,14,.18)] focus-visible:shadow-[0_18px_40px_rgba(11,12,14,.12)] max-tablet:min-h-0 max-tablet:p-[1.5rem]"
           >
             <div className="flex items-baseline gap-[1.05rem]">

@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { Metadata, Viewport } from "next";
 
 import { EditionNav } from "@/components/jeca/EditionNav";
@@ -17,9 +19,9 @@ import { routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: { absolute: "JECA — Vision, engagement et forums" },
+  title: { absolute: t("JECA — Vision, engagement et forums") },
   description:
-    "Découvrez la JECA, créée en 2019, sa vision pour l’investissement en Afrique et les trois éditions de son forum.",
+    t("Découvrez la JECA, créée en 2019, sa vision pour l’investissement en Afrique et les trois éditions de son forum."),
   alternates: pageAlternates(site.url + routes.jeca.slice(1)),
   openGraph: socialMetadata(jecaGalleries[0].photos[0]),
 };

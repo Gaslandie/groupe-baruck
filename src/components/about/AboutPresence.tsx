@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { presenceCountries } from "@/data/about";
@@ -23,10 +25,10 @@ export function AboutPresence() {
       className="bg-ink px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] text-ivory max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow="Présence internationale"
-        title="Cinq pays,"
-        emphasis="une même ambition."
-        text="La Guinée comme point d’ancrage, le Sénégal et la Côte d’Ivoire comme horizon de développement, la France et le Cap-Vert où le groupe est représenté."
+        eyebrow={t("Présence internationale")}
+        title={t("Cinq pays,")}
+        emphasis={t("une même ambition.")}
+        text={t("La Guinée comme point d’ancrage, le Sénégal et la Côte d’Ivoire comme horizon de développement, la France et le Cap-Vert où le groupe est représenté.")}
         tone="light"
       />
 

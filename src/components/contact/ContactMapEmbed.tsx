@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "../ui/Icon";
 
@@ -20,30 +22,26 @@ export function ContactMapEmbed({ embedUrl }: ContactMapEmbedProps) {
     return (
       <div className={`${frameClass} flex flex-col items-center justify-center px-[1.3rem] py-12 text-center max-tablet:py-14`}>
         <p className="m-0 font-display text-display-sm leading-[1.1]">Kobayah, Conakry</p>
-        <p id="map-privacy-info" className="mb-0 mt-3 max-w-[420px] text-small leading-[1.7] text-ink-soft">
-          Cette carte est fournie par Google Maps. En l’autorisant, vous permettez à Google de
-          recevoir des données techniques, dont votre adresse IP, et d’utiliser ses propres
-          cookies ou traceurs. La carte reste bloquée tant que vous ne l’autorisez pas.
-        </p>
-        <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noreferrer" className="mt-3 text-caption underline underline-offset-4">Politique de confidentialité de Google <Icon name="arrow-up-right" /></a>
+        <p id="map-privacy-info" className="mb-0 mt-3 max-w-[420px] text-small leading-[1.7] text-ink-soft">{t("Cette carte est fournie par Google Maps. En l’autorisant, vous permettez à Google de recevoir des données techniques, dont votre adresse IP, et d’utiliser ses propres cookies ou traceurs. La carte reste bloquée tant que vous ne l’autorisez pas.")}</p>
+        <a href="https://policies.google.com/privacy?hl=fr" target="_blank" rel="noreferrer" className="mt-3 text-caption underline underline-offset-4">{t("Politique de confidentialité de Google ")}<Icon name="arrow-up-right" /></a>
         <div className="mt-6 flex flex-wrap justify-center gap-3 max-tablet:w-full">
-          <button ref={allowRef} type="button" aria-describedby="map-privacy-info" onClick={() => setChoice("allowed")} className="button button-outline max-tablet:w-full">Autoriser Google Maps</button>
-          {choice === "pending" ? <button type="button" onClick={() => setChoice("declined")} className="button button-outline max-tablet:w-full">Ne pas afficher</button> : null}
+          <button ref={allowRef} type="button" aria-describedby="map-privacy-info" onClick={() => setChoice("allowed")} className="button button-outline max-tablet:w-full">{t("Autoriser Google Maps")}</button>
+          {choice === "pending" ? <button type="button" onClick={() => setChoice("declined")} className="button button-outline max-tablet:w-full">{t("Ne pas afficher")}</button> : null}
         </div>
         <p role="status" className="mt-4 max-w-[420px] text-caption leading-[1.5] text-ink-soft">
-          {choice === "declined" ? "La carte reste désactivée. L’adresse du siège est disponible à côté." : "Vous pouvez continuer sans afficher la carte. Ce choix vaut pour cette page uniquement."}
+          {choice === "declined" ? t("La carte reste désactivée. L’adresse du siège est disponible à côté.") : t("Vous pouvez continuer sans afficher la carte. Ce choix vaut pour cette page uniquement.")}
         </p>
       </div>
     );
   }
 
   return (
-    <div ref={mapRef} tabIndex={-1} role="group" aria-label="Carte du siège, Kobayah, Conakry" className={frameClass}>
+    <div ref={mapRef} tabIndex={-1} role="group" aria-label={t("Carte du siège, Kobayah, Conakry")} className={frameClass}>
       <div className="flex flex-wrap items-center justify-between gap-3 bg-paper px-4 py-3">
-        <p className="m-0 text-caption">Google Maps est autorisé sur cette page.</p>
-        <button type="button" onClick={() => setChoice("declined")} className="text-caption underline underline-offset-4">Retirer l’autorisation et masquer la carte</button>
+        <p className="m-0 text-caption">{t("Google Maps est autorisé sur cette page.")}</p>
+        <button type="button" onClick={() => setChoice("declined")} className="text-caption underline underline-offset-4">{t("Retirer l’autorisation et masquer la carte")}</button>
       </div>
-      <iframe title="Carte Google Maps du siège du Groupe Baruck, Kobayah, Conakry" src={embedUrl} referrerPolicy="no-referrer" allowFullScreen className="h-full min-h-[420px] w-full border-0 max-tablet:min-h-[320px]" />
+      <iframe title={t("Carte Google Maps du siège du Groupe Baruck, Kobayah, Conakry")} src={embedUrl} referrerPolicy="no-referrer" allowFullScreen className="h-full min-h-[420px] w-full border-0 max-tablet:min-h-[320px]" />
     </div>
   );
 }

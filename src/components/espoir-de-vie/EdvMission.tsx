@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { edvMissionPhoto, edvPillars } from "@/data/espoir-de-vie";
 import { asset } from "@/lib/asset";
 
@@ -11,32 +13,20 @@ export function EdvMission() {
       className="reveal-stagger grid scroll-mt-[72px] grid-cols-[1fr_.8fr] gap-[clamp(3rem,7vw,8rem)] bg-edv-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(6rem,10vw,11rem)] max-[1100px]:grid-cols-[1fr_.9fr] max-[1100px]:gap-12 max-tablet:block max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <div className="reveal">
-        <p className="edv-kicker">Notre mission</p>
-        <h2 className={headingClass}>
-          Chaque enfant mérite
-          <br />
-          <em className="font-[inherit] text-edv-ember">protection et avenir.</em>
+        <p className="edv-kicker">{t("Notre mission")}</p>
+        <h2 className={headingClass}>{t("Chaque enfant mérite")}<br />
+          <em className="font-[inherit] text-edv-ember">{t("protection et avenir.")}</em>
         </h2>
       </div>
       <div className="reveal max-w-[650px] self-end max-tablet:mt-10">
-        <p className="mb-6 mt-0 font-display text-display-xs font-normal leading-[1.5]">
-          Espoir de Vie s’engage auprès des enfants orphelins, des familles fragilisées, des femmes et des personnes
-          sans-abri. L’éducation et la formation sont au cœur de son action.
-        </p>
-        <p className="m-0 text-body leading-[1.8] text-edv-muted">
-          L’action de la fondation s’inscrit dans l’esprit de la Déclaration des droits de l’enfant : le droit à la
-          vie, à l’éducation, à la santé, à une alimentation suffisante et à la protection.
-        </p>
+        <p className="mb-6 mt-0 font-display text-display-xs font-normal leading-[1.5]">{t("Espoir de Vie s’engage auprès des enfants orphelins, des familles fragilisées, des femmes et des personnes sans-abri. L’éducation et la formation sont au cœur de son action.")}</p>
+        <p className="m-0 text-body leading-[1.8] text-edv-muted">{t("L’action de la fondation s’inscrit dans l’esprit de la Déclaration des droits de l’enfant : le droit à la vie, à l’éducation, à la santé, à une alimentation suffisante et à la protection.")}</p>
         {/* Conviction du président fondateur, donnée par le client le 29 septembre 2026. */}
         <aside className="mt-8 grid grid-cols-[110px_1fr] gap-6 border-y border-edv-line py-6 max-tablet:grid-cols-1 max-tablet:gap-[.8rem]">
-          <span className="text-micro font-extrabold uppercase tracking-[.14em] text-edv-ember">
-            Notre conviction
-          </span>
+          <span className="text-micro font-extrabold uppercase tracking-[.14em] text-edv-ember">{t("Notre conviction")}</span>
           <figure className="m-0">
-            <blockquote className="m-0 font-display text-base italic leading-[1.5]">
-              « Le problème de l’Afrique n’est pas la pauvreté, mais le manque d’éducation et de formation. »
-            </blockquote>
-            <figcaption className="mt-3 text-caption leading-[1.6] text-edv-muted">Le président fondateur</figcaption>
+            <blockquote className="m-0 font-display text-base italic leading-[1.5]">{t("« Le problème de l’Afrique n’est pas la pauvreté, mais le manque d’éducation et de formation. »")}</blockquote>
+            <figcaption className="mt-3 text-caption leading-[1.6] text-edv-muted">{t("Le président fondateur")}</figcaption>
           </figure>
         </aside>
       </div>
@@ -52,7 +42,7 @@ export function EdvMission() {
         />
       </figure>
       <div
-        aria-label="Les cinq piliers d’Espoir de Vie"
+        aria-label={t("Les cinq piliers d’Espoir de Vie")}
         className="reveal-stagger col-span-full mt-12 grid grid-cols-5 border-t border-edv-line max-[1100px]:grid-cols-3 max-[1100px]:[&>article:nth-child(3)]:border-r-0 max-[1100px]:[&>article:nth-child(n+4)]:border-t max-[1100px]:[&>article:nth-child(n+4)]:border-edv-line max-tablet:mt-12 max-tablet:grid-cols-1 max-tablet:[&>article:nth-child(n+4)]:border-t-0"
       >
         {edvPillars.map((pillar) => (

@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { facebookPages, hqHours, hqMap } from "@/data/contact";
 import { hqAddress } from "@/data/site";
 import { ContactMapEmbed } from "@/components/contact/ContactMapEmbed";
@@ -7,20 +9,16 @@ export function ContactMap() {
   return (
     <section
       id="carte"
-      aria-label="Plan d’accès"
+      aria-label={t("Plan d’accès")}
       className="scroll-mt-[92px] grid grid-cols-[38%_62%] gap-x-[clamp(2rem,5vw,5rem)] bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(3.5rem,6vw,6rem)] max-tablet:grid-cols-1 max-tablet:gap-y-10 max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <div className="reveal flex flex-col justify-center">
-        <p className="eyebrow">Nous trouver</p>
-        <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.92] tracking-[-.05em]">
-          Le siège,
-          <br />
-          <em className="font-normal text-accent">à Kobayah.</em>
+        <p className="eyebrow">{t("Nous trouver")}</p>
+        <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.92] tracking-[-.05em]">{t("Le siège,")}<br />
+          <em className="font-normal text-accent">{t("à Kobayah.")}</em>
         </h2>
         <p className="mb-0 mt-6 max-w-[420px] text-small leading-[1.7] text-[#686762]">{hqAddress}</p>
-        <span className="mb-[.35rem] mt-6 block text-micro uppercase tracking-[.15em] text-accent">
-          Horaires · Siège
-        </span>
+        <span className="mb-[.35rem] mt-6 block text-micro uppercase tracking-[.15em] text-accent">{t("Horaires · Siège")}</span>
         <dl className="mt-3 border-t border-line">
           {hqHours.map(({ days, hours }) => (
             <div key={days} className="grid grid-cols-[130px_1fr] gap-4 border-b border-line py-[.5rem]">
@@ -34,18 +32,15 @@ export function ContactMap() {
           target="_blank"
           rel="noreferrer"
           className="button button-accent mt-6 w-fit max-tablet:w-full"
-        >
-          Itinéraire Google Maps <span><Icon name="arrow-up-right" /></span>
+        >{t("Itinéraire Google Maps ")}<span><Icon name="arrow-up-right" /></span>
         </a>
         <div className="mt-8 grid grid-cols-2 gap-6 max-[430px]:grid-cols-1">
           <div>
-            <span className="mb-[.35rem] block text-micro uppercase tracking-[.15em] text-accent">Présence</span>
-            <p className="m-0 font-display text-lead">
-              Guinée · Sénégal · Côte d’Ivoire
-            </p>
+            <span className="mb-[.35rem] block text-micro uppercase tracking-[.15em] text-accent">{t("Présence")}</span>
+            <p className="m-0 font-display text-lead">{t("Guinée · Sénégal · Côte d’Ivoire")}</p>
           </div>
           <div>
-            <span className="mb-[.35rem] block text-micro uppercase tracking-[.15em] text-accent">Réseaux</span>
+            <span className="mb-[.35rem] block text-micro uppercase tracking-[.15em] text-accent">{t("Réseaux")}</span>
             <ul className="m-0 flex list-none flex-col gap-[.35rem] p-0">
               {facebookPages.map(({ country, href }) => (
                 <li key={country}>

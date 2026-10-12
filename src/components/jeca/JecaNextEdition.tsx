@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { jecaNextEdition } from "@/data/jeca";
 import { Icon } from "../ui/Icon";
 
@@ -9,14 +11,10 @@ export function JecaNextEdition() {
     >
       <div className="reveal grid grid-cols-[minmax(0,1fr)_auto] items-end gap-[clamp(2rem,5vw,5rem)] max-[1080px]:grid-cols-1 max-[1080px]:items-start">
         <div>
-          <p className="jeca-kicker light">Prochaine édition</p>
-          <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.045em]">
-            La quatrième édition,
-            <em className="block font-normal text-jeca-yellow">à venir.</em>
+          <p className="jeca-kicker light">{t("Prochaine édition")}</p>
+          <h2 className="m-0 text-balance font-display text-display-lg font-normal leading-[.95] tracking-[-.045em]">{t("La quatrième édition,")}<em className="block font-normal text-jeca-yellow">{t("à venir.")}</em>
           </h2>
-          <p className="mb-0 mt-[1.2rem] max-w-[520px] text-body leading-[1.7] text-[rgba(255,255,255,.72)]">
-            La date et le lieu de la 4e édition seront annoncés ici.
-          </p>
+          <p className="mb-0 mt-[1.2rem] max-w-[520px] text-body leading-[1.7] text-[rgba(255,255,255,.72)]">{t("La date et le lieu de la 4e édition seront annoncés ici.")}</p>
         </div>
         <div className="jeca-actions">
           <a
@@ -24,12 +22,9 @@ export function JecaNextEdition() {
             target="_blank"
             rel="noreferrer"
             className="jeca-button jeca-button-white"
-          >
-            Être informé sur WhatsApp <span><Icon name="arrow-up-right" /></span>
+          >{t("Être informé sur WhatsApp ")}<span><Icon name="arrow-up-right" /></span>
           </a>
-          <a href={jecaNextEdition.emailHref} className="jeca-button jeca-button-outline">
-            Être informé par e-mail
-          </a>
+          <a href={jecaNextEdition.emailHref} className="jeca-button jeca-button-outline">{t("Être informé par e-mail")}</a>
         </div>
       </div>
     </section>

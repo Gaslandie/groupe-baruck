@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import type { Article, NewsImage } from "@/data/actualites";
@@ -81,7 +83,7 @@ function EventBlock({ article, eyebrow }: { article: Article; eyebrow?: string }
       {photos.length > 0 ? (
         <Link
           href={href}
-          aria-label={`Voir l’article : ${article.title}`}
+          aria-label={(t("Voir l’article : ") + String(article.title) + t(""))}
           tabIndex={-1}
           className="reveal-media mt-[clamp(2.5rem,5vw,4.5rem)] grid grid-cols-4 gap-[.7rem] max-tablet:grid-cols-2 max-tablet:gap-[.45rem]"
         >
@@ -100,8 +102,7 @@ function EventBlock({ article, eyebrow }: { article: Article; eyebrow?: string }
         </Link>
       ) : null}
 
-      <Link href={href} className="text-link mt-[clamp(2.2rem,4vw,3.2rem)]">
-        Voir l’événement <span><Icon name="arrow-up-right" /></span>
+      <Link href={href} className="text-link mt-[clamp(2.2rem,4vw,3.2rem)]">{t("Voir l’événement ")}<span><Icon name="arrow-up-right" /></span>
       </Link>
     </article>
   );

@@ -1,3 +1,5 @@
+import { translateContent } from "./language.ts";
+
 import fs from "node:fs";
 import path from "node:path";
 
@@ -101,7 +103,7 @@ function parseProduct(value: unknown, seen: Set<string>): BrandProduct {
 
 /** Catalogue de la marque, lu au build : ordre du fichier, aucune valeur par défaut. */
 export function loadProducts(): BrandProduct[] {
-  const source: unknown = JSON.parse(fs.readFileSync(catalogueFile, "utf8"));
+  const source: unknown = translateContent(JSON.parse(fs.readFileSync(catalogueFile, "utf8")));
   const list = (source as { products?: unknown }).products;
   if (!Array.isArray(list)) {
     error("le fichier doit contenir une liste « products ».");

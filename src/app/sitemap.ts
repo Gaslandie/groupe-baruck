@@ -1,3 +1,5 @@
+import { isEnglish } from "../lib/language.ts";
+
 import type { MetadataRoute } from "next";
 
 import { routes, site } from "@/data/site";
@@ -17,5 +19,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: article.date,
   }));
 
-  return [...pages, ...articles];
+  return [...pages, ...articles].flatMap((entry) => {
+    const fr = isEnglish ? entry.url.replace(/\/en\//, "/") : entry.url;
+    const en = isEnglish ? entry.url : entry.url.replace(site.url, site.url + "en/");
+    const alternates = { languages: { fr, en } };
+    return isEnglish ? [{ ...entry, alternates }] : [{ ...entry, url: fr, alternates }, { ...entry, url: en, alternates }];
+  });
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 type VideoPlayerProps = {
   src: string;
   poster?: string;
@@ -32,8 +34,6 @@ export function VideoPlayer({ src, poster, width, height, className = "", label 
       poster={poster}
       className={`h-auto w-full bg-black ${className}`}
     >
-      <source src={src} type="video/mp4" />
-      Votre navigateur ne peut pas lire cette vidéo.
-    </video>
+      <source src={src} type="video/mp4" />{t("Votre navigateur ne peut pas lire cette vidéo.")}</video>
   );
 }

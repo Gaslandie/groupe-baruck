@@ -1,3 +1,5 @@
+import { isEnglish } from "./language.ts";
+
 import type { Metadata } from "next";
 
 import { newsFeedTitle } from "@/data/actualites";
@@ -7,6 +9,11 @@ import { site } from "@/data/site";
 export function pageAlternates(canonical: string): Metadata["alternates"] {
   return {
     canonical,
+    languages: {
+      fr: isEnglish ? canonical.replace(/\/en\//, "/") : canonical,
+      en: isEnglish ? canonical : canonical.replace(site.url, site.url + "en/"),
+      "x-default": isEnglish ? canonical.replace(/\/en\//, "/") : canonical,
+    },
     types: {
       "application/rss+xml": [{ url: site.url + "feed.xml", title: newsFeedTitle }],
     },
@@ -29,7 +36,7 @@ export type SocialImage = {
 export function socialMetadata(image: SocialImage, alt?: string): Metadata["openGraph"] {
   return {
     type: "website",
-    locale: "fr_FR",
+    locale: isEnglish ? "en_GB" : "fr_FR",
     siteName: site.name,
     images: [
       {

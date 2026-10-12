@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import type { ArticleSummary } from "@/data/actualites";
@@ -23,7 +25,7 @@ export function NewsCard({ article }: NewsCardProps) {
         {article.title}
       </h3>
       <p className="mt-3 text-small leading-[1.65] text-[#696963]">{article.excerpt}</p>
-      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">Lire l’article</span>
+      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">{t("Lire l’article")}</span>
     </Link>
   );
 }

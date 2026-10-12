@@ -1,14 +1,14 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { jecaEditionNav } from "@/data/jeca";
 
 export function EditionNav() {
   return (
     <nav
-      aria-label="Éditions passées de la JECA"
+      aria-label={t("Éditions passées de la JECA")}
       className="border-b border-jeca-line bg-white text-jeca-ink"
     >
-      <p className="jeca-kicker mb-0 border-b border-jeca-line px-[clamp(1.2rem,3vw,3rem)] py-[.9rem]">
-        Éditions passées
-      </p>
+      <p className="jeca-kicker mb-0 border-b border-jeca-line px-[clamp(1.2rem,3vw,3rem)] py-[.9rem]">{t("Éditions passées")}</p>
       <div className="grid grid-cols-3 max-tablet:block">
         {jecaEditionNav.map((item) => (
           <a

@@ -67,8 +67,14 @@ test("les articles du dépôt sont lisibles avec et sans préfixe d’hébergeme
     assert.equal(result.length, publishedCount);
     for (const article of result) {
       const source = matter(fs.readFileSync(path.join(articles, `${article.slug}.md`), "utf8"));
-      assert.equal(article.title, source.data.title);
-      assert.equal(article.excerpt, source.data.excerpt);
+      if (process.env.NEXT_PUBLIC_SITE_LANGUAGE === "en") {
+        assert.notEqual(article.title, source.data.title);
+        assert.notEqual(article.excerpt, source.data.excerpt);
+        assert.equal(article.translationPending, undefined);
+      } else {
+        assert.equal(article.title, source.data.title);
+        assert.equal(article.excerpt, source.data.excerpt);
+      }
       assert.equal(article.draft, false);
     }
   }

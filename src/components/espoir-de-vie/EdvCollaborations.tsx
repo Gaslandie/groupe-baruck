@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { edvCollaborations } from "@/data/espoir-de-vie";
 
 import { EdvSectionHead } from "./EdvSectionHead";
@@ -6,10 +8,10 @@ export function EdvCollaborations() {
   return (
     <section className="bg-edv-paper-deep px-[clamp(1.3rem,5vw,6rem)] py-[clamp(6rem,10vw,10rem)] max-tablet:px-[1.3rem] max-tablet:py-20">
       <EdvSectionHead
-        eyebrow="À nos côtés"
-        title="Faire ensemble,"
-        emphasis="pour aller plus loin."
-        text="Espoir de Vie crée des liens avec des fondations, des communautés religieuses et des organisations associatives qui partagent son engagement."
+        eyebrow={t("À nos côtés")}
+        title={t("Faire ensemble,")}
+        emphasis={t("pour aller plus loin.")}
+        text={t("Espoir de Vie crée des liens avec des fondations, des communautés religieuses et des organisations associatives qui partagent son engagement.")}
         tone="dark"
       />
       <div className="reveal-stagger grid grid-cols-3 border-t border-edv-line max-tablet:grid-cols-1">

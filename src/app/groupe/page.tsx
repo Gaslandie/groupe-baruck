@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { Metadata } from "next";
 
 import { AboutActivities } from "@/components/about/AboutActivities";
@@ -20,9 +22,9 @@ import { routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: "Le Groupe",
+  title: t("Le Groupe"),
   description:
-    "Le Groupe Baruck — la direction, les fonctions et les engagements de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, président de la JECA et de l’ONG Espoir de Vie.",
+    t("Le Groupe Baruck — la direction, les fonctions et les engagements de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, président de la JECA et de l’ONG Espoir de Vie."),
   alternates: pageAlternates(site.url + routes.group.slice(1)),
   openGraph: socialMetadata(presidentOnu1),
 };

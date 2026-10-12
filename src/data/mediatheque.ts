@@ -1,3 +1,5 @@
+import { translate as t } from "../lib/language.ts";
+
 import { edvGallery } from "./espoir-de-vie";
 import { jecaGalleries } from "./jeca";
 import { studioGallery } from "./services";
@@ -24,7 +26,7 @@ export type MediaCollection = {
 
 export const mediaCategoryLabels: Record<MediaCategory, string> = {
   jeca: "JECA",
-  "studio-photo": "Studio photo",
+  "studio-photo": t("Studio photo"),
   "espoir-de-vie": "Espoir de Vie",
 };
 
@@ -51,7 +53,7 @@ export const mediaCollections: MediaCollection[] = [
   {
     id: "espoir-de-vie",
     category: "espoir-de-vie",
-    title: "Les actions d’Espoir de Vie",
+    title: t("Les actions d’Espoir de Vie"),
     href: `${routes.edv}#galerie`,
     photos: edvGallery.map(({ photo, caption }) => ({
       src: photo.src,

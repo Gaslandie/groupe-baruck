@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -13,7 +15,7 @@ import { revealWithin } from "@/lib/reveal";
 type MediaFilter = "all" | MediaCategory;
 
 const filters: { value: MediaFilter; label: string }[] = [
-  { value: "all", label: "Toutes" },
+  { value: "all", label: t("Toutes") },
   { value: "jeca", label: mediaCategoryLabels.jeca },
   { value: "studio-photo", label: mediaCategoryLabels["studio-photo"] },
   { value: "espoir-de-vie", label: mediaCategoryLabels["espoir-de-vie"] },
@@ -43,7 +45,7 @@ export function MediaLibrary() {
       ref={rootRef}
       className="scroll-mt-[92px] bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,8vw,8rem)]"
     >
-      <nav aria-label="Filtrer la médiathèque" className="mb-[clamp(2.5rem,4vw,4rem)]">
+      <nav aria-label={t("Filtrer la médiathèque")} className="mb-[clamp(2.5rem,4vw,4rem)]">
         <ul className="m-0 flex list-none flex-wrap gap-[.6rem] p-0">
           {filters.map((item) => {
             const isActive = item.value === filter;
@@ -81,9 +83,7 @@ export function MediaLibrary() {
                 {collection.title}
               </h2>
             </div>
-            <Link href={collection.href} className="text-link">
-              Voir la galerie d’origine
-            </Link>
+            <Link href={collection.href} className="text-link">{t("Voir la galerie d’origine")}</Link>
           </div>
           <div className="grid grid-cols-3 gap-[.8rem] max-desktop:grid-cols-2 max-[430px]:grid-cols-1">
             {collection.photos.map((photo) => (

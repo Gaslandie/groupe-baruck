@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { studioGear, studioSpaces } from "@/data/services";
 import { asset } from "@/lib/asset";
 
@@ -6,17 +8,12 @@ export function StudioSpaces() {
     <section className="bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
       <div className="mb-[clamp(2.5rem,5vw,4rem)] grid grid-cols-[minmax(280px,.8fr)_1.2fr] gap-[clamp(3rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:gap-10">
         <div>
-          <p className="eyebrow">Nos espaces</p>
-          <h2 className="mb-0 mt-2 font-display text-display-xl font-normal leading-[.92] tracking-[-.045em]">
-            Deux studios,
-            <br />
-            <em className="font-normal text-accent">une même exigence.</em>
+          <p className="eyebrow">{t("Nos espaces")}</p>
+          <h2 className="mb-0 mt-2 font-display text-display-xl font-normal leading-[.92] tracking-[-.045em]">{t("Deux studios,")}<br />
+            <em className="font-normal text-accent">{t("une même exigence.")}</em>
           </h2>
         </div>
-        <p className="m-0 max-w-[640px] self-end leading-[1.8] text-[#65645f]">
-          Un studio classique pour les séances du quotidien, un studio VIP pour les prises de vue haut de gamme,
-          et un espace entièrement dédié aux anniversaires des enfants.
-        </p>
+        <p className="m-0 max-w-[640px] self-end leading-[1.8] text-[#65645f]">{t("Un studio classique pour les séances du quotidien, un studio VIP pour les prises de vue haut de gamme, et un espace entièrement dédié aux anniversaires des enfants.")}</p>
       </div>
       <div className="grid grid-cols-3 gap-[1.1rem] max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
         {studioSpaces.map((space) => (
@@ -66,9 +63,7 @@ export function StudioSpaces() {
         ))}
       </div>
       <div className="mt-[clamp(2rem,4vw,3rem)]">
-        <p className="mb-[1.4rem] mt-0 flex items-center gap-[.75rem] text-micro uppercase tracking-[.14em] text-accent before:h-px before:w-7 before:bg-current before:content-['']">
-          Le matériel du studio
-        </p>
+        <p className="mb-[1.4rem] mt-0 flex items-center gap-[.75rem] text-micro uppercase tracking-[.14em] text-accent before:h-px before:w-7 before:bg-current before:content-['']">{t("Le matériel du studio")}</p>
         <ul className="m-0 grid list-none grid-cols-3 gap-[1.1rem] p-0 max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
           {studioGear.map((item) => (
             <li key={item.title} className="overflow-hidden border border-line bg-ivory">

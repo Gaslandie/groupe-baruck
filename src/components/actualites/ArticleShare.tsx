@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import { useState } from "react";
 
 type ArticleShareProps = {
@@ -19,25 +21,19 @@ export function ArticleShare({ title, url }: ArticleShareProps) {
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      setFeedback("Lien copié");
+      setFeedback(t("Lien copié"));
     } catch {
-      setFeedback("Copie impossible");
+      setFeedback(t("Copie impossible"));
     }
   };
 
   return (
     <div className="mx-auto mt-[clamp(3rem,5vw,5rem)] max-w-[1100px] border-t border-line pt-8">
-      <h2 className="eyebrow">Partager cet article</h2>
+      <h2 className="eyebrow">{t("Partager cet article")}</h2>
       <div className="flex flex-wrap gap-3">
-        <a href={whatsappHref} target="_blank" rel="noreferrer" className={actionClass}>
-          Partager sur WhatsApp
-        </a>
-        <a href={facebookHref} target="_blank" rel="noreferrer" className={actionClass}>
-          Partager sur Facebook
-        </a>
-        <button type="button" onClick={copyLink} className={actionClass}>
-          Copier le lien
-        </button>
+        <a href={whatsappHref} target="_blank" rel="noreferrer" className={actionClass}>{t("Partager sur WhatsApp")}</a>
+        <a href={facebookHref} target="_blank" rel="noreferrer" className={actionClass}>{t("Partager sur Facebook")}</a>
+        <button type="button" onClick={copyLink} className={actionClass}>{t("Copier le lien")}</button>
       </div>
       <p
         aria-live="polite"

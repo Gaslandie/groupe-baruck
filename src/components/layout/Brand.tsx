@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { brandLogo } from "@/data/media";
@@ -12,7 +14,7 @@ export function Brand({ className = "" }: BrandProps) {
   return (
     <Link
       href={routes.home}
-      aria-label="Groupe Baruck — Accueil"
+      aria-label={t("Groupe Baruck — Accueil")}
       className={[
         "relative z-[2] inline-flex w-[var(--brand-width,180px)] origin-left flex-col items-stretch gap-[.3rem] uppercase transition-transform duration-[350ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:scale-[1.15] focus-visible:scale-[1.15] max-tablet:w-[var(--brand-mobile-width,142px)] max-tablet:gap-[.24rem]",
         className,

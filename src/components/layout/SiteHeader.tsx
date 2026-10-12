@@ -1,9 +1,13 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { mainNav, routes, type RouteKey } from "@/data/site";
+
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 import { Brand } from "./Brand";
 import { Icon } from "../ui/Icon";
@@ -186,7 +190,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         <Brand />
 
         <nav
-          aria-label="Navigation principale"
+          aria-label={t("Navigation principale")}
           className="hidden items-center gap-[clamp(.8rem,1.25vw,1.4rem)] text-label uppercase tracking-[.085em] wide:flex"
         >
           {mainNav.map((item) => {
@@ -258,17 +262,17 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
           })}
         </nav>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-4">
+          <LanguageSwitcher />
           <Link
             href={routes.contact}
             className="border-b border-[rgba(255,255,255,.3)] pb-[.3rem] text-caption uppercase tracking-[.08em] wide:hidden max-tablet:hidden"
-          >
-            Parler avec nous <span className={["ml-[.4rem]", styles.contactArrow].join(" ")}><Icon name="arrow-up-right" /></span>
+          >{t("Parler avec nous ")}<span className={["ml-[.4rem]", styles.contactArrow].join(" ")}><Icon name="arrow-up-right" /></span>
           </Link>
           <button
             id="menu-button"
             type="button"
-            aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-label={isOpen ? t("Fermer le menu") : t("Ouvrir le menu")}
             aria-controls="side-nav"
             aria-expanded={isOpen}
             onClick={() => setIsOpen((open) => !open)}
@@ -295,7 +299,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
 
       <aside
         id="side-nav"
-        aria-label="Navigation principale"
+        aria-label={t("Navigation principale")}
         aria-hidden={!isOpen}
         className={[
           "fixed inset-y-0 left-0 z-[90] flex w-[min(42vw,680px)] min-w-[520px] flex-col overflow-y-auto p-[clamp(1.5rem,4vw,4.5rem)] transition-[transform,visibility] duration-[550ms] ease-[cubic-bezier(.77,0,.18,1)] max-tablet:w-[94vw] max-tablet:min-w-0 max-tablet:p-6",
@@ -309,18 +313,18 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             ref={closeButtonRef}
             id="close-menu"
             type="button"
-            aria-label="Fermer le menu"
+            aria-label={t("Fermer le menu")}
             onClick={() => setIsOpen(false)}
             className="flex cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-inherit"
           >
-            <span className="text-label uppercase tracking-[.18em]">Fermer</span>
+            <span className="text-label uppercase tracking-[.18em]">{t("Fermer")}</span>
             <span aria-hidden="true" className="font-sans text-[2rem] font-normal leading-none">
               <Icon name="close" />
             </span>
           </button>
         </div>
 
-        <nav aria-label="Menu principal" className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-col">
+        <nav aria-label={t("Menu principal")} className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-col">
           {mainNav.map((item) => {
             const itemCurrent = currentAttributes(item.href);
             const featuredChildren = item.children?.filter((child) => child.featured) ?? [];

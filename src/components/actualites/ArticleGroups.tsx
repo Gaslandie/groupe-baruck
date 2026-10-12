@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import { useState } from "react";
 
 import type { NewsGroup } from "@/data/actualites";
@@ -71,7 +73,7 @@ export function ArticleGroups({ title, intro, groups }: ArticleGroupsProps) {
 
       <div
         role="tablist"
-        aria-label="Choisir un groupe de photos"
+        aria-label={t("Choisir un groupe de photos")}
         className="reveal mb-[clamp(1.8rem,3vw,2.6rem)] flex flex-wrap gap-[.5rem]"
       >
         {groups.map((group, index) => {

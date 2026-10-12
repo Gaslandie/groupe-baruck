@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import type { ArticleSummary } from "@/data/actualites";
@@ -28,8 +30,7 @@ export function NewsFeature({ article }: NewsFeatureProps) {
         <p className="mt-5 max-w-[520px] text-body leading-[1.7] text-[#696963]">
           {article.excerpt}
         </p>
-        <span className="text-link mt-6">
-          Lire l’article <span><Icon name="arrow-up-right" /></span>
+        <span className="text-link mt-6">{t("Lire l’article ")}<span><Icon name="arrow-up-right" /></span>
         </span>
       </div>
     </Link>

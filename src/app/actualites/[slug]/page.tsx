@@ -1,3 +1,5 @@
+import { translate as t } from "../../../lib/language.ts";
+
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -38,7 +40,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const { slug } = await params;
   if (slug === placeholderSlug) {
     return {
-      title: "Actualités",
+      title: t("Actualités"),
       description: newsDescription,
       alternates: pageAlternates(site.url + "actualites/"),
     };
@@ -50,7 +52,10 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   return {
     title: article.title,
     description: article.excerpt,
-    alternates: pageAlternates(`${site.url}actualites/${article.slug}/`),
+    alternates: article.translationPending
+      ? { canonical: `${site.url.replace(/\/en\//, "/")}actualites/${article.slug}/` }
+      : pageAlternates(`${site.url}actualites/${article.slug}/`),
+    ...(article.translationPending ? { robots: { index: false, follow: true } } : {}),
     // Clé omise sans couverture, pour ne pas écraser l’héritage du layout.
     ...(article.cover ? { openGraph: socialMetadata(article.cover) } : {}),
   };
@@ -83,7 +88,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <ArticleHeader article={article} />
       <ArticleCover cover={article.cover} />
       <section className="bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(3rem,6vw,6rem)]">
-        <ArticleBody html={article.html} />
+        {article.translationPending ? (
+          <p className="mx-auto mb-8 max-w-[720px] border-l-2 border-accent pl-4 text-body">
+            This article is currently available in French. Its English translation is pending.
+          </p>
+        ) : null}
+        <div lang={article.translationPending ? "fr" : undefined}>
+          <ArticleBody html={article.html} />
+        </div>
         <NewsCarousel gallery={article.gallery} />
         <ArticleGroups
           title={article.groupsTitle}

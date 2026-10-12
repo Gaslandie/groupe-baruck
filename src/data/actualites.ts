@@ -1,3 +1,5 @@
+import { translate as t } from "../lib/language.ts";
+
 export type NewsCategory =
   | "groupe"
   | "jeca"
@@ -9,8 +11,8 @@ export const categoryLabels: Record<NewsCategory, string> = {
   groupe: "Groupe Baruck",
   jeca: "JECA",
   "espoir-de-vie": "Espoir de Vie",
-  "studio-photo": "Studio photo",
-  hotesses: "Hôtesses événementielles",
+  "studio-photo": t("Studio photo"),
+  hotesses: t("Hôtesses événementielles"),
 };
 
 export const placeholderGradients: Record<NewsCategory, string> = {
@@ -56,6 +58,7 @@ export type NewsGroup = {
 
 export type Article = {
   slug: string;
+  translationPending?: boolean;
   title: string;
   date: string;
   /** "year" : seule l'année est sûre ; le jour de `date` ne sert qu'au tri et n'est pas affiché. */
@@ -81,7 +84,7 @@ export type ArticleSummary = Pick<
 export const newsListId = "liste-actualites";
 
 /** Titre et description du flux et de la page Actualités : source unique. */
-export const newsFeedTitle = "Actualités — Groupe Baruck";
+export const newsFeedTitle = t("Actualités — Groupe Baruck");
 
 export const newsDescription =
-  "Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.";
+  t("Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.");

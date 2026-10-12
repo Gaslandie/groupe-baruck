@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { routes } from "@/data/site";
@@ -33,32 +35,20 @@ export function HeroIntro() {
           <em className="font-normal text-accent">Shaloom</em> Krasso
         </h1>
         <div className="mb-[1.6rem] mt-[1.6rem] grid gap-[.55rem] text-caption uppercase leading-[1.35] tracking-[.06em] text-[#4b4a46] max-tablet:mb-[1.2rem] max-tablet:mt-[1.2rem] max-tablet:max-w-[390px] max-tablet:gap-[.45rem] max-tablet:text-label max-tablet:text-[rgba(255,253,248,.84)]">
-          <Link href={routes.group} className={roleClassName}>
-            PDG du Groupe Baruck
-          </Link>
-          <Link href={routes.jeca} className={roleClassName}>
-            Président de la JECA
-          </Link>
-          <Link href={routes.edv} className={roleClassName}>
-            Président de l’ONG Espoir de Vie
-          </Link>
-          <Link href={`${routes.group}#experience-onu`} className={roleClassName}>
-            Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016
-          </Link>
+          <Link href={routes.group} className={roleClassName}>{t("PDG du Groupe Baruck")}</Link>
+          <Link href={routes.jeca} className={roleClassName}>{t("Président de la JECA")}</Link>
+          <Link href={routes.edv} className={roleClassName}>{t("Président de l’ONG Espoir de Vie")}</Link>
+          <Link href={`${routes.group}#experience-onu`} className={roleClassName}>{t("Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016")}</Link>
         </div>
         <div className="flex flex-wrap items-center gap-[.8rem] max-tablet:gap-2">
           <Link
             href={routes.group}
             className="button button-dark max-tablet:border-ivory max-tablet:bg-ivory max-tablet:text-ink"
-          >
-            Découvrir le Groupe
-          </Link>
+          >{t("Découvrir le Groupe")}</Link>
           <Link
             href={routes.contact}
             className="button button-outline max-tablet:border-[rgba(255,255,255,.34)] max-tablet:text-ivory"
-          >
-            Nous contacter
-          </Link>
+          >{t("Nous contacter")}</Link>
         </div>
       </div>
     </div>

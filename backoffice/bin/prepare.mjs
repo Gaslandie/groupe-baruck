@@ -17,7 +17,7 @@ const articles = await Promise.all(files.map(async (name) => {
 const source = await fs.readFile(path.join(root, 'src/data/marque-baruck.ts'), 'utf8');
 const literal = source.match(/export const brandCategories = \{([^}]*)\} as const;/);
 if (!literal) throw new Error('Rayons de la boutique introuvables dans src/data/marque-baruck.ts.');
-const brandCategories = Object.fromEntries([...literal[1].matchAll(/^\s*([a-z]+):\s*"([^"]+)",$/gm)].map(([, key, label]) => [key, label]));
+const brandCategories = Object.fromEntries([...literal[1].matchAll(/^\s*([a-z]+):\s*(?:t\()?("(?:\\.|[^"\\])*")\)?,\s*$/gm)].map(([, key, label]) => [key, JSON.parse(label)]));
 if (Object.keys(brandCategories).length === 0) throw new Error('Aucun rayon de boutique reconnu.');
 const { products } = JSON.parse(await fs.readFile(path.join(root, 'content/boutique.json'), 'utf8'));
 const coordonnees = JSON.parse(await fs.readFile(path.join(root, 'content/coordonnees.json'), 'utf8'));

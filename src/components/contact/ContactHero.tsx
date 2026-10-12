@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { contactNeeds } from "@/data/contact";
 import { placeholderPhotos } from "@/data/media";
 import { contacts } from "@/data/site";
@@ -26,27 +28,18 @@ export function ContactHero() {
       />
       <div className="hero-in flex flex-col justify-center px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pl-[clamp(1.3rem,7vw,8rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:px-[clamp(1.3rem,6vw,4rem)] max-[1080px]:pb-[clamp(3.5rem,7vw,5rem)] max-[1080px]:pt-[clamp(7.5rem,14vw,9.5rem)]">
         <p className="eyebrow light">Contact · Groupe Baruck</p>
-        <h1 className="mb-[1.6rem] mt-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">
-          Parlons de votre
-          <em className="block font-normal text-accent">prochain projet.</em>
+        <h1 className="mb-[1.6rem] mt-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{t("Parlons de votre")}<em className="block font-normal text-accent">{t("prochain projet.")}</em>
         </h1>
-        <p className="mb-[2.2rem] mt-0 max-w-[520px] text-lead leading-[1.75] text-[rgba(255,255,255,.7)]">
-          Notre équipe est à votre écoute pour répondre à vos questions et étudier vos propositions.
-        </p>
+        <p className="mb-[2.2rem] mt-0 max-w-[520px] text-lead leading-[1.75] text-[rgba(255,255,255,.7)]">{t("Notre équipe est à votre écoute pour répondre à vos questions et étudier vos propositions.")}</p>
         <div className="flex flex-wrap gap-[.8rem] max-tablet:[&_.button]:w-full">
-          <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="button button-accent">
-            WhatsApp Baruck Siège <span><Icon name="arrow-up-right" /></span>
+          <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="button button-accent">{t("WhatsApp Baruck Siège ")}<span><Icon name="arrow-up-right" /></span>
           </a>
-          <a href={contacts.landline.href} className="button button-ghost">
-            Appeler le siège
-          </a>
-          <a href={contacts.email.href} className="button button-ghost">
-            Écrire un e-mail
-          </a>
+          <a href={contacts.landline.href} className="button button-ghost">{t("Appeler le siège")}</a>
+          <a href={contacts.email.href} className="button button-ghost">{t("Écrire un e-mail")}</a>
         </div>
       </div>
       <div className="flex flex-col justify-center bg-[rgba(8,9,10,.62)] px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:pt-[2rem]">
-        <p className="eyebrow light">Selon votre besoin</p>
+        <p className="eyebrow light">{t("Selon votre besoin")}</p>
         <div className="border-t border-[rgba(255,255,255,.16)]">
           {contactNeeds.map((need) => (
             <a

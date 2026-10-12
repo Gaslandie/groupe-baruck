@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import type { ArticleSummary } from "@/data/actualites";
@@ -20,7 +22,7 @@ export function ArticleNavigation({ previous, next }: ArticleNavigationProps) {
 
   return (
     <nav
-      aria-label="Navigation entre les actualités"
+      aria-label={t("Navigation entre les actualités")}
       className="mx-auto mt-[clamp(3rem,5vw,5rem)] grid max-w-[1100px] grid-cols-2 gap-8 border-t border-line pt-8 max-tablet:grid-cols-1"
     >
       {previous ? (
@@ -28,9 +30,7 @@ export function ArticleNavigation({ previous, next }: ArticleNavigationProps) {
           <span className={labelClass}>
             <span aria-hidden="true" className="mr-3 text-accent">
               <Icon name="arrow-left" />
-            </span>
-            Article précédent
-          </span>
+            </span>{t("Article précédent")}</span>
           <span className={titleClass}>{previous.title}</span>
         </Link>
       ) : null}
@@ -39,9 +39,7 @@ export function ArticleNavigation({ previous, next }: ArticleNavigationProps) {
           href={`${routes.news}${next.slug}/`}
           className="group col-start-2 flex flex-col gap-3 text-right max-tablet:col-start-1 max-tablet:text-left"
         >
-          <span className={labelClass}>
-            Article suivant
-            <span aria-hidden="true" className="ml-3 text-accent">
+          <span className={labelClass}>{t("Article suivant")}<span aria-hidden="true" className="ml-3 text-accent">
               <Icon name="arrow-right" />
             </span>
           </span>

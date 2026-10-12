@@ -1,3 +1,5 @@
+import { translate as t } from "../lib/language.ts";
+
 import { hqAddress } from "./site";
 
 // Les visuels temp-*.jpg seront remplacés par les photos réelles du studio.
@@ -52,78 +54,78 @@ export type HostessOffer = {
 };
 
 export const studioTags: string[] = [
-  "Mariage",
-  "Baptême",
-  "Anniversaire",
-  "Conférence",
-  "Shooting pro",
-  "Mannequin",
-  "Photo d’identité",
-  "Spot publicitaire",
-  "Événements privés",
-  "Studio & extérieur",
+  t("Mariage"),
+  t("Baptême"),
+  t("Anniversaire"),
+  t("Conférence"),
+  t("Shooting pro"),
+  t("Mannequin"),
+  t("Photo d’identité"),
+  t("Spot publicitaire"),
+  t("Événements privés"),
+  t("Studio & extérieur"),
 ];
 
 export const hostessTags: string[] = [
-  "Concerts géants",
-  "Rencontres",
-  "Mariages",
+  t("Concerts géants"),
+  t("Rencontres"),
+  t("Mariages"),
   "Buffets",
-  "Conférences",
-  "Lancements",
-  "Événements privés",
-  "Événements publics",
-  "Baptêmes",
-  "Soirées",
+  t("Conférences"),
+  t("Lancements"),
+  t("Événements privés"),
+  t("Événements publics"),
+  t("Baptêmes"),
+  t("Soirées"),
   "Galas",
-  "Dîners",
+  t("Dîners"),
 ];
 
 export const studioSpaces: StudioSpace[] = [
   {
-    number: "Espace 01",
-    title: "Le studio classique",
-    text: "Notre espace de prise de vue quotidien, ouvert à tous et sans rendez-vous : portraits, photos de famille, photos de groupe et pièces d’identité.",
+    number: t("Espace 01"),
+    title: t("Le studio classique"),
+    text: t("Notre espace de prise de vue quotidien, ouvert à tous et sans rendez-vous : portraits, photos de famille, photos de groupe et pièces d’identité."),
     items: [
-      "Fond automatique et fond manuel",
-      "Portraits, familles et groupes",
-      "Photo d’identité remise sur place",
-      "Séances rapides, sans rendez-vous",
+      t("Fond automatique et fond manuel"),
+      t("Portraits, familles et groupes"),
+      t("Photo d’identité remise sur place"),
+      t("Séances rapides, sans rendez-vous"),
     ],
     image: {
       src: "/images/services/temp-studio-classique.jpg",
-      alt: "Fond de prise de vue et éclairage du studio classique",
+      alt: t("Fond de prise de vue et éclairage du studio classique"),
     },
   },
   {
-    number: "Espace 02",
-    title: "Le studio VIP",
-    text: "Un plateau haut de gamme réservé aux prises de vue les plus exigeantes : shooting pro, mannequin, mode et campagnes de marque.",
+    number: t("Espace 02"),
+    title: t("Le studio VIP"),
+    text: t("Un plateau haut de gamme réservé aux prises de vue les plus exigeantes : shooting pro, mannequin, mode et campagnes de marque."),
     items: [
-      "Décors et mises en scène soignées",
-      "Paraflash, snoot optique et réflecteur",
-      "Shooting mode, mannequin et marque",
-      "Photo et vidéo",
+      t("Décors et mises en scène soignées"),
+      t("Paraflash, snoot optique et réflecteur"),
+      t("Shooting mode, mannequin et marque"),
+      t("Photo et vidéo"),
     ],
     image: {
       src: "/images/services/temp-studio-vip.jpg",
-      alt: "Shooting mode réalisé dans le studio VIP",
+      alt: t("Shooting mode réalisé dans le studio VIP"),
     },
     vip: true,
   },
   {
-    number: "Espace 03",
-    title: "L’espace anniversaire enfants",
-    text: "Un décor pensé pour les plus petits, avec tout le nécessaire sur place pour des photos joyeuses et naturelles le jour de leur fête.",
+    number: t("Espace 03"),
+    title: t("L’espace anniversaire enfants"),
+    text: t("Un décor pensé pour les plus petits, avec tout le nécessaire sur place pour des photos joyeuses et naturelles le jour de leur fête."),
     items: [
-      "Décors et ballons d’anniversaire",
-      "Jouets et accessoires fournis",
-      "Formule 30 photos",
-      "Séance adaptée au rythme des enfants",
+      t("Décors et ballons d’anniversaire"),
+      t("Jouets et accessoires fournis"),
+      t("Formule 30 photos"),
+      t("Séance adaptée au rythme des enfants"),
     ],
     image: {
       src: "/images/services/temp-studio-enfants.jpg",
-      alt: "Séance photo d’une enfant dans l’espace anniversaire",
+      alt: t("Séance photo d’une enfant dans l’espace anniversaire"),
     },
   },
 ];
@@ -132,93 +134,93 @@ export const studioGear: StudioGearItem[] = [
   {
     image: {
       src: "/images/services/temp-mat-canon.jpg",
-      alt: "Boîtier hybride Canon",
+      alt: t("Boîtier hybride Canon"),
     },
-    title: "Canon R10 professionnel",
-    text: "Notre boîtier principal, pour des images nettes et lumineuses au studio comme en extérieur.",
+    title: t("Canon R10 professionnel"),
+    text: t("Notre boîtier principal, pour des images nettes et lumineuses au studio comme en extérieur."),
   },
   {
     image: {
       src: "/images/services/temp-mat-nikon.jpg",
-      alt: "Reflex Nikon monté sur trépied",
+      alt: t("Reflex Nikon monté sur trépied"),
     },
     title: "Nikon D3500",
-    text: "Un second boîtier reflex, utilisé pour les séances rapides et les reportages d’événement.",
+    text: t("Un second boîtier reflex, utilisé pour les séances rapides et les reportages d’événement."),
   },
   {
     image: {
       src: "/images/services/temp-mat-paraflash.jpg",
-      alt: "Paraflash de studio en cours de réglage",
+      alt: t("Paraflash de studio en cours de réglage"),
     },
-    title: "Paraflash",
-    text: "L’éclairage principal du studio. Il peut être déplacé sur votre événement selon l’accord convenu avec le client.",
+    title: t("Paraflash"),
+    text: t("L’éclairage principal du studio. Il peut être déplacé sur votre événement selon l’accord convenu avec le client."),
   },
   {
     image: {
       src: "/images/services/temp-mat-snoot.jpg",
-      alt: "Projecteurs de studio sur pieds",
+      alt: t("Projecteurs de studio sur pieds"),
     },
-    title: "Snoot optique",
-    text: "Pour diriger la lumière avec précision et travailler la profondeur des portraits.",
+    title: t("Snoot optique"),
+    text: t("Pour diriger la lumière avec précision et travailler la profondeur des portraits."),
   },
   {
     image: {
       src: "/images/services/temp-mat-reflecteur.jpg",
-      alt: "Réflecteur circulaire de studio",
+      alt: t("Réflecteur circulaire de studio"),
     },
-    title: "Réflecteur",
-    text: "Réservé au studio : il reste sur place et n’est pas déplaçable.",
+    title: t("Réflecteur"),
+    text: t("Réservé au studio : il reste sur place et n’est pas déplaçable."),
   },
   {
     image: {
       src: "/images/services/temp-mat-fonds.jpg",
-      alt: "Fond de prise de vue et éclairages du studio",
+      alt: t("Fond de prise de vue et éclairages du studio"),
     },
-    title: "Fond automatique & fond manuel",
-    text: "Deux systèmes de fonds pour changer de décor en quelques secondes.",
+    title: t("Fond automatique & fond manuel"),
+    text: t("Deux systèmes de fonds pour changer de décor en quelques secondes."),
   },
 ];
 
 export const studioEvents: StudioEvent[] = [
   {
     number: "01",
-    title: "Mariage",
-    text: "Préparatifs, cérémonie et réception : votre journée entière racontée en images.",
+    title: t("Mariage"),
+    text: t("Préparatifs, cérémonie et réception : votre journée entière racontée en images."),
   },
   {
     number: "02",
-    title: "Baptême",
-    text: "Un reportage doux et discret pour la cérémonie et les moments en famille.",
+    title: t("Baptême"),
+    text: t("Un reportage doux et discret pour la cérémonie et les moments en famille."),
   },
   {
     number: "03",
-    title: "Anniversaire",
-    text: "Enfants comme adultes : décor, ballons et jouets disponibles au studio.",
+    title: t("Anniversaire"),
+    text: t("Enfants comme adultes : décor, ballons et jouets disponibles au studio."),
   },
   {
     number: "04",
-    title: "Conférence",
-    text: "Couverture complète de vos rencontres, à Conakry comme à l’intérieur du pays.",
+    title: t("Conférence"),
+    text: t("Couverture complète de vos rencontres, à Conakry comme à l’intérieur du pays."),
   },
   {
     number: "05",
-    title: "Shooting mannequin",
-    text: "Studio ou extérieur, avec photos, vidéo et album selon la formule choisie.",
+    title: t("Shooting mannequin"),
+    text: t("Studio ou extérieur, avec photos, vidéo et album selon la formule choisie."),
   },
   {
     number: "06",
-    title: "Photo d’identité",
-    text: "Quatre pièces réalisées et remises rapidement, directement sur place.",
+    title: t("Photo d’identité"),
+    text: t("Quatre pièces réalisées et remises rapidement, directement sur place."),
   },
   {
     number: "07",
-    title: "Spot publicitaire",
-    text: "Photos et vidéos de communication pour valoriser votre marque ou votre activité.",
+    title: t("Spot publicitaire"),
+    text: t("Photos et vidéos de communication pour valoriser votre marque ou votre activité."),
   },
   {
     number: "08",
-    title: "Événements privés",
-    text: "Remises de diplômes, soirées, inaugurations et cérémonies d’entreprise.",
+    title: t("Événements privés"),
+    text: t("Remises de diplômes, soirées, inaugurations et cérémonies d’entreprise."),
   },
 ];
 
@@ -226,61 +228,61 @@ export const studioGallery: StudioGalleryItem[] = [
   {
     image: {
       src: "/images/services/temp-galerie-portrait.jpg",
-      alt: "Portrait d’homme réalisé en studio",
+      alt: t("Portrait d’homme réalisé en studio"),
       width: 1000,
       height: 1200,
     },
-    caption: "Portrait studio",
+    caption: t("Portrait studio"),
     layout: "tall",
   },
   {
     image: {
       src: "/images/services/temp-galerie-mariage.jpg",
-      alt: "Couple de mariés en tenue traditionnelle",
+      alt: t("Couple de mariés en tenue traditionnelle"),
       width: 1000,
       height: 800,
     },
-    caption: "Mariage",
+    caption: t("Mariage"),
     layout: "wide",
   },
   {
     image: {
       src: "/images/services/temp-galerie-conference.jpg",
-      alt: "Public assistant à une conférence",
+      alt: t("Public assistant à une conférence"),
       width: 1000,
       height: 800,
     },
-    caption: "Conférence",
+    caption: t("Conférence"),
     layout: "standard",
   },
   {
     image: {
       src: "/images/services/temp-galerie-anniversaire.jpg",
-      alt: "Famille réunie autour d’un gâteau d’anniversaire",
+      alt: t("Famille réunie autour d’un gâteau d’anniversaire"),
       width: 1000,
       height: 800,
     },
-    caption: "Anniversaire",
+    caption: t("Anniversaire"),
     layout: "standard",
   },
   {
     image: {
       src: "/images/services/temp-galerie-bapteme.jpg",
-      alt: "Cérémonie religieuse célébrée devant un autel fleuri",
+      alt: t("Cérémonie religieuse célébrée devant un autel fleuri"),
       width: 1000,
       height: 800,
     },
-    caption: "Baptême & cérémonie",
+    caption: t("Baptême & cérémonie"),
     layout: "standard",
   },
   {
     image: {
       src: "/images/services/temp-galerie-shooting.jpg",
-      alt: "Shooting studio en noir et blanc",
+      alt: t("Shooting studio en noir et blanc"),
       width: 1000,
       height: 1200,
     },
-    caption: "Shooting pro",
+    caption: t("Shooting pro"),
     layout: "standard",
   },
 ];
@@ -288,40 +290,40 @@ export const studioGallery: StudioGalleryItem[] = [
 export const studioPriceGroups: StudioPriceGroup[] = [
   {
     number: "01",
-    title: "Séances studio",
+    title: t("Séances studio"),
     items: [
-      { label: "Photo d’identité — 4 pièces", price: "10 000 GNF", note: "Rapide sur place" },
-      { label: "Studio photo simple", price: "15 000 GNF" },
-      { label: "Shooting pro studio", price: "25 000 GNF" },
-      { label: "Shoot mannequin — 10 photos", price: "400 000 GNF" },
+      { label: t("Photo d’identité — 4 pièces"), price: "10 000 GNF", note: t("Rapide sur place") },
+      { label: t("Studio photo simple"), price: "15 000 GNF" },
+      { label: t("Shooting pro studio"), price: "25 000 GNF" },
+      { label: t("Shoot mannequin — 10 photos"), price: "400 000 GNF" },
     ],
   },
   {
     number: "02",
-    title: "Formules mannequin",
+    title: t("Formules mannequin"),
     items: [
-      { label: "1 jour", price: "4 000 000 GNF", note: "Photos studio + album 80 photos" },
-      { label: "2 jours", price: "4 000 000 GNF", note: "Photos + vidéo + album 100 photos" },
-      { label: "3 jours", price: "5 000 000 GNF", note: "Photos + vidéo + album 120 photos" },
+      { label: t("1 jour"), price: "4 000 000 GNF", note: t("Photos studio + album 80 photos") },
+      { label: t("2 jours"), price: "4 000 000 GNF", note: t("Photos + vidéo + album 100 photos") },
+      { label: t("3 jours"), price: "5 000 000 GNF", note: t("Photos + vidéo + album 120 photos") },
     ],
   },
   {
     number: "03",
-    title: "Événements & extérieur",
+    title: t("Événements & extérieur"),
     items: [
-      { label: "Anniversaire — 30 photos", price: "750 000 GNF" },
+      { label: t("Anniversaire — 30 photos"), price: "750 000 GNF" },
       {
-        label: "Déplacement shoot — 2 h",
+        label: t("Déplacement shoot — 2 h"),
         price: "350 000 GNF",
-        note: "Matériel déplaçable selon accord",
+        note: t("Matériel déplaçable selon accord"),
       },
       {
-        label: "Conférence complète",
+        label: t("Conférence complète"),
         price: "1 000 000 GNF",
-        note: "Hors Conakry : 1 500 000 GNF",
+        note: t("Hors Conakry : 1 500 000 GNF"),
       },
-      { label: "Spot publicitaire", price: "2 000 000 GNF" },
-      { label: "Mariage — pack complet", price: "Dès 2 800 000 GNF" },
+      { label: t("Spot publicitaire"), price: "2 000 000 GNF" },
+      { label: t("Mariage — pack complet"), price: t("Dès 2 800 000 GNF") },
     ],
   },
 ];
@@ -329,61 +331,61 @@ export const studioPriceGroups: StudioPriceGroup[] = [
 export const hostessOffers: HostessOffer[] = [
   {
     number: "01",
-    title: "Accueil",
-    text: "Réception des invités avec courtoisie et professionnalisme.",
+    title: t("Accueil"),
+    text: t("Réception des invités avec courtoisie et professionnalisme."),
   },
   {
     number: "02",
-    title: "Orientation",
-    text: "Accompagnement du public et fluidité des déplacements.",
+    title: t("Orientation"),
+    text: t("Accompagnement du public et fluidité des déplacements."),
   },
   {
     number: "03",
-    title: "Représentation",
-    text: "Une présence soignée, dynamique et adaptée à votre image.",
+    title: t("Représentation"),
+    text: t("Une présence soignée, dynamique et adaptée à votre image."),
   },
 ];
 
 /** Complément extrait des affiches hôtesses fournies par le client. */
 export const hostessServiceComplement = {
-  title: "Restauration & hôtellerie",
-  text: "Baruck Communication Guinée propose également son service pour la restauration, l’événementiel et l’hôtellerie. Contactez l’équipe pour préciser les besoins de votre réception.",
+  title: t("Restauration & hôtellerie"),
+  text: t("Baruck Communication Guinée propose également son service pour la restauration, l’événementiel et l’hôtellerie. Contactez l’équipe pour préciser les besoins de votre réception."),
 };
 
 export type ServiceFaqItem = { question: string; answer: string };
 
 export const studioFaq: ServiceFaqItem[] = [
   {
-    question: "Faut-il prendre rendez-vous ?",
-    answer: "Le studio classique est ouvert à tous et sans rendez-vous : portraits, photos de famille, photos de groupe et pièces d’identité. Pour les autres formules, contactez l’équipe pour confirmer les disponibilités et les conditions.",
+    question: t("Faut-il prendre rendez-vous ?"),
+    answer: t("Le studio classique est ouvert à tous et sans rendez-vous : portraits, photos de famille, photos de groupe et pièces d’identité. Pour les autres formules, contactez l’équipe pour confirmer les disponibilités et les conditions."),
   },
   {
-    question: "Quand le studio est-il ouvert ?",
-    answer: "24h/24 et 7j/7 — le studio est ouvert à tout le monde.",
+    question: t("Quand le studio est-il ouvert ?"),
+    answer: t("24h/24 et 7j/7 — le studio est ouvert à tout le monde."),
   },
   {
-    question: "Où se trouve le studio ?",
+    question: t("Où se trouve le studio ?"),
     answer: hqAddress,
   },
   {
-    question: "Vous déplacez-vous en dehors du studio ?",
-    answer: "Oui. Les prises de vue se font au studio comme en extérieur : l’équipe se déplace sur vos événements, à Conakry comme à l’intérieur du pays. Déplacement shoot de 2 h : 350 000 GNF. Conférence complète : 1 000 000 GNF, 1 500 000 GNF hors Conakry.",
+    question: t("Vous déplacez-vous en dehors du studio ?"),
+    answer: t("Oui. Les prises de vue se font au studio comme en extérieur : l’équipe se déplace sur vos événements, à Conakry comme à l’intérieur du pays. Déplacement shoot de 2 h : 350 000 GNF. Conférence complète : 1 000 000 GNF, 1 500 000 GNF hors Conakry."),
   },
   {
-    question: "Le matériel du studio peut-il venir sur mon événement ?",
-    answer: "Le paraflash peut être déplacé sur votre événement selon l’accord convenu avec le client. Le réflecteur est réservé au studio : il reste sur place et n’est pas déplaçable.",
+    question: t("Le matériel du studio peut-il venir sur mon événement ?"),
+    answer: t("Le paraflash peut être déplacé sur votre événement selon l’accord convenu avec le client. Le réflecteur est réservé au studio : il reste sur place et n’est pas déplaçable."),
   },
   {
-    question: "Combien coûte une photo d’identité et quand est-elle remise ?",
-    answer: "10 000 GNF les 4 pièces, réalisées et remises rapidement, directement sur place.",
+    question: t("Combien coûte une photo d’identité et quand est-elle remise ?"),
+    answer: t("10 000 GNF les 4 pièces, réalisées et remises rapidement, directement sur place."),
   },
   {
-    question: "Que comprennent les formules mannequin ?",
-    answer: "Shoot mannequin 10 photos : 400 000 GNF. Formule 1 jour : photos studio + album 80 photos, 4 000 000 GNF. Formule 2 jours : photos + vidéo + album 100 photos, 4 000 000 GNF. Formule 3 jours : photos + vidéo + album 120 photos, 5 000 000 GNF.",
+    question: t("Que comprennent les formules mannequin ?"),
+    answer: t("Shoot mannequin 10 photos : 400 000 GNF. Formule 1 jour : photos studio + album 80 photos, 4 000 000 GNF. Formule 2 jours : photos + vidéo + album 100 photos, 4 000 000 GNF. Formule 3 jours : photos + vidéo + album 120 photos, 5 000 000 GNF."),
   },
   {
-    question: "Proposez-vous des anniversaires pour enfants ?",
-    answer: "Oui. Un espace dédié aux anniversaires des enfants, avec décors et ballons, jouets et accessoires fournis. Formule 30 photos : 750 000 GNF.",
+    question: t("Proposez-vous des anniversaires pour enfants ?"),
+    answer: t("Oui. Un espace dédié aux anniversaires des enfants, avec décors et ballons, jouets et accessoires fournis. Formule 30 photos : 750 000 GNF."),
   },
 ];
 
@@ -397,17 +399,17 @@ export type HostessProcessStep = {
 export const hostessProcess: HostessProcessStep[] = [
   {
     number: "01",
-    title: "Votre demande",
-    text: "Vous nous écrivez sur WhatsApp avec la date, le lieu et le nombre d’hôtesses souhaité.",
+    title: t("Votre demande"),
+    text: t("Vous nous écrivez sur WhatsApp avec la date, le lieu et le nombre d’hôtesses souhaité."),
   },
   {
     number: "02",
-    title: "Notre confirmation",
-    text: "Nous confirmons les disponibilités de l’équipe et les conditions de la prestation.",
+    title: t("Notre confirmation"),
+    text: t("Nous confirmons les disponibilités de l’équipe et les conditions de la prestation."),
   },
   {
     number: "03",
-    title: "Le jour de l’événement",
-    text: "L’équipe est présente le jour J.",
+    title: t("Le jour de l’événement"),
+    text: t("L’équipe est présente le jour J."),
   },
 ];

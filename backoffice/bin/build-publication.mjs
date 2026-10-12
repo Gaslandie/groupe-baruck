@@ -27,7 +27,7 @@ try {
   const code = await new Promise((resolve, reject) => { child.on('error', reject); child.on('exit', resolve); });
   if (code !== 0) throw new Error('Publication non construite : corrigez les erreurs signalées.');
   // Les images privées validées ne sont copiées que dans l’export public final.
-  await fs.cp(path.join(destination, 'public/images/actualites/uploads'), path.resolve('out/images/actualites/uploads'), { recursive: true });
+  for (const prefix of ['out', 'out/en']) await fs.cp(path.join(destination, 'public/images/actualites/uploads'), path.resolve(prefix, 'images/actualites/uploads'), { recursive: true });
   console.log('Publication construite dans out/. Elle attend son déploiement sur le site.');
 } finally {
   await fs.rm(destination, { recursive: true, force: true });

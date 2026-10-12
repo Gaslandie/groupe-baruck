@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/layout/PageShell";
@@ -13,25 +15,25 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: "Hôtesses événementielles",
+  title: t("Hôtesses événementielles"),
   description:
-    "Hôtesses événementielles Baruck Communication Guinée — une équipe élégante, professionnelle et dynamique pour vos événements.",
+    t("Hôtesses événementielles Baruck Communication Guinée — une équipe élégante, professionnelle et dynamique pour vos événements."),
   alternates: pageAlternates(site.url + routes.hostesses.slice(1)),
   openGraph: socialMetadata(hostessesHero),
 };
 
 const contactDetails = [
   {
-    label: "Adresse",
+    label: t("Adresse"),
     text: hqAddress,
   },
   {
-    label: "Téléphone fixe Baruck Siège Guinée",
+    label: t("Téléphone fixe Baruck Siège Guinée"),
     text: contacts.landline.value,
     href: contacts.landline.href,
   },
   {
-    label: "WhatsApp Baruck Siège Guinée",
+    label: t("WhatsApp Baruck Siège Guinée"),
     text: contacts.whatsappHq.value,
     href: contacts.whatsappHq.href,
     external: true,
@@ -45,10 +47,10 @@ export default function HostessesPage() {
         image={hostessesHero}
         position="center 38%"
         size="hostesses"
-        eyebrow="Baruck Communication · Guinée"
-        title="Hôtesses"
-        emphasis="événementielles."
-        text="Une équipe élégante, professionnelle et dynamique à votre service pour la couverture de vos différents événements."
+        eyebrow={t("Baruck Communication · Guinée")}
+        title={t("Hôtesses")}
+        emphasis={t("événementielles.")}
+        text={t("Une équipe élégante, professionnelle et dynamique à votre service pour la couverture de vos différents événements.")}
         actions={
           <>
             <a
@@ -56,38 +58,31 @@ export default function HostessesPage() {
               target="_blank"
               rel="noreferrer"
               className="button button-accent"
-            >
-              Réserver une équipe <span><Icon name="arrow-up-right" /></span>
+            >{t("Réserver une équipe ")}<span><Icon name="arrow-up-right" /></span>
             </a>
-            <a href={contacts.landline.href} className="button button-ghost">
-              Nous appeler
-            </a>
+            <a href={contacts.landline.href} className="button button-ghost">{t("Nous appeler")}</a>
           </>
         }
       />
       <ServiceIntro
-        eyebrow="Votre événement"
+        eyebrow={t("Votre événement")}
         title={
-          <>
-            Un accueil
-            <br />
+          <>{t("Un accueil")}<br />
           </>
         }
-        emphasis="à la hauteur."
-        text="Les hôtesses de Baruck Communication Guinée assurent l’accueil, l’orientation et l’accompagnement de vos invités avec professionnalisme et distinction."
+        emphasis={t("à la hauteur.")}
+        text={t("Les hôtesses de Baruck Communication Guinée assurent l’accueil, l’orientation et l’accompagnement de vos invités avec professionnalisme et distinction.")}
         tags={hostessTags}
       />
       <HostessOffers />
       <HostessProcess />
       <ServiceContact
-        eyebrow="Réservation"
+        eyebrow={t("Réservation")}
         title={
-          <>
-            Préparons votre
-            <br />
+          <>{t("Préparons votre")}<br />
           </>
         }
-        emphasis="événement."
+        emphasis={t("événement.")}
         details={contactDetails}
       />
     </PageShell>

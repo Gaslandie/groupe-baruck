@@ -1,3 +1,5 @@
+import { isEnglish } from "./language.ts";
+
 import { categoryLabels, newsDescription, newsFeedTitle, type Article } from "@/data/actualites";
 import { routes, site } from "@/data/site";
 
@@ -38,7 +40,7 @@ export function renderRssFeed(articles: Article[]): string {
     `    <title>${escapeXml(newsFeedTitle)}</title>`,
     `    <link>${escapeXml(newsUrl)}</link>`,
     `    <description>${escapeXml(newsDescription)}</description>`,
-    "    <language>fr-FR</language>",
+    `    <language>${isEnglish ? "en-GB" : "fr-FR"}</language>`,
     `    <atom:link href="${escapeXml(feedUrl)}" rel="self" type="application/rss+xml"/>`,
     ...items,
     "  </channel>",

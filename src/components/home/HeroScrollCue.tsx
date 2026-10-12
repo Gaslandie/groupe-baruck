@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import { Icon } from "@/components/ui/Icon";
 
 /**
@@ -23,7 +25,7 @@ export function HeroScrollCue() {
         href="#activite-guinee"
         className="hero-cue pointer-events-auto mb-[clamp(.3rem,.9vh,.6rem)] flex flex-col items-center gap-[.3rem] py-1 text-ink max-tablet:text-ivory"
       >
-        <span className="sr-only">Descendre vers la suite de la page</span>
+        <span className="sr-only">{t("Descendre vers la suite de la page")}</span>
         <span aria-hidden="true" className="hero-cue-rail" />
         <Icon name="chevron-down" className="hero-cue-arrow text-[1.5rem] text-accent" />
       </a>

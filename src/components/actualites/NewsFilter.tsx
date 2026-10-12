@@ -1,5 +1,7 @@
 "use client";
 
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, type Ref } from "react";
@@ -56,7 +58,7 @@ export function NewsFilterView({ articles, category, ref }: NewsFilterViewProps)
     <div ref={ref}>
       {categories.length > 1 ? (
         <nav
-          aria-label="Filtrer les actualités par catégorie"
+          aria-label={t("Filtrer les actualités par catégorie")}
           className="mb-[clamp(2.5rem,4vw,4rem)]"
         >
           <ul className="m-0 flex list-none flex-wrap gap-[.6rem] p-0">
@@ -74,7 +76,7 @@ export function NewsFilterView({ articles, category, ref }: NewsFilterViewProps)
                         : "border-line text-[#696963] hover:border-ink hover:text-ink"
                     }`}
                   >
-                    {item ? categoryLabels[item] : "Toutes"}
+                    {item ? categoryLabels[item] : t("Toutes")}
                   </Link>
                 </li>
               );

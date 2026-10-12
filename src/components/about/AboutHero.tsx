@@ -1,3 +1,5 @@
+import { translate as t } from "../../lib/language.ts";
+
 import Link from "next/link";
 
 import { presidentWorking } from "@/data/media";
@@ -29,7 +31,7 @@ export function AboutHero() {
   return (
     <section
       id="accueil"
-      aria-label="Présentation du Groupe Baruck"
+      aria-label={t("Présentation du Groupe Baruck")}
       className="grid min-h-[clamp(640px,82svh,800px)] grid-cols-[58%_42%] overflow-hidden border-b border-line bg-paper text-ink max-[1100px]:grid-cols-[55%_45%] max-tablet:relative max-tablet:block max-tablet:min-h-[100svh] max-tablet:border-0 max-tablet:bg-ink max-tablet:text-ivory"
     >
       <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-ink max-tablet:absolute max-tablet:inset-0 max-tablet:z-0 max-tablet:h-full max-tablet:w-full">
@@ -46,18 +48,14 @@ export function AboutHero() {
           className="absolute inset-0 bg-[linear-gradient(180deg,transparent_56%,rgba(11,12,14,.12)_72%,rgba(11,12,14,.86))] max-tablet:bg-[linear-gradient(180deg,rgba(11,12,14,.34)_12%,rgba(11,12,14,.6)_48%,rgba(11,12,14,.95)_100%)]"
         />
         <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-ivory [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
-          <span className="mb-[.65rem] block font-sans text-micro font-bold uppercase leading-none tracking-[.18em] text-accent">
-            Président-directeur général
-          </span>
+          <span className="mb-[.65rem] block font-sans text-micro font-bold uppercase leading-none tracking-[.18em] text-accent">{t("Président-directeur général")}</span>
           MR Djoro Joël Shaloom Krasso
         </p>
       </div>
       <div className="hero-in relative col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(1.3rem,6vw,7.5rem)] pr-[clamp(1.3rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1100px]:px-10 max-tablet:z-10 max-tablet:min-h-[100svh] max-tablet:w-full max-tablet:justify-end max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5rem,15vh,8rem)] max-tablet:pt-[7rem]">
-        <p className="eyebrow">Le Groupe Baruck · Guinée</p>
-        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.05em]">
-          Un groupe ancré en Guinée,
-          <br />
-          <em className="font-normal text-accent">tourné vers l’impact.</em>
+        <p className="eyebrow">{t("Le Groupe Baruck · Guinée")}</p>
+        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.05em]">{t("Un groupe ancré en Guinée,")}<br />
+          <em className="font-normal text-accent">{t("tourné vers l’impact.")}</em>
         </h1>
         <p className="mb-[1.6rem] mt-[1.6rem] max-w-[560px] text-lead leading-[1.7] text-[#64645f] max-tablet:mt-[1.4rem] max-tablet:text-small max-tablet:text-[rgba(255,253,248,.78)]">
           {siteTexts.heroSlides["guinee"].description}
@@ -66,20 +64,13 @@ export function AboutHero() {
           <Link href={routes.studio} className="role-link">
             Studio Photo Baruck
           </Link>
-          <Link href={routes.hostesses} className="role-link">
-            Hôtesses événementielles
-          </Link>
-          <Link href={routes.hostesses} className="role-link">
-            Restauration & hôtellerie
-          </Link>
+          <Link href={routes.hostesses} className="role-link">{t("Hôtesses événementielles")}</Link>
+          <Link href={routes.hostesses} className="role-link">{t("Restauration & hôtellerie")}</Link>
         </div>
         <div className="flex flex-wrap items-center gap-[.8rem] max-tablet:gap-2">
-          <a href="#identite" className="button button-dark max-tablet:border-ivory max-tablet:bg-ivory max-tablet:text-ink">
-            Notre identité <span><Icon name="arrow-down" /></span>
+          <a href="#identite" className="button button-dark max-tablet:border-ivory max-tablet:bg-ivory max-tablet:text-ink">{t("Notre identité ")}<span><Icon name="arrow-down" /></span>
           </a>
-          <Link href={routes.contact} className="button button-outline max-tablet:border-[rgba(255,255,255,.34)] max-tablet:text-ivory">
-            Nous contacter
-          </Link>
+          <Link href={routes.contact} className="button button-outline max-tablet:border-[rgba(255,255,255,.34)] max-tablet:text-ivory">{t("Nous contacter")}</Link>
         </div>
       </div>
     </section>
