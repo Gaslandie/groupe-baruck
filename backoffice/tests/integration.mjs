@@ -351,9 +351,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal((await admin.post('/?page=publication', { action: 'publish' })).status, 303);
     assert.equal((await admin.post('/?page=publication', { action: 'publish' })).status, 409, 'un double clic ne crée pas deux envois');
     assert.match((await admin.request('/?page=publication')).html, /En attente de mise en ligne/);
-    const beforeInspection = sql(`SELECT payload,version,updated_at FROM ${database}.settings WHERE name='publication';`);
-    assert.equal((await worker({ action: 'inspect' })).status, 200);
-    assert.equal(sql(`SELECT payload,version,updated_at FROM ${database}.settings WHERE name='publication';`), beforeInspection, 'le diagnostic ne réserve pas la publication et ne change aucun état');
+    for (const action of ['inspect', 'repair_riviera']) assert.equal((await worker({ action })).status, 422, 'les opérations temporaires de maintenance ne sont plus disponibles');
     const attempt = { action: 'complete', id: 'a'.repeat(32), sha256: 'b'.repeat(64), run: '100' };
     assert.equal((await worker(attempt)).status, 409, 'aucune confirmation avant prise en charge');
     assert.equal((await admin.post('/?page=edit&id=' + id, { ...fields, id, version: '1', slug: 'publication-automatique', title: 'Après la demande', status: 'ready' })).status, 303);
@@ -417,23 +415,6 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     sql(`UPDATE ${database}.settings SET payload=JSON_SET(payload,'$.job.started_at','2026-01-01T00:00:00Z') WHERE name='publication';`);
     assert.deepEqual(JSON.parse((await worker({ action: 'status' })).body), { pending: false }, 'un envoi abandonné cesse de bloquer la publication');
     assert.match((await admin.request('/?page=publication')).html, /interrompue/);
-    const rivieraId = sql(`SELECT id FROM ${database}.articles WHERE slug='top-modele-2026-rencontre-riviera';`).split('\n')[1];
-    const beforeRepair = sql(`SELECT title,body,cover FROM ${database}.articles WHERE id='${rivieraId}';`);
-    for (const number of ['03', '05', '06']) {
-      const image = JSON.stringify({ src: `/images/actualites/top-modele-2026-riviera/rencontre-${number}.webp`, alt: 'Photo déjà retirée du site' });
-      sql(`UPDATE ${database}.articles SET gallery=JSON_ARRAY_APPEND(gallery,'$',CAST('${image}' AS JSON)) WHERE id='${rivieraId}'; UPDATE ${database}.article_publications SET payload=JSON_SET(payload,'$.gallery',(SELECT CAST(gallery AS JSON) FROM ${database}.articles WHERE id='${rivieraId}')) WHERE article_id='${rivieraId}';`);
-    }
-    sql(`UPDATE ${database}.articles SET status='draft' WHERE id='${rivieraId}';`);
-    assert.equal((await worker({ action: 'repair_riviera' })).status, 409, 'aucun brouillon privé ne peut être validé par la correction technique');
-    sql(`UPDATE ${database}.articles SET status='ready' WHERE id='${rivieraId}';`);
-    ageRequest();
-    const repaired = await worker({ action: 'repair_riviera' });
-    assert.equal(repaired.status, 200, repaired.body);
-    assert.equal(JSON.parse(repaired.body).removed, 3);
-    assert.equal(sql(`SELECT title,body,cover FROM ${database}.articles WHERE id='${rivieraId}';`), beforeRepair);
-    const corrected = JSON.parse((await worker({ action: 'inspect' })).body).articles.find(item => item.slug === 'top-modele-2026-rencontre-riviera');
-    assert.equal(corrected.gallery.length, 2, 'seules les trois références retirées disparaissent');
-    assert.equal(JSON.parse((await worker({ action: 'repair_riviera' })).body).already_repaired, true, 'correction ponctuelle sans nouvel effet à la répétition');
   });
   await t.test('mesure d’audience sans cookie : collecte, statistiques, conseils et export CSV', async () => {
     const phone = 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1';
