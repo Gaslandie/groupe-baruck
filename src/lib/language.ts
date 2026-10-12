@@ -8,8 +8,9 @@ const key = (value: string) => value.replace(/\s+/g, " ").trim();
 /** Traductions relues, sans service externe ni envoi des contenus du client. */
 export function translate<T extends string>(value: T): T {
   if (!isEnglish) return value;
-  const translated = dictionary[key(value)];
-  if (translated === undefined) return value;
+  const name = key(value);
+  if (!Object.hasOwn(dictionary, name)) return value;
+  const translated = dictionary[name];
   return ((value.match(/^\s+/)?.[0] ?? "") + translated + (value.match(/\s+$/)?.[0] ?? "")) as T;
 }
 
@@ -39,7 +40,7 @@ export function hasEnglishMarkdown(value: string): boolean {
   return value.trim().split(/\n\s*\n/).every((block) => {
     const heading = block.match(/^#{1,6} (.+)$/);
     const link = block.match(/^\[([^\]]+)\]\([^)]+\)$/);
-    return dictionary[key(heading?.[1] ?? link?.[1] ?? block)] !== undefined;
+    return Object.hasOwn(dictionary, key(heading?.[1] ?? link?.[1] ?? block));
   });
 }
 

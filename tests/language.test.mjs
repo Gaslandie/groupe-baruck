@@ -27,6 +27,9 @@ test('l’anglais traduit les textes sans changer les identifiants, dates et lie
     const content = { title: 'Actualités', id: 'Actualités', slug: 'news', category: 'groupe', date: '2026-09-29', src: '/images/test.webp', href: '/actualites/' };
     assert.deepEqual(translateContent(content), { ...content, title: 'News' });
     assert.equal(translate('Nouveau texte sans traduction'), 'Nouveau texte sans traduction');
+    assert.equal(translate('constructor'), 'constructor');
+    assert.equal(translate('__proto__'), '__proto__');
+    assert.equal(hasEnglishMarkdown('constructor'), false);
     assert.equal(otherLanguagePath('/actualites/test/'), '/groupe-baruck/actualites/test/');
     assert.equal(otherLanguagePath('//hostile.example'), '/groupe-baruck/');
     const markdown = '## Les premières étapes\\n\\n[Découvrir l’orphelinat](/espoir-de-vie/#orphelinat)';
@@ -36,5 +39,24 @@ test('l’anglais traduit les textes sans changer les identifiants, dates et lie
     assert.equal(translate('4 000 chaussures à Divo · 2 000 à Zaroko'), '4,000 shoes in Divo · 2,000 in Zaroko');
     assert.ok(hasEnglishMarkdown('La troisième édition s’est tenue à Conakry. Les images présentent principalement le président et le vice-président.'));
     assert.equal(hasEnglishMarkdown('Un nouvel article sans traduction.'), false);
+  `);
+});
+
+test('les questions libres anglaises retrouvent les mêmes sujets', () => {
+  check('en', '', `
+    const { registerHooks } = await import('node:module');
+    const { pathToFileURL } = await import('node:url');
+    registerHooks({ resolve(specifier, context, nextResolve) {
+      if (specifier.startsWith('@/')) specifier = pathToFileURL(process.cwd() + '/src/' + specifier.slice(2) + '.ts').href;
+      else if (specifier.startsWith('@content/')) specifier = pathToFileURL(process.cwd() + '/content/' + specifier.slice(9)).href;
+      else if (specifier.startsWith('.') && !/\\.[a-z]+$/.test(specifier)) specifier += '.ts';
+      return nextResolve(specifier, context);
+    } });
+    const { searchAssistant } = await import('./src/lib/assistant-search.ts');
+    assert.ok(searchAssistant('which countries group').includes('groupe-presence'));
+    assert.ok(searchAssistant('which countries').includes('edv-presence'));
+    assert.ok(!searchAssistant('which countries').includes('hotesses-evenements'));
+    assert.ok(searchAssistant('passport photo').includes('studio-identite'));
+    assert.ok(searchAssistant('book hostesses').includes('hotesses-reserver'));
   `);
 });
