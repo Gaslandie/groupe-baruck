@@ -225,3 +225,26 @@ export const featuredAlsoSlugs = [
 
 /** Sur-titre de la liste secondaire. */
 export const featuredAlsoTitle = t("Les autres concours Baruck");
+
+/** Photos d’origine des trois concours sur l’accueil, conservées quand
+ * le back-office fournit un article sans groupes. Ne modifie pas les articles. */
+export const featuredEventPhotos: Partial<Record<string, ImageAsset[]>> = {
+  "top-modele-baruck-guinee-2026": [
+    { src: "/images/actualites/top-modele-2026/laureats-01.webp", alt: t("Les deux lauréats, écharpe Top Modèle Baruck Guinée 2026 sur les épaules, devant le photocall du concours"), width: 1200, height: 1222 },
+    { src: "/images/actualites/top-modele-2026/rtg-01.webp", alt: t("Une journaliste de la RTG tendant son micro au PDG du Groupe Baruck, assis à son bureau"), width: 1600, height: 1105 },
+    { src: "/images/actualites/top-modele-2026/candidat-01-a.webp", alt: t("Le candidat n°1 sur le podium, en tenue traditionnelle dorée et pagne"), width: 1400, height: 735 },
+    { src: "/images/actualites/top-modele-2026/candidat-02-a.webp", alt: t("Le candidat n°2 en longue robe bleu nuit à motifs losanges"), width: 1400, height: 736 },
+  ],
+  "top-modele-baruck-guinee-2025": [
+    { src: "/images/actualites/top-modele-2025/affiche-01.webp", alt: t("Une candidate sur le podium devant l’affiche de la grande finale de la première édition du Top Modèle Baruck Guinée"), width: 720, height: 1080 },
+    { src: "/images/actualites/top-modele-2025/parrain-01.webp", alt: t("Le PDG du Groupe Baruck au micro devant l’affiche du Top Modèle Baruck Guinée"), width: 720, height: 1080 },
+    { src: "/images/actualites/top-modele-2025/podium-01.webp", alt: t("Passage sur le podium en blazer bleu marine, devant l’affiche du concours"), width: 720, height: 1080 },
+    { src: "/images/actualites/top-modele-2025/parrain-02.webp", alt: t("Le PDG du Groupe Baruck assis dans la salle pendant la finale"), width: 720, height: 1080 },
+  ],
+  "miss-baruck-guinee-2025": [
+    { src: "/images/actualites/miss-baruck-2025/reine-01.webp", alt: t("Mama Adama Bangoura, couronnée Miss Baruck Guinée 2025, portant l’écharpe du concours"), width: 1280, height: 854 },
+    { src: "/images/actualites/miss-baruck-2025/reine-02.webp", alt: t("Mama Adama Bangoura, couronne sur la tête, aux côtés d’une autre participante pendant la soirée"), width: 1280, height: 854 },
+    { src: "/images/actualites/miss-baruck-2025/soiree-01.webp", alt: t("Les participantes en tee-shirt Baruck devant le kakémono de la marque, « L’élégance notre affaire »"), width: 814, height: 814 },
+    { src: "/images/actualites/miss-baruck-2025/candidate-01.webp", alt: t("Une candidate en écharpe Miss Baruck Guinée 2025, devant l’affiche de la grande finale"), width: 1073, height: 2048 },
+  ],
+};

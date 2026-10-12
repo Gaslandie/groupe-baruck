@@ -7,6 +7,7 @@ import {
   featuredAlsoSlugs,
   featuredAlsoTitle,
   featuredEventEyebrow,
+  featuredEventPhotos,
   featuredEventSlug,
 } from "@/data/home";
 import { routes } from "@/data/site";
@@ -48,14 +49,15 @@ function previewPhotos(groups: { photos: NewsImage[] }[], cover?: NewsImage): Ne
 
 /**
  * Un concours présenté en entier : titre, date, chapeau, quatre photos et le
- * lien vers l'article. Tout vient de l'article, donc le corriger corrige aussi
- * l'accueil.
+ * lien vers l'article. Les photos viennent de ses groupes, ou des aperçus
+ * d’origine de l’accueil si la copie publiée ne contient pas de groupes.
  *
  * Le sur-titre n'existe que pour l'événement de tête : les autres concours sont
  * déjà annoncés par l'intitulé de leur liste.
  */
 function EventBlock({ article, eyebrow }: { article: Article; eyebrow?: string }) {
-  const photos = previewPhotos(article.groups, article.cover);
+  const photos = (article.groups.length === 0 ? featuredEventPhotos[article.slug] : undefined)
+    ?? previewPhotos(article.groups, article.cover);
   const href = `${routes.news}${article.slug}/`;
 
   return (
