@@ -93,9 +93,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             This article is currently available in French. Its English translation is pending.
           </p>
         ) : null}
-        <div lang={article.translationPending ? "fr" : undefined}>
-          <ArticleBody html={article.html} />
-        </div>
+        <ArticleBody html={article.html} contentLanguage={article.translationPending ? "fr" : undefined} />
         <NewsCarousel gallery={article.gallery} />
         <ArticleGroups
           title={article.groupsTitle}

@@ -37,6 +37,8 @@ try {
   await fs.rm(path.join(root, 'out'), { recursive: true, force: true });
   await fs.cp(path.join(temporary, 'fr'), path.join(root, 'out'), { recursive: true });
   await fs.cp(path.join(temporary, 'en'), path.join(root, 'out/en'), { recursive: true });
+  // Apache conserve la langue anglaise aussi sur une adresse inexistante.
+  await fs.writeFile(path.join(root, 'out/en/.htaccess'), `ErrorDocument 404 ${base}/en/404.html\n`);
   console.log('Versions française et anglaise construites dans out/ et out/en/.');
 } catch (error) {
   // Aucun export partiel ne doit être envoyé par le déploiement.

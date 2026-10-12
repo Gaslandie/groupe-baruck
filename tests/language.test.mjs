@@ -5,7 +5,7 @@ import { test } from 'node:test';
 function check(language, base, assertions) {
   const result = spawnSync(process.execPath, ['--input-type=module', '-e', `
     import assert from 'node:assert/strict';
-    import { translate, translateContent, translateMarkdown, otherLanguagePath } from './src/lib/language.ts';
+    import { translate, translateContent, translateMarkdown, hasEnglishMarkdown, otherLanguagePath } from './src/lib/language.ts';
     ${assertions}
   `], { encoding: 'utf8', env: { ...process.env, NEXT_PUBLIC_SITE_LANGUAGE: language, NEXT_PUBLIC_SITE_BASE_PATH: base } });
   assert.equal(result.status, 0, result.stderr);
@@ -32,5 +32,9 @@ test('l’anglais traduit les textes sans changer les identifiants, dates et lie
     const markdown = '## Les premières étapes\\n\\n[Découvrir l’orphelinat](/espoir-de-vie/#orphelinat)';
     assert.equal(translateMarkdown(markdown), '## The first milestones\\n\\n[Discover the orphanage](/espoir-de-vie/#orphelinat)');
     assert.equal(translateMarkdown('<script>alert(1)</script>'), '<script>alert(1)</script>');
+    assert.ok(hasEnglishMarkdown('4 000 chaussures à Divo · 2 000 à Zaroko'));
+    assert.equal(translate('4 000 chaussures à Divo · 2 000 à Zaroko'), '4,000 shoes in Divo · 2,000 in Zaroko');
+    assert.ok(hasEnglishMarkdown('La troisième édition s’est tenue à Conakry. Les images présentent principalement le président et le vice-président.'));
+    assert.equal(hasEnglishMarkdown('Un nouvel article sans traduction.'), false);
   `);
 });
