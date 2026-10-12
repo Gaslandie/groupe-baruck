@@ -32,8 +32,8 @@ type VariantStyle = {
 
 export const variantStyles: Record<HeaderVariant, VariantStyle> = {
   home: {
-    header: "bg-[rgba(11,12,14,.82)] backdrop-blur-[16px]",
-    scrolled: "bg-[rgba(11,12,14,.92)] backdrop-blur-[16px]",
+    header: "bg-[#0b0c0e]",
+    scrolled: "bg-[#0b0c0e]",
     underline: "after:bg-accent",
     currentDesktop: "",
     contactArrow: "text-accent",
@@ -42,8 +42,8 @@ export const variantStyles: Record<HeaderVariant, VariantStyle> = {
     sideCurrentNumber: "text-accent",
   },
   about: {
-    header: "bg-[linear-gradient(180deg,rgba(7,8,10,.72),transparent)]",
-    scrolled: "bg-[rgba(11,12,14,.9)] backdrop-blur-[16px]",
+    header: "bg-[#0b0c0e]",
+    scrolled: "bg-[#0b0c0e]",
     underline: "after:bg-accent",
     currentDesktop: "",
     contactArrow: "text-accent",
@@ -52,8 +52,8 @@ export const variantStyles: Record<HeaderVariant, VariantStyle> = {
     sideCurrentNumber: "text-accent",
   },
   service: {
-    header: "bg-[linear-gradient(180deg,rgba(7,8,10,.72),transparent)]",
-    scrolled: "bg-[rgba(11,12,14,.9)] backdrop-blur-[16px]",
+    header: "bg-[#0b0c0e]",
+    scrolled: "bg-[#0b0c0e]",
     underline: "after:bg-accent",
     currentDesktop: "",
     contactArrow: "text-accent",
@@ -62,8 +62,8 @@ export const variantStyles: Record<HeaderVariant, VariantStyle> = {
     sideCurrentNumber: "text-accent",
   },
   jeca: {
-    header: "bg-[rgba(4,16,49,.88)] backdrop-blur-[14px] max-tablet:h-[72px]",
-    scrolled: "bg-[rgba(4,16,49,.96)]",
+    header: "bg-[#041031] max-tablet:h-[72px]",
+    scrolled: "bg-[#041031]",
     underline: "after:bg-jeca-red",
     currentDesktop: "",
     contactArrow: "text-jeca-yellow",
@@ -72,8 +72,8 @@ export const variantStyles: Record<HeaderVariant, VariantStyle> = {
     sideCurrentNumber: "text-jeca-red",
   },
   edv: {
-    header: "bg-[rgba(26,16,11,.76)] backdrop-blur-[14px] max-tablet:h-[72px] max-tablet:bg-[rgba(26,16,11,.9)]",
-    scrolled: "bg-[rgba(26,16,11,.96)] max-tablet:bg-[rgba(26,16,11,.9)]",
+    header: "bg-[#1a100b] max-tablet:h-[72px]",
+    scrolled: "bg-[#1a100b]",
     underline: "after:bg-accent",
     currentDesktop: "after:right-0! after:bg-edv-gold!",
     contactArrow: "text-accent",
@@ -181,7 +181,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
       <header
         id="site-header"
         className={[
-          "fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[clamp(1.2rem,3.4vw,4rem)] text-ivory transition-[background,height,box-shadow] duration-[350ms] max-tablet:h-[72px] max-tablet:px-[1.15rem]",
+          "fixed inset-x-0 top-0 z-50 flex items-center justify-between px-[clamp(1.2rem,3.4vw,4rem)] text-ivory transition-[height,box-shadow] duration-[350ms] max-tablet:h-[72px] max-tablet:px-[1.15rem]",
           isScrolled
             ? "scrolled h-[74px] shadow-[0_10px_40px_rgba(0,0,0,.1)] " + styles.scrolled
             : "h-[92px] " + styles.header,
