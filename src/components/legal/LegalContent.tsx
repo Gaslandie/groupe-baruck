@@ -99,7 +99,7 @@ export function LegalContent() {
         <p className={paragraphClass}>{t("Le formulaire de la")}{" "}
           <Link href={routes.contact} className={inlineLinkClass}>{t("page Contact")}</Link>{" "}{t("recueille le nom, l’e-mail, le téléphone ou WhatsApp (facultatif), l’objet et le message. Ces informations servent à recevoir la demande et à y répondre.")}</p>
         <p className={paragraphClass}>{t("Lorsque le service Web3Forms est configuré, elles sont envoyées à son API puis transmises par e-mail au Groupe Baruck. Le site ne possède pas de base de données propre pour ces messages.")}</p>
-        <p className={paragraphClass}>{t("Sans clé Web3Forms, la messagerie du visiteur s’ouvre avec le message prérempli et l’envoi reste sous son contrôle.")}</p>
+        <p className={paragraphClass}>{t("Si le service d’envoi est indisponible, aucun message n’est envoyé et une erreur s’affiche sur le site.")}</p>
         <p className={paragraphClass}>
           Toute demande relative à un message transmis peut être adressée à <EmailLink />.
         </p>

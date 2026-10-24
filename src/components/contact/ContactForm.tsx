@@ -24,7 +24,7 @@ type ContactFormProps = {
   showTitle?: boolean;
 };
 
-type FormStatus = "idle" | "fallback" | "error";
+type FormStatus = "idle" | "unavailable" | "error";
 
 export function ContactForm({ id = "contact-form", className, showTitle = false }: ContactFormProps) {
   const [status, setStatus] = useState<FormStatus>("idle");
@@ -35,6 +35,13 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (isSubmitting) return;
+
+    if (!accessKey) {
+      setStatus("unavailable");
+      return;
+    }
+
     const formData = new FormData(event.currentTarget);
     const name = String(formData.get("name") ?? "");
     const email = String(formData.get("email") ?? "");
@@ -44,20 +51,6 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
     const botcheck = Boolean(formData.get("botcheck"));
 
     setStatus("idle");
-
-    if (!accessKey) {
-      const subject = encodeURIComponent((t("Site Groupe Baruck — ") + String(objet) + t("")));
-      const body = encodeURIComponent(
-        [(t("Nom : ") + String(name) + t("")), (t("E-mail : ") + String(email) + t("")), (t("Téléphone ou WhatsApp : ") + String(phone || "Non renseigné") + t("")), "", message].join(
-          "\n",
-        ),
-      );
-
-      setStatus("fallback");
-      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.href = `${contacts.email.href}?subject=${subject}&body=${body}`;
-      return;
-    }
 
     setIsSubmitting(true);
 
@@ -189,7 +182,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         aria-live="polite"
         className="col-span-full mb-0 mt-[-.8rem] min-h-4 text-caption leading-[1.6] text-[#6c6a64] max-tablet:col-auto"
       >
-        {status === "fallback" ? t("Votre messagerie s’ouvre avec le message prérempli.") : null}
+        {status === "unavailable" ? t("L’envoi est momentanément indisponible. Votre message n’a pas été envoyé. Vous pouvez nous joindre sur WhatsApp.") : null}
         {status === "error" ? (
           <>{t("L’envoi a échoué. Écrivez-nous directement par")}{" "}
             <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="underline hover:text-accent">
