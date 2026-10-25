@@ -15,4 +15,7 @@ return [
     // termine TLS et pose X-Forwarded-Proto. Sur Apache/cPanel en direct : laisser absent.
     // 'trusted_proxy' => true,
     'storage' => __DIR__ . '/storage',
+    // Envoi par le serveur de l'hébergement. Activer avec une boîte existante
+    // @groupebaruck.com ; une valeur vide désactive l'envoi. Aucun mot de passe.
+    'contact_mail' => ['from' => '', 'to' => 'jokrasso2@gmail.com'],
 ];

@@ -2,13 +2,13 @@
 
 import { translate as t } from "../../lib/language.ts";
 
-import { useState, type FormEvent } from "react";
+import { useRef, useState, type FormEvent } from "react";
 
 import { contactSubjects } from "@/data/contact";
 import { contacts } from "@/data/site";
 import { Icon } from "../ui/Icon";
 
-const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+const contactUrl = process.env.NEXT_PUBLIC_CONTACT_URL;
 
 const formClassName =
   "reveal grid content-center grid-cols-2 gap-x-6 gap-y-8 bg-ivory px-[clamp(2rem,7vw,8rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:px-[1.3rem] max-tablet:py-16";
@@ -24,20 +24,21 @@ type ContactFormProps = {
   showTitle?: boolean;
 };
 
-type FormStatus = "idle" | "unavailable" | "error";
+type FormStatus = "idle" | "unavailable" | "error" | "limited" | "invalid";
 
 export function ContactForm({ id = "contact-form", className, showTitle = false }: ContactFormProps) {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const sending = useRef(false);
   const containerClassName = className ? `${formClassName} ${className}` : formClassName;
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isSubmitting) return;
+    if (sending.current) return;
 
-    if (!accessKey) {
+    if (!contactUrl) {
       setStatus("unavailable");
       return;
     }
@@ -52,19 +53,19 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
 
     setStatus("idle");
 
+    sending.current = true;
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch(contactUrl, {
         method: "POST",
+        credentials: "omit",
+        signal: AbortSignal.timeout(20000),
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
         body: JSON.stringify({
-          access_key: accessKey,
-          subject: (t("Site Groupe Baruck — ") + String(objet) + t("")),
-          from_name: t("Site Groupe Baruck"),
           name,
           email,
           phone,
@@ -78,11 +79,12 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
       if (response.ok && result.success) {
         setIsSuccess(true);
       } else {
-        setStatus("error");
+        setStatus(response.status === 429 ? "limited" : response.status === 422 ? "invalid" : response.status === 503 ? "unavailable" : "error");
       }
     } catch {
       setStatus("error");
     } finally {
+      sending.current = false;
       setIsSubmitting(false);
     }
   };
@@ -109,7 +111,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
       {showTitle ? <p className="eyebrow col-span-full">{t("Formulaire")}</p> : null}
       <div className="flex flex-col gap-[.7rem]">
         <label htmlFor={`${id}-name`} className={labelClassName}>{t("Nom complet")}</label>
-        <input id={`${id}-name`} name="name" type="text" autoComplete="name" required className={fieldClassName} />
+        <input id={`${id}-name`} name="name" type="text" autoComplete="name" maxLength={120} required className={fieldClassName} />
       </div>
       <div className="flex flex-col gap-[.7rem]">
         <label htmlFor={`${id}-email`} className={labelClassName}>{t("E-mail")}</label>
@@ -119,6 +121,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
           type="email"
           autoComplete="email"
           inputMode="email"
+          maxLength={190}
           required
           className={fieldClassName}
         />
@@ -131,6 +134,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
           type="tel"
           autoComplete="tel"
           inputMode="tel"
+          maxLength={40}
           placeholder="+224 …"
           className={`${fieldClassName} placeholder:text-[#aaa69e]`}
         />
@@ -167,6 +171,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
           rows={5}
           required
           minLength={20}
+          maxLength={5000}
           className={fieldClassName}
         />
       </div>
@@ -183,6 +188,8 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         className="col-span-full mb-0 mt-[-.8rem] min-h-4 text-caption leading-[1.6] text-[#6c6a64] max-tablet:col-auto"
       >
         {status === "unavailable" ? t("L’envoi est momentanément indisponible. Votre message n’a pas été envoyé. Vous pouvez nous joindre sur WhatsApp.") : null}
+        {status === "limited" ? t("Trop de tentatives. Réessayez dans une heure ou contactez-nous sur WhatsApp.") : null}
+        {status === "invalid" ? t("Vérifiez les champs du formulaire et écrivez un message d’au moins 20 caractères.") : null}
         {status === "error" ? (
           <>{t("L’envoi a échoué. Écrivez-nous directement par")}{" "}
             <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="underline hover:text-accent">

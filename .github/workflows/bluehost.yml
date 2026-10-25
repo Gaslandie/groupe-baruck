@@ -108,7 +108,7 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://${{ env.SITE_DOMAIN }}/
           NEXT_PUBLIC_BASE_PATH: ""
           NEXT_PUBLIC_AUDIENCE_URL: https://${{ env.ADMIN_DOMAIN }}/collect.php
-          NEXT_PUBLIC_WEB3FORMS_KEY: ${{ vars.WEB3FORMS_KEY }}
+          NEXT_PUBLIC_CONTACT_URL: https://${{ env.ADMIN_DOMAIN }}/contact.php
         run: npm run backoffice:publish-build -- "$RUNNER_TEMP/baruck-publication.json" --webpack
       - name: Assemble the public files
         if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
