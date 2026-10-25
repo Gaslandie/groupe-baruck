@@ -19,6 +19,14 @@ try {
     if (!$local && (($_SERVER['HTTPS'] ?? '') !== 'on') && !(($configuration['trusted_proxy'] ?? false) && ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https')) {
         throw new ContactError('HTTPS requis.', 403);
     }
+    // Une navigation permet au navigateur d'effectuer la vérification JavaScript
+    // de l'hébergeur. Cette page fixe ne lit ni n'envoie aucune donnée du formulaire.
+    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET' && ($_GET['prepare'] ?? '') === '1') {
+        header('Content-Type: text/html; charset=UTF-8');
+        header("Content-Security-Policy: default-src 'none'; frame-ancestors 'self'");
+        echo '<!doctype html><html lang="fr"><meta charset="utf-8"><title>Formulaire Baruck</title></html>';
+        exit;
+    }
     $site = rtrim($configuration['site_url'], '/');
     $allowed = $local ? [$site] : [$site, preg_replace('~^https://(?!www\.)~', 'https://www.', $site)];
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';

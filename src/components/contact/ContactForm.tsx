@@ -59,7 +59,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
     try {
       const response = await fetch(contactUrl, {
         method: "POST",
-        credentials: "omit",
+        credentials: "same-origin",
         signal: AbortSignal.timeout(20000),
         headers: {
           "Content-Type": "application/json",
@@ -108,6 +108,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
 
   return (
     <form id={id} onSubmit={handleSubmit} className={containerClassName}>
+      {contactUrl ? <iframe src={`${contactUrl}?prepare=1`} title={t("Vérification du formulaire")} hidden /> : null}
       {showTitle ? <p className="eyebrow col-span-full">{t("Formulaire")}</p> : null}
       <div className="flex flex-col gap-[.7rem]">
         <label htmlFor={`${id}-name`} className={labelClassName}>{t("Nom complet")}</label>

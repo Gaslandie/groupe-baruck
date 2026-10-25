@@ -108,7 +108,7 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://${{ env.SITE_DOMAIN }}/
           NEXT_PUBLIC_BASE_PATH: ""
           NEXT_PUBLIC_AUDIENCE_URL: https://${{ env.ADMIN_DOMAIN }}/collect.php
-          NEXT_PUBLIC_CONTACT_URL: https://${{ env.ADMIN_DOMAIN }}/contact.php
+          NEXT_PUBLIC_CONTACT_URL: https://${{ env.SITE_DOMAIN }}/contact.php
         run: npm run backoffice:publish-build -- "$RUNNER_TEMP/baruck-publication.json" --webpack
       - name: Assemble the public files
         if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
@@ -117,6 +117,7 @@ jobs:
         run: |
           mkdir -p dist/site
           cp -R out/. dist/site/ && rm -f dist/site/.nojekyll
+          cp deploy/contact.php dist/site/contact.php
           escaped="${SITE_DOMAIN//./\\\\.}"
           sed -e "s/__SITE_DOMAIN_RE__/$escaped/g" -e "s/__SITE_DOMAIN__/$SITE_DOMAIN/g" deploy/site.htaccess > dist/site/.htaccess
           test -f dist/site/index.html && test -f dist/site/404.html

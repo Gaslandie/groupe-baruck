@@ -15,6 +15,10 @@ test('envoi interne : destinataire imposé, validation, transport et limites', a
   const failure = path.join(folder, 'failure');
   const mailer = path.join(folder, 'sendmail');
   const config = path.join(folder, 'config.php');
+  const site = path.join(folder, 'groupebaruck.com');
+  await fs.mkdir(site);
+  await fs.copyFile('deploy/contact.php', path.join(site, 'contact.php'));
+  await fs.symlink(path.resolve('backoffice'), path.join(folder, 'baruck-admin'), 'dir');
   await fs.writeFile(mailer, `#!/bin/sh\ncat >> '${capture}'\n[ ! -f '${failure}' ]\n`, { mode: 0o700 });
   const writeConfig = (from = 'contact@groupebaruck.com', environment = 'local', trusted = false) => fs.writeFile(config, `<?php return ['environment'=>'${environment}','trusted_proxy'=>${trusted ? 'true' : 'false'},'origin'=>'${environment === 'local' ? 'http://127.0.0.1:8091' : 'https://admin.groupebaruck.com'}','site_url'=>'https://groupebaruck.com','storage'=>'${storage}','contact_mail'=>['from'=>'${from}','to'=>'jokrasso2@gmail.com']];`, { mode: 0o600 });
   await writeConfig();
@@ -23,7 +27,7 @@ test('envoi interne : destinataire imposé, validation, transport et limites', a
   await once(reservation, 'listening');
   const port = reservation.address().port;
   await new Promise(resolve => reservation.close(resolve));
-  const child = spawn('php', ['-d', `sendmail_path=${mailer} -t -i`, '-S', `127.0.0.1:${port}`, '-t', 'backoffice/public'], { env: { ...process.env, BARUCK_CONFIG: config }, stdio: ['ignore', 'ignore', 'pipe'] });
+  const child = spawn('php', ['-d', `sendmail_path=${mailer} -t -i`, '-S', `127.0.0.1:${port}`, '-t', site], { env: { ...process.env, BARUCK_CONFIG: config }, stdio: ['ignore', 'ignore', 'pipe'] });
   let errors = '';
   child.stderr.on('data', bytes => { errors += bytes; });
   t.after(async () => {
@@ -39,6 +43,15 @@ test('envoi interne : destinataire imposé, validation, transport et limites', a
     catch { if (count === 99) throw new Error(errors); await new Promise(resolve => setTimeout(resolve, 25)); }
   }
   const reset = () => fs.rm(path.join(storage, 'contact'), { recursive: true, force: true });
+  await t.test('préparation du navigateur sans données ni envoi, avec cache désactivé', async () => {
+    const r = await fetch(url + '?prepare=1');
+    assert.equal(r.status, 200);
+    assert.match(r.headers.get('content-type'), /text\/html/);
+    assert.equal(r.headers.get('cache-control'), 'no-store');
+    assert.equal(r.headers.get('set-cookie'), null);
+    assert.match(r.headers.get('content-security-policy'), /default-src 'none'/);
+    await assert.rejects(fs.stat(capture), { code: 'ENOENT' });
+  });
   await t.test('prévol autorisé, sans cookie ni cache', async () => {
     const r = await request(data, {}, 'OPTIONS');
     assert.equal(r.status, 204);
@@ -144,5 +157,11 @@ test('envoi interne : destinataire imposé, validation, transport et limites', a
       assert.equal((await request()).status, 503);
     }
     await writeConfig();
+  });
+  await t.test('administration absente : erreur fermée sans exposer le chemin serveur', async () => {
+    await fs.rename(path.join(folder, 'baruck-admin'), path.join(folder, 'baruck-admin-away'));
+    const r = await request();
+    assert.equal(r.status, 503);
+    assert.deepEqual(await r.json(), { success: false });
   });
 });
