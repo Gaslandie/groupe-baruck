@@ -98,7 +98,7 @@ export function LegalContent() {
         <p className={paragraphClass}>{t("Le formulaire de la")}{" "}
           <Link href={routes.contact} className={inlineLinkClass}>{t("page Contact")}</Link>{" "}{t("recueille le nom, l’e-mail, le téléphone ou WhatsApp (facultatif), l’objet et le message. Ces informations servent à recevoir la demande et à y répondre.")}</p>
         <p className={paragraphClass}>{t("Ces informations sont transmises par le serveur de l’hébergement à l’adresse e-mail du Groupe Baruck. Le site ne conserve pas de copie des messages dans sa base de données.")}</p>
-        <p className={paragraphClass}>{t("Pour limiter les envois abusifs, une empreinte de l’adresse réseau et l’heure des tentatives sont conservées dans un stockage privé pendant une heure.")}</p>
+        <p className={paragraphClass}>{t("Pour limiter les envois abusifs, une empreinte de l’adresse réseau et l’heure des tentatives sont conservées dans un stockage privé. Les tentatives de plus d’une heure sont supprimées lors de la demande suivante.")}</p>
         <p className={paragraphClass}>{t("Si le service d’envoi est indisponible, aucun message n’est envoyé et une erreur s’affiche sur le site.")}</p>
         <p className={paragraphClass}>
           Toute demande relative à un message transmis peut être adressée à <EmailLink />.
