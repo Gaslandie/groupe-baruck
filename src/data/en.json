@@ -1,4 +1,9 @@
 {
+  "Essai local réussi": "Local test successful",
+  "Votre message de test a été reçu sur cet ordinateur. Aucun e-mail n’a été envoyé au client.": "Your test message was received on this computer. No email was sent to the client.",
+  "Mode essai local : le message reste sur cet ordinateur, sans envoi au client.": "Local test mode: the message stays on this computer. Nothing is sent to the client.",
+  "Votre message est envoyé directement à l’équipe Groupe Baruck. Vous restez sur cette page, sans ouvrir votre application e-mail.": "Your message is sent directly to the Groupe Baruck team. You stay on this page without opening your email app.",
+  "L’envoi n’a pas pu être confirmé. Votre texte est conservé. Réessayez ou contactez-nous sur": "Sending could not be confirmed. Your text has been kept. Try again or contact us on",
   "Actualités": "News",
   "Contactez le Groupe Baruck — WhatsApp, téléphone, e-mail et formulaire : Studio photo, Hôtesses événementielles, JECA, Espoir de Vie, partenariats.": "Contact Groupe Baruck — WhatsApp, telephone, email and contact form: photography studio, event hostesses, JECA, Espoir de Vie, partnerships.",
   "Informations pratiques": "Practical information",

@@ -9,6 +9,7 @@ import { contacts } from "@/data/site";
 import { Icon } from "../ui/Icon";
 
 const contactUrl = process.env.NEXT_PUBLIC_CONTACT_URL;
+const localPreview = process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_CONTACT_PREVIEW === "1";
 
 const formClassName =
   "reveal grid content-center grid-cols-2 gap-x-6 gap-y-8 bg-ivory px-[clamp(2rem,7vw,8rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:grid-cols-1 max-tablet:px-[1.3rem] max-tablet:py-16";
@@ -91,10 +92,10 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
 
   if (isSuccess) {
     return (
-      <div role="status" id={id} className={containerClassName}>
-        <p className="eyebrow col-span-full">{t("Message envoyé")}</p>
-        <h2 className="col-span-full m-0 max-w-[650px] font-display text-display-xl font-normal leading-[.95] tracking-[-.04em]">{t("Merci, votre message a bien été transmis.")}</h2>
-        <p className="col-span-full m-0 max-w-[540px] text-small leading-[1.7] text-[#686762]">{t("Nous vous répondons par le canal que vous avez indiqué.")}</p>
+      <div role="status" id={id} className={`${containerClassName} is-visible`}>
+        <p className="eyebrow col-span-full">{localPreview ? t("Essai local réussi") : t("Message envoyé")}</p>
+        <h2 className="col-span-full m-0 max-w-[650px] font-display text-display-xl font-normal leading-[.95] tracking-[-.04em]">{localPreview ? t("Votre message de test a été reçu sur cet ordinateur. Aucun e-mail n’a été envoyé au client.") : t("Merci, votre message a bien été transmis.")}</h2>
+        {!localPreview ? <p className="col-span-full m-0 max-w-[540px] text-small leading-[1.7] text-[#686762]">{t("Nous vous répondons par le canal que vous avez indiqué.")}</p> : null}
         <a
           href={contacts.whatsappHq.href}
           target="_blank"
@@ -108,8 +109,13 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
 
   return (
     <form id={id} onSubmit={handleSubmit} className={containerClassName}>
-      {contactUrl ? <iframe src={`${contactUrl}?prepare=1`} title={t("Vérification du formulaire")} hidden /> : null}
+      {contactUrl && !localPreview ? <iframe src={`${contactUrl}?prepare=1`} title={t("Vérification du formulaire")} hidden /> : null}
       {showTitle ? <p className="eyebrow col-span-full">{t("Formulaire")}</p> : null}
+      <p className="col-span-full m-0 text-small leading-[1.7] text-[#686762]">
+        {localPreview
+          ? t("Mode essai local : le message reste sur cet ordinateur, sans envoi au client.")
+          : t("Votre message est envoyé directement à l’équipe Groupe Baruck. Vous restez sur cette page, sans ouvrir votre application e-mail.")}
+      </p>
       <div className="flex flex-col gap-[.7rem]">
         <label htmlFor={`${id}-name`} className={labelClassName}>{t("Nom complet")}</label>
         <input id={`${id}-name`} name="name" type="text" autoComplete="name" maxLength={120} required className={fieldClassName} />
@@ -192,12 +198,9 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
         {status === "limited" ? t("Trop de tentatives. Réessayez dans une heure ou contactez-nous sur WhatsApp.") : null}
         {status === "invalid" ? t("Vérifiez les champs du formulaire et écrivez un message d’au moins 20 caractères.") : null}
         {status === "error" ? (
-          <>{t("L’envoi a échoué. Écrivez-nous directement par")}{" "}
+          <>{t("L’envoi n’a pas pu être confirmé. Votre texte est conservé. Réessayez ou contactez-nous sur")}{" "}
             <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="underline hover:text-accent">
               WhatsApp
-            </a>{" "}{t("ou par")}{" "}
-            <a href={contacts.email.href} className="underline hover:text-accent">
-              e-mail
             </a>.
           </>
         ) : null}
