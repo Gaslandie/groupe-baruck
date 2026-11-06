@@ -2,7 +2,7 @@ import { translate as t } from "../../lib/language.ts";
 
 import Link from "next/link";
 
-import { presidentWorking } from "@/data/media";
+import { groupHeroPortrait } from "@/data/media";
 import { routes } from "@/data/site";
 import { siteTexts } from "@/data/textes";
 import { asset } from "@/lib/asset";
@@ -14,12 +14,8 @@ import { Icon } from "../ui/Icon";
  * d'introduction est celui du back-office (`heroSlides.guinee`), et les trois
  * activités phares sont des liens.
  *
- * Photo (2026-09-18) : le PDG à son poste de travail, à la place de la photo
- * des hôtesses événementielles. Celle-ci est déjà le hero de sa propre page :
- * la page du Groupe annonçait donc une de ses activités au lieu du Groupe.
- * Remplacée le 2026-09-19 par un plan plus large (cf. `presidentWorking`). Le
- * cadrage `center 12%` garde le haut de la tête sur un panneau large ; sur
- * mobile la hauteur est déjà remplie, donc ce 12% n'y joue pas.
+ * Portrait fourni par le client le 2026-11-06. Le cadrage `center 12%`
+ * conserve le positionnement existant dans le panneau photo.
  *
  * Mobile (2026-09-18) : plus d'empilement photo puis texte. La photo devient le
  * fond de la section et les textes passent par-dessus, en bas, comme sur
@@ -36,10 +32,10 @@ export function AboutHero() {
     >
       <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-ink max-tablet:absolute max-tablet:inset-0 max-tablet:z-0 max-tablet:h-full max-tablet:w-full">
         <img
-          src={asset(presidentWorking.src)}
-          alt={presidentWorking.alt}
-          width={presidentWorking.width}
-          height={presidentWorking.height}
+          src={asset(groupHeroPortrait.src)}
+          alt={groupHeroPortrait.alt}
+          width={groupHeroPortrait.width}
+          height={groupHeroPortrait.height}
           fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover object-[center_12%] saturate-[.92] contrast-[1.02]"
         />
