@@ -13,6 +13,7 @@ type BrandProps = {
 export function Brand({ className = "" }: BrandProps) {
   return (
     <Link
+      prefetch={false}
       href={routes.home}
       aria-label={t("Groupe Baruck — Accueil")}
       className={[

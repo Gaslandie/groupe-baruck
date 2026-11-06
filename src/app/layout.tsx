@@ -30,6 +30,8 @@ const lato = localFont({
   ],
   display: "swap",
   variable: "--font-lato",
+  // Seules les variantes réellement utilisées sont téléchargées à l'affichage.
+  preload: false,
 });
 
 /**

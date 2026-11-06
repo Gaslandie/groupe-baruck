@@ -3,7 +3,7 @@ import { translate as t } from "../../lib/language.ts";
 import Link from "next/link";
 
 import { contacts, routes } from "@/data/site";
-import { imageUrl } from "@/lib/asset";
+import { asset } from "@/lib/asset";
 import { Icon } from "../ui/Icon";
 
 const ctaImage = "/images/placeholders/contact-collaboration.webp";
@@ -11,10 +11,14 @@ const ctaImage = "/images/placeholders/contact-collaboration.webp";
 export function ContactCta() {
   return (
     <section className="relative isolate flex min-h-[720px] flex-col items-center justify-center overflow-hidden bg-ink-soft px-6 py-32 text-center text-ivory max-tablet:min-h-[650px] max-tablet:px-[1.3rem] max-tablet:py-20">
-      <span
+      <img
+        src={asset(ctaImage)}
+        alt=""
+        width={2000}
+        height={1333}
+        loading="lazy"
         aria-hidden="true"
-        className="absolute inset-0 z-[-2] scale-[1.035] bg-cover bg-[center_46%] saturate-[.55]"
-        style={{ backgroundImage: `url("${imageUrl(ctaImage)}")` }}
+        className="absolute inset-0 z-[-2] h-full w-full scale-[1.035] object-cover object-[center_46%] saturate-[.55]"
       />
       <span
         aria-hidden="true"
