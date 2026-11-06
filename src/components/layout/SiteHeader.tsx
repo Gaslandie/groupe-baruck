@@ -226,6 +226,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                       const childCurrent = currentAttributes(child.href);
                       return (
                         <Link
+                          prefetch={false}
                           key={child.href}
                           href={child.href}
                           aria-current={childCurrent["aria-current"]}
@@ -246,6 +247,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
 
             return (
               <Link
+                prefetch={false}
                 key={item.href}
                 href={item.href}
                 aria-current={itemCurrent["aria-current"]}
@@ -265,6 +267,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
           <Link
+            prefetch={false}
             href={routes.contact}
             className="border-b border-[rgba(255,255,255,.3)] pb-[.3rem] text-caption uppercase tracking-[.08em] wide:hidden max-tablet:hidden"
           >{t("Parler avec nous ")}<span className={["ml-[.4rem]", styles.contactArrow].join(" ")}><Icon name="arrow-up-right" /></span>
@@ -338,7 +341,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             );
             const headingClass = ["block py-[.34rem] font-display text-display-md leading-[1.06] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent max-tablet:py-[.38rem]", itemCurrent.isCurrent ? styles.sideCurrent : ""].join(" ");
             if (!visibleChildren) return (
-              <Link key={item.href} href={item.href} aria-current={itemCurrent["aria-current"]} data-current={itemCurrent["data-current"]} onClick={() => setIsOpen(false)} className={headingClass}>{heading}</Link>
+              <Link prefetch={false} key={item.href} href={item.href} aria-current={itemCurrent["aria-current"]} data-current={itemCurrent["data-current"]} onClick={() => setIsOpen(false)} className={headingClass}>{heading}</Link>
             );
             return (
               <details key={item.href} name="side-nav-groups" data-nav-group>
@@ -347,7 +350,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
                   {visibleChildren.map((child) => {
                     const childCurrent = currentAttributes(child.href);
                     return (
-                      <Link key={child.href} href={child.href} aria-current={childCurrent["aria-current"]} data-current={childCurrent["data-current"]} onClick={() => setIsOpen(false)} className={["py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent", childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]"].join(" ")}>{child.label}</Link>
+                      <Link prefetch={false} key={child.href} href={child.href} aria-current={childCurrent["aria-current"]} data-current={childCurrent["data-current"]} onClick={() => setIsOpen(false)} className={["py-[.18rem] font-sans text-caption font-medium leading-[1.35] tracking-[.05em] transition-[color,translate] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-x-[.4rem] hover:text-accent focus-visible:translate-x-[.4rem] focus-visible:text-accent", childCurrent.isCurrent ? styles.sideCurrent : "text-[#6f6f6b]"].join(" ")}>{child.label}</Link>
                     );
                   })}
                 </div>

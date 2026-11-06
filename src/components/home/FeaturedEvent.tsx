@@ -97,6 +97,7 @@ function EventBlock({ article, eyebrow }: { article: Article; eyebrow?: string }
               width={photo.width}
               height={photo.height}
               loading="lazy"
+              fetchPriority="low"
               decoding="async"
               className="aspect-[4/5] w-full bg-ink-soft object-cover"
             />
