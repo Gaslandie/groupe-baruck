@@ -62,6 +62,10 @@ function saveArticle(array $input, array $user): string
             $old = $id ? query('SELECT * FROM articles WHERE id = ? FOR UPDATE', [$id])->fetch() : false;
             if ($id && (!$old || $version !== (int) $old['version'])) throw new ConflictError('Cet article a été modifié ailleurs. Rechargez la page avant d’enregistrer. Votre saisie est conservée ci-dessous.');
             if ($old && $old['slug'] !== $article['slug']) throw new ValidationError('L’adresse d’un article existant ne peut pas changer.');
+            // Le formulaire actuel ne modifie pas les groupes : seuls les instantanés serveur font foi.
+            $attachments = $old ? articleAttachments(articleData($old)) : ['groups' => []];
+            if ($old && $old['article_date'] !== $article['date']) unset($attachments['datePrecision']);
+            $article = [...$article, ...$attachments];
             $values = [$article['title'], $article['category'], $article['date'], $article['excerpt'], $article['body'], $article['cover'], $article['cover_alt'], json_encode($article['gallery'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), $status, now(), $user['id']];
             if ($old) {
                 query('UPDATE articles SET title=?,category=?,article_date=?,excerpt=?,body=?,cover=?,cover_alt=?,gallery=?,status=?,updated_at=?,updated_by=?,version=version+1 WHERE id=?', [...$values, $id]);
@@ -111,14 +115,7 @@ function exportContent(array $user, bool $record = true): array
     requireAdmin($user);
     $articles = query('SELECT payload FROM article_publications')->fetchAll();
     $data = array_map(fn($row) => json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR), $articles);
-    foreach ($data as &$article) {
-        foreach (seed()['articles'] as $reference) {
-            if ($reference['slug'] === $article['slug'] && $reference['date'] === $article['date'] && ($reference['datePrecision'] ?? '') === 'year') {
-                $article['datePrecision'] = 'year';
-                break;
-            }
-        }
-    }
+    foreach ($data as &$article) $article = [...$article, ...articleAttachments($article)];
     unset($article);
     usort($data, fn($first, $second) => strcmp($second['date'], $first['date']) ?: strcmp($first['slug'], $second['slug']));
     $products = publishedProducts();

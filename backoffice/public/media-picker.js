@@ -17,6 +17,13 @@
   let busy = false;
   let opener;
   let request;
+  let closeFocus;
+
+  function closePicker(focus = opener) {
+    request?.abort(); request = null;
+    closeFocus = focus;
+    dialog.close();
+  }
 
   function renumber() {
     const rows = [...gallery.children];
@@ -57,8 +64,8 @@
       row = document.querySelector('#gallery-item-template').content.firstElementChild.cloneNode(true);
       gallery.append(row);
     }
-    applyImage(row, item); renumber(); dialog.close();
-    row.querySelector('[data-image-alt]').focus();
+    applyImage(row, item); renumber();
+    closePicker(row.querySelector('[data-image-alt]'));
   }
   function render() {
     grid.replaceChildren();
@@ -83,13 +90,18 @@
     return data;
   }
   async function open(row, button) {
+    request?.abort();
+    const controller = new AbortController();
+    request = controller; closeFocus = null;
     target = row; opener = button; search.value = ''; grid.replaceChildren();
     status.textContent = 'Chargement des images…'; dialog.showModal();
-    request?.abort(); request = new AbortController();
     try {
-      const data = await responseData(await fetch('/?page=media_api', { signal: request.signal, credentials: 'same-origin' }));
+      const data = await responseData(await fetch('/?page=media_api', { signal: controller.signal, credentials: 'same-origin' }));
+      if (controller.signal.aborted || request !== controller || !dialog.open) return;
       items = data.items; render(); status.textContent = '';
-    } catch (error) { if (error.name !== 'AbortError') status.textContent = error.message; }
+    } catch (error) {
+      if (!controller.signal.aborted && request === controller && dialog.open) status.textContent = error.message;
+    }
   }
   form.addEventListener('click', event => {
     const button = event.target.closest('button'); if (!button) return;
@@ -103,9 +115,14 @@
     if (button.hasAttribute('data-media-down') && row.nextElementSibling) { gallery.insertBefore(row.nextElementSibling, row); renumber(); button.focus(); }
   });
   search.addEventListener('input', render);
-  dialog.querySelector('[data-media-close]').addEventListener('click', () => { if (!busy) dialog.close(); });
+  dialog.querySelector('[data-media-close]').addEventListener('click', () => { if (!busy) closePicker(); });
   dialog.addEventListener('cancel', event => { if (busy) event.preventDefault(); });
-  dialog.addEventListener('close', () => { request?.abort(); opener?.focus(); });
+  dialog.addEventListener('close', () => {
+    // L’événement d’une fermeture précédente peut arriver après une réouverture.
+    if (dialog.open) return;
+    request?.abort(); request = null;
+    (closeFocus || opener)?.focus();
+  });
   upload.addEventListener('submit', async event => {
     event.preventDefault(); if (busy) return;
     const file = upload.elements.image.files[0];

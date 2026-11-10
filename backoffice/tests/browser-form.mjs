@@ -35,4 +35,4 @@ try {
  assert.ok(text.includes('adresse e-mail complète et valide'), 'La requête doit atteindre la validation serveur de création du compte');
  console.log('Formulaire natif Chrome : origine, session et validation serveur OK');
  }
-} finally {socket?.close();if(chrome.exitCode===null){const stopped=new Promise(r=>chrome.once('exit',r));chrome.kill();await stopped;}await fs.rm(profile,{recursive:true,force:true});}
+} finally {socket?.close();if(chrome.exitCode===null){const stopped=new Promise(r=>chrome.once('exit',r));chrome.kill();await stopped;}await fs.rm(profile,{recursive:true,force:true,maxRetries:5,retryDelay:100});}

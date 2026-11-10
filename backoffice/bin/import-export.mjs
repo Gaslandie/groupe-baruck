@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import os from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { imageSize } from 'image-size';
+import matter from 'gray-matter';
 
 export async function importExport(file, destination) {
   const info = await fs.stat(file);
@@ -34,6 +35,16 @@ export async function importExport(file, destination) {
       if (typeof value !== 'string' || value.includes('\0') || !value.trim() || Buffer.byteLength(value) > max) throw new Error(`Champ invalide : ${name}.`);
       return value.trim();
     };
+    const imagePath = (value) => {
+      const src = string(value, 'src', 255);
+      if (!/^\/images\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+\.(?:jpe?g|png|webp)$/.test(src)
+        || (src.startsWith('/images/actualites/uploads/') && !images.has(src))) throw new Error('Image de galerie absente ou chemin invalide.');
+      return src;
+    };
+    const photo = (image) => {
+      const caption = string(image?.caption, 'caption', 500, true);
+      return { src: imagePath(image?.src), alt: string(image?.alt, 'alt', 500), ...(caption ? { caption } : {}) };
+    };
     for (const article of source.articles) {
       if (!article || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug) || article.slug.length > 180 || article.slug === 'a-venir' || slugs.has(article.slug)) throw new Error('Adresse d’article invalide ou dupliquée.');
       slugs.add(article.slug);
@@ -47,11 +58,46 @@ export async function importExport(file, destination) {
         excerpt: string(article.excerpt, 'excerpt', 2000),
         cover: string(article.cover, 'cover', 255, true),
         coverAlt: string(article.coverAlt, 'coverAlt', 500, true),
-        gallery: gallery.map((image) => ({ src: string(image?.src, 'src', 255), alt: string(image?.alt, 'alt', 500), caption: string(image?.caption, 'caption', 500, true) })),
+        gallery: gallery.map(photo),
       };
-      if (article.datePrecision !== undefined) {
-        if (article.datePrecision !== 'year') throw new Error('Précision de date invalide.');
-        clean.datePrecision = article.datePrecision;
+      let details = article;
+      if (!Object.hasOwn(article, 'groups')) {
+        // Les instantanés déjà publiés peuvent dater d’avant la conservation des groupes.
+        // Ne récupérer que les pièces manquantes, sans remplacer les textes ni les dates.
+        const original = await fs.readFile(path.resolve('content/actualites', article.slug + '.md'), 'utf8').catch(error => {
+          if (error.code === 'ENOENT') return null;
+          throw error;
+        });
+        if (original) {
+          const { data } = matter(original, { language: 'yaml' });
+          details = { ...article, groups: data.groups ?? [], groupsTitle: data.groupsTitle, groupsIntro: data.groupsIntro };
+          const originalDate = data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date;
+          if (article.datePrecision === undefined && originalDate === article.date && data.datePrecision !== undefined) details.datePrecision = data.datePrecision;
+        }
+      }
+      const groups = details.groups ?? [];
+      if ((Object.hasOwn(details, 'groups') && !Array.isArray(details.groups)) || groups.length > 30) throw new Error('Groupes de photos invalides.');
+      clean.groups = [];
+      for (const group of groups) {
+        if (!group || !Array.isArray(group.photos) || !group.photos.length || group.photos.length > 30) throw new Error('Chaque groupe doit contenir de 1 à 30 photos.');
+        const note = string(group.note, 'note', 2000, true);
+        const saved = { label: string(group.label, 'label', 240), ...(note ? { note } : {}), photos: group.photos.map(photo) };
+        if (group.video !== undefined && group.video !== null) {
+          const src = string(group.video.src, 'video.src', 255);
+          if (!/^\/videos\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+\.mp4$/.test(src)) throw new Error('Chemin de vidéo invalide.');
+          const [root, file] = await Promise.all([fs.realpath('public/videos'), fs.realpath(path.resolve('public', src.slice(1)))]);
+          if (!file.startsWith(root + path.sep)) throw new Error('La vidéo doit rester dans /videos/.');
+          saved.video = { src, poster: imagePath(group.video.poster) };
+        }
+        clean.groups.push(saved);
+      }
+      if (groups.length) {
+        clean.groupsTitle = string(details.groupsTitle, 'groupsTitle', 240);
+        clean.groupsIntro = string(details.groupsIntro, 'groupsIntro', 2000, true);
+      } else if (details.groupsTitle || details.groupsIntro) throw new Error('Un titre de groupes exige au moins un groupe de photos.');
+      if (details.datePrecision !== undefined) {
+        if (details.datePrecision !== 'year') throw new Error('Précision de date invalide.');
+        clean.datePrecision = details.datePrecision;
       }
       // JSON est un sous-ensemble de YAML : valeurs systématiquement citées,
       // aucune interpolation de YAML/frontmatter fourni par un utilisateur.

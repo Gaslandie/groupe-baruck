@@ -3,14 +3,40 @@ declare(strict_types=1);
 
 namespace Baruck;
 
+/** Les anciens instantanés omettaient ces champs. Une liste vide est un retrait explicite. */
+function articleAttachments(array $article): array
+{
+    $source = $article;
+    if (!array_key_exists('groups', $article)) {
+        static $references;
+        $references ??= array_column(seed()['articles'], null, 'slug');
+        $reference = $references[$article['slug'] ?? ''] ?? [];
+        foreach (['groups', 'groupsTitle', 'groupsIntro'] as $field) {
+            if (array_key_exists($field, $reference)) $source[$field] = $reference[$field];
+        }
+        if (!array_key_exists('datePrecision', $source) && ($reference['date'] ?? null) === ($article['date'] ?? null) && isset($reference['datePrecision'])) {
+            $source['datePrecision'] = $reference['datePrecision'];
+        }
+    }
+    $attachments = ['groups' => $source['groups'] ?? []];
+    foreach (['groupsTitle', 'groupsIntro', 'datePrecision'] as $field) {
+        if (array_key_exists($field, $source)) $attachments[$field] = $source[$field];
+    }
+    return $attachments;
+}
+
 function articleData(array $row): array
 {
-    return [
+    $data = [
         'slug' => $row['slug'], 'title' => $row['title'], 'category' => $row['category'],
         'date' => $row['article_date'], 'excerpt' => $row['excerpt'], 'body' => $row['body'],
         'cover' => $row['cover'], 'cover_alt' => $row['cover_alt'],
         'gallery' => json_decode($row['gallery'], true, 512, JSON_THROW_ON_ERROR),
     ];
+    // Les pièces non modifiables par le formulaire vivent dans la version JSON correspondante.
+    $revision = query('SELECT payload FROM article_revisions WHERE article_id=? AND version=?', [$row['id'], $row['version']])->fetchColumn();
+    $saved = $revision ? json_decode($revision, true, 512, JSON_THROW_ON_ERROR) : $data;
+    return [...$data, ...articleAttachments($saved)];
 }
 
 function publicationData(array $article): array
@@ -19,6 +45,7 @@ function publicationData(array $article): array
         'slug' => $article['slug'], 'title' => $article['title'], 'date' => $article['date'],
         'category' => $article['category'], 'excerpt' => $article['excerpt'], 'body' => $article['body'],
         'cover' => $article['cover'], 'coverAlt' => $article['cover_alt'], 'gallery' => $article['gallery'],
+        ...articleAttachments($article),
     ];
 }
 
@@ -67,6 +94,7 @@ function restoreRevision(array $input, array $user): string
         $saved = query('SELECT payload,version FROM article_revisions WHERE id=? AND article_id=?', [$revision, $id])->fetch();
         if (!$saved) throw new ValidationError('Cette version n’appartient pas à cet article.');
         $data = json_decode($saved['payload'], true, 512, JSON_THROW_ON_ERROR);
+        $data = [...$data, ...articleAttachments($data)];
         // Les versions proviennent d’enregistrements serveur validés. Restaurer
         // un brouillon ne modifie jamais la copie destinée à la publication.
         query('UPDATE articles SET title=?,category=?,article_date=?,excerpt=?,body=?,cover=?,cover_alt=?,gallery=?,status=?,version=version+1,updated_at=?,updated_by=? WHERE id=?', [$data['title'], $data['category'], $data['date'], $data['excerpt'], $data['body'], $data['cover'], $data['cover_alt'], json($data['gallery']), 'draft', now(), $user['id'], $id]);
@@ -118,7 +146,7 @@ function deleteMedia(array $input, array $user): void
         $row = query('SELECT * FROM media WHERE id=? FOR UPDATE', [$id])->fetch();
         if (!$row) throw new ValidationError('Image introuvable.');
         $used = mediaUsage()[$id] ?? 0;
-        if ($used > 0) throw new ValidationError('Cette image est utilisée par ' . $used . ' contenu' . ($used > 1 ? 's' : '') . '. Retirez-la des actualités ou de la boutique avant de la supprimer.');
+        if ($used > 0) throw new ValidationError('Cette image est utilisée par ' . $used . ' contenu' . ($used > 1 ? 's' : '') . ', y compris dans l’historique. Conservez-la pour garder ces contenus et leurs versions complets.');
         query('DELETE FROM media WHERE id=?', [$id]);
         audit('Image supprimée', $row['alt'], $user['id']);
         return config()['storage'] . '/media/' . $row['filename'];

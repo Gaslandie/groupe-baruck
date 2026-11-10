@@ -6,6 +6,7 @@ import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
 import { importExport } from '../bin/import-export.mjs';
+import matter from 'gray-matter';
 
 const article = { slug: 'actualite-test', title: 'Titre : "test"', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Contenu de recette.', gallery: [] };
 const product = { id: 'article-test', name: 'Article de recette', category: 'sacs', images: [{ src: '/images/marque-baruck/sac-main-noir.jpg', alt: 'Sac de recette' }] };
@@ -100,6 +101,62 @@ test('conserve la précision des dates et refuse une valeur inventée', async (t
   assert.match(await fs.readFile(path.join(out, 'content/actualites/actualite-test.md'), 'utf8'), /datePrecision: "year"/);
   const invalid = await fixture(t, input => { input.articles[0].datePrecision = 'invented'; });
   await assert.rejects(importExport(invalid.file, invalid.out));
+});
+test('conserve les cinq galeries par groupes, légendes et vidéos des publications nouvelles ou anciennes', async (t) => {
+  const files = await fs.readdir('content/actualites');
+  let checked = 0;
+  for (const name of files) {
+    const { data, content: body } = matter(await fs.readFile(path.join('content/actualites', name), 'utf8'));
+    if (!data.groups) continue;
+    checked++;
+    for (const legacy of [false, true]) {
+      const value = { ...data, slug: name.slice(0, -3), date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date, body, title: 'Titre modifié dans le back-office' };
+      if (legacy) for (const key of ['groups', 'groupsTitle', 'groupsIntro']) delete value[key];
+      const { file, out } = await fixture(t, input => { input.articles = [value]; });
+      await importExport(file, out);
+      const result = matter(await fs.readFile(path.join(out, 'content/actualites', name), 'utf8'));
+      assert.deepEqual(result.data.groups, data.groups, name + (legacy ? ' ancien export' : ' nouvel export'));
+      assert.equal(result.data.groupsTitle, data.groupsTitle);
+      assert.equal(result.data.groupsIntro || '', data.groupsIntro || '');
+      assert.equal(result.data.title, value.title, 'le repli ne remplace pas les textes modifiés');
+      assert.equal(result.content.trim(), body.trim());
+    }
+  }
+  assert.equal(checked, 5);
+});
+test('un retrait explicite des groupes ne reprend jamais ceux du dépôt', async (t) => {
+  const { file, out } = await fixture(t, input => { input.articles[0] = { ...article, slug: 'top-modele-baruck-guinee-2026', groups: [] }; });
+  await importExport(file, out);
+  const result = matter(await fs.readFile(path.join(out, 'content/actualites/top-modele-baruck-guinee-2026.md'), 'utf8')).data;
+  assert.deepEqual(result.groups, []);
+  assert.equal(result.groupsTitle, undefined);
+});
+test('refuse les groupes incomplets, les chemins sortants et les médias privés absents', async (t) => {
+  const valid = { label: 'Groupe de recette', photos: [{ src: product.images[0].src, alt: 'Photo de recette' }] };
+  const changes = [
+    value => { value.groups = null; },
+    value => { value.groups = [null]; },
+    value => { value.groups[0].label = ''; },
+    value => { value.groups[0].photos = []; },
+    value => { value.groups[0].photos[0].alt = ''; },
+    value => { value.groups[0].photos[0].src = '/images/../config.php'; },
+    value => { value.groups[0].photos[0].src = `/images/actualites/uploads/${'a'.repeat(32)}.jpg`; },
+    value => { delete value.groupsTitle; },
+    value => { value.groups[0].video = { src: '/videos/../config.php.mp4', poster: product.images[0].src }; },
+    value => { value.groups[0].video = { src: 'https://hostile.example/video.mp4', poster: product.images[0].src }; },
+    value => { value.groups[0].video = { src: '/videos/top-modele-2026/candidat-01.mp4', poster: '/images/../config.php' }; },
+    value => { value.groups = Array.from({ length: 31 }, () => valid); },
+    value => { value.groups[0].photos = Array.from({ length: 31 }, () => valid.photos[0]); },
+  ];
+  for (const change of changes) {
+    const { file, out } = await fixture(t, input => {
+      input.articles[0].groupsTitle = 'Galerie de recette';
+      input.articles[0].groups = [structuredClone(valid)];
+      change(input.articles[0]);
+    });
+    await assert.rejects(importExport(file, out));
+    await assert.rejects(fs.stat(out), { code: 'ENOENT' });
+  }
 });
 test('refuse un catalogue dupliqué, sans photo ou mal identifié', async (t) => {
   const changes = [

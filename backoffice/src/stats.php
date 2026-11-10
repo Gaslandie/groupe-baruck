@@ -206,8 +206,14 @@ function mediaUsage(): array
     $usage = [];
     foreach (query('SELECT id,filename FROM media')->fetchAll() as $row) $usage[$row['id']] = ['path' => '/images/actualites/uploads/' . $row['filename'], 'count' => 0];
     $documents = [];
-    foreach (query('SELECT id,cover,gallery FROM articles')->fetchAll() as $row) $documents[$row['id']] = $row['cover'] . ' ' . $row['gallery'];
-    foreach (query('SELECT article_id,payload FROM article_publications')->fetchAll() as $row) $documents[$row['article_id']] = ($documents[$row['article_id']] ?? '') . ' ' . $row['payload'];
+    foreach (query('SELECT id,cover,gallery,body FROM articles')->fetchAll() as $row) $documents[$row['id']] = $row['cover'] . ' ' . $row['gallery'] . ' ' . $row['body'];
+    // Les photos des groupes, affiches vidéo et anciennes versions doivent rester restaurables.
+    foreach (['article_publications', 'article_revisions'] as $table) {
+        foreach (query('SELECT article_id,payload FROM ' . $table)->fetchAll() as $row) {
+            $data = json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR);
+            $documents[$row['article_id']] = ($documents[$row['article_id']] ?? '') . ' ' . json([...$data, ...articleAttachments($data)]);
+        }
+    }
     foreach (query('SELECT id,images FROM products')->fetchAll() as $row) $documents['produit-' . $row['id']] = $row['images'];
     foreach ($usage as $id => $item) {
         foreach ($documents as $document) if (str_contains($document, $item['path'])) $usage[$id]['count']++;

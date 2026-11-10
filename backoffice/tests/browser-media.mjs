@@ -61,13 +61,16 @@ export async function checkMediaPicker({ send, load, origin, profile, session })
   await until(`document.querySelectorAll('#media-picker-grid button').length > 1`);
   await evaluate(`document.querySelector('#media-picker-grid button').click()`);
   assert.equal(await evaluate(`document.querySelector('#media-dialog').open`), false);
+  await until(`document.activeElement === document.querySelector('[data-cover] [data-image-alt]')`);
   assert.equal(await evaluate(`document.querySelector('[name=cover]').type`), 'hidden');
   assert.ok(await evaluate(`document.querySelector('[data-cover] [data-preview]').src.includes('page=image')`));
+  await evaluate(`document.querySelector('[data-gallery-add]').click()`);
   for (const index of [0, 1]) {
-    await evaluate(`document.querySelector('[data-gallery-add]').click()`);
     await until(`document.querySelectorAll('#media-picker-grid button').length > 1`);
-    await evaluate(`document.querySelectorAll('#media-picker-grid button')[${index}].click()`);
+    // Fermer et rouvrir dans la même tâche : l’ancien événement close arrive ensuite.
+    await evaluate(`document.querySelectorAll('#media-picker-grid button')[${index}].click(); ${index === 0 ? "document.querySelector('[data-gallery-add]').click();" : ''}`);
   }
+  await until(`document.activeElement === document.querySelectorAll('[data-gallery] [data-image-alt]')[1]`);
   const selected = await evaluate(`Array.from(document.querySelectorAll('[data-gallery] [data-image-path]'), el => el.value)`);
   assert.equal(selected.length, 2);
   await evaluate(`document.querySelector('[data-gallery] [data-media-down]').click()`);
@@ -88,5 +91,11 @@ export async function checkMediaPicker({ send, load, origin, profile, session })
   assert.equal(await evaluate(`document.querySelector('[name=title]').value`), 'Texte conservé pendant la sélection');
   assert.equal(await evaluate(`document.querySelector('[name=version]').value`), '3', 'La sélection ne sauvegarde ni ne valide l’article');
   assert.ok(await evaluate(`Array.from(document.querySelectorAll('input[name=cover], input[name$="[src]"]')).every(input => input.type === 'hidden')`));
+  await evaluate(`document.querySelector('[data-cover] [data-media-choose]').click()`);
+  await until(`document.querySelectorAll('#media-picker-grid button').length > 1`);
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+  await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+  await until(`!document.querySelector('#media-dialog').open && document.activeElement === document.querySelector('[data-cover] [data-media-choose]')`);
+  assert.equal(await evaluate(`document.querySelector('[name=title]').value`), 'Texte conservé pendant la sélection');
   console.log('Sélecteur Chrome : choix, galerie ordonnée, retrait et import sans perte de saisie OK');
 }

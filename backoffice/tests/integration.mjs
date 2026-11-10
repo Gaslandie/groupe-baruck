@@ -255,6 +255,31 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.ok(articleId);
     assert.equal((await editor.post('/?page=edit', { ...fields, slug: 'autre', action: 'export' })).status, 403);
   });
+  await t.test('groupes historiques : anciens instantanés, brouillon, restauration et validation sans perte ni remplacement forgé', async () => {
+    const seed = JSON.parse(await fs.readFile(path.join(directory, 'seed.json'), 'utf8'));
+    const reference = seed.articles.find(article => article.slug === 'top-modele-baruck-guinee-2026');
+    const id = sql(`SELECT id FROM ${database}.articles WHERE slug='${reference.slug}';`).split('\n')[1];
+    const revision = sql(`SELECT id FROM ${database}.article_revisions WHERE article_id='${id}' AND version=1;`).split('\n')[1];
+    // Simule exactement les anciennes versions installées qui omettaient les groupes.
+    for (const table of ['article_revisions', 'article_publications']) sql(`UPDATE ${database}.${table} SET payload=JSON_REMOVE(payload,'$.groups','$.groupsTitle','$.groupsIntro') WHERE article_id='${id}';`);
+    const exported = async () => JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).articles.find(article => article.slug === reference.slug);
+    const snapshot = version => JSON.parse(docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; echo Baruck\\query("SELECT payload FROM article_revisions WHERE article_id=? AND version=?",[$argv[1],$argv[2]])->fetchColumn();', id, String(version)]));
+    assert.deepEqual((await exported()).groups, reference.groups);
+    const form = { ...fields, id, version: '1', slug: reference.slug, title: reference.title, date: reference.date, category: reference.category, excerpt: reference.excerpt, body: 'Brouillon de recette privé', cover: reference.cover, cover_alt: reference.coverAlt, 'groups[0][label]': 'Groupe forgé', 'groupsTitle': 'Titre forgé' };
+    assert.equal((await editor.post('/?page=edit&id=' + id, form)).status, 303);
+    assert.deepEqual(snapshot(2).groups, reference.groups, 'les groupes proviennent du serveur');
+    assert.equal((await exported()).body, reference.body, 'le brouillon ne remplace pas la version validée');
+    assert.equal((await editor.post('/?page=history&id=' + id, { action: 'restore_revision', id, version: '2', revision })).status, 303);
+    assert.deepEqual(snapshot(3).groups, reference.groups, 'restaurer une ancienne version conserve les groupes et vidéos');
+    assert.equal((await admin.post('/?page=edit&id=' + id, { ...form, version: '3', status: 'ready', body: 'Version de recette validée' })).status, 303);
+    const ready = await exported();
+    assert.deepEqual(ready.groups, reference.groups);
+    assert.equal(ready.groupsTitle, reference.groupsTitle);
+    assert.equal(ready.groupsIntro, reference.groupsIntro);
+    assert.equal(ready.body, 'Version de recette validée');
+    docker(['exec', container, 'php', 'bin/install.php', 'init']);
+    assert.deepEqual(await exported(), ready, 'une réinstallation préserve les contenus modifiés');
+  });
   await t.test('contrôle des dates, adresses fixes, HTML et conflits d’édition', async () => {
     const route = '/?page=edit&id=' + articleId;
     assert.equal((await admin.post(route, { ...fields, id: articleId, version: '1', status: 'ready', date: '2026-02-30' })).status, 422);
@@ -350,6 +375,37 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
     assert.equal(sql(`SELECT COUNT(*) AS n FROM ${database}.products;`).split('\n')[1], '39', 'une réinstallation ne recrée pas un article supprimé');
   });
+  await t.test('photos de groupes et affiches vidéo : export validé et protection de toutes les versions', async () => {
+    const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l+0AAAAASUVORK5CYII=', 'base64');
+    const upload = new FormData();
+    upload.set('csrf', (await admin.request('/?page=media')).csrf);
+    upload.set('alt', 'Photo réservée au groupe de recette');
+    upload.set('image', new Blob([png], { type: 'image/png' }), 'groupe.png');
+    const image = JSON.parse((await admin.request('/?page=media_api', upload)).html).item;
+    const created = await admin.post('/?page=edit', { ...fields, slug: 'groupe-media-recette' });
+    const id = new URL(created.headers.get('location'), origin).searchParams.get('id');
+    const route = '/?page=edit&id=' + id;
+    const form = { ...fields, slug: 'groupe-media-recette', id };
+    const groups = [{ label: 'Groupe de recette', photos: [{ src: image.path, alt: image.alt, caption: 'Légende de recette' }], video: { src: '/videos/top-modele-2026/candidat-01.mp4', poster: image.path } }];
+    // Fixture privée côté serveur : aucun champ HTTP ne permet encore de modifier les groupes.
+    const setGroups = (version, groups) => docker(['exec', '-i', container, 'php', '-r', 'require "src/bootstrap.php"; $p=Baruck\\query("SELECT payload FROM article_revisions WHERE article_id=? AND version=?",[$argv[1],$argv[2]])->fetchColumn(); $d=json_decode($p,true); $d["groups"]=json_decode(stream_get_contents(STDIN),true); unset($d["groupsTitle"],$d["groupsIntro"]); if($d["groups"])$d["groupsTitle"]="Photos de recette"; Baruck\\query("UPDATE article_revisions SET payload=? WHERE article_id=? AND version=?",[Baruck\\json($d),$argv[1],$argv[2]]);', id, String(version)], JSON.stringify(groups));
+    const exported = async () => JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
+    setGroups(1, groups);
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: image.id })).status, 422, 'le groupe du brouillon protège sa photo');
+    assert.ok(!(await exported()).media.some(item => item.path === image.path), 'le média du brouillon reste privé');
+    assert.equal((await admin.post(route, { ...form, version: '1', status: 'ready' })).status, 303);
+    const publication = await exported();
+    assert.deepEqual(publication.articles.find(article => article.slug === form.slug).groups, groups);
+    assert.ok(publication.media.some(item => item.path === image.path), 'les médias présents seulement dans les groupes sont exportés');
+    assert.equal((await editor.post(route, { ...form, version: '2', status: 'draft' })).status, 303);
+    setGroups(3, []);
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: image.id })).status, 422, 'la version validée protège encore le média');
+    assert.equal((await admin.post(route, { action: 'withdraw_publication', id, version: '3', confirm_withdraw: 'yes' })).status, 303);
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: image.id })).status, 422, 'une ancienne version doit rester restaurable après le retrait');
+    assert.ok(!(await exported()).media.some(item => item.path === image.path));
+    assert.equal((await admin.post(route, { action: 'delete_article', id, version: '4' })).status, 303);
+    assert.equal((await admin.post('/?page=media', { action: 'delete_media', id: image.id })).status, 303, 'la suppression devient possible après retrait de toutes les références');
+  });
   await t.test('coordonnées : droits, contrôles, lignes vidées et conflit', async () => {
     assert.equal((await editor.request('/?page=coordonnees')).status, 403);
     const page = await admin.request('/?page=coordonnees');
@@ -392,7 +448,8 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   await t.test('textes de l’accueil : droits, longueurs, structure imposée et conflit', async () => {
     assert.equal((await editor.request('/?page=textes')).status, 403);
     const page = await admin.request('/?page=textes');
-    assert.match(page.html, /Diaporama d’accueil/);
+    assert.match(page.html, /Présentations principales/);
+    assert.doesNotMatch(page.html, /Diaporama d’accueil|volets qui défilent/);
     assert.match(page.html, /Activités du Groupe/);
     assert.match(page.html, /Le Groupe Baruck en Guinée/, 'les textes du site servent de point de départ');
     // Le formulaire renvoie toutes les entrées : la structure appartient au site.

@@ -13,6 +13,9 @@ function mediaCatalog(): array
     foreach ($seed['articles'] as $article) {
         if (!empty($article['cover'])) $descriptions[$article['cover']] = $article['coverAlt'] ?? '';
         foreach ($article['gallery'] ?? [] as $image) $descriptions[$image['src']] = $image['alt'];
+        foreach ($article['groups'] ?? [] as $group) {
+            foreach ($group['photos'] as $image) $descriptions[$image['src']] = $image['alt'];
+        }
     }
     foreach ($seed['products'] as $product) {
         foreach ($product['images'] as $image) $descriptions[$image['src']] = $image['alt'];
