@@ -15,12 +15,18 @@ const docker = (args, input) => {
 const sql = (input) => docker(['exec', '-i', 'baruck-admin-mysql', 'sh', '-c', 'MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysql -uroot'], input);
 class Browser {
   cookie = '';
-  constructor(origin) { this.origin = origin; }
+  constructor(origin, mailbox) { this.origin = origin; this.mailbox = mailbox; }
   async request(route = '/', data, extraHeaders = {}) {
     const response = await fetch(this.origin + route, { method: data ? 'POST' : 'GET', redirect: 'manual', headers: { Cookie: this.cookie, ...extraHeaders }, body: data instanceof FormData ? data : data ? new URLSearchParams(data) : undefined });
     for (const cookie of response.headers.getSetCookie()) this.cookie = cookie.split(';')[0];
     const html = await response.text();
     return { status: response.status, headers: response.headers, html, csrf: html.match(/name="csrf" value="([a-f0-9]+)"/)?.[1] };
+  }
+  async login(route, fields) {
+    this.mailbox.allow(); // La recette avance la fenêtre d’envoi, sans attendre quinze minutes.
+    const response = await this.post(route, fields);
+    if (response.status !== 303 || response.headers.get('location') !== '/?page=verify') return response;
+    return this.post('/?page=verify', { action: 'verify_code', code: this.mailbox.code(fields.email) });
   }
   async post(route, fields, extraHeaders = {}) {
     const { csrf } = await this.request(route);
@@ -46,12 +52,21 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   docker(['run', '-d', '--name', container, '--network', 'baruck-admin', '-p', '127.0.0.1::8080', '-e', 'BARUCK_CONFIG=/config.php', '-v', `${directory}:/app:ro`, '-v', `${configFile}:/config.php:ro`, 'baruck-backoffice-php:local', 'php', '-d', 'opcache.enable=0', '-d', 'upload_max_filesize=8M', '-d', 'post_max_size=10M', '-S', '0.0.0.0:8080', '-t', 'public']);
   const address = docker(['port', container, '8080/tcp']);
   const origin = 'http://' + address;
-  await fs.writeFile(configFile, `<?php return ['environment'=>'local','origin'=>'${origin}','site_url'=>'https://groupebaruck.com','storage'=>'/tmp/baruck-data','database'=>['dsn'=>'mysql:host=baruck-admin-mysql;dbname=${database};charset=utf8mb4','user'=>'baruck','password'=>'${secret.password}']];`);
+  await fs.writeFile(configFile, `<?php return ['environment'=>'local','origin'=>'${origin}','site_url'=>'https://groupebaruck.com','storage'=>'/tmp/baruck-data','login_mail'=>['from'=>'contact@groupebaruck.com','transport'=>'file'],'database'=>['dsn'=>'mysql:host=baruck-admin-mysql;dbname=${database};charset=utf8mb4','user'=>'baruck','password'=>'${secret.password}']];`);
   docker(['exec', container, 'php', 'bin/install.php', 'init']);
   docker(['exec', container, 'php', 'tests/validation.php']);
-  const admin = new Browser(origin);
-  const editor = new Browser(origin);
-  const anonymous = new Browser(origin);
+  const mailbox = {
+    allow: () => docker(['exec', container, 'rm', '-rf', '/tmp/baruck-data/login-mail-limits']),
+    code: (email) => {
+      const message = docker(['exec', container, 'cat', '/tmp/baruck-data/login-outbox/' + crypto.createHash('sha256').update(email).digest('hex') + '.txt']);
+      const code = message.match(/: ([0-9]{6})/u)?.[1];
+      assert.ok(code, 'Un code à six chiffres doit être présent dans le courrier de recette privé');
+      return code;
+    },
+  };
+  const admin = new Browser(origin, mailbox);
+  const editor = new Browser(origin, mailbox);
+  const anonymous = new Browser(origin, mailbox);
   const password = 'Recette-locale-' + crypto.randomBytes(12).toString('hex');
   const adminEmail = 'admin@example.test';
   const editorEmail = 'editor+recette@sous.example.test';
@@ -90,6 +105,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       assert.match(invalid.html, /adresse e-mail complète et valide/);
     }
     assert.equal((await admin.post('/', { action: 'setup', email: adminEmail, password, name: 'Administrateur recette' })).status, 303);
+    assert.equal((await admin.post('/?page=verify', { action: 'verify_code', code: mailbox.code(adminEmail) })).status, 303);
     assert.match((await admin.request('/')).html, /Vue d’ensemble/);
     assert.match((await anonymous.request('/?page=articles')).html, /Connectez-vous/);
     assert.equal((await admin.post('/?page=users', { action: 'create_user', email: editorEmail, password, name: 'Rédacteur recette', role: 'editor' })).status, 303);
@@ -97,7 +113,138 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const duplicate = await admin.post('/?page=users', { action: 'create_user', email: editorEmail.toUpperCase(), password, name: 'Doublon', role: 'editor' });
     assert.equal(duplicate.status, 422);
     assert.match(duplicate.html, /Cette adresse possède déjà un compte/);
-    assert.equal((await editor.post('/', { action: 'login', email: editorEmail, password })).status, 303);
+    assert.equal((await editor.login('/', { action: 'login', email: editorEmail, password })).status, 303);
+  });
+  const freshLogin = async (tag, role = 'editor') => {
+    const email = `${tag}@example.test`;
+    docker(['exec', '-i', container, 'php', 'bin/install.php', 'user'], JSON.stringify({ email, password, name: 'Recette code', role }));
+    mailbox.allow();
+    const browser = new Browser(origin, mailbox);
+    const start = await browser.post('/', { action: 'login', email, password });
+    assert.equal(start.status, 303, start.html);
+    assert.equal(start.headers.get('location'), '/?page=verify');
+    return { browser, email, code: mailbox.code(email) };
+  };
+  const ageMail = () => docker(['exec', container, 'php', '-r', 'foreach (glob("/tmp/baruck-data/login-mail-limits/account-*.json") as $file) { $state=json_decode(file_get_contents($file),true); $state["last"]=time()-61; file_put_contents($file,json_encode($state)); }']);
+  await t.test('mot de passe seul : aucun accès privé, code lié au serveur et session renouvelée', async () => {
+    const { browser, email, code } = await freshLogin('code-private');
+    const pendingCookie = browser.cookie;
+    const page = await browser.request('/?page=users');
+    assert.match(page.html, /Vérifiez votre e-mail/);
+    assert.match(page.html, /autocomplete="one-time-code"/);
+    assert.ok(!page.html.includes(code), 'Le code ne doit jamais apparaître dans la réponse HTTP');
+    assert.equal((await browser.request('/?page=media_api')).status, 401);
+    assert.equal((await browser.post('/', { action: 'create_user', email: 'intrus@example.test', password, role: 'admin', name: 'Intrus' })).status, 422);
+    const hash = sql(`SELECT code_hash FROM ${database}.login_challenges WHERE email='${email}';`).split('\n')[1];
+    assert.match(hash, /^[a-f0-9]{64}$/);
+    assert.notEqual(hash, crypto.createHash('sha256').update(code).digest('hex'), 'Le secret HMAC n’est pas stocké avec le code');
+    assert.equal((await browser.request('/', { action: 'verify_code', code })).status, 403);
+    assert.equal((await browser.post('/', { action: 'verify_code', code }, { Origin: 'https://hostile.example' })).status, 403);
+    const outsider = new Browser(origin, mailbox);
+    assert.equal((await outsider.post('/', { action: 'verify_code', code })).status, 422);
+    assert.equal((await browser.post('/', { action: 'verify_code', code, email: 'intrus@example.test', user_id: 'inventé' })).status, 303);
+    assert.notEqual(browser.cookie, pendingCookie);
+    assert.match((await browser.request('/?page=account')).html, /<h1[^>]*>Mon compte/);
+    assert.equal((await browser.request('/?page=users')).status, 403, 'Le code ne donne pas de droits administrateur au rédacteur');
+    assert.equal(sql(`SELECT COUNT(*) FROM ${database}.login_challenges WHERE email='${email}';`).split('\n')[1], '0');
+    await browser.post('/', { action: 'logout' });
+    assert.equal((await browser.post('/', { action: 'verify_code', code })).status, 422, 'Un code consommé ne se rejoue pas');
+  });
+  await t.test('mauvais compte, code expiré et cinq essais incorrects ne connectent jamais', async () => {
+    const a = await freshLogin('code-owner');
+    const b = await freshLogin('code-other');
+    assert.equal((await b.browser.post('/', { action: 'verify_code', code: a.code })).status, 422);
+    assert.equal((await a.browser.post('/', { action: 'verify_code', code: a.code })).status, 303);
+    sql(`UPDATE ${database}.login_challenges SET expires=1 WHERE email='${b.email}';`);
+    assert.equal((await b.browser.post('/', { action: 'verify_code', code: b.code })).status, 422);
+    assert.match((await b.browser.request('/')).html, /Recevoir mon code/);
+    const c = await freshLogin('code-attempts');
+    const wrong = c.code === '000000' ? '111111' : '000000';
+    for (let i = 0; i < 5; i++) assert.equal((await c.browser.post('/', { action: 'verify_code', code: i === 0 ? ['forgé'] : wrong })).status, 422);
+    assert.equal((await c.browser.post('/', { action: 'verify_code', code: c.code })).status, 422);
+    assert.equal(sql(`SELECT attempts FROM ${database}.login_challenges WHERE email='${c.email}';`).split('\n')[1], '5');
+  });
+  await t.test('renvoi limité, ancien code remplacé et changement de compte protégé par CSRF', async () => {
+    const { browser, email, code } = await freshLogin('code-resend');
+    const before = sql(`SELECT id FROM ${database}.login_challenges WHERE email='${email}';`);
+    const concurrent = new Browser(origin, mailbox);
+    assert.equal((await concurrent.post('/', { action: 'login', email, password })).status, 422, 'Une autre session ne contourne pas la limite d’envoi');
+    assert.equal((await browser.post('/', { action: 'resend_code' })).status, 422);
+    ageMail();
+    assert.equal((await browser.post('/', { action: 'resend_code' })).status, 303);
+    assert.notEqual(sql(`SELECT id FROM ${database}.login_challenges WHERE email='${email}';`), before);
+    const second = mailbox.code(email);
+    if (second !== code) assert.equal((await browser.post('/', { action: 'verify_code', code })).status, 422);
+    ageMail();
+    assert.equal((await browser.post('/', { action: 'resend_code' })).status, 303);
+    ageMail();
+    assert.equal((await browser.post('/', { action: 'resend_code' })).status, 422, 'Trois envois maximum par compte');
+    assert.equal((await browser.request('/', { action: 'cancel_login' })).status, 403);
+    assert.equal((await browser.post('/', { action: 'cancel_login' })).status, 303);
+    assert.equal((await browser.post('/', { action: 'verify_code', code: mailbox.code(email) })).status, 422);
+    assert.equal(sql(`SELECT COUNT(*) FROM ${database}.login_challenges WHERE email='${email}';`).split('\n')[1], '0');
+  });
+  await t.test('limite des codes partagée entre sessions, même après de nouvelles demandes', async () => {
+    const { browser, email, code } = await freshLogin('code-window');
+    const wrong = code === '000000' ? '111111' : '000000';
+    for (let round = 0; round < 2; round++) {
+      for (let i = 0; i < 5; i++) assert.equal((await browser.post('/', { action: 'verify_code', code: wrong })).status, 422);
+      mailbox.allow();
+      assert.equal((await browser.post('/', { action: 'login', email, password })).status, 303);
+    }
+    const limited = await browser.post('/', { action: 'verify_code', code: mailbox.code(email) });
+    assert.equal(limited.status, 422);
+    assert.match(limited.html, /Trop de tentatives/);
+  });
+  await t.test('désactivation, réinitialisation ou changement d’adresse révoquent un code en attente', async () => {
+    for (const operation of ['disable', 'reset', 'email']) {
+      const { browser, email, code } = await freshLogin('code-revoke-' + operation, 'admin');
+      if (operation === 'disable') sql(`UPDATE ${database}.users SET active=0,session_version=session_version+1 WHERE email='${email}';`);
+      if (operation === 'reset') docker(['exec', '-i', container, 'php', 'bin/install.php', 'reset-password'], JSON.stringify({ email, password: password + '-nouveau' }));
+      if (operation === 'email') docker(['exec', '-i', container, 'php', 'bin/install.php', 'change-email'], JSON.stringify({ email, new_email: 'code-updated@example.test' }));
+      assert.equal((await browser.post('/', { action: 'verify_code', code })).status, 422);
+      assert.equal((await browser.request('/?page=media_api')).status, 401);
+    }
+  });
+  await t.test('envoi impossible : refus fermé, aucune connexion et aucun code actif', async () => {
+    const { browser, email } = await freshLogin('code-mail-failure');
+    await browser.post('/', { action: 'cancel_login' });
+    mailbox.allow();
+    const original = await fs.readFile(configFile, 'utf8');
+    try {
+      await fs.writeFile(configFile, original.replace("'from'=>'contact@groupebaruck.com'", "'from'=>''"));
+      const failed = await browser.post('/', { action: 'login', email, password });
+      assert.equal(failed.status, 422);
+      assert.match(failed.html, /ne peut pas être envoyé/);
+      assert.equal((await browser.request('/?page=media_api')).status, 401);
+      assert.equal(sql(`SELECT COUNT(*) FROM ${database}.login_challenges WHERE email='${email}';`).split('\n')[1], '0');
+    } finally { await fs.writeFile(configFile, original); }
+  });
+  await t.test('limite globale d’envoi par IP et compteur corrompu : refus fermé', () => {
+    mailbox.allow();
+    const output = docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; $_SERVER["REMOTE_ADDR"]="192.0.2.1"; $ok=0; $refused=0; for($i=0;$i<25;$i++){try{Baruck\\limitLoginMail("ip-limit-".$i);$ok++;}catch(Baruck\\ValidationError $e){$refused++;}} echo json_encode([$ok,$refused]);']);
+    assert.deepEqual(JSON.parse(output), [20, 5]);
+    const corrupted = docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; $_SERVER["REMOTE_ADDR"]="192.0.2.2"; $p=Baruck\\config()["storage"]."/login-mail-limits/account-".hash("sha256","corrupt").".json";file_put_contents($p,"broken");try{Baruck\\limitLoginMail("corrupt");echo "OPEN";}catch(Throwable $e){echo "CLOSED";}']);
+    assert.equal(corrupted, 'CLOSED');
+    mailbox.allow();
+  });
+  await t.test('changement d’identifiant : mot de passe et droits conservés, conflits refusés et sessions fermées', async () => {
+    const { browser, email, code } = await freshLogin('code-change-email', 'admin');
+    await browser.post('/', { action: 'verify_code', code });
+    const original = sql(`SELECT id,password_hash,role FROM ${database}.users WHERE email='${email}';`);
+    const newEmail = 'jokrasso-client@example.test';
+    docker(['exec', '-i', container, 'php', 'bin/install.php', 'change-email'], JSON.stringify({ email, new_email: newEmail }));
+    assert.equal(sql(`SELECT id,password_hash,role FROM ${database}.users WHERE email='${newEmail}';`), original);
+    assert.match((await browser.request('/')).html, /Recevoir mon code/);
+    assert.equal((await browser.post('/', { action: 'login', email, password })).status, 422);
+    assert.equal((await browser.login('/', { action: 'login', email: newEmail, password })).status, 303);
+    const conflict = spawnSync('docker', ['exec', '-i', container, 'php', 'bin/install.php', 'change-email'], { input: JSON.stringify({ email: newEmail, new_email: adminEmail }), encoding: 'utf8' });
+    assert.equal(conflict.status, 1);
+    assert.match(conflict.stderr, /possède déjà un compte/);
+    assert.equal(sql(`SELECT id,password_hash,role FROM ${database}.users WHERE email='${newEmail}';`), original);
+    // Une session antérieure à l’ajout du code ne bénéficie d’aucune exception.
+    docker(['exec', container, 'php', '-r', 'session_save_path("/tmp/baruck-data/sessions"); session_id($argv[1]); session_start(); unset($_SESSION["email_verified"]); session_write_close();', browser.cookie.split('=')[1]]);
+    assert.equal((await browser.request('/?page=media_api')).status, 401);
   });
   await t.test('rédacteur : brouillons autorisés, validation et comptes interdits', async () => {
     assert.equal((await editor.request('/?page=users')).status, 403);
@@ -384,10 +531,10 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal((await admin.post('/?page=publication', { action: 'publish' })).status, 422, 'le refus du service ne prétend pas avoir lancé la publication');
     assert.deepEqual(JSON.parse((await worker({ action: 'status' })).body), { pending: false });
     docker(['exec', container, 'rm', '/tmp/dispatch-fail']);
-    const publisher = new Browser(origin);
+    const publisher = new Browser(origin, mailbox);
     const publisherEmail = 'publication@example.test';
     assert.equal((await admin.post('/?page=users', { action: 'create_user', name: 'Compte publication', email: publisherEmail, password, role: 'admin' })).status, 303);
-    await publisher.post('/', { action: 'login', email: publisherEmail, password });
+    await publisher.login('/', { action: 'login', email: publisherEmail, password });
     ageRequest();
     assert.equal((await publisher.post('/?page=publication', { action: 'publish' })).status, 303);
     sql(`UPDATE ${database}.users SET active=0,session_version=session_version+1 WHERE email='${publisherEmail}';`);
@@ -395,7 +542,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.match((await publisher.request('/?page=publication')).html, /Connectez-vous/);
     assert.equal((await worker({ action: 'claim', run: '105' })).body, claimed.body, 'le compte désactivé ne publie pas ses nouvelles données');
     sql(`UPDATE ${database}.users SET active=1 WHERE email='${publisherEmail}';`);
-    await publisher.post('/', { action: 'login', email: publisherEmail, password });
+    await publisher.login('/', { action: 'login', email: publisherEmail, password });
     ageRequest();
     assert.equal((await publisher.post('/?page=publication', { action: 'publish' })).status, 303);
     const revoked = await worker({ action: 'claim', run: '106' });
@@ -404,7 +551,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal((await publisher.request('/?page=publication')).status, 403);
     sql(`UPDATE ${database}.users SET role='admin' WHERE email='${publisherEmail}';`);
     await publisher.post('/', { action: 'logout' });
-    await publisher.post('/', { action: 'login', email: publisherEmail, password });
+    await publisher.login('/', { action: 'login', email: publisherEmail, password });
     ageRequest();
     assert.equal((await publisher.post('/?page=publication', { action: 'publish' })).status, 303);
     sql(`UPDATE ${database}.users SET session_version=session_version+1 WHERE email='${publisherEmail}';`);
@@ -503,7 +650,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const loginPage = await editor.request('/?page=login');
     assert.match(loginPage.html, /Votre session a expiré/);
     assert.ok(!loginPage.html.includes('Ma saisie à récupérer'));
-    const logged = await editor.post('/?page=login', { action: 'login', email: editorEmail, password });
+    const logged = await editor.login('/?page=login', { action: 'login', email: editorEmail, password });
     assert.equal(logged.status, 303);
     const recoverRoute = logged.headers.get('location');
     assert.ok(recoverRoute.includes('recover='));
@@ -517,28 +664,28 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const pendingAgain = await editor.request(route);
     docker(['exec', container, 'php', '-r', 'session_save_path("/tmp/baruck-data/sessions"); session_id($argv[1]); session_start(); $_SESSION["last_seen"]=time()-1900; session_write_close();', editor.cookie.split('=')[1]]);
     await editor.request(route, { ...submission, csrf: pendingAgain.csrf });
-    const otherIdentity = await editor.post('/?page=login', { action: 'login', email: adminEmail, password });
+    const otherIdentity = await editor.login('/?page=login', { action: 'login', email: adminEmail, password });
     assert.equal(otherIdentity.headers.get('location'), '/?page=dashboard');
     assert.ok(!(await editor.request(recoverRoute)).html.includes('Ma saisie à récupérer'));
     await editor.post('/', { action: 'logout' });
-    await editor.post('/', { action: 'login', email: editorEmail, password });
+    await editor.login('/', { action: 'login', email: editorEmail, password });
   });
   await t.test('désactivation et changement de mot de passe invalident les sessions', async () => {
     const editorId = sql(`SELECT id FROM ${database}.users WHERE email='${editorEmail}';`).split('\n')[1];
     assert.ok(editorId);
     assert.equal((await admin.post('/?page=users', { action: 'toggle_user', id: editorId })).status, 303);
     assert.match((await editor.request('/?page=articles')).html, /Connectez-vous/);
-    const other = new Browser(origin);
-    assert.equal((await other.post('/', { action: 'login', email: adminEmail, password })).status, 303);
+    const other = new Browser(origin, mailbox);
+    assert.equal((await other.login('/', { action: 'login', email: adminEmail, password })).status, 303);
     assert.equal((await admin.post('/?page=account', { action: 'change_password', current_password: password, password: password + '2' })).status, 303);
     assert.match((await other.request('/')).html, /Connectez-vous/);
   });
   await t.test('limitation des tentatives, même sur un compte inexistant', async () => {
-    for (let i = 0; i < 9; i++) await anonymous.post('/', { action: 'login', email: 'absent@example.test', password: 'incorrect' });
-    const legitimate = new Browser(origin);
-    assert.equal((await legitimate.post('/', { action: 'login', email: adminEmail, password: password + '2' })).status, 303);
-    await anonymous.post('/', { action: 'login', email: 'absent@example.test', password: 'incorrect' });
-    const response = await anonymous.post('/', { action: 'login', email: 'absent@example.test', password: 'incorrect' });
+    for (let i = 0; i < 9; i++) await anonymous.login('/', { action: 'login', email: 'absent@example.test', password: 'incorrect' });
+    const legitimate = new Browser(origin, mailbox);
+    assert.equal((await legitimate.login('/', { action: 'login', email: adminEmail, password: password + '2' })).status, 303);
+    await anonymous.login('/', { action: 'login', email: 'absent@example.test', password: 'incorrect' });
+    const response = await anonymous.login('/', { action: 'login', email: 'absent@example.test', password: 'incorrect' });
     assert.equal(response.status, 422);
     assert.match(response.html, /Trop de tentatives/);
   });

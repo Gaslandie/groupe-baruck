@@ -35,6 +35,9 @@ try {
         });
         migrateEditorial();
         echo "Tables initialisées ; actualités et boutique existantes préservées.\n";
+    } elseif ($command === 'change-email') {
+        changeLoginEmail(json_decode(stream_get_contents(STDIN), true, 32, JSON_THROW_ON_ERROR));
+        echo "Identifiant modifié ; mot de passe conservé ; sessions et codes invalidés.\n";
     } elseif ($command === 'user' || $command === 'reset-password') {
         // Entrée JSON sur stdin : aucun mot de passe dans l’historique de commande.
         $input = json_decode(stream_get_contents(STDIN), true, 32, JSON_THROW_ON_ERROR);

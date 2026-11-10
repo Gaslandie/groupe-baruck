@@ -16,9 +16,10 @@ try {
     $flash = $_SESSION['flash'] ?? '';
     unset($_SESSION['flash']);
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
+    $pending = !$user ? pendingLoginChallenge() : null;
     if ($setup) $page = 'setup';
-    elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+    elseif (!$user) $page = $pending ? 'verify' : 'login';
+    if (!in_array($page, ['setup', 'login', 'verify', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
     if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'users', 'publication'], true)) requireAdmin($user);
@@ -38,6 +39,11 @@ try {
                 login($_POST); loginDestination();
             }
             if (!$setup && !$user && $action === 'login') { login($_POST); loginDestination(); }
+            if (!$setup && !$user && $action === 'verify_code') { verifyLoginCode($_POST); loginDestination(); }
+            if (!$setup && !$user && $action === 'resend_code') {
+                resendLoginCode(); $_SESSION['flash'] = 'Un nouveau code a été envoyé. Le précédent ne fonctionne plus.'; redirect('verify');
+            }
+            if (!$setup && !$user && $action === 'cancel_login') { cancelLoginChallenge(); session_regenerate_id(true); redirect('login'); }
             if (!$user) throw new ValidationError('Connectez-vous pour continuer.');
             switch ($action) {
                 case 'logout':
@@ -135,6 +141,7 @@ try {
         } catch (ValidationError | ConflictError $exception) {
             http_response_code($exception instanceof ConflictError ? 409 : 422);
             $error = $exception->getMessage();
+            if (!$user && !$setup) { $pending = pendingLoginChallenge(); $page = $pending ? 'verify' : 'login'; }
         }
     } elseif ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'HEAD') {
         header('Allow: GET, HEAD, POST'); http_response_code(405); exit;

@@ -18,4 +18,7 @@ return [
     // Envoi par le serveur de l'hébergement. Activer avec une boîte existante
     // @groupebaruck.com ; une valeur vide désactive l'envoi. Aucun mot de passe.
     'contact_mail' => ['from' => '', 'to' => 'jokrasso2@gmail.com'],
+    // Les codes utilisent par défaut l’expéditeur contact_mail.from. Le destinataire
+    // est toujours l’adresse du compte enregistrée en base, jamais celle du formulaire.
+    'login_mail' => ['from' => '', 'transport' => 'mail'],
 ];

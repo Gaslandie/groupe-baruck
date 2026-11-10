@@ -72,6 +72,7 @@ function recoverExpiredSubmission(array $session, array $post, array $server, in
 
 function loginDestination(): never
 {
+    if (isset($_SESSION['login_challenge'])) redirect('verify');
     $recovery = $_SESSION['recovery'] ?? null;
     if ($recovery) redirect('edit', ['id' => $recovery['draft']['id'] ?? '', 'recover' => $recovery['token']]);
     redirect('dashboard');
@@ -91,7 +92,7 @@ function currentUser(): ?array
 {
     if (!isset($_SESSION['user_id'])) return null;
     $user = query('SELECT id,email,name,role,active,session_version FROM users WHERE id = ?', [$_SESSION['user_id']])->fetch();
-    if (!$user || !$user['active'] || (int) $user['session_version'] !== ($_SESSION['session_version'] ?? 0)) {
+    if (!$user || !$user['active'] || ($_SESSION['email_verified'] ?? false) !== true || (int) $user['session_version'] !== ($_SESSION['session_version'] ?? 0)) {
         $_SESSION = ['csrf' => bin2hex(random_bytes(32))]; session_regenerate_id(true); return null;
     }
     return $user;
@@ -170,6 +171,7 @@ function withAttemptLimit(string $identity, callable $verify, string $scope = 'l
 
 function login(array $input): void
 {
+    cancelLoginChallenge();
     $email = strtolower(text($input, 'email', 190));
     $value = $input['password'] ?? '';
     if (!is_string($value) || strlen($value) > 72 || str_contains($value, "\0")) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
@@ -180,8 +182,14 @@ function login(array $input): void
         return $user && $verified && $user['active'] ? $user : null;
     });
     if (!$user) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
+    issueLoginChallenge($user);
+}
+
+/** Une session complète n’existe qu’après validation du code à usage unique. */
+function completeLogin(array $user): void
+{
     $recovery = $_SESSION['recovery'] ?? null;
     session_regenerate_id(true);
-    $_SESSION = ['user_id' => $user['id'], 'session_version' => (int) $user['session_version'], 'started' => time(), 'last_seen' => time(), 'csrf' => bin2hex(random_bytes(32))];
+    $_SESSION = ['user_id' => $user['id'], 'email_verified' => true, 'session_version' => (int) $user['session_version'], 'started' => time(), 'last_seen' => time(), 'csrf' => bin2hex(random_bytes(32))];
     if (is_array($recovery) && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()) $_SESSION['recovery'] = $recovery;
 }

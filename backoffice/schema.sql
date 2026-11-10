@@ -9,6 +9,17 @@ CREATE TABLE IF NOT EXISTS users (
     created_at VARCHAR(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS login_challenges (
+    user_id CHAR(32) PRIMARY KEY,
+    id CHAR(32) NOT NULL UNIQUE,
+    email VARCHAR(190) NOT NULL,
+    session_version INT NOT NULL,
+    code_hash CHAR(64) NOT NULL,
+    expires INT UNSIGNED NOT NULL,
+    attempts TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    KEY challenge_expiry (expires)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS articles (
     id CHAR(32) PRIMARY KEY,
     slug VARCHAR(180) NOT NULL UNIQUE,
