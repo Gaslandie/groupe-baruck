@@ -1,6 +1,7 @@
 "use client";
 
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
+
 
 import { useEffect, useState } from "react";
 
@@ -16,29 +17,29 @@ function ProductCard({ product }: { product: BrandProduct }) {
 
   return (
     <article id={`produit-${product.id}`} className="flex min-w-0 scroll-mt-[110px] flex-col border border-line bg-ivory target:ring-2 target:ring-gold">
-      <a href={asset(photo.src)} target="_blank" rel="noreferrer" aria-label={(t("Agrandir : ") + String(product.name) + t(""))} className="block overflow-hidden bg-white">
+      <a href={asset(photo.src)} target="_blank" rel="noreferrer" aria-label={((pageText("marque-baruck", "copy.BrandCatalogue.1") + " ") + String(product.name) + "")} className="block overflow-hidden bg-white">
         <img src={asset(photo.src)} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" className="aspect-square h-auto w-full object-contain" />
       </a>
       <div className="flex grow flex-col p-[clamp(1.1rem,2vw,1.8rem)]">
         <p className="text-micro uppercase tracking-[.16em] text-[#716344]">{brandCategories[product.category]}</p>
         <h3 className="mb-3 mt-3 font-display text-title font-normal leading-[1.2]">{product.name}</h3>
-        <p className="mb-5 text-small leading-[1.6] text-[#64645f]">{t("Prix et disponibilité sur demande.")}</p>
+        <p className="mb-5 text-small leading-[1.6] text-[#64645f]">{pageText("marque-baruck", "copy.BrandCatalogue.2")}</p>
         <details className="mb-5 text-small">
-          <summary className="cursor-pointer py-2 underline decoration-gold underline-offset-4">{t("Préciser ma demande")}</summary>
+          <summary className="cursor-pointer py-2 underline decoration-gold underline-offset-4">{pageText("marque-baruck", "copy.BrandCatalogue.3")}</summary>
           {product.images.length > 1 && (
             <div className="my-4 grid grid-cols-2 gap-3">
               {product.images.slice(1).map((other) => (
-                <a key={other.src} href={asset(other.src)} target="_blank" rel="noreferrer" aria-label={(t("Agrandir : ") + String(other.alt) + t(""))}>
+                <a key={other.src} href={asset(other.src)} target="_blank" rel="noreferrer" aria-label={((pageText("marque-baruck", "copy.BrandCatalogue.1") + " ") + String(other.alt) + "")}>
                   <img src={asset(other.src)} alt={other.alt} width={other.width} height={other.height} loading="lazy" className="aspect-square h-auto w-full bg-white object-contain" />
                 </a>
               ))}
             </div>
           )}
-          <label htmlFor={detailsId} className="mb-2 mt-4 block leading-[1.6]">{t("Taille, coloris, quantité ou article du visuel souhaité (facultatif)")}</label>
-          <textarea id={detailsId} aria-label={(t("Précisions pour ") + String(product.name) + t(""))} rows={3} maxLength={400} value={preferences} onChange={(event) => setPreferences(event.target.value)} className="w-full resize-y border border-line bg-white p-3 text-body leading-[1.5]" />
-          <p className="mt-2 text-caption leading-[1.6] text-[#64645f]">{t("Ces précisions seront ajoutées à votre message WhatsApp.")}</p>
+          <label htmlFor={detailsId} className="mb-2 mt-4 block leading-[1.6]">{pageText("marque-baruck", "copy.BrandCatalogue.4")}</label>
+          <textarea id={detailsId} aria-label={((pageText("marque-baruck", "copy.BrandCatalogue.5") + " ") + String(product.name) + "")} rows={3} maxLength={400} value={preferences} onChange={(event) => setPreferences(event.target.value)} className="w-full resize-y border border-line bg-white p-3 text-body leading-[1.5]" />
+          <p className="mt-2 text-caption leading-[1.6] text-[#64645f]">{pageText("marque-baruck", "copy.BrandCatalogue.6")}</p>
         </details>
-        <a href={brandOrderHref(product, preferences)} target="_blank" rel="noreferrer" aria-label={(t("Commander sur WhatsApp : ") + String(product.name) + t(""))} className="button button-dark mt-auto w-full gap-3 text-center">{t("Commander sur WhatsApp ")}<span aria-hidden="true"><Icon name="arrow-up-right" /></span>
+        <a href={brandOrderHref(product, preferences)} target="_blank" rel="noreferrer" aria-label={((pageText("marque-baruck", "copy.BrandCatalogue.7") + " ") + String(product.name) + "")} className="button button-dark mt-auto w-full gap-3 text-center">{(pageText("marque-baruck", "copy.page.18") + " ")}<span aria-hidden="true"><Icon name="arrow-up-right" /></span>
         </a>
       </div>
     </article>
@@ -79,17 +80,17 @@ export function BrandCatalogue({ products }: { products: BrandProduct[] }) {
     <section id="collection" aria-labelledby="collection-title" className="scroll-mt-[92px] bg-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(4rem,8vw,8rem)]">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
         <div>
-          <p className="eyebrow">{t("La collection Baruck")}</p>
-          <h2 id="collection-title" className="font-display text-display-lg font-normal leading-[1] tracking-[-.04em]">{t("À chacun son allure.")}</h2>
+          <p className="eyebrow">{pageText("marque-baruck", "copy.BrandCatalogue.8")}</p>
+          <h2 id="collection-title" className="font-display text-display-lg font-normal leading-[1] tracking-[-.04em]">{pageText("marque-baruck", "copy.BrandCatalogue.9")}</h2>
         </div>
-        <p className="max-w-[440px] text-body leading-[1.75] text-[#64645f]">{t("Choisissez un article et préparez votre demande. L’équipe vous renseigne sur les prix, les tailles et les disponibilités par WhatsApp.")}</p>
+        <p className="max-w-[440px] text-body leading-[1.75] text-[#64645f]">{pageText("marque-baruck", "copy.BrandCatalogue.10")}</p>
       </div>
-      <div role="group" aria-label={t("Filtrer la collection")} className="mb-6 flex flex-wrap gap-2">
-        {([ ["all", t("Tout voir")], ...Object.entries(brandCategories).filter(([key]) => products.some((product) => product.category === key))] as [BrandCategory | "all", string][]).map(([value, label]) => (
+      <div role="group" aria-label={pageText("marque-baruck", "copy.BrandCatalogue.11")} className="mb-6 flex flex-wrap gap-2">
+        {([ ["all", pageText("marque-baruck", "copy.BrandCatalogue.12")], ...Object.entries(brandCategories).filter(([key]) => products.some((product) => product.category === key))] as [BrandCategory | "all", string][]).map(([value, label]) => (
           <button key={value} type="button" aria-pressed={filter === value} aria-controls="catalogue-articles" onClick={() => setFilter(value)} className={`min-h-11 cursor-pointer border px-4 py-3 text-label tracking-[.04em] transition-colors duration-[220ms] ${filter === value ? "border-ink bg-ink text-ivory" : "border-line bg-ivory text-ink hover:border-ink"}`}>{label}</button>
         ))}
       </div>
-      <p role="status" aria-live="polite" className="mb-6 text-small text-[#64645f]">{visibleCount} {visibleCount > 1 ? t("articles et sélections") : "article"}</p>
+      <p role="status" aria-live="polite" className="mb-6 text-small text-[#64645f]">{visibleCount} {visibleCount > 1 ? pageText("marque-baruck", "copy.BrandCatalogue.13") : pageText("marque-baruck", "copy.articleSingular")}</p>
       <div id="catalogue-articles" className="grid grid-cols-3 items-stretch gap-6 max-desktop:grid-cols-2 max-[580px]:grid-cols-1">
         {products.map((product) => (
           <div key={product.id} hidden={filter !== "all" && product.category !== filter} className="h-full [&>article]:h-full">

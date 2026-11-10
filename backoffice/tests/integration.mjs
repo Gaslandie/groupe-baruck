@@ -685,7 +685,42 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       assert.equal(browser.status,0,browser.stderr||browser.stdout);
       assert.doesNotMatch(JSON.stringify((await pageExport()).pages['espoir-de-vie']),/DERNIERE PHOTO PRIVEE/);
     }
-    assert.equal((await pageExport()).pageSchema,4);
+    assert.equal((await pageExport()).pageSchema,5);
+  });
+  await t.test('Étape 5 : huit contenus, traductions, listes et formulaires réels', async () => {
+    const ids=['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'];
+    const sections=[];
+    for(const id of ids){
+      const model=pageModels()[id], state=pageRecord(id);
+      const key=Object.keys(model.fields).find(key=>model.fields[key].since===5 && ['text','textarea'].includes(model.fields[key].kind));
+      const section=model.sections.find(section=>section.fields.includes(key));
+      sections.push({id,key,section:section.id});
+      const route='/?page=page_edit&id='+id+'&section='+section.id;
+      assert.equal((await editor.request(route)).status,403,id+' : rédacteur refusé');
+      assert.equal((await editor.post('/',{action:'save_page',id,version:'0',section:section.id,page_fields_json:JSON.stringify({[key]:{fr:'Intrus',en:'Intruder'}})})).status,403);
+      let version=Number((await admin.request(route)).html.match(/name="version" value="(\d+)"/)[1]);
+      const values=structuredClone(state.draft);
+      values[key]={fr:'CONTENU VALIDE '+id,en:''};
+      assert.equal((await admin.post(route,pageForm(id,version,values))).status,303,id);
+      version++;
+      assert.notEqual((await pageExport()).pages[id][key].fr,values[key].fr,'brouillon privé');
+      assert.equal((await admin.post(route,{action:'validate_page',id,version:String(version),english_reviewed:'yes'})).status,422,'anglais manquant refusé');
+      values[key].en='APPROVED CONTENT '+id;
+      if(id==='studio-photo')values['data.studioGallery'].reverse();
+      if(id==='hotesses-evenementielles')values['data.hostessOffers'].reverse();
+      assert.equal((await admin.post(route,pageForm(id,version,values))).status,303,id);
+      version++;
+      assert.equal((await admin.post(route,{action:'validate_page',id,version:String(version),english_reviewed:'yes'})).status,303,id);
+      assert.deepEqual((await pageExport()).pages[id],values,id+' : seul le contenu validé sort');
+      version++;
+      assert.equal((await admin.post(route,{action:'save_page',id,version:String(version-1),section:section.id,page_fields_json:JSON.stringify({[key]:{fr:'Conflit',en:'Conflict'}})})).status,409,id+' : ancien onglet refusé');
+    }
+    if(process.env.BARUCK_TEST_CHROME){
+      const studioSection=pageModels()['studio-photo'].sections.find(s=>s.fields.includes('data.studioPriceGroups')).id;
+      const browser=spawnSync(process.execPath,[path.join(directory,'tests/browser-form.mjs'),origin,'remaining-pages'],{input:JSON.stringify({cookie:admin.cookie,sections,studioSection}),encoding:'utf8',timeout:60000});
+      assert.equal(browser.status,0,browser.stderr||browser.stdout);
+      assert.doesNotMatch(JSON.stringify(await pageExport()),/SAISIE NAVIGATEUR PRIVEE/);
+    }
   });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);

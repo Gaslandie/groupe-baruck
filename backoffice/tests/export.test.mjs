@@ -7,7 +7,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import { importExport } from '../bin/import-export.mjs';
 import matter from 'gray-matter';
-import { pageModels, pageSource, pageTexts, validatePageValues } from '../bin/pages.mjs';
+import { pageModels, pageSource, pageTexts, validatePageValues, pageLinkTargets } from '../bin/pages.mjs';
 
 const article = { slug: 'actualite-test', title: 'Titre : "test"', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Contenu de recette.', gallery: [] };
 const product = { id: 'article-test', name: 'Article de recette', category: 'sacs', images: [{ src: '/images/marque-baruck/sac-main-noir.jpg', alt: 'Sac de recette' }] };
@@ -321,4 +321,40 @@ test('vérifie le contenu et le hash des médias avant écriture', async (t) => 
   await assert.rejects(importExport(file, out));
   const other = await fixture(t, (input) => input.media.push({ path: '/images/../../index.php', data: bytes.toString('base64'), sha256: 'a'.repeat(64) }));
   await assert.rejects(importExport(other.file, other.out), /Média/);
+});
+
+test('les huit pages restantes : export bilingue strict et migration additive du format 4', async t => {
+  assert.ok(pageLinkTargets().includes('/contact/#questions-frequentes'));
+  assert.ok(pageLinkTargets().includes('/marque-baruck/#commander'));
+  const ids=['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'];
+  const models=pageModels();
+  const pages=Object.fromEntries(ids.map(id=>[id,Object.fromEntries(Object.entries(models[id].fields).map(([key,field])=>[key,structuredClone(field.initial)]))]));
+  for(const id of ids){
+    const key=Object.keys(models[id].fields).find(key=>models[id].fields[key].since===5 && ['text','textarea'].includes(models[id].fields[key].kind));
+    pages[id][key]={fr:'Texte validé '+id,en:'Approved text '+id};
+    const broken=structuredClone(pages[id]);broken[key].en='';
+    assert.throws(()=>validatePageValues(models[id],broken));
+    assert.doesNotThrow(()=>validatePageValues(models[id],broken,false));
+  }
+  pages['studio-photo']['data.studioGallery'].reverse();
+  pages['hotesses-evenementielles']['data.hostessOffers'].pop();
+  const valid=await fixture(t,input=>{input.pageSchema=5;input.pages=structuredClone(pages)});
+  await importExport(valid.file,valid.out);
+  const result=JSON.parse(await fs.readFile(path.join(valid.out,'content/pages.json'),'utf8'));
+  for(const id of ids)assert.deepEqual(result[id].values,pages[id]);
+  const invalid=await fixture(t,input=>{input.pageSchema=5;input.pages=structuredClone(pages);delete input.pages.contact['data.contactFaq']});
+  await assert.rejects(importExport(invalid.file,invalid.out));
+  const old=await fixture(t,input=>{input.pageSchema=4;input.pages=Object.fromEntries(ids.map(id=>[id,Object.fromEntries(Object.entries(pages[id]).filter(([key])=>!models[id].fields[key].since))]))});
+  await importExport(old.file,old.out);
+  const upgraded=JSON.parse(await fs.readFile(path.join(old.out,'content/pages.json'),'utf8'));
+  for(const id of ids){assert.deepEqual(upgraded[id].values['meta.title'],pages[id]['meta.title']);assert.ok(Object.keys(upgraded[id].values).length>2);}
+  const contact=pages.contact;
+  for(const token of ['{password}','{{adresse}}','{adresse']){
+    const bad=structuredClone(contact);bad['data.contactFaq'][0].answer.fr=token;
+    assert.throws(()=>validatePageValues(models.contact,bad,false));
+  }
+  const bad=structuredClone(contact);bad['data.contactFaq'][0].answer.en='No marker';
+  assert.throws(()=>validatePageValues(models.contact,bad));
+  bad['data.contactFaq'][0].answer.en='Address: {adresse}';
+  assert.doesNotThrow(()=>validatePageValues(models.contact,bad));
 });

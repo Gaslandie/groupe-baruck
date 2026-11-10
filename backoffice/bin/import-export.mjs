@@ -171,7 +171,7 @@ export async function importExport(file, destination) {
       await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(clean, null, 2) + '\n');
     }
     if (source.pages !== undefined) {
-      if (source.pageSchema !== undefined && ![3,4].includes(source.pageSchema)) throw new Error('Version des pages inconnue.');
+      if (source.pageSchema !== undefined && ![3,4,5].includes(source.pageSchema)) throw new Error('Version des pages inconnue.');
       if (!source.pages || typeof source.pages !== 'object' || Array.isArray(source.pages)) throw new Error('Pages exportées invalides.');
       const models = pageModels();
       const published = structuredClone(pageSource);
@@ -181,11 +181,11 @@ export async function importExport(file, destination) {
       for (const [id, input] of Object.entries(source.pages)) {
         if (!Object.hasOwn(models, id)) throw new Error('Page exportée inconnue.');
         if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Champs de page invalides.');
-        const required = Object.keys(models[id].fields).filter(key => source.pageSchema === 4 || source.pageSchema === 3 && (models[id].fields[key].since ?? 3) <= 3 || /^(?:meta\.|heroSlides\.|activities\.)/.test(key));
+        const required = Object.keys(models[id].fields).filter(key => source.pageSchema === 5 || source.pageSchema >= 3 && (models[id].fields[key].since ?? 3) <= source.pageSchema || /^(?:meta\.|heroSlides\.|activities\.)/.test(key));
         if (required.some(key => !Object.hasOwn(input, key))) throw new Error('Champs de page incomplets.');
         // Les anciens exports sont complétés sans remplacer leurs valeurs.
         const defaults = Object.fromEntries(Object.entries(models[id].fields).map(([key, field]) => [key, field.initial]));
-        const values = validatePageValues(models[id], source.pageSchema === 4 ? input : { ...defaults, ...input }, true, { mediaRoot: path.join(destination, 'public'), articleSlugs });
+        const values = validatePageValues(models[id], source.pageSchema === 5 ? input : { ...defaults, ...input }, true, { mediaRoot: path.join(destination, 'public'), articleSlugs });
         published[id].values = { ...published[id].values, ...values };
         // Les anciens champs d’accueil sont une projection du même contenu validé.
         if (id === 'home') await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(pageTexts(values), null, 2) + '\n');

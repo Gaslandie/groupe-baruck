@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import postcss from 'postcss';
 import tailwind from '@tailwindcss/postcss';
-import { pageModels, pageLinkTargets } from './pages.mjs';
+import { pageModels, pageLinkTargets, pageSource } from './pages.mjs';
 
 const directory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const root = path.resolve(directory, '..');
@@ -14,12 +14,10 @@ const articles = await Promise.all(files.map(async (name) => {
   const { data, content } = matter(await fs.readFile(path.join(folder, name), 'utf8'));
   return { ...data, slug: name.slice(0, -3), body: content.trim(), date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : data.date, gallery: data.gallery ?? [] };
 }));
-// Les rayons restent une nomenclature du site : l'administration les lit, ne les invente pas.
-const source = await fs.readFile(path.join(root, 'src/data/marque-baruck.ts'), 'utf8');
-const literal = source.match(/export const brandCategories = \{([^}]*)\} as const;/);
-if (!literal) throw new Error('Rayons de la boutique introuvables dans src/data/marque-baruck.ts.');
-const brandCategories = Object.fromEntries([...literal[1].matchAll(/^\s*([a-z]+):\s*(?:t\()?("(?:\\.|[^"\\])*")\)?,\s*$/gm)].map(([, key, label]) => [key, JSON.parse(label)]));
-if (Object.keys(brandCategories).length === 0) throw new Error('Aucun rayon de boutique reconnu.');
+// Identifiants fixés par le schéma ; les libellés français viennent des contenus publics.
+const categoryModel = pageSource['marque-baruck'].fields['data.brandCategories'];
+const categoryValues = pageSource['marque-baruck'].values['data.brandCategories'];
+const brandCategories = Object.fromEntries(Object.keys(categoryModel.fields).map(key => [key, categoryValues[key].fr]));
 const { products } = JSON.parse(await fs.readFile(path.join(root, 'content/boutique.json'), 'utf8'));
 const coordonnees = JSON.parse(await fs.readFile(path.join(root, 'content/coordonnees.json'), 'utf8'));
 const textes = JSON.parse(await fs.readFile(path.join(root, 'content/textes.json'), 'utf8'));

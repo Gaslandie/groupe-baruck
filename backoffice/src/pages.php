@@ -121,6 +121,15 @@ function validatePageField(array $field, mixed $input, bool $ready, array $optio
         if (mb_strlen($value,'UTF-8') > $field['max'] || preg_match('~</?[a-z][^>]*>~iu',$value) || ($field['kind'] === 'text' && preg_match('/[\r\n]/',$value))) $invalid();
         $values[$language] = $value;
     }
+    if (isset($field['tokens'])) {
+        $tokens = function (string $value) use ($field, $invalid): array {
+            preg_match_all('/\{([^{}]*)\}/', $value, $matches);
+            if (array_diff($matches[1], $field['tokens']) || preg_match('/[{}]/', preg_replace('/\{[^{}]*\}/', '', $value))) $invalid();
+            $result = array_values(array_unique($matches[1])); sort($result); return $result;
+        };
+        $fr = $tokens($values['fr']); $en = $tokens($values['en']);
+        if ($ready && $fr !== $en) $invalid();
+    }
     return $values;
 }
 

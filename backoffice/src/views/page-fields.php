@@ -52,6 +52,7 @@ function pageField(array $field, mixed $value, string $name): void
             echo '</div>';
         }
         echo '</div>';
+        if (isset($field['tokens'])) echo '<p class="mt-3 text-caption leading-relaxed text-ink/60">Pour reprendre une coordonnée sans la recopier : ' . e(implode(', ', array_map(fn($name) => '{' . $name . '}', $field['tokens']))) . '. Gardez les mêmes repères dans les deux langues. Les valeurs se modifient dans Coordonnées.</p>';
     } elseif (in_array($field['kind'], ['video','slug','background','choice'], true)) {
         $options = match ($field['kind']) {
             'video', 'choice' => array_combine($field['options'], $field['options']),

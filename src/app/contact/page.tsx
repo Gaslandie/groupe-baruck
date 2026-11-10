@@ -1,6 +1,6 @@
+import { pageText } from "@/lib/page-content";
 import { pageMetadata } from "@/lib/page-metadata";
 
-import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata } from "next";
 
@@ -27,9 +27,9 @@ export default function ContactPage() {
       <ContactDetails />
       <ServiceFaq
         id="questions-frequentes"
-        eyebrow={t("Informations pratiques")}
-        title={<>{t("Vos questions,")}<br /></>}
-        emphasis={t("nos réponses.")}
+        eyebrow={pageText("contact", "copy.page.1")}
+        title={<>{pageText("contact", "copy.page.2")}<br /></>}
+        emphasis={pageText("contact", "copy.page.3")}
         items={contactFaq}
       />
       <ContactMap />

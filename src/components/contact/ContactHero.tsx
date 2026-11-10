@@ -1,4 +1,5 @@
-import { translate as t } from "../../lib/language.ts";
+import { imageUrl } from "@/lib/asset";
+import { pageText } from "@/lib/page-content";
 
 import { contactNeeds } from "@/data/contact";
 import { placeholderPhotos } from "@/data/media";
@@ -17,7 +18,7 @@ export function ContactHero() {
       <div
         aria-hidden="true"
         style={{
-          backgroundImage: `url("${placeholderPhotos.conakryHero.src}")`,
+          backgroundImage: `url("${imageUrl(pageText("contact", "media.hero"))}")`,
           backgroundPosition: placeholderPhotos.conakryHero.position,
         }}
         className="absolute inset-0 z-[-2] scale-[1.025] bg-cover saturate-[.7]"
@@ -27,19 +28,19 @@ export function ContactHero() {
         className="absolute inset-0 z-[-1] bg-[linear-gradient(90deg,rgba(8,9,10,.94),rgba(8,9,10,.72)_50%,rgba(8,9,10,.55)),linear-gradient(180deg,rgba(8,9,10,.2),rgba(8,9,10,.85))]"
       />
       <div className="hero-in flex flex-col justify-center px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pl-[clamp(1.3rem,7vw,8rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:px-[clamp(1.3rem,6vw,4rem)] max-[1080px]:pb-[clamp(3.5rem,7vw,5rem)] max-[1080px]:pt-[clamp(7.5rem,14vw,9.5rem)]">
-        <p className="eyebrow light">Contact · Groupe Baruck</p>
-        <h1 className="mb-[1.6rem] mt-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{t("Parlons de votre")}<em className="block font-normal text-accent">{t("prochain projet.")}</em>
+        <p className="eyebrow light">{pageText("contact", "copy.ContactHero.1")}</p>
+        <h1 className="mb-[1.6rem] mt-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{pageText("contact", "copy.ContactHero.2")}<em className="block font-normal text-accent">{pageText("contact", "copy.ContactHero.3")}</em>
         </h1>
-        <p className="mb-[2.2rem] mt-0 max-w-[520px] text-lead leading-[1.75] text-[rgba(255,255,255,.7)]">{t("Notre équipe est à votre écoute pour répondre à vos questions et étudier vos propositions.")}</p>
+        <p className="mb-[2.2rem] mt-0 max-w-[520px] text-lead leading-[1.75] text-[rgba(255,255,255,.7)]">{pageText("contact", "copy.ContactHero.4")}</p>
         <div className="flex flex-wrap gap-[.8rem] max-tablet:[&_.button]:w-full">
-          <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="button button-accent">{t("WhatsApp Baruck Siège ")}<span><Icon name="arrow-up-right" /></span>
+          <a href={contacts.whatsappHq.href} target="_blank" rel="noreferrer" className="button button-accent">{(pageText("contact", "copy.ContactHero.5") + " ")}<span><Icon name="arrow-up-right" /></span>
           </a>
-          <a href={contacts.landline.href} className="button button-ghost">{t("Appeler le siège")}</a>
-          <a href={contacts.email.href} className="button button-ghost">{t("Écrire un e-mail")}</a>
+          <a href={contacts.landline.href} className="button button-ghost">{pageText("contact", "copy.ContactHero.6")}</a>
+          <a href={contacts.email.href} className="button button-ghost">{pageText("contact", "copy.ContactHero.7")}</a>
         </div>
       </div>
       <div className="flex flex-col justify-center bg-[rgba(8,9,10,.62)] px-[clamp(1.3rem,5vw,5.5rem)] pb-[clamp(3.5rem,6vw,5rem)] pt-[clamp(8rem,11vw,11rem)] max-[1080px]:pt-[2rem]">
-        <p className="eyebrow light">{t("Selon votre besoin")}</p>
+        <p className="eyebrow light">{pageText("contact", "copy.ContactHero.8")}</p>
         <div className="border-t border-[rgba(255,255,255,.16)]">
           {contactNeeds.map((need) => (
             <a

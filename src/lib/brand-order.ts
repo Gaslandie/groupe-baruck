@@ -1,4 +1,4 @@
-import { translate as t } from "./language.ts";
+import { pageText } from "@/lib/page-content";
 
 import type { BrandProduct } from "@/data/marque-baruck";
 import { contacts, routes, site } from "@/data/site";
@@ -8,13 +8,13 @@ export function brandOrderHref(product?: BrandProduct, preferences = ""): string
   const pageUrl = site.url + routes.brand.slice(1);
   const message = product
     ? [
-        `${t("Bonjour, je souhaite commander cet article de la marque Baruck :")} ${product.name}.`,
-        `${t("Article :")} ${pageUrl}#produit-${product.id}`,
-        `${t("Visuel :")} ${site.url}${product.images[0].src.slice(1)}`,
-        preferences.trim() ? `${t("Ma demande :")} ${preferences.trim()}` : "",
-        t("Pouvez-vous me confirmer le prix, la disponibilité et les modalités de commande ?"),
+        `${pageText("marque-baruck", "copy.brand-order.1")} ${product.name}.`,
+        `${pageText("marque-baruck", "copy.brand-order.2")} ${pageUrl}#produit-${product.id}`,
+        `${pageText("marque-baruck", "copy.brand-order.3")} ${site.url}${product.images[0].src.slice(1)}`,
+        preferences.trim() ? `${pageText("marque-baruck", "copy.brand-order.4")} ${preferences.trim()}` : "",
+        pageText("marque-baruck", "copy.brand-order.5"),
       ].filter(Boolean).join("\n\n")
-    : `${t("Bonjour, je souhaite passer commande auprès de la marque Baruck. Pouvez-vous me renseigner sur vos articles ?")}\n\n${pageUrl}`;
+    : `${pageText("marque-baruck", "copy.brand-order.6")}\n\n${pageUrl}`;
 
   return `${contacts.whatsappHq.href}?text=${encodeURIComponent(message)}`;
 }

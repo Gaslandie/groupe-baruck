@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import Link from "next/link";
 
@@ -30,7 +30,7 @@ export function NewsFeature({ article }: NewsFeatureProps) {
         <p className="mt-5 max-w-[520px] text-body leading-[1.7] text-[#696963]">
           {article.excerpt}
         </p>
-        <span className="text-link mt-6">{t("Lire l’article ")}<span><Icon name="arrow-up-right" /></span>
+        <span className="text-link mt-6">{(pageText("actualites", "copy.NewsCard.1") + " ")}<span><Icon name="arrow-up-right" /></span>
         </span>
       </div>
     </Link>

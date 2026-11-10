@@ -1,6 +1,7 @@
 "use client";
 
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
+
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -190,7 +191,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         <Brand />
 
         <nav
-          aria-label={t("Navigation principale")}
+          aria-label={pageText("home", "common.SiteHeader.1")}
           className="hidden items-center gap-[clamp(.8rem,1.25vw,1.4rem)] text-label uppercase tracking-[.085em] wide:flex"
         >
           {mainNav.map((item) => {
@@ -270,18 +271,18 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
             prefetch={false}
             href={routes.contact}
             className="border-b border-[rgba(255,255,255,.3)] pb-[.3rem] text-caption uppercase tracking-[.08em] wide:hidden max-tablet:hidden"
-          >{t("Parler avec nous ")}<span className={["ml-[.4rem]", styles.contactArrow].join(" ")}><Icon name="arrow-up-right" /></span>
+          >{(pageText("home", "common.SiteHeader.2") + " ")}<span className={["ml-[.4rem]", styles.contactArrow].join(" ")}><Icon name="arrow-up-right" /></span>
           </Link>
           <button
             id="menu-button"
             type="button"
-            aria-label={isOpen ? t("Fermer le menu") : t("Ouvrir le menu")}
+            aria-label={isOpen ? pageText("home", "common.SiteHeader.3") : pageText("home", "common.SiteHeader.4")}
             aria-controls="side-nav"
             aria-expanded={isOpen}
             onClick={() => setIsOpen((open) => !open)}
             className="group flex cursor-pointer items-center gap-[.85rem] border-0 bg-transparent py-[.75rem] pl-[.75rem] text-label uppercase tracking-[.18em] text-inherit"
           >
-            <span className="max-tablet:hidden">Menu</span>
+            <span className="max-tablet:hidden">{pageText("home", "common.SiteHeader.5")}</span>
             <span aria-hidden="true" className="flex h-[18px] w-[30px] flex-col justify-center gap-[7px]">
               <span className="h-px w-full bg-current transition-transform duration-300 group-hover:translate-x-[-5px]" />
               <span className="h-px w-full bg-current transition-transform duration-300 group-hover:translate-x-[5px]" />
@@ -302,7 +303,7 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
 
       <aside
         id="side-nav"
-        aria-label={t("Navigation principale")}
+        aria-label={pageText("home", "common.SiteHeader.1")}
         aria-hidden={!isOpen}
         className={[
           "fixed inset-y-0 left-0 z-[90] flex w-[min(42vw,680px)] min-w-[520px] flex-col overflow-y-auto p-[clamp(1.5rem,4vw,4.5rem)] transition-[transform,visibility] duration-[550ms] ease-[cubic-bezier(.77,0,.18,1)] max-tablet:w-[94vw] max-tablet:min-w-0 max-tablet:p-6",
@@ -311,23 +312,23 @@ export function SiteHeader({ variant, current }: SiteHeaderProps) {
         ].join(" ")}
       >
         <div className="flex items-center justify-between border-b border-line pb-6">
-          <span className="text-label uppercase tracking-[.18em]">Groupe Baruck</span>
+          <span className="text-label uppercase tracking-[.18em]">{pageText("home", "common.Brand.2")}</span>
           <button
             ref={closeButtonRef}
             id="close-menu"
             type="button"
-            aria-label={t("Fermer le menu")}
+            aria-label={pageText("home", "common.SiteHeader.3")}
             onClick={() => setIsOpen(false)}
             className="flex cursor-pointer items-center gap-3 border-0 bg-transparent p-0 text-inherit"
           >
-            <span className="text-label uppercase tracking-[.18em]">{t("Fermer")}</span>
+            <span className="text-label uppercase tracking-[.18em]">{pageText("home", "common.SiteHeader.6")}</span>
             <span aria-hidden="true" className="font-sans text-[2rem] font-normal leading-none">
               <Icon name="close" />
             </span>
           </button>
         </div>
 
-        <nav aria-label={t("Menu principal")} className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-col">
+        <nav aria-label={pageText("home", "common.SiteHeader.7")} className="mt-[clamp(2.5rem,6vh,4rem)] flex flex-col">
           {mainNav.map((item) => {
             const itemCurrent = currentAttributes(item.href);
             const featuredChildren = item.children?.filter((child) => child.featured) ?? [];

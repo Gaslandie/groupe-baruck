@@ -150,6 +150,53 @@ export async function checkPublishedPages({send,load,origin,session}) {
       assert.equal(await evaluate('(async()=>{await new Promise(resolve=>setTimeout(resolve,50));return document.querySelector("[role=tab][aria-selected=true]").id})()'),tabs[1]);
       assert.equal(await evaluate('document.activeElement.id'),tabs[1]);
     }
+    for(const route of ['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales']){
+      ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/'+route+'/'});await ready;
+      assert.equal(await evaluate('document.querySelectorAll("h1").length'),1,route+' : titre présent après construction');
+      for(const width of [390,768,1280]){
+        await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:width===390});
+        const size=await evaluate('(async()=>{await document.fonts.ready;await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {width:innerWidth,scroll:document.documentElement.scrollWidth,items:Array.from(document.querySelectorAll("body *")).filter(el=>el.getBoundingClientRect().right>innerWidth+1).slice(0,12).map(el=>({tag:el.tagName,classes:el.className,text:el.textContent.slice(0,90),right:el.getBoundingClientRect().right}))}})()');
+        assert.ok(size.scroll<=size.width,route+' : largeur '+width+language+' '+JSON.stringify(size));
+      }
+      if(route==='mediatheque'){
+        assert.equal(await evaluate('Array.from(document.querySelectorAll("section[id^=espoir-de-vie-]")).every(section=>section.querySelector("a").getAttribute("href").includes("/espoir-de-vie/#galerie-"))'),true,'galeries reliées à leur page d’origine');
+        await evaluate('document.querySelector("#galeries nav li:last-child button").click()');
+        assert.equal(await evaluate('(async()=>{await new Promise(r=>setTimeout(r,50));return document.querySelectorAll("#galeries section[id=studio-photo]").length})()'),0,'le filtre masque les autres sources');
+      }
+      if(route==='marque-baruck'){
+        await evaluate('document.querySelector("#collection [role=group] button:nth-child(2)")?.click()');
+        assert.equal(await evaluate('(async()=>{await new Promise(r=>setTimeout(r,50));return Array.from(document.querySelectorAll("#catalogue-articles > div")).some(item=>item.hidden)})()'),true,'catalogue filtré après les changements de libellés');
+      }
+      if(route==='contact')assert.equal(await evaluate('document.querySelectorAll("iframe[src*=google]").length'),0,'aucune carte sans consentement');
+    }
   }
-  console.log('Publication Chrome FR/EN : bonnes photos et compteurs après tri, onglets accessibles au clavier');
+  console.log('Publication Chrome FR/EN : huit pages à trois largeurs, filtres, consentement carte, galeries et clavier');
+}
+
+export async function checkRemainingPages({send,load,origin,session}) {
+  const [name,value]=session.cookie.split('=');
+  await send('Network.setCookie',{name,value,url:origin,httpOnly:true,sameSite:'Strict'});
+  const evaluate=async expression=>{
+    const response=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});
+    assert.equal(response.exceptionDetails,undefined,JSON.stringify(response.exceptionDetails));
+    return response.result.value;
+  };
+  for(const {id,key,section} of session.sections){
+    let ready=load();await send('Page.navigate',{url:origin+'/?page=page_edit&id='+id+'&section='+section});await ready;
+    for(const width of [390,768,1280]){
+      await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:width===390});
+      assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true,id+' à '+width);
+    }
+    const control='[name='+JSON.stringify(`fields[${key}][fr]`)+']';
+    await evaluate(`const field=document.querySelector(${JSON.stringify(control)});field.value=${JSON.stringify('SAISIE NAVIGATEUR PRIVEE '+id)};field.dispatchEvent(new Event('input',{bubbles:true}));`);
+    assert.equal(await evaluate('document.querySelector("[data-page-validate]").disabled'),true);
+    ready=load();await evaluate('document.querySelector("#page-draft-form").requestSubmit()');await ready;
+    assert.equal(await evaluate(`document.querySelector(${JSON.stringify(control)}).value`),'SAISIE NAVIGATEUR PRIVEE '+id);
+  }
+  let ready=load();await send('Page.navigate',{url:origin+'/?page=page_edit&id=studio-photo&section='+session.studioSection});await ready;
+  const first=await evaluate('document.querySelector("[data-list-items] [data-list-items] [lang=fr]").value');
+  await evaluate(`const nested=document.querySelector('[data-list-items] [data-page-list]');nested.querySelector('[data-list-down]').click();nested.querySelector(':scope > [data-list-add]').click();nested.querySelector('[data-list-items]').lastElementChild.querySelector('[data-list-remove]').click();`);
+  ready=load();await evaluate('document.querySelector("#page-draft-form").requestSubmit()');await ready;
+  assert.notEqual(await evaluate('document.querySelector("[data-list-items] [data-list-items] [lang=fr]").value'),first);
+  console.log('Étape 5 Chrome : huit formulaires enregistrés et rechargés, trois largeurs, tarifs imbriqués et brouillons privés');
 }

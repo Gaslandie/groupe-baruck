@@ -1,6 +1,6 @@
+import { pageText } from "@/lib/page-content";
 import { pageMetadata } from "@/lib/page-metadata";
 
-import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata } from "next";
 
@@ -17,10 +17,10 @@ export const metadata: Metadata = {
 export default function ProjectsPage() {
   return (
     <ConstructionPage
-      index={t("À venir")}
-      eyebrow={t("Projets & Réalisations")}
-      text={t("Nos projets, productions et collaborations seront présentés ici prochainement.")}
-      footerItems={["Groupe Baruck", t("Imaginer · Construire · Réaliser")]}
+      index={pageText("projets-realisations", "copy.page.1")}
+      eyebrow={pageText("projets-realisations", "copy.page.2")}
+      text={pageText("projets-realisations", "copy.page.3")}
+      footerItems={[site.name, pageText("projets-realisations", "copy.page.4")]}
     />
   );
 }

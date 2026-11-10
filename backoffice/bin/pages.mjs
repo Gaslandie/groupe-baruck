@@ -12,13 +12,18 @@ let linkTargets;
 export function pageLinkTargets() {
   if (linkTargets) return linkTargets;
   const targets = new Set(Object.values(pageSource).map(page => page.route));
-  const folders = { home:'home', groupe:'about', jeca:'jeca', 'espoir-de-vie':'espoir-de-vie', 'studio-photo':'services', 'hotesses-evenementielles':'services' };
+  const folders = { home:'home', groupe:'about', jeca:'jeca', 'espoir-de-vie':'espoir-de-vie', 'studio-photo':'services', 'hotesses-evenementielles':'services', 'marque-baruck':'marque-baruck', actualites:'actualites', mediatheque:'mediatheque', contact:'contact', 'mentions-legales':'legal' };
   for (const [id, folder] of Object.entries(folders)) {
     const directory = fileURLToPath(new URL('../../src/components/' + folder, import.meta.url));
     for (const file of fs.readdirSync(directory, {recursive:true}).filter(file => file.endsWith('.tsx') && (id === 'studio-photo' ? !file.startsWith('Hostess') : id !== 'hotesses-evenementielles' || !file.startsWith('Studio')))) {
       const source = fs.readFileSync(path.join(directory,file),'utf8');
       for (const [, anchor] of source.matchAll(/\bid="([a-z0-9-]+)"/g)) targets.add(pageSource[id].route + '#' + anchor);
     }
+  }
+  for (const page of Object.values(pageSource)) {
+    const file = fileURLToPath(new URL('../../src/app' + page.route + 'page.tsx', import.meta.url));
+    const source = fs.readFileSync(file, 'utf8');
+    for (const [, anchor] of source.matchAll(/\bid="([a-z0-9-]+)"/g)) targets.add(page.route + '#' + anchor);
   }
   for (const key of Object.keys(originalTexts.activities)) targets.add('/#' + key);
   for (const id of ['activite-guinee','activite-studio','activite-hotesses']) targets.add('/#' + id);
@@ -163,6 +168,15 @@ export function validatePageField(field, input, ready = true, options = {}) {
         || /<\/?[a-z][^>]*>/iu.test(value) || (field.kind === 'text' && /[\r\n]/.test(value))) throw new Error(`Vérifiez « ${field.label} » (${language.toUpperCase()}).`);
       values[language] = value.trim();
     }
+  if (field.tokens) {
+    const tokens = value => {
+      const found = [...value.matchAll(/\{([^{}]*)\}/g)];
+      if (found.some(match => !field.tokens.includes(match[1])) || /[{}]/.test(value.replace(/\{[^{}]*\}/g, ''))) fail();
+      return [...new Set(found.map(match => match[1]))].sort().join(',');
+    };
+    const fr = tokens(values.fr), en = tokens(values.en);
+    if (ready && fr !== en) fail();
+  }
   return values;
 }
 

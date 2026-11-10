@@ -1,4 +1,4 @@
-import { translate as t } from "../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import { contactNeeds, hqHours } from "./contact";
 import { edvCountries, edvPillars, edvTimeline } from "./espoir-de-vie";
@@ -73,49 +73,49 @@ export type AssistantNode = {
 };
 
 export const assistantMeta = {
-  name: t("Assistant Baruck"),
+  name: pageText("home", "common.assistant.1"),
   monogram: "B",
-  launcher: "Assistant",
-  openLabel: t("Ouvrir l’assistant"),
-  closeLabel: t("Fermer l’assistant"),
-  restartLabel: t("Recommencer"),
-  humanLabel: t("Parler à quelqu’un"),
-  botSpeaker: "Assistant",
-  userSpeaker: t("Vous"),
-  typingLabel: t("L’assistant rédige une réponse"),
-  inputLabel: t("Votre question"),
-  inputPlaceholder: t("Posez votre question…"),
-  sendLabel: t("Envoyer"),
-  searchNote: t("D’après votre question :"),
-  choiceNote: t("Plusieurs réponses peuvent correspondre :"),
+  launcher: pageText("home", "common.assistant.2"),
+  openLabel: pageText("home", "common.assistant.3"),
+  closeLabel: pageText("home", "common.assistant.4"),
+  restartLabel: pageText("home", "common.assistant.5"),
+  humanLabel: pageText("home", "common.assistant.6"),
+  botSpeaker: pageText("home", "common.assistant.2"),
+  userSpeaker: pageText("home", "common.assistant.7"),
+  typingLabel: pageText("home", "common.assistant.8"),
+  inputLabel: pageText("home", "common.assistant.9"),
+  inputPlaceholder: pageText("home", "common.assistant.10"),
+  sendLabel: pageText("home", "common.assistant.11"),
+  searchNote: pageText("home", "common.assistant.12"),
+  choiceNote: pageText("home", "common.assistant.13"),
 } as const;
 
 export const topicLabels: Record<AssistantTopicId, string> = {
-  studio: t("Studio photo"),
-  hotesses: t("Hôtesses événementielles"),
-  jeca: "JECA",
-  edv: "Espoir de Vie",
-  groupe: t("Le Groupe"),
-  contact: t("Nous joindre"),
+  studio: pageText("home", "common.site.13"),
+  hotesses: pageText("home", "common.site.14"),
+  jeca: pageText("home", "common.site.16"),
+  edv: pageText("home", "common.site.17"),
+  groupe: pageText("home", "common.site.10"),
+  contact: pageText("home", "common.assistant.14"),
 };
 
 /** Contexte transmis à WhatsApp et à l'e-mail quand le visiteur demande un humain. */
 export const topicContexts: Record<AssistantTopicId, { subject: string; intro: string }> = {
-  studio: { subject: t("Studio photo"), intro: t("je consultais le Studio Photo Baruck sur votre site.") },
-  hotesses: { subject: t("Hôtesses événementielles"), intro: t("je consultais vos hôtesses événementielles sur votre site.") },
-  jeca: { subject: "JECA", intro: t("je consultais la JECA sur votre site.") },
-  edv: { subject: "Espoir de Vie", intro: t("je consultais Espoir de Vie sur votre site.") },
-  groupe: { subject: t("Le Groupe Baruck"), intro: t("je consultais la présentation du Groupe Baruck sur votre site.") },
-  contact: { subject: "Contact", intro: t("je vous écris depuis l’assistant de votre site.") },
+  studio: { subject: pageText("home", "common.site.13"), intro: pageText("home", "common.assistant.15") },
+  hotesses: { subject: pageText("home", "common.site.14"), intro: pageText("home", "common.assistant.16") },
+  jeca: { subject: pageText("home", "common.site.16"), intro: pageText("home", "common.assistant.17") },
+  edv: { subject: pageText("home", "common.site.17"), intro: pageText("home", "common.assistant.18") },
+  groupe: { subject: pageText("home", "common.assistant.19"), intro: pageText("home", "common.assistant.20") },
+  contact: { subject: pageText("home", "common.site.22"), intro: pageText("home", "common.assistant.21") },
 };
 
-export const defaultContext = { subject: "Groupe Baruck", intro: t("je vous écris depuis l’assistant de votre site.") };
+export const defaultContext = { subject: pageText("home", "common.Brand.2"), intro: pageText("home", "common.assistant.21") };
 
 export type AssistantContext = { topic?: AssistantTopicId; question?: string };
 
 export function contactHref(channel: AssistantChannel, context: AssistantContext): { href: string; external: boolean } {
   const base = context.topic ? topicContexts[context.topic] : defaultContext;
-  const message = (t("Bonjour, ") + String(base.intro) + t("") + String(context.question ? ` ${t("Sujet :")} ${context.question}.` : "") + t(""));
+  const message = ((pageText("home", "common.assistant.22") + " ") + String(base.intro) + "" + String(context.question ? ` ${pageText("home", "common.assistant.23")} ${context.question}.` : "") + "");
   switch (channel) {
     case "whatsapp":
       return { href: `${contacts.whatsappHq.href}?text=${encodeURIComponent(message)}`, external: true };
@@ -131,11 +131,7 @@ export function contactHref(channel: AssistantChannel, context: AssistantContext
   }
 }
 
-const faq = (question: string): string => {
-  const item = studioFaq.find((entry) => entry.question === t(question));
-  if (!item) throw new Error(`FAQ studio introuvable : ${question}`);
-  return item.answer;
-};
+const faq = (key: string): string => studioFaq.find(entry => entry.key === key)?.answer ?? pageText("home", "common.assistant.41");
 
 const teaser = (id: string): string => {
   const item = [...pageTeasers, ...mainActivities].find((entry) => entry.id === id);
@@ -143,17 +139,8 @@ const teaser = (id: string): string => {
   return item.text;
 };
 
-const need = (title: string): string => {
-  const item = contactNeeds.find((entry) => entry.title === t(title));
-  if (!item) throw new Error(`Besoin de contact introuvable : ${title}`);
-  return item.text;
-};
+const need = (key: string): string => contactNeeds.find(entry => entry.key === key)?.text ?? pageText("home", "common.assistant.41");
 
-const timelineDate = (title: string): string => {
-  const item = edvTimeline.find((entry) => entry.title === t(title));
-  if (!item?.date) throw new Error(`Date de frise introuvable : ${title}`);
-  return item.date.label;
-};
 
 const priceTables: AssistantBlock[] = studioPriceGroups.map((group) => ({
   kind: "table",
@@ -163,9 +150,9 @@ const priceTables: AssistantBlock[] = studioPriceGroups.map((group) => ({
 
 const humanOptions: AssistantOption[] = [
   { label: `WhatsApp · ${contacts.whatsappHq.value}`, channel: "whatsapp" },
-  { label: (t("Appeler · ") + String(contacts.landline.value) + t("")), channel: "phone" },
-  { label: (t("E-mail · ") + String(contacts.email.value) + t("")), channel: "email" },
-  { label: t("Formulaire de contact"), channel: "form" },
+  { label: ((pageText("home", "common.assistant.24") + " ") + String(contacts.landline.value) + ""), channel: "phone" },
+  { label: ((pageText("home", "common.assistant.25") + " ") + String(contacts.email.value) + ""), channel: "email" },
+  { label: pageText("home", "common.assistant.26"), channel: "form" },
 ];
 
 const topicOptions: AssistantOption[] = (Object.keys(topicLabels) as AssistantTopicId[]).map((id) => ({
@@ -174,52 +161,52 @@ const topicOptions: AssistantOption[] = (Object.keys(topicLabels) as AssistantTo
 }));
 
 const backOptions = (topic: AssistantTopicId, href: string, pageLabel: string): AssistantOption[] => [
-  { label: (t("Autres questions · ") + String(topicLabels[topic]) + t("")), next: topic },
+  { label: ((pageText("home", "common.assistant.27") + " ") + String(topicLabels[topic]) + ""), next: topic },
   { label: pageLabel, href },
-  { label: t("Autre sujet"), next: "start" },
+  { label: pageText("home", "common.assistant.28"), next: "start" },
 ];
 
-const studioBack = backOptions("studio", routes.studio, t("Voir la page Studio photo"));
-const hostessesBack = backOptions("hotesses", routes.hostesses, t("Voir la page Hôtesses"));
-const jecaBack = backOptions("jeca", routes.jeca, t("Voir la page JECA"));
-const edvBack = backOptions("edv", routes.edv, t("Voir la page Espoir de Vie"));
-const groupBack = backOptions("groupe", routes.group, t("Voir la page Le Groupe"));
-const contactBack = backOptions("contact", routes.contact, t("Voir la page Contact"));
+const studioBack = backOptions("studio", routes.studio, pageText("home", "common.assistant.29"));
+const hostessesBack = backOptions("hotesses", routes.hostesses, pageText("home", "common.assistant.30"));
+const jecaBack = backOptions("jeca", routes.jeca, pageText("home", "common.assistant.31"));
+const edvBack = backOptions("edv", routes.edv, pageText("home", "common.assistant.32"));
+const groupBack = backOptions("groupe", routes.group, pageText("home", "common.assistant.33"));
+const contactBack = backOptions("contact", routes.contact, pageText("home", "common.assistant.34"));
 
 export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
   start: {
     messages: [
       {
         kind: "greeting",
-        text: (t("je suis l’assistant automatique du ") + String(site.name) + t(". Je réponds aux questions les plus fréquentes à partir des informations du site.")),
+        text: ((pageText("home", "common.assistant.35") + " ") + String(site.name) + pageText("home", "common.assistant.36")),
       },
-      t("Choisissez un sujet ou posez votre question ci-dessous. Pour tout le reste, l’équipe vous répond directement sur WhatsApp, par téléphone ou par e-mail."),
+      pageText("home", "common.assistant.37"),
     ],
     options: topicOptions,
   },
 
   encore: {
-    messages: [t("Je reste disponible ici. Souhaitez-vous autre chose ?")],
+    messages: [pageText("home", "common.assistant.38")],
     options: topicOptions,
   },
 
   humain: {
-    question: t("Parler à quelqu’un"),
+    question: pageText("home", "common.assistant.6"),
     keywords: ["humain", "personne", "quelqu’un", "conseiller", "equipe", "parler", "agent", "responsable"],
-    messages: [t("L’équipe du Groupe Baruck vous répond directement par le canal de votre choix. Votre sujet sera indiqué dans le message.")],
-    options: [...humanOptions, { label: t("Retour aux sujets"), next: "start" }],
+    messages: [pageText("home", "common.assistant.39")],
+    options: [...humanOptions, { label: pageText("home", "common.assistant.40"), next: "start" }],
   },
 
   inconnu: {
     messages: [
-      t("Je n’ai pas de réponse prête pour cette question. L’équipe vous répond directement, votre question sera indiquée dans le message."),
+      pageText("home", "common.assistant.41"),
     ],
-    options: [...humanOptions, { label: t("Retour aux sujets"), next: "start" }],
+    options: [...humanOptions, { label: pageText("home", "common.assistant.40"), next: "start" }],
   },
 
   plusieurs: {
     messages: [assistantMeta.choiceNote],
-    options: [{ label: t("Retour aux sujets"), next: "start" }],
+    options: [{ label: pageText("home", "common.assistant.40"), next: "start" }],
   },
 
   /* ---------- Studio photo ---------- */
@@ -229,59 +216,59 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     keywords: ["studio", "photo", "photographe", "shooting", "seance", "portrait"],
     messages: [teaser("activite-studio")],
     options: [
-      { label: t("Les tarifs"), next: "studio-tarifs" },
-      { label: t("Rendez-vous et horaires"), next: "studio-rendez-vous" },
-      { label: t("Où se trouve le studio ?"), next: "studio-adresse" },
-      { label: t("Déplacement et matériel"), next: "studio-deplacement" },
-      { label: t("Photo d’identité"), next: "studio-identite" },
-      { label: t("Anniversaires d’enfants"), next: "studio-anniversaire" },
+      { label: pageText("home", "common.assistant.42"), next: "studio-tarifs" },
+      { label: pageText("home", "common.assistant.43"), next: "studio-rendez-vous" },
+      { label: pageText("home", "common.assistant.44"), next: "studio-adresse" },
+      { label: pageText("home", "common.assistant.45"), next: "studio-deplacement" },
+      { label: pageText("home", "common.assistant.46"), next: "studio-identite" },
+      { label: pageText("home", "common.assistant.47"), next: "studio-anniversaire" },
     ],
   },
   "studio-tarifs": {
     topic: "studio",
-    question: t("Les tarifs du studio"),
+    question: pageText("home", "common.assistant.48"),
     keywords: ["prix", "tarif", "tarifs", "cout", "coute", "combien", "gnf", "devis", "formule", "mannequin", "mariage", "spot", "conference", "album", "pack"],
-    messages: [...priceTables, t("Pour un devis précis, écrivez directement au studio sur WhatsApp.")],
+    messages: [...priceTables, pageText("home", "common.assistant.49")],
     options: [
-      { label: t("Demander un tarif sur WhatsApp"), href: whatsappRequests.studioPrices, external: true },
-      { label: t("Voir la grille complète"), href: `${routes.studio}#tarifs` },
-      { label: (t("Autres questions · ") + String(topicLabels.studio) + t("")), next: "studio" },
-      { label: t("Autre sujet"), next: "start" },
+      { label: pageText("home", "common.assistant.50"), href: whatsappRequests.studioPrices, external: true },
+      { label: pageText("home", "common.assistant.51"), href: `${routes.studio}#tarifs` },
+      { label: ((pageText("home", "common.assistant.27") + " ") + String(topicLabels.studio) + ""), next: "studio" },
+      { label: pageText("home", "common.assistant.28"), next: "start" },
     ],
   },
   "studio-rendez-vous": {
     topic: "studio",
-    question: t("Rendez-vous et horaires du studio"),
+    question: pageText("home", "common.assistant.52"),
     keywords: ["rendez-vous", "rdv", "horaire", "horaires", "ouvert", "ouverture", "heure", "heures", "quand", "disponible", "reserver"],
-    messages: [faq(t("Faut-il prendre rendez-vous ?")), faq(t("Quand le studio est-il ouvert ?"))],
+    messages: [faq("rendez-vous"), faq("ouverture")],
     options: studioBack,
   },
   "studio-adresse": {
     topic: "studio",
-    question: t("Où se trouve le studio ?"),
+    question: pageText("home", "common.assistant.44"),
     keywords: ["adresse", "situe", "trouve", "kobayah", "conakry", "lieu", "localisation", "transfo", "pharmacie"],
-    messages: [{ kind: "facts", items: [{ label: t("Adresse du studio"), value: faq(t("Où se trouve le studio ?")) }] }],
-    options: [{ label: t("Itinéraire et carte"), href: `${routes.contact}#carte` }, ...studioBack],
+    messages: [{ kind: "facts", items: [{ label: pageText("home", "common.assistant.55"), value: faq("adresse") }] }],
+    options: [{ label: pageText("home", "common.assistant.56"), href: `${routes.contact}#carte` }, ...studioBack],
   },
   "studio-deplacement": {
     topic: "studio",
-    question: t("Déplacement et matériel"),
+    question: pageText("home", "common.assistant.45"),
     keywords: ["deplacement", "deplacez", "deplace", "exterieur", "materiel", "evenement", "domicile", "paraflash", "reflecteur", "interieur", "pays"],
-    messages: [faq(t("Vous déplacez-vous en dehors du studio ?")), faq(t("Le matériel du studio peut-il venir sur mon événement ?"))],
+    messages: [faq("deplacement"), faq("materiel")],
     options: studioBack,
   },
   "studio-identite": {
     topic: "studio",
-    question: t("Photo d’identité"),
+    question: pageText("home", "common.assistant.46"),
     keywords: ["identite", "passeport", "pieces", "piece", "carte"],
-    messages: [faq(t("Combien coûte une photo d’identité et quand est-elle remise ?"))],
+    messages: [faq("identite")],
     options: studioBack,
   },
   "studio-anniversaire": {
     topic: "studio",
-    question: t("Anniversaires d’enfants"),
+    question: pageText("home", "common.assistant.47"),
     keywords: ["anniversaire", "enfant", "enfants", "ballons", "fete", "bebe"],
-    messages: [faq(t("Proposez-vous des anniversaires pour enfants ?"))],
+    messages: [faq("anniversaire")],
     options: studioBack,
   },
 
@@ -292,33 +279,33 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     keywords: ["hotesse", "hotesses", "evenementiel", "evenementielles"],
     messages: [teaser("activite-hotesses")],
     options: [
-      { label: t("Que proposent les hôtesses ?"), next: "hotesses-offres" },
-      { label: t("Pour quels événements ?"), next: "hotesses-evenements" },
-      { label: t("Comment réserver ?"), next: "hotesses-reserver" },
+      { label: pageText("home", "common.assistant.61"), next: "hotesses-offres" },
+      { label: pageText("home", "common.assistant.62"), next: "hotesses-evenements" },
+      { label: pageText("home", "common.assistant.63"), next: "hotesses-reserver" },
     ],
   },
   "hotesses-offres": {
     topic: "hotesses",
-    question: t("Que proposent les hôtesses ?"),
+    question: pageText("home", "common.assistant.61"),
     keywords: ["accueil", "orientation", "representation", "prestation", "prestations", "service", "equipe", "proposent"],
     messages: [{ kind: "cards", items: hostessOffers.map((offer) => ({ title: offer.title, meta: offer.number, text: offer.text })) }],
     options: hostessesBack,
   },
   "hotesses-evenements": {
     topic: "hotesses",
-    question: t("Pour quels événements ?"),
+    question: pageText("home", "common.assistant.62"),
     keywords: ["concert", "concerts", "buffet", "lancement", "evenement", "evenements", "soiree", "ceremonie", "rencontre"],
     messages: [{ kind: "chips", items: hostessTags }],
-    options: [{ label: t("Comment réserver ?"), next: "hotesses-reserver" }, ...hostessesBack],
+    options: [{ label: pageText("home", "common.assistant.63"), next: "hotesses-reserver" }, ...hostessesBack],
   },
   "hotesses-reserver": {
     topic: "hotesses",
-    question: t("Comment réserver des hôtesses ?"),
+    question: pageText("home", "common.assistant.64"),
     keywords: ["reserver", "reservation", "louer", "engager", "commander", "booking"],
-    messages: [(t("") + String(need("Hôtesses événementielles")) + t(" Écrivez au siège de Baruck en Guinée sur WhatsApp, ou appelez le fixe."))],
+    messages: [("" + String(need("hotesses")) + (" " + pageText("home", "common.assistant.65")))],
     options: [
-      { label: t("Réserver sur WhatsApp"), href: whatsappRequests.hostessBooking, external: true },
-      { label: (t("Appeler · ") + String(contacts.landline.value) + t("")), channel: "phone" },
+      { label: pageText("home", "common.assistant.66"), href: whatsappRequests.hostessBooking, external: true },
+      { label: ((pageText("home", "common.assistant.24") + " ") + String(contacts.landline.value) + ""), channel: "phone" },
       ...hostessesBack,
     ],
   },
@@ -330,41 +317,41 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     keywords: ["jeca", "forum", "entrepreneurs", "chretiens", "africains"],
     messages: ["JECA · Jeunes Entrepreneurs Chrétiens Africains."],
     options: [
-      { label: t("Qu’est-ce que la JECA ?"), next: "jeca-presentation" },
-      { label: t("Les éditions"), next: "jeca-editions" },
-      { label: t("Participer ou intervenir"), next: "jeca-participer" },
+      { label: pageText("home", "common.assistant.67"), next: "jeca-presentation" },
+      { label: pageText("home", "common.assistant.68"), next: "jeca-editions" },
+      { label: pageText("home", "common.assistant.69"), next: "jeca-participer" },
     ],
   },
   "jeca-presentation": {
     topic: "jeca",
-    question: t("Qu’est-ce que la JECA ?"),
+    question: pageText("home", "common.assistant.67"),
     keywords: ["diaspora", "investir", "investissement", "afrique", "vision", "mission", "objectif", "presentation"],
     messages: [footers.jeca.blurb, teaser("apercu-jeca")],
-    options: [{ label: t("Les éditions"), next: "jeca-editions" }, ...jecaBack],
+    options: [{ label: pageText("home", "common.assistant.68"), next: "jeca-editions" }, ...jecaBack],
   },
   "jeca-editions": {
     topic: "jeca",
-    question: t("Les éditions de la JECA"),
+    question: pageText("home", "common.assistant.70"),
     keywords: ["edition", "editions", "dakar", "conakry", "2022", "2023", "2026", "prochaine", "date", "dates", "programme", "galerie", "photos"],
     messages: [
       {
         kind: "cards",
         items: jecaEditions.map((edition) => ({
-          title: (t("Édition ") + String(edition.edition) + t(" · ") + String(edition.place) + t("")),
+          title: ((pageText("home", "common.assistant.71") + " ") + String(edition.edition) + " · " + String(edition.place) + ""),
           meta: edition.date.label,
           text: edition.story?.lead ?? edition.simpleLead,
         })),
       },
     ],
-    options: [{ label: t("Voir les galeries"), href: `${routes.jeca}#editions` }, ...jecaBack],
+    options: [{ label: pageText("home", "common.assistant.72"), href: `${routes.jeca}#editions` }, ...jecaBack],
   },
   "jeca-participer": {
     topic: "jeca",
-    question: t("Participer ou intervenir à la JECA"),
+    question: pageText("home", "common.assistant.73"),
     keywords: ["participer", "participation", "intervenir", "intervenant", "inscription", "inscrire", "soutenir", "sponsor", "partenaire", "partenariat"],
-    messages: [(t("") + String(need("JECA")) + t(" Écrivez à l’équipe par e-mail en précisant votre demande, ou sur WhatsApp."))],
+    messages: [("" + String(need("jeca")) + (" " + pageText("home", "common.assistant.74")))],
     options: [
-      { label: t("Écrire un e-mail · objet JECA"), channel: "email" },
+      { label: pageText("home", "common.assistant.75"), channel: "email" },
       { label: `WhatsApp · ${contacts.whatsappHq.value}`, channel: "whatsapp" },
       ...jecaBack,
     ],
@@ -377,15 +364,15 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     keywords: ["espoir", "vie", "ong", "humanitaire", "solidarite", "association"],
     messages: [footers.edv.blurb],
     options: [
-      { label: t("La mission"), next: "edv-mission" },
-      { label: t("L’orphelinat"), next: "edv-orphelinat" },
-      { label: t("Où agit Espoir de Vie ?"), next: "edv-presence" },
-      { label: t("Collaborer"), next: "edv-collaborer" },
+      { label: pageText("home", "common.assistant.76"), next: "edv-mission" },
+      { label: pageText("home", "common.site.35"), next: "edv-orphelinat" },
+      { label: pageText("home", "common.assistant.77"), next: "edv-presence" },
+      { label: pageText("home", "common.assistant.78"), next: "edv-collaborer" },
     ],
   },
   "edv-mission": {
     topic: "edv",
-    question: t("La mission d’Espoir de Vie"),
+    question: pageText("home", "common.assistant.79"),
     keywords: ["mission", "proteger", "eduquer", "nourrir", "soigner", "accompagner", "enfants", "orphelins", "familles", "veuves", "actions"],
     messages: [
       teaser("apercu-edv"),
@@ -395,27 +382,29 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
   },
   "edv-orphelinat": {
     topic: "edv",
-    question: t("L’orphelinat"),
+    question: pageText("home", "common.site.35"),
     keywords: ["orphelinat", "orphelins", "inauguration", "pensionnaires", "2015", "2016", "batiment", "dortoirs", "agrement", "infirmerie", "internat"],
     messages: [
-      (t("L’orphelinat a été construit en ") + String(timelineDate("Construction")) + t(" et inauguré en ") + String(timelineDate("Inauguration")) + t(". Agréé par l’État de Côte d’Ivoire depuis 2019, il accueille 60 orphelins et dispose d’un internat et d’une infirmerie.")),
+      pageText("espoir-de-vie", "EdvOrphanage.4"),
+      pageText("espoir-de-vie", "EdvOrphanage.5"),
+      {kind:"cards",items:edvTimeline.map(item=>({title:item.title,meta:item.date?.label ?? item.step,text:item.text}))},
     ],
-    options: [{ label: t("L’histoire de l’orphelinat"), href: `${routes.edv}#orphelinat` }, ...edvBack],
+    options: [{ label: pageText("home", "common.assistant.83"), href: `${routes.edv}#orphelinat` }, ...edvBack],
   },
   "edv-presence": {
     topic: "edv",
-    question: t("Où agit Espoir de Vie ?"),
+    question: pageText("home", "common.assistant.77"),
     keywords: ["pays", "cote", "ivoire", "guinee", "burkina", "faso", "divo", "zaroko", "groh", "presence", "agit", "intervient"],
     messages: [{ kind: "cards", items: edvCountries.map((country) => ({ title: country.title, meta: country.number, text: country.text })) }],
     options: edvBack,
   },
   "edv-collaborer": {
     topic: "edv",
-    question: t("Collaborer avec Espoir de Vie"),
+    question: pageText("home", "common.assistant.84"),
     keywords: ["collaborer", "collaboration", "aider", "aide", "benevole", "benevolat", "don", "dons", "donner", "soutenir", "contribuer", "partenaire"],
-    messages: [(t("") + String(need("Espoir de Vie")) + t(" Écrivez à l’équipe par e-mail en précisant votre proposition."))],
+    messages: [("" + String(need("edv")) + (" " + pageText("home", "common.assistant.85")))],
     options: [
-      { label: t("Écrire un e-mail · objet Espoir de Vie"), channel: "email" },
+      { label: pageText("home", "common.assistant.86"), channel: "email" },
       { label: `WhatsApp · ${contacts.whatsappHq.value}`, channel: "whatsapp" },
       ...edvBack,
     ],
@@ -428,32 +417,32 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     keywords: ["groupe", "baruck", "entreprise", "societe", "holding", "qui"],
     messages: [site.description],
     options: [
-      { label: t("Les domaines d’activité"), next: "groupe-presentation" },
-      { label: t("Où est présent le Groupe ?"), next: "groupe-presence" },
-      { label: t("Le PDG"), next: "groupe-pdg" },
-      { label: t("Les actualités"), href: routes.news },
+      { label: pageText("home", "common.assistant.87"), next: "groupe-presentation" },
+      { label: pageText("home", "common.assistant.88"), next: "groupe-presence" },
+      { label: pageText("home", "common.site.25"), next: "groupe-pdg" },
+      { label: pageText("home", "common.assistant.89"), href: routes.news },
     ],
   },
   "groupe-presentation": {
     topic: "groupe",
-    question: t("Les domaines d’activité"),
+    question: pageText("home", "common.assistant.87"),
     keywords: ["activites", "activite", "domaines", "domaine", "services", "secteurs", "hotellerie", "restauration", "agrobusiness", "agro", "cinema", "voitures", "luxe", "communication", "artistes", "clips", "enregistrement", "musique"],
-    messages: [(t("") + String(activities.length) + t(" domaines d’activité :")), { kind: "chips", items: activities.map((activity) => activity.title) }],
-    options: [{ label: t("Voir les activités"), href: routes.services }, ...groupBack],
+    messages: [("" + String(activities.length) + (" " + pageText("home", "common.assistant.90"))), { kind: "chips", items: activities.map((activity) => activity.title) }],
+    options: [{ label: pageText("home", "common.assistant.91"), href: routes.services }, ...groupBack],
   },
   "groupe-presence": {
     topic: "groupe",
-    question: t("Où est présent le Groupe ?"),
+    question: pageText("home", "common.assistant.88"),
     keywords: ["present", "presence", "pays", "senegal", "guinee", "cote", "ivoire", "implante", "bureaux", "afrique"],
     messages: [footers.home.blurb],
-    options: [{ label: t("Notre présence"), href: `${routes.group}#presence` }, ...groupBack],
+    options: [{ label: pageText("home", "common.site.37"), href: `${routes.group}#presence` }, ...groupBack],
   },
   "groupe-pdg": {
     topic: "groupe",
-    question: t("Le PDG"),
+    question: pageText("home", "common.site.25"),
     keywords: ["pdg", "president", "fondateur", "dirigeant", "directeur", "krasso", "joel", "djoro", "shaloom"],
     messages: [teaser("apercu-about")],
-    options: [{ label: t("Découvrir le PDG"), href: `${routes.home}#president` }, ...groupBack],
+    options: [{ label: pageText("home", "common.assistant.92"), href: `${routes.home}#president` }, ...groupBack],
   },
 
   /* ---------- Contact ---------- */
@@ -461,26 +450,26 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
     topic: "contact",
     question: topicLabels.contact,
     keywords: ["contact", "contacter", "joindre", "coordonnees"],
-    messages: [t("Comment souhaitez-vous nous joindre ?")],
+    messages: [pageText("home", "common.assistant.93")],
     options: [
-      { label: t("Adresse et horaires"), next: "contact-adresse" },
-      { label: t("Téléphone et WhatsApp"), next: "contact-telephone" },
-      { label: t("E-mail et formulaire"), next: "contact-email" },
+      { label: pageText("home", "common.assistant.94"), next: "contact-adresse" },
+      { label: pageText("home", "common.assistant.95"), next: "contact-telephone" },
+      { label: pageText("home", "common.assistant.96"), next: "contact-email" },
     ],
   },
   "contact-adresse": {
     topic: "contact",
-    question: t("Adresse et horaires"),
+    question: pageText("home", "common.assistant.94"),
     keywords: ["adresse", "siege", "horaires", "horaire", "ouvert", "ferme", "dimanche", "kobayah", "itineraire", "carte", "plan", "conakry"],
     messages: [
-      { kind: "facts", items: [{ label: t("Siège"), value: hqAddress }] },
-      { kind: "table", title: t("Horaires du siège"), rows: hqHours.map((slot) => ({ label: slot.days, value: slot.hours })) },
+      { kind: "facts", items: [{ label: pageText("home", "common.assistant.97"), value: hqAddress }] },
+      { kind: "table", title: pageText("home", "common.assistant.98"), rows: hqHours.map((slot) => ({ label: slot.days, value: slot.hours })) },
     ],
-    options: [{ label: t("Itinéraire et carte"), href: `${routes.contact}#carte` }, ...contactBack],
+    options: [{ label: pageText("home", "common.assistant.56"), href: `${routes.contact}#carte` }, ...contactBack],
   },
   "contact-telephone": {
     topic: "contact",
-    question: t("Téléphone et WhatsApp"),
+    question: pageText("home", "common.assistant.95"),
     keywords: ["telephone", "appeler", "appel", "numero", "whatsapp", "fixe", "mobile", "portable"],
     messages: [
       {
@@ -496,15 +485,15 @@ export const assistantNodes: Record<AssistantNodeId, AssistantNode> = {
   },
   "contact-email": {
     topic: "contact",
-    question: t("E-mail et formulaire"),
+    question: pageText("home", "common.assistant.96"),
     keywords: ["email", "mail", "courriel", "formulaire", "ecrire", "message", "envoyer"],
     messages: [
       { kind: "facts", items: [{ label: contacts.email.label, value: contacts.email.value, href: contacts.email.href }] },
-      t("Le formulaire du site transmet votre message à l’équipe."),
+      pageText("home", "common.assistant.99"),
     ],
     options: [
-      { label: (t("Écrire · ") + String(contacts.email.value) + t("")), channel: "email" },
-      { label: t("Formulaire de contact"), channel: "form" },
+      { label: ((pageText("home", "common.assistant.100") + " ") + String(contacts.email.value) + ""), channel: "email" },
+      { label: pageText("home", "common.assistant.26"), channel: "form" },
       ...contactBack,
     ],
   },
@@ -534,5 +523,5 @@ export function isAssistantNodeId(value: unknown): value is AssistantNodeId {
 }
 
 export function greetingFor(hour: number): string {
-  return hour >= 18 || hour < 5 ? t("Bonsoir") : t("Bonjour");
+  return hour >= 18 || hour < 5 ? pageText("home", "common.assistant.101") : pageText("home", "common.assistant.102");
 }

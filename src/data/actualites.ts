@@ -1,4 +1,4 @@
-import { translate as t } from "../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 export type NewsCategory =
   | "groupe"
@@ -8,11 +8,11 @@ export type NewsCategory =
   | "hotesses";
 
 export const categoryLabels: Record<NewsCategory, string> = {
-  groupe: "Groupe Baruck",
-  jeca: "JECA",
-  "espoir-de-vie": "Espoir de Vie",
-  "studio-photo": t("Studio photo"),
-  hotesses: t("Hôtesses événementielles"),
+  groupe: pageText("actualites", "category.groupe"),
+  jeca: pageText("actualites", "category.jeca"),
+  "espoir-de-vie": pageText("actualites", "category.espoir-de-vie"),
+  "studio-photo": pageText("actualites", "copy.actualites.1"),
+  hotesses: pageText("actualites", "copy.actualites.2"),
 };
 
 export const placeholderGradients: Record<NewsCategory, string> = {
@@ -84,4 +84,4 @@ export type ArticleSummary = Pick<
 export const newsListId = "liste-actualites";
 
 /** Titre du flux RSS. */
-export const newsFeedTitle = t("Actualités — Groupe Baruck");
+export const newsFeedTitle = pageText("actualites", "copy.actualites.3");

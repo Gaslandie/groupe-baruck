@@ -70,12 +70,7 @@ export const placeholderPhotos = {
   },
 } as const satisfies Record<string, RemotePhoto>;
 
-export const brandLogo: ImageAsset = {
-  src: "/images/brand/baruck-logo.jpg",
-  alt: "",
-  width: 1170,
-  height: 634,
-};
+export const brandLogo: ImageAsset = pageValue<ImageAsset>("home", "common.brandLogo");
 
 export const jecaLogo: ImageAsset = {
   src: "/images/brand/jeca-logo.webp",

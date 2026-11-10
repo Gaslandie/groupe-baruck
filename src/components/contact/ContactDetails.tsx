@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import { contacts } from "@/data/site";
 
@@ -35,23 +35,23 @@ export function ContactDetails() {
   return (
     <section id="coordonnees" className="reveal-stagger grid grid-cols-[40%_60%] bg-paper max-tablet:grid-cols-1">
       <div className="reveal flex flex-col justify-center border-r border-line px-[clamp(2rem,5vw,6rem)] py-[clamp(5rem,8vw,9rem)] max-tablet:border-r-0 max-tablet:px-[1.3rem] max-tablet:py-16">
-        <p className="eyebrow">{t("Nous joindre")}</p>
-        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{t("Un message,")}<br />
-          <em className="font-normal text-accent">{t("une réponse.")}</em>
+        <p className="eyebrow">{pageText("contact", "copy.ContactDetails.1")}</p>
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{pageText("contact", "copy.ContactDetails.2")}<br />
+          <em className="font-normal text-accent">{pageText("contact", "copy.ContactDetails.3")}</em>
         </h2>
-        <p className="mb-12 mt-6 max-w-[380px] text-small leading-[1.7] text-[#686762]">{t("Choisissez le canal qui vous convient : nous vous répondons par celui-ci.")}</p>
+        <p className="mb-12 mt-6 max-w-[380px] text-small leading-[1.7] text-[#686762]">{pageText("contact", "copy.ContactDetails.4")}</p>
 
-        <ChannelRow label={t("WhatsApp · Baruck Siège Guinée")} value={contacts.whatsappHq.value} href={contacts.whatsappHq.href} external />
-        <ChannelRow label={t("Téléphone fixe · Siège Guinée")} value={contacts.landline.value} href={contacts.landline.href} />
-        <ChannelRow label={t("E-mail")} value={contacts.email.value} href={contacts.email.href} withBorderBottom />
+        <ChannelRow label={pageText("contact", "copy.ContactDetails.5")} value={contacts.whatsappHq.value} href={contacts.whatsappHq.href} external />
+        <ChannelRow label={pageText("contact", "copy.ContactDetails.6")} value={contacts.landline.value} href={contacts.landline.href} />
+        <ChannelRow label={pageText("contact", "copy.ContactDetails.7")} value={contacts.email.value} href={contacts.email.href} withBorderBottom />
 
         <details className="group/more mt-6">
-          <summary className="text-link w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">{t("Autres lignes directes")}{" "}
+          <summary className="text-link w-fit cursor-pointer list-none [&::-webkit-details-marker]:hidden">{pageText("contact", "copy.ContactDetails.8")}{" "}
             <span className="transition-transform duration-[220ms] group-open/more:rotate-180"><Icon name="arrow-down" /></span>
           </summary>
           <div className="mt-4">
-            <ChannelRow label={t("Téléphone mobile")} value={contacts.mobile.value} href={contacts.mobile.href} />
-            <ChannelRow label={t("WhatsApp · PDG")} value={contacts.whatsappCeo.value} href={contacts.whatsappCeo.href} external withBorderBottom />
+            <ChannelRow label={pageText("contact", "copy.ContactDetails.9")} value={contacts.mobile.value} href={contacts.mobile.href} />
+            <ChannelRow label={pageText("contact", "copy.ContactDetails.10")} value={contacts.whatsappCeo.value} href={contacts.whatsappCeo.href} external withBorderBottom />
           </div>
         </details>
       </div>

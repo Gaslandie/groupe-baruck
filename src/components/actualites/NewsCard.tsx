@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ export function NewsCard({ article }: NewsCardProps) {
         {article.title}
       </h3>
       <p className="mt-3 text-small leading-[1.65] text-[#696963]">{article.excerpt}</p>
-      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">{t("Lire l’article")}</span>
+      <span className="mt-5 text-label uppercase tracking-[.14em] text-accent">{pageText("actualites", "copy.NewsCard.1")}</span>
     </Link>
   );
 }

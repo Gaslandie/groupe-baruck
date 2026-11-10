@@ -261,4 +261,31 @@ check(!accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une list
 check(Baruck\decodePageFields(['page_fields_json'=>'{"titre":{"fr":"Texte","en":"Text"}}'])['titre']['en'] === 'Text', 'grand formulaire décodé sans limite de variables PHP');
 foreach ([['page_fields_json'=>'{'],['page_fields_json'=>[]],['page_fields_json'=>'{}','fields'=>[]],['page_fields_json'=>str_repeat('x',2000001)]] as $bad) check(!accepts(fn()=>Baruck\decodePageFields($bad)), 'transport de formulaire invalide refusé');
 
+// Étape 5 : formulaires restants et repères de coordonnées, sans HTML ni destinations libres.
+foreach (['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'] as $id) {
+    $model = Baruck\pageModel($id);
+    $values = array_map(fn($field) => $field['initial'], $model['fields']);
+    check(accepts(fn() => Baruck\validatePageValues($model,$values,true)), $id . ' : contenu initial complet');
+    $key = array_key_first(array_filter($model['fields'], fn($field) => ($field['since'] ?? 0) === 5 && in_array($field['kind'], ['text','textarea'],true)));
+    $values[$key]['en'] = '';
+    check(!accepts(fn() => Baruck\validatePageValues($model,$values,true)), $id . ' : anglais obligatoire');
+    check(accepts(fn() => Baruck\validatePageValues($model,$values,false)), $id . ' : brouillon anglais incomplet conservé');
+}
+$contact = Baruck\pageModel('contact');
+check(accepts(fn() => Baruck\validatePageField(['kind'=>'link','label'=>'Questions','max'=>255,'page'=>'contact','scope'=>'anchor'], '#questions-frequentes',true)), 'ancre définie dans la route Contact autorisée');
+$values = array_map(fn($field) => $field['initial'], $contact['fields']);
+foreach (['{password}','{adresse','{{adresse}}'] as $bad) {
+    $changed = $values; $changed['data.contactFaq'][0]['answer']['fr'] = $bad;
+    check(!accepts(fn() => Baruck\validatePageValues($contact,$changed,false)), 'repère inconnu ou mal formé refusé');
+}
+$changed = $values; $changed['data.contactFaq'][0]['answer']['en'] = 'No address token';
+check(!accepts(fn() => Baruck\validatePageValues($contact,$changed,true)), 'mêmes repères exigés dans les deux langues');
+check(accepts(fn() => Baruck\validatePageValues($contact,$changed,false)), 'traduction des repères possible en brouillon');
+$changed = $values; $changed['data.contactNeeds'][0]['target'] = 'javascript:alert(1)';
+check(!accepts(fn() => Baruck\validatePageValues($contact,$changed,false)), 'destination de contact inconnue refusée');
+$studio = Baruck\pageModel('studio-photo');
+$values = array_map(fn($field) => $field['initial'], $studio['fields']);
+$values['data.studioFaq'][1]['key'] = $values['data.studioFaq'][0]['key'];
+check(!accepts(fn() => Baruck\validatePageValues($studio,$values,false)), 'clé de question dupliquée refusée');
+
 echo $count . " contrôles de validation réussis.\n";

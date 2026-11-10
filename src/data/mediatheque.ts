@@ -1,6 +1,6 @@
-import { translate as t } from "../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
-import { edvGallery } from "./espoir-de-vie";
+import { edvGalleryCategories } from "./edv-galerie";
 import { jecaGalleries } from "./jeca";
 import { studioGallery } from "./services";
 import { routes } from "./site";
@@ -25,19 +25,19 @@ export type MediaCollection = {
 };
 
 export const mediaCategoryLabels: Record<MediaCategory, string> = {
-  jeca: "JECA",
-  "studio-photo": t("Studio photo"),
-  "espoir-de-vie": "Espoir de Vie",
+  jeca: pageText("mediatheque", "category.jeca"),
+  "studio-photo": pageText("mediatheque", "copy.mediatheque.1"),
+  "espoir-de-vie": pageText("mediatheque", "category.espoir-de-vie"),
 };
 
 /**
  * Collections construites uniquement depuis les galeries existantes
- * (jecaGalleries, studioGallery) : aucun chemin, alt ou légende recopié.
+ * (jecaGalleries, edvGalleryCategories, studioGallery) : aucun chemin, alt ou légende recopié.
  */
-export const mediaCollections: MediaCollection[] = [
+export const mediaCollections: MediaCollection[] = ([
   ...jecaGalleries.map(
     (gallery): MediaCollection => ({
-      id: `jeca-edition-${gallery.edition}`,
+      id: `jeca-${gallery.id}`,
       category: "jeca",
       title: gallery.caption,
       href: `${routes.jeca}#${gallery.id}`,
@@ -50,23 +50,17 @@ export const mediaCollections: MediaCollection[] = [
       })),
     }),
   ),
-  {
-    id: "espoir-de-vie",
+  ...edvGalleryCategories.map((gallery): MediaCollection => ({
+    id: `espoir-de-vie-${gallery.id}`,
     category: "espoir-de-vie",
-    title: t("Les actions d’Espoir de Vie"),
-    href: `${routes.edv}#galerie`,
-    photos: edvGallery.map(({ photo, caption }) => ({
-      src: photo.src,
-      alt: photo.alt,
-      width: photo.width,
-      height: photo.height,
-      caption,
-    })),
-  },
+    title: gallery.title,
+    href: `${routes.edv}#galerie-${gallery.id}`,
+    photos: gallery.photos.map(photo => ({...photo,caption:gallery.title})),
+  })),
   {
     id: "studio-photo",
     category: "studio-photo",
-    title: "Studio Photo Baruck",
+    title: pageText("mediatheque", "copy.mediatheque.3"),
     href: `${routes.studio}#galerie`,
     photos: studioGallery.map(({ image, caption }) => ({
       src: image.src,
@@ -76,4 +70,4 @@ export const mediaCollections: MediaCollection[] = [
       caption,
     })),
   },
-];
+] satisfies MediaCollection[]).filter(collection => collection.photos.length > 0);

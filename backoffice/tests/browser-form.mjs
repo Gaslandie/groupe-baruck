@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { checkMediaPicker, checkProductPicker } from './browser-media.mjs';
-import { checkPages, checkPageLists, checkPageGalleries, checkPublishedPages } from './browser-pages.mjs';
+import { checkPages, checkPageLists, checkPageGalleries, checkPublishedPages, checkRemainingPages } from './browser-pages.mjs';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -24,8 +24,8 @@ try {
  const send=(method,params={})=>new Promise((resolve,reject)=>{const next=++id;pending.set(next,{resolve,reject});socket.send(JSON.stringify({id:next,method,params}));});
  const load=()=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Chargement expiré')),15000);loaded=()=>{clearTimeout(timer);resolve();};});
  await send('Page.enable');
- if (['media', 'product', 'pages', 'page-lists', 'page-galleries', 'public-pages'].includes(process.argv[3])) {
-   const check = { media: checkMediaPicker, product: checkProductPicker, pages: checkPages, 'page-lists': checkPageLists, 'page-galleries':checkPageGalleries, 'public-pages':checkPublishedPages, checkPublishedPages }[process.argv[3]];
+ if (['media', 'product', 'pages', 'page-lists', 'page-galleries', 'public-pages', 'remaining-pages'].includes(process.argv[3])) {
+   const check = { media: checkMediaPicker, product: checkProductPicker, pages: checkPages, 'page-lists': checkPageLists, 'page-galleries':checkPageGalleries, 'public-pages':checkPublishedPages, 'remaining-pages':checkRemainingPages }[process.argv[3]];
    await check({ send, load, origin: process.argv[2], profile, session: JSON.parse(readFileSync(0, 'utf8')) });
  } else {
  let ready=load();await send('Page.navigate',{url:process.argv[2]});await ready;
