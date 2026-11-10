@@ -14,7 +14,7 @@ import { JecaNextEdition } from "@/components/jeca/JecaNextEdition";
 import { JecaJourney } from "@/components/jeca/JecaJourney";
 import { JecaVision } from "@/components/jeca/JecaVision";
 import { PageShell } from "@/components/layout/PageShell";
-import { jecaEditions, jecaGalleries } from "@/data/jeca";
+import { jecaEditions, jecaGalleries, jecaGalleryOffsets, jecaPortrait } from "@/data/jeca";
 import { routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description:
     pageMetadata("jeca").description,
   alternates: pageAlternates(site.url + routes.jeca.slice(1)),
-  openGraph: socialMetadata(jecaGalleries[0].photos[0]),
+  openGraph: socialMetadata(jecaGalleries[0]?.photos[0] ?? jecaPortrait),
 };
 
 export const viewport: Viewport = {
@@ -44,9 +44,9 @@ export default function JecaPage() {
       <JecaSpeech />
       <ForumsIntro />
       <JecaGalleryProvider photos={galleryPhotos}>
-        <ForumEdition edition={jecaEditions[0]} gallery={jecaGalleries[0]} offset={0} />
-        <ForumEdition edition={jecaEditions[1]} gallery={jecaGalleries[1]} offset={7} />
-        <ForumEdition edition={jecaEditions[2]} gallery={jecaGalleries[2]} offset={14} />
+        {jecaEditions.map((edition, index) => (
+          <ForumEdition key={edition.id} edition={edition} gallery={jecaGalleries[index]} offset={jecaGalleryOffsets[index]} />
+        ))}
       </JecaGalleryProvider>
       <JecaCta />
     </PageShell>

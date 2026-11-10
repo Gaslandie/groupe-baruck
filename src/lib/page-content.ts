@@ -12,11 +12,30 @@ function localize(value: unknown): unknown {
   return value;
 }
 
+type LinkField = { kind: string; fields?: Record<string, LinkField>; item?: LinkField };
+
+/** Un lien historique vers une édition retirée revient à sa page, sans ancre morte. */
+function resolvePageLinks(field: LinkField | undefined, value: unknown, page: string): unknown {
+  if (!field) return value;
+  if (field.kind === "list" && Array.isArray(value)) return value.map(item => resolvePageLinks(field.item, item, page));
+  if (field.kind === "object" && value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, resolvePageLinks(field.fields?.[key], item, page)]));
+  }
+  if (field.kind === "link" && typeof value === "string") {
+    const absolute = value.startsWith("#") ? pages[page].route + value : value;
+    const edition = absolute.match(/^\/jeca\/#edition-(.+)$/);
+    if (edition && !(pages.jeca.values["data.editions"] as {key:string}[]).some(item => item.key === edition[1])) {
+      return value.startsWith("#") ? "#editions" : pages.jeca.route;
+    }
+  }
+  return value;
+}
+
 /** Seuls les contenus validés sont fournis au site pendant sa construction. */
 export function pageValue<T>(page: string, key: string): T {
   const value = pages[page]?.values[key];
   if (value === undefined) throw new Error(`Contenu de page absent : ${page}.${key}`);
-  return localize(value) as T;
+  return resolvePageLinks(pages[page].fields?.[key], localize(value), page) as T;
 }
 
 export function pageText(page: string, key: string): string { return pageValue<string>(page, key); }

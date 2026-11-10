@@ -75,3 +75,81 @@ export async function checkPageLists({ send, load, origin, session }) {
   }
   console.log('Pages Chrome : listes imbriquées, ajout, ordre, retrait, étiquettes, trois largeurs et réouverture du sélecteur');
 }
+
+export async function checkPageGalleries({send,load,origin,session}) {
+  const [name,value]=session.cookie.split('=');
+  await send('Network.setCookie',{name,value,url:origin,httpOnly:true,sameSite:'Strict'});
+  const evaluate=async expression=>{
+    const response=await send('Runtime.evaluate',{expression,returnByValue:true});
+    assert.equal(response.exceptionDetails,undefined,JSON.stringify(response.exceptionDetails));
+    return response.result.value;
+  };
+  let ready=load();await send('Page.navigate',{url:origin+'/?page=page_edit&id=espoir-de-vie&section=galeries'});await ready;
+
+  const count=await evaluate('document.querySelector("[data-list-items]").children.length');
+  await evaluate('const list=document.querySelector("[data-page-list]");list.querySelector(":scope > [data-list-add]").click();');
+  assert.match(await evaluate('document.querySelector("[data-list-items]").lastElementChild.querySelector("[data-page-key]").value'),/^item-[a-f0-9-]{36}$/);
+  await evaluate('document.querySelector("[data-list-items]").lastElementChild.querySelector(":scope > div:last-child > [data-list-remove]").click();const fields=document.querySelectorAll("#page-draft-form input[lang],#page-draft-form textarea[lang]");fields[fields.length-1].value="DERNIERE PHOTO PRIVEE";fields[fields.length-1].dispatchEvent(new Event("input",{bubbles:true}));');
+  await evaluate(`
+    const root=document.querySelector('[data-page-list]');
+    const source=root.querySelector('[data-list-items]').firstElementChild;
+    for(let index=0;index<3;index++){
+      root.querySelector(':scope > [data-list-add]').click();
+      const added=root.querySelector('[data-list-items]').lastElementChild;
+      const copy=control=>{
+        const oldName=control.name.replace(added.dataset.itemPrefix,source.dataset.itemPrefix);
+        const original=Array.from(source.querySelectorAll('[name]')).find(item=>item.name===oldName);
+        if(original&&!control.hasAttribute('data-page-key'))control.value=original.value;
+      };
+      for(const control of added.querySelectorAll('input[lang],textarea[lang]'))copy(control);
+      const photos=source.querySelectorAll('[data-page-image]');
+      const photoList=added.querySelector('[data-page-list]');
+      for(let photo=0;photo<photos.length;photo++){
+        photoList.querySelector(':scope > [data-list-add]').click();
+        for(const control of photoList.querySelector('[data-list-items]').lastElementChild.querySelectorAll('[name]'))copy(control);
+      }
+    }
+  `);
+  assert.ok(await evaluate('document.querySelectorAll("#page-draft-form [name]").length>1000'),'les galeries ajoutées dépassent la limite native de PHP');
+  const last=await evaluate('JSON.stringify(Array.from(document.querySelectorAll("[data-image-path]")).map(el=>el.value))');
+  for(const width of [390,768,1280]){
+    await send('Emulation.setDeviceMetricsOverride',{width,height:900,deviceScaleFactor:1,mobile:width===390});
+    assert.equal(await evaluate('document.documentElement.scrollWidth<=innerWidth'),true,'galeries sans débordement horizontal à '+width);
+  }
+  ready=load();await evaluate('document.querySelector("#page-draft-form").requestSubmit()');await ready;
+  assert.equal(await evaluate('document.querySelector("[data-list-items]").children.length'),count+3);
+  assert.equal(await evaluate('JSON.stringify(Array.from(document.querySelectorAll("[data-image-path]")).map(el=>el.value))'),last,'toutes les photos sont conservées');
+  assert.equal(await evaluate('Array.from(document.querySelectorAll("#page-draft-form input[lang],#page-draft-form textarea[lang]")).some(f=>f.value==="DERNIERE PHOTO PRIVEE")'),true,'la dernière saisie est enregistrée');
+  console.log('Galeries Chrome : ajout avec clé unique, retrait et plus de 1 000 champs rechargés sans perte');
+}
+
+/** Contrôle de la publication construite, servie seulement sur localhost. */
+export async function checkPublishedPages({send,load,origin,session}) {
+  const evaluate=async expression=>{
+    const response=await send('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});
+    assert.equal(response.exceptionDetails,undefined,JSON.stringify(response.exceptionDetails));
+    return response.result.value;
+  };
+  for(const language of ['', '/en']){
+    let ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/jeca/'});await ready;
+    const galleries=await evaluate('Array.from(document.querySelectorAll("section[id^=edition-]")).map(section=>({id:section.id,count:section.querySelectorAll("button img").length,src:section.querySelector("button img")?.getAttribute("src")}))');
+    let offset=0;
+    for(const gallery of galleries){
+      if(!gallery.count)continue;
+      await evaluate(`document.getElementById(${JSON.stringify(gallery.id)}).querySelector('button').click();`);
+      const selected=await evaluate(`(async()=>{for(let i=0;i<100;i++){const dialog=document.querySelector('dialog[open]');if(dialog?.querySelector('img'))return {src:dialog.querySelector('img').getAttribute('src'),counter:dialog.querySelector('small').textContent.trim()};await new Promise(resolve=>setTimeout(resolve,20));}throw Error('Galerie non ouverte');})()`);
+      assert.equal(selected.src,gallery.src,'la bonne photo s’ouvre après changement d’ordre : '+gallery.id+language);
+      assert.equal(selected.counter,`${offset+1} / ${galleries.reduce((sum,item)=>sum+item.count,0)}`);
+      await evaluate('(async()=>{document.querySelector("dialog[open] button").click();for(let i=0;i<100;i++){const dialog=document.querySelector("dialog");if(!dialog.open&&!dialog.querySelector("img"))return;await new Promise(resolve=>setTimeout(resolve,20));}throw Error("Photo non refermée");})()');
+      offset+=gallery.count;
+    }
+    ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/espoir-de-vie/'});await ready;
+    const tabs=await evaluate('Array.from(document.querySelectorAll("[role=tab]")).map(tab=>tab.id)');
+    if(tabs.length>1){
+      await evaluate('document.querySelector("[role=tab][aria-selected=true]").dispatchEvent(new KeyboardEvent("keydown",{key:"ArrowRight",bubbles:true}))');
+      assert.equal(await evaluate('(async()=>{await new Promise(resolve=>setTimeout(resolve,50));return document.querySelector("[role=tab][aria-selected=true]").id})()'),tabs[1]);
+      assert.equal(await evaluate('document.activeElement.id'),tabs[1]);
+    }
+  }
+  console.log('Publication Chrome FR/EN : bonnes photos et compteurs après tri, onglets accessibles au clavier');
+}

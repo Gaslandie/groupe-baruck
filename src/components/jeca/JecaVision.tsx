@@ -1,13 +1,6 @@
-import { translate as t } from "../../lib/language.ts";
-
-const pillars = [
-  { title: t("Sensibiliser"), text: t("Encourager la diaspora africaine à investir sur le continent.") },
-  { title: t("Créer un lien"), text: t("Placer la JECA entre la diaspora et l’Afrique.") },
-  {
-    title: t("Agir localement"),
-    text: t("Lutter contre le chômage et l’immigration clandestine par l’investissement."),
-  },
-];
+import { pageValue } from "@/lib/page-content";
+import { pageText } from "@/lib/page-content";
+const pillars = pageValue<{title:string;text:string}[]>("jeca", "data.pillars");
 
 export function JecaVision() {
   return (
@@ -16,13 +9,12 @@ export function JecaVision() {
       className="grid scroll-mt-[74px] grid-cols-[minmax(0,1.05fr)_minmax(320px,.7fr)] gap-x-24 gap-y-12 bg-jeca-paper px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,10vw,10rem)] max-[1080px]:grid-cols-[1fr_.8fr] max-[1080px]:gap-12 max-tablet:block max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <div>
-        <p className="jeca-kicker">{t("La vision")}</p>
-        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{t("« Ne pas voir l’Afrique ")}<em className="text-jeca-red">sombrer.</em> »
-        </h2>
+        <p className="jeca-kicker">{pageText("jeca", "JecaVision.7")}</p>
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{pageText("jeca", "JecaVision.8")}{" "}<em className="text-jeca-red">{pageText("jeca", "JecaVision.9")}</em> {pageText("jeca", "JecaVision.10")}</h2>
       </div>
       <div className="max-w-[560px] self-end max-tablet:mt-[2.3rem]">
-        <p className="mb-6 mt-0 font-display text-display-xs font-normal leading-[1.5] text-jeca-blue">{t("Pour son président, les États ne peuvent pas tout faire : il faut se réunir pour s’occuper de l’Afrique.")}</p>
-        <p className="m-0 text-body leading-[1.8] text-jeca-muted">{t("Selon son président, beaucoup de personnes ont peur d’investir après des expériences qui n’ont pas fonctionné. La réponse de la JECA est de sensibiliser au maximum la diaspora africaine afin qu’elle investisse en Afrique.")}</p>
+        <p className="mb-6 mt-0 font-display text-display-xs font-normal leading-[1.5] text-jeca-blue">{pageText("jeca", "JecaVision.11")}</p>
+        <p className="m-0 text-body leading-[1.8] text-jeca-muted">{pageText("jeca", "JecaVision.12")}</p>
       </div>
       <div className="col-span-full mt-8 grid grid-cols-3 border-t border-jeca-line max-tablet:mt-12 max-tablet:grid-cols-1">
         {pillars.map((pillar) => (

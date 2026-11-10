@@ -91,6 +91,9 @@ try {
                     $_SESSION['flash'] = 'Textes enregistrés. Ils partiront sur le site avec la prochaine publication.';
                     redirect('textes');
                 case 'save_page':
+                    requireAdmin($user);
+                    $_POST['fields'] = decodePageFields($_POST);
+                    unset($_POST['page_fields_json']);
                     $id = savePageDraft($_POST, $user);
                     $_SESSION['flash'] = 'Brouillon enregistré. La dernière version validée est conservée.';
                     redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);

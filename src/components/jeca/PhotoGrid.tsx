@@ -1,5 +1,3 @@
-import { translate as t } from "../../lib/language.ts";
-
 import type { JecaGallery } from "@/data/jeca";
 
 import { GalleryPhoto } from "./JecaGallery";
@@ -36,12 +34,6 @@ const twelvePlacements = [
   "col-[4] row-[4] max-tablet:col-[2] max-tablet:row-[8]",
 ];
 
-const galleryLabels = {
-  1: t("Photos de la première édition"),
-  2: t("Photos de la deuxième édition"),
-  3: t("Photos de la troisième édition"),
-};
-
 export function PhotoGrid({
   gallery,
   offset,
@@ -56,7 +48,7 @@ export function PhotoGrid({
 
   return (
     <div
-      aria-label={galleryLabels[gallery.edition]}
+      aria-label={gallery.label}
       className="grid auto-rows-[clamp(190px,18vw,310px)] grid-cols-4 gap-[.7rem] max-tablet:auto-rows-[180px] max-tablet:grid-cols-2 max-tablet:gap-[.45rem] max-[420px]:auto-rows-[155px]"
     >
       {gallery.photos.map((photo, index) => (
@@ -64,7 +56,7 @@ export function PhotoGrid({
           key={photo.src}
           photo={photo}
           index={offset + index}
-          className={placements[index]}
+          className={placements[index] ?? ""}
         />
       ))}
     </div>

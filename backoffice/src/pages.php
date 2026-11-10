@@ -26,30 +26,42 @@ function normalizePagePost(array $field, mixed $input): mixed
     return $input;
 }
 
-function validatePageValues(array $model, mixed $input, bool $ready): array
+function validatePageValues(array $model, mixed $input, bool $ready, array $options = []): array
 {
     if (!is_array($input) || count($input) !== count($model['fields']) || array_diff_key($input, $model['fields'])) throw new ValidationError('Les champs de cette page sont incomplets ou inconnus.');
+    $options['values'] = array_replace($options['values'] ?? [], $input);
     $values = [];
-    foreach ($model['fields'] as $key => $field) $values[$key] = validatePageField($field, $input[$key] ?? null, $ready);
+    foreach ($model['fields'] as $key => $field) $values[$key] = validatePageField($field, $input[$key] ?? null, $ready, $options);
     return $values;
 }
 
-function validatePageField(array $field, mixed $input, bool $ready): mixed
+function validatePageField(array $field, mixed $input, bool $ready, array $options = []): mixed
 {
     $invalid = fn() => throw new ValidationError('Vérifiez « ' . $field['label'] . ' ».');
     if ($field['kind'] === 'list') {
         if (!is_array($input) || !array_is_list($input) || count($input) > $field['max']) $invalid();
-        $values = array_map(fn($value) => validatePageField($field['item'], $value, $ready), $input);
+        $values = array_map(fn($value) => validatePageField($field['item'], $value, $ready, $options), $input);
         if ($field['item']['kind'] === 'image') {
             $paths = array_filter(array_column($values, 'src'));
             if (count(array_unique($paths)) !== count($paths)) $invalid();
         }
+        if (isset($field['uniqueBy'])) {
+            $paths = [];
+            foreach ($values as $value) {
+                foreach (explode('.', $field['uniqueBy']) as $part) $value = $value[$part];
+                if ($value) $paths[] = $value;
+            }
+            if (count(array_unique($paths)) !== count($paths)) $invalid();
+        }
+        if (isset($field['keyField']) && count(array_unique(array_column($values, $field['keyField']))) !== count($values)) $invalid();
         return $values;
     }
     if ($field['kind'] === 'object') {
         if (!is_array($input) || count($input) !== count($field['fields']) || array_diff_key($input, $field['fields'])) $invalid();
         $values = [];
-        foreach ($field['fields'] as $key => $child) $values[$key] = validatePageField($child, $input[$key] ?? null, $ready);
+        foreach ($field['fields'] as $key => $child) $values[$key] = validatePageField($child, $input[$key] ?? null, $ready, $options);
+        if ($ready && array_key_exists('iso', $values) && isset($values['label']) && (bool) $values['iso'] !== (bool) ($values['label']['fr'] ?: $values['label']['en'])) $invalid();
+        if (!empty($values['iso']) && !empty($values['endIso']) && $values['iso'] > $values['endIso']) $invalid();
         return $values;
     }
     if ($field['kind'] === 'image') {
@@ -67,8 +79,8 @@ function validatePageField(array $field, mixed $input, bool $ready): mixed
         return ['src'=>$src,'alt'=>$alt,'width'=>$size[0],'height'=>$size[1]];
     }
     if (!in_array($field['kind'], ['text','textarea'], true)) {
-        $value = text(['value'=>$input], 'value', $field['max'], $ready);
-        if ($value === '' && !$ready) return '';
+        $value = text(['value'=>$input], 'value', $field['max'], $ready && !($field['optional'] ?? false));
+        if ($value === '' && (!$ready || ($field['optional'] ?? false))) return '';
         if ($field['kind'] === 'link') {
             $internal = preg_match('~^(?:/(?:[a-z0-9-]+/)*|/(?:[a-z0-9-]+/)*#[a-z0-9-]+|#[a-z0-9-]+)$~D', $value);
             $scope = $field['scope'] ?? 'local';
@@ -90,16 +102,22 @@ function validatePageField(array $field, mixed $input, bool $ready): mixed
             if (strlen($value) > 4) { $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value); if (!$date || $date->format('Y-m-d') !== $value) $invalid(); }
         } elseif ($field['kind'] === 'video') {
             if (!in_array($value, $field['options'], true)) $invalid();
+        } elseif ($field['kind'] === 'key') {
+            if (!in_array($value, $field['options'], true) && !preg_match('/^item-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/D', $value)) $invalid();
+        } elseif ($field['kind'] === 'choice') {
+            $references = isset($field['referenceList']) ? ($options['values'][$field['referenceList']] ?? []) : [];
+            if (!in_array($value, $field['options'], true) && !in_array($value, array_column(is_array($references) ? $references : [], 'key'), true)) $invalid();
         } elseif ($field['kind'] === 'slug') {
             if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/D', $value) || (!in_array($value, array_column(seed()['articles'], 'slug'), true) && !query('SELECT id FROM articles WHERE slug=?', [$value])->fetch())) $invalid();
         } else $invalid();
         return $value;
     }
     if (!is_array($input) || count($input) !== 2 || array_diff_key($input, ['fr'=>true,'en'=>true])) $invalid();
+    $optionalEmpty = ($field['optional'] ?? false) && $input['fr'] === '' && $input['en'] === '';
     $values = [];
     foreach (['fr','en'] as $language) {
         if (!is_string($input[$language] ?? null)) $invalid();
-        $value = text($input, $language, $field['max'] * 4, $ready);
+        $value = text($input, $language, $field['max'] * 4, $ready && !$optionalEmpty);
         if (mb_strlen($value,'UTF-8') > $field['max'] || preg_match('~</?[a-z][^>]*>~iu',$value) || ($field['kind'] === 'text' && preg_match('/[\r\n]/',$value))) $invalid();
         $values[$language] = $value;
     }
@@ -180,6 +198,15 @@ function writePage(array $input, array $user, callable $change, string $action):
     return $id;
 }
 
+/** Transport d’un grand formulaire : mêmes champs et mêmes contrôles côté serveur. */
+function decodePageFields(array $input): mixed
+{
+    if (!array_key_exists('page_fields_json', $input)) return $input['fields'] ?? null;
+    if (isset($input['fields']) || !is_string($input['page_fields_json']) || strlen($input['page_fields_json']) > 2000000) throw new ValidationError('Le formulaire est trop grand ou invalide.');
+    try { return json_decode($input['page_fields_json'], true, 32, JSON_THROW_ON_ERROR); }
+    catch (\JsonException $error) { throw new ValidationError('Le formulaire est incomplet. Rechargez la page et réessayez.'); }
+}
+
 function savePageDraft(array $input, array $user): string
 {
     return writePage($input, $user, function ($state, $model) use ($input) {
@@ -196,7 +223,7 @@ function savePageDraft(array $input, array $user): string
         if (is_array($sent)) foreach ($fields as $key => $field) {
             if (array_key_exists($key, $sent)) $sent[$key] = normalizePagePost($field, $sent[$key]);
         }
-        $patch = validatePageValues(['fields'=>$fields], $sent, false);
+        $patch = validatePageValues(['fields'=>$fields], $sent, false, ['values'=>$state['draft']]);
         $values = array_replace($state['draft'], $patch);
         if ($values !== $state['draft']) $state['reviewed'] = false;
         $state['draft'] = $values;

@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import { edvActions } from "@/data/espoir-de-vie";
 import { asset } from "@/lib/asset";
 
@@ -17,10 +16,10 @@ export function EdvActions() {
       className="scroll-mt-[72px] bg-edv-paper px-[clamp(1.3rem,5vw,6rem)] py-[clamp(6rem,10vw,10rem)] max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <EdvSectionHead
-        eyebrow={t("Agir sur le terrain")}
-        title={t("Une solidarité")}
-        emphasis={t("qui prend plusieurs formes.")}
-        text={t("Au fil des années, Espoir de Vie a multiplié les initiatives en faveur des enfants, des familles et des communautés les plus fragiles.")}
+        eyebrow={pageText("espoir-de-vie", "EdvActions.1")}
+        title={pageText("espoir-de-vie", "EdvActions.2")}
+        emphasis={pageText("espoir-de-vie", "EdvActions.3")}
+        text={pageText("espoir-de-vie", "EdvActions.4")}
         tone="dark"
       />
       <div className="reveal-stagger grid grid-cols-3 border-l border-t border-edv-line max-tablet:grid-cols-1">

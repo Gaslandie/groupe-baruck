@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import type { JecaEdition, JecaGallery } from "@/data/jeca";
 
 import { PhotoGrid } from "./PhotoGrid";
@@ -33,7 +32,7 @@ export function ForumEdition({
         <div>
           <span
             className={`block text-micro font-extrabold uppercase tracking-[.17em] ${isDark ? "text-[rgba(255,255,255,.52)]" : "text-jeca-muted"}`}
-          >{t("Édition")}</span>
+          >{pageText("jeca", "ForumEdition.1")}</span>
           <strong
             className={`mt-1 block font-display text-display-xl font-normal italic leading-[.85] ${isDark ? "text-jeca-yellow" : "text-jeca-red"}`}
           >
@@ -58,23 +57,23 @@ export function ForumEdition({
         </time>
       </header>
       {edition.story ? (
-        <div className="mb-16 mt-12 grid grid-cols-[1fr_.75fr_.65fr] gap-[clamp(2rem,5vw,6rem)] max-[1080px]:grid-cols-2 max-[1080px]:[&_aside]:col-span-full max-tablet:mt-10 max-tablet:block max-tablet:[&>div]:my-8">
+        <div className={`mb-16 mt-12 grid ${edition.story.theme && edition.story.paragraphs.length ? "grid-cols-[1fr_.75fr_.65fr]" : "grid-cols-[1fr_.75fr]"} gap-[clamp(2rem,5vw,6rem)] max-[1080px]:grid-cols-2 max-[1080px]:[&_aside]:col-span-full max-tablet:mt-10 max-tablet:block max-tablet:[&>div]:my-8`}>
           <p className="m-0 font-display text-display-md font-normal leading-[1.35] text-jeca-blue">
             {edition.story.lead}
           </p>
-          <div>
-            {edition.story.paragraphs.map((paragraph) => (
-              <p key={paragraph} className="mb-4 mt-0 text-small leading-[1.8] text-jeca-muted">
+          {edition.story.paragraphs.length ? <div>
+            {edition.story.paragraphs.map((paragraph, index) => (
+              <p key={index} className="mb-4 mt-0 text-small leading-[1.8] text-jeca-muted">
                 {paragraph}
               </p>
             ))}
-          </div>
-          <aside className="bg-jeca-green p-6 text-white">
-            <span className="mb-6 block text-micro font-extrabold uppercase tracking-[.15em] text-jeca-yellow">{t("Thème")}</span>
+          </div> : null}
+          {edition.story.theme ? <aside className="bg-jeca-green p-6 text-white">
+            <span className="mb-6 block text-micro font-extrabold uppercase tracking-[.15em] text-jeca-yellow">{pageText("jeca", "ForumEdition.2")}</span>
             <strong className="font-display text-display-sm font-normal leading-[1.3]">
               {edition.story.theme}
             </strong>
-          </aside>
+          </aside> : null}
         </div>
       ) : (
         <p

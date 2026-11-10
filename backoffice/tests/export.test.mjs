@@ -146,6 +146,54 @@ test('pages structurées : listes, dates, liens, images et contrat de l’étape
   values['data.presenceCountries']=[];
   assert.deepEqual(validatePageValues(model,values,true,{articleSlugs:['actualite-test']})['data.presenceCountries'],[],'une liste vide reste vide');
 });
+test('JECA et Espoir de Vie : listes bilingues, clés stables et exports des étapes précédentes', async t => {
+  const defaults = id => Object.fromEntries(Object.entries(pageModels()[id].fields).map(([key,field])=>[key,structuredClone(field.initial)]));
+  const pages = {jeca:defaults('jeca'),'espoir-de-vie':defaults('espoir-de-vie')};
+  const extra='item-00000000-0000-4000-8000-000000000001';
+  pages['espoir-de-vie']['data.additionalPhotos']=[{key:extra,image:structuredClone(pages['espoir-de-vie']['photo.divoKitsScolaires'])}];
+  pages['espoir-de-vie']['data.actions'][0].photo=extra;
+  const editions = pages.jeca['data.editions'];
+  editions.reverse(); editions[0].photos.reverse(); editions[0].title={fr:'Édition validée de recette',en:'Approved test edition'};
+  const galleries = pages['espoir-de-vie']['data.galleries'];
+  galleries.reverse(); galleries[0].photos.reverse();
+  const valid = await fixture(t,input=>{input.pageSchema=4;input.pages=structuredClone(pages)});
+  await importExport(valid.file,valid.out);
+  const result=JSON.parse(await fs.readFile(path.join(valid.out,'content/pages.json'),'utf8'));
+  assert.deepEqual(result.jeca.values,pages.jeca);
+  assert.deepEqual(result['espoir-de-vie'].values,pages['espoir-de-vie']);
+  const changes = [
+    p=>{delete p.jeca['data.editions']},
+    p=>{p.jeca['data.editions'][0].title.en=''},
+    p=>{p.jeca['data.editions'][0].date.endIso='2020-01-01'},
+    p=>{p.jeca['data.editions'][0].key='vision'},
+    p=>{p.jeca['data.editions'][1].key=p.jeca['data.editions'][0].key},
+    p=>{p.jeca['data.editions'][0].photos.push(p.jeca['data.editions'][0].photos[0])},
+    p=>{p.jeca['data.speech'].src='/videos/invente.mp4'},
+    p=>{p['espoir-de-vie']['data.videos'][0].key='mission'},
+    p=>{p['espoir-de-vie']['data.actions'][0].photo='invente'},
+    p=>{p['espoir-de-vie']['data.additionalPhotos']=[]},
+    p=>{p['espoir-de-vie']['data.additionalPhotos']='invente'},
+    p=>{p['espoir-de-vie']['data.additionalPhotos'][0].image.src='/images/invente.jpg'},
+    p=>{p['espoir-de-vie']['data.additionalPhotos'][0].image.alt.en=''},
+    p=>{p['espoir-de-vie']['data.actions'][0].date.label.en=''},
+    p=>{p['espoir-de-vie']['data.timeline'][0].date.iso=''},
+    p=>{p['espoir-de-vie']['data.galleries'][0].photos[0].alt.en=''},
+    p=>{p['espoir-de-vie']['data.galleries'][1].key=p['espoir-de-vie']['data.galleries'][0].key},
+  ];
+  for(const change of changes){
+    const broken=structuredClone(pages);change(broken);
+    const fixtureData=await fixture(t,input=>{input.pageSchema=4;input.pages=broken});
+    await assert.rejects(importExport(fixtureData.file,fixtureData.out));
+    await assert.rejects(fs.stat(fixtureData.out),{code:'ENOENT'});
+  }
+  for(const version of [undefined,3]){
+    const old=await fixture(t,input=>{if(version)input.pageSchema=version;input.pages={jeca:{'meta.title':pages.jeca['meta.title'],'meta.description':pages.jeca['meta.description']}}});
+    await importExport(old.file,old.out);
+    assert.deepEqual(JSON.parse(await fs.readFile(path.join(old.out,'content/pages.json'),'utf8')).jeca.values['data.editions'],pageSource.jeca.values['data.editions']);
+  }
+  const empty=defaults('jeca');empty['data.editions']=[];
+  assert.deepEqual(validatePageValues(pageModels().jeca,empty)['data.editions'],[]);
+});
 test('refuse des coordonnées incomplètes ou des liens détournés', async (t) => {
   const changes = [
     (input) => { input.contacts.contacts.whatsappHq = '623 72 04 27'; },

@@ -43,6 +43,7 @@
         const label = [...added.querySelectorAll('label')].find(label => label.htmlFor === input.id);
         input.id = 'page-added-' + (++controlId); if (label) label.htmlFor = input.id;
       }
+      for (const input of added.querySelectorAll('[data-page-key]')) input.value = 'item-' + crypto.randomUUID();
       items.append(added); renumber(list);
       added.querySelector('input:not([type=hidden]),textarea,select,button')?.focus();
     } else if (button.hasAttribute('data-list-remove')) { row.remove(); renumber(list); list.querySelector(':scope > [data-list-add]').focus(); }
@@ -59,6 +60,17 @@
     button.disabled = changed;
     message.hidden = !changed;
     review.checked = false;
+  });
+  form.addEventListener('submit', () => {
+    const fields = Object.create(null);
+    for (const [name,value] of new FormData(form)) {
+      if (!name.startsWith('fields[')) continue;
+      const parts = [...name.matchAll(/\[([^\]]+)\]/g)].map(match=>match[1]);
+      let node = fields;
+      parts.forEach((part,index)=>{ if (index===parts.length-1) node[part]=value; else node=node[part]??=Object.create(null); });
+    }
+    const payload = document.createElement('input'); payload.type='hidden'; payload.name='page_fields_json'; payload.value=JSON.stringify(fields); form.append(payload);
+    for (const input of form.querySelectorAll('[name^="fields["]')) input.disabled=true;
   });
   for (const element of [form, validation]) element.addEventListener('submit', () => { submitting = true; });
   window.addEventListener('beforeunload', event => {

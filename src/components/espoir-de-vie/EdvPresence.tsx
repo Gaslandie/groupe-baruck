@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import { edvCountries } from "@/data/espoir-de-vie";
 import { imageUrl } from "@/lib/asset";
 
@@ -12,10 +11,10 @@ export function EdvPresence() {
       className="scroll-mt-[72px] bg-edv-ink px-[clamp(1.3rem,5vw,6rem)] py-[clamp(6rem,10vw,10rem)] text-white max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <EdvSectionHead
-        eyebrow={t("Notre présence")}
-        title={t("Trois territoires,")}
-        emphasis={t("un même engagement.")}
-        text={t("De la Côte d’Ivoire à la Guinée et au Burkina Faso, nos actions portent une même volonté de protection et de solidarité.")}
+        eyebrow={pageText("espoir-de-vie", "EdvPresence.1")}
+        title={pageText("espoir-de-vie", "EdvPresence.2")}
+        emphasis={pageText("espoir-de-vie", "EdvPresence.3")}
+        text={pageText("espoir-de-vie", "EdvPresence.4")}
         tone="light"
       />
       <div className="reveal-stagger grid grid-cols-3 border border-[rgba(255,255,255,.15)] max-tablet:grid-cols-1">

@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 /**
  * Bandeau de tête des archives. La grille de quatorze vignettes qui vivait ici
  * a été retirée le 2026-09-18 : elle est remplacée juste en dessous par les
@@ -10,14 +9,14 @@ export function EdvArchives() {
   return (
     <section className="reveal-stagger grid grid-cols-[1.35fr_.65fr] bg-edv-cream max-tablet:block">
       <div className="reveal px-[clamp(1.3rem,7vw,8rem)] py-[clamp(6rem,10vw,10rem)] max-tablet:px-[1.3rem] max-tablet:py-20">
-        <p className="edv-kicker">{t("Mémoire d’actions")}</p>
-        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">{t("Une histoire écrite")}<br />
-          <em className="font-[inherit] text-edv-ember">{t("sur le terrain.")}</em>
+        <p className="edv-kicker">{pageText("espoir-de-vie", "EdvArchives.1")}</p>
+        <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">{pageText("espoir-de-vie", "EdvArchives.2")}<br />
+          <em className="font-[inherit] text-edv-ember">{pageText("espoir-de-vie", "EdvArchives.3")}</em>
         </h2>
-        <p className="mb-0 mt-8 max-w-[700px] text-body leading-[1.8] text-edv-muted">{t("Chaque initiative est une rencontre : un enfant qui retrouve le chemin de l’école, une famille soutenue, une communauté rassemblée autour d’un même élan.")}</p>
+        <p className="mb-0 mt-8 max-w-[700px] text-body leading-[1.8] text-edv-muted">{pageText("espoir-de-vie", "EdvArchives.4")}</p>
       </div>
       <div className="reveal flex flex-col justify-end bg-edv-ember p-[clamp(3rem,6vw,6rem)] text-white max-tablet:min-h-[360px] max-tablet:px-[1.3rem] max-tablet:py-8">
-        <p className="mb-0 mt-20 max-w-[450px] font-display text-display-sm font-normal leading-[1.45]">{t("De Grôh à N’Zérékoré, chaque action rappelle qu’un geste concret peut rendre confiance et ouvrir de nouvelles perspectives.")}</p>
+        <p className="mb-0 mt-20 max-w-[450px] font-display text-display-sm font-normal leading-[1.45]">{pageText("espoir-de-vie", "EdvArchives.5")}</p>
       </div>
     </section>
   );

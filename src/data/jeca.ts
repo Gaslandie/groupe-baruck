@@ -1,4 +1,4 @@
-import { translate as t } from "../lib/language.ts";
+import { pageValue, pageText } from "@/lib/page-content";
 
 import type { ImageAsset } from "./media";
 import { contacts } from "./site";
@@ -13,19 +13,21 @@ export type GalleryPhoto = {
 };
 
 export type JecaGallery = {
-  edition: 1 | 2 | 3;
+  edition: number;
+  id: string;
+  label: string;
   caption: string;
   photos: GalleryPhoto[];
 };
 
 export type JecaEdition = {
-  edition: 1 | 2 | 3;
-  id: "edition-1" | "edition-2" | "edition-3";
-  place: "Dakar · Sénégal" | "Conakry · Guinée";
+  edition: number;
+  id: string;
+  place: string;
   title: string;
   date: {
-    iso: "2022-08-04" | "2023-12-02" | "2026-07-30";
-    endIso: "2022-08-14" | "2023-12-08" | "2026-08-04";
+    iso: string;
+    endIso: string;
     label: string;
   };
   tone: "paper" | "dark" | "white";
@@ -39,301 +41,62 @@ export type JecaEdition = {
 };
 
 export type JecaEditionNavItem = {
-  href: "#edition-1" | "#edition-2" | "#edition-3";
-  number: "01" | "02" | "03";
-  city: "Dakar" | "Conakry";
+  href: string;
+  number: string;
+  city: string;
   dates: string;
 };
 
-export const jecaPortrait: ImageAsset = {
-  src: "/images/jeca/president-fondateur.webp",
-  alt: t("MR Djoro Joël Shaloom Krasso, président fondateur de la JECA"),
-  width: 852,
-  height: 1846,
+export const jecaPortrait = pageValue<ImageAsset>("jeca", "media.portrait");
+
+export const goreeImage = pageValue<ImageAsset>("jeca", "media.goree");
+
+type EditableEdition = {
+  key: string;
+  city: string;
+  place: string;
+  title: string;
+  date: { iso: string; endIso: string; label: string };
+  navDates: string;
+  lead: string;
+  paragraphs: string[];
+  theme: string;
+  caption: string;
+  galleryLabel: string;
+  photos: { image: ImageAsset; caption: string }[];
 };
+const editions = pageValue<EditableEdition[]>("jeca", "data.editions");
 
-export const goreeImage: ImageAsset = {
-  src: "/images/jeca/ile-de-goree.jpeg",
-  alt: t("Vue de l’île de Gorée au Sénégal"),
-  width: 640,
-  height: 480,
-};
+export const jecaEditions: JecaEdition[] = editions.map((value, index) => ({
+  edition: index + 1,
+  id: "edition-" + value.key,
+  place: value.place,
+  title: value.title,
+  date: value.date,
+  tone: (["paper", "dark", "white"] as const)[index % 3],
+  grid: value.photos.length === 7 ? "seven" : value.photos.length === 12 ? "twelve" : "six",
+  ...(value.theme || value.paragraphs.length
+    ? { story: { lead: value.lead, paragraphs: value.paragraphs, theme: value.theme } }
+    : { simpleLead: value.lead }),
+}));
 
-export const jecaEditions: JecaEdition[] = [
-  {
-    edition: 1,
-    id: "edition-1",
-    place: t("Dakar · Sénégal"),
-    title: t("La première rencontre"),
-    date: { iso: "2022-08-04", endIso: "2022-08-14", label: t("Du 04 au 14 août 2022") },
-    tone: "paper",
-    grid: "seven",
-    story: {
-      lead: t("Environ 50 personnes réunies autour de l’entrepreneuriat et de l’investissement en Afrique."),
-      paragraphs: [
-        t("Les participants sont venus du Canada, des États-Unis, de la Côte d’Ivoire, du Togo, du Bénin, de France, d’Angleterre et d’Australie."),
-        t("Les échanges ont porté sur l’investissement en Afrique, avec des interventions consacrées à ce sujet."),
-      ],
-      theme: t("Entrepreneuriat et investissement en Afrique"),
-    },
-  },
-  {
-    edition: 2,
-    id: "edition-2",
-    place: t("Dakar · Sénégal"),
-    title: t("Deuxième édition"),
-    date: { iso: "2023-12-02", endIso: "2023-12-08", label: t("Du 02 au 08 décembre 2023") },
-    tone: "dark",
-    grid: "seven",
-    simpleLead: t("La deuxième édition de la JECA s’est tenue une nouvelle fois à Dakar."),
-  },
-  {
-    edition: 3,
-    id: "edition-3",
-    place: t("Conakry · Guinée"),
-    title: t("La JECA à Conakry"),
-    date: { iso: "2026-07-30", endIso: "2026-08-04", label: t("Du 30 juillet au 04 août 2026") },
-    tone: "white",
-    grid: "twelve",
-    simpleLead:
-      t("La troisième édition s’est tenue à Conakry, du 30 juillet au 04 août 2026 : les échanges entre responsables, puis l’accueil des invités et la remise des présents de la JECA."),
-  },
-];
+export const jecaEditionNav: JecaEditionNavItem[] = editions.map((value, index) => ({
+  href: "#edition-" + value.key,
+  number: String(index + 1).padStart(2, "0"),
+  city: value.city,
+  dates: value.navDates,
+}));
 
-export const jecaEditionNav: JecaEditionNavItem[] = [
-  { href: "#edition-1", number: "01", city: "Dakar", dates: t("04—14 août 2022") },
-  { href: "#edition-2", number: "02", city: "Dakar", dates: t("02—08 décembre 2023") },
-  { href: "#edition-3", number: "03", city: "Conakry", dates: t("30 juillet—04 août 2026") },
-];
-
-export const jecaGalleries: JecaGallery[] = [
-  {
-    edition: 1,
-    caption: t("Première édition · Dakar · 2022"),
-    photos: [
-      {
-        src: "/images/jeca/edition-1/01.jpeg",
-        alt: t("Participants réunis lors de la première édition du forum JECA à Dakar"),
-        width: 1080,
-        height: 718,
-        layout: "wide",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-      {
-        src: "/images/jeca/edition-1/02.jpeg",
-        alt: t("Participante à la première édition du forum JECA"),
-        width: 718,
-        height: 1080,
-        layout: "tall",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-      {
-        src: "/images/jeca/edition-1/03.jpeg",
-        alt: t("Accueil lors de la première édition du forum JECA"),
-        width: 1080,
-        height: 718,
-        layout: "standard",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-      {
-        src: "/images/jeca/edition-1/04.jpeg",
-        alt: t("Participant devant le visuel de la première édition"),
-        width: 1080,
-        height: 718,
-        layout: "standard",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-      {
-        src: "/images/jeca/edition-1/05.jpeg",
-        alt: t("Intervention pendant la première édition du forum JECA"),
-        width: 1080,
-        height: 718,
-        layout: "wide",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-      {
-        src: "/images/jeca/edition-1/06.jpeg",
-        alt: t("Échange entre participants pendant la première édition"),
-        width: 1080,
-        height: 718,
-        layout: "standard",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-      {
-        src: "/images/jeca/edition-1/07.jpeg",
-        alt: t("Participants en échange pendant la première édition"),
-        width: 1080,
-        height: 718,
-        layout: "standard",
-        caption: t("Première édition · Dakar · 2022"),
-      },
-    ],
-  },
-  {
-    edition: 2,
-    caption: t("Deuxième édition · Dakar · 2023"),
-    photos: [
-      {
-        src: "/images/jeca/edition-2/01.jpeg",
-        alt: t("Assemblée de la deuxième édition de la JECA à Dakar"),
-        width: 1080,
-        height: 810,
-        layout: "wide",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-      {
-        src: "/images/jeca/edition-2/02.jpeg",
-        alt: t("Photo de groupe pendant la deuxième édition de la JECA"),
-        width: 1080,
-        height: 720,
-        layout: "standard",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-      {
-        src: "/images/jeca/edition-2/03.jpeg",
-        alt: t("Prise de parole pendant la deuxième édition de la JECA"),
-        width: 1080,
-        height: 720,
-        layout: "standard",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-      {
-        src: "/images/jeca/edition-2/04.jpeg",
-        alt: t("Participants à la deuxième édition de la JECA"),
-        width: 1080,
-        height: 720,
-        layout: "wide",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-      {
-        src: "/images/jeca/edition-2/05.jpeg",
-        alt: t("Intervenants pendant la deuxième édition de la JECA"),
-        width: 1080,
-        height: 720,
-        layout: "standard",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-      {
-        src: "/images/jeca/edition-2/06.jpeg",
-        alt: t("Photo collective de la deuxième édition de la JECA"),
-        width: 1080,
-        height: 720,
-        layout: "standard",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-      {
-        src: "/images/jeca/edition-2/07.jpeg",
-        alt: t("Participants réunis à Dakar pour la deuxième édition"),
-        width: 1080,
-        height: 810,
-        layout: "wide",
-        caption: t("Deuxième édition · Dakar · 2023"),
-      },
-    ],
-  },
-  {
-    edition: 3,
-    caption: t("Troisième édition · Conakry · 2026"),
-    photos: [
-      {
-        src: "/images/jeca/edition-3/01.jpeg",
-        alt: t("Le président et le vice-président lors de la troisième édition à Conakry"),
-        width: 1280,
-        height: 720,
-        layout: "wide",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/02.jpeg",
-        alt: t("Le président et le vice-président devant le visuel de la troisième édition"),
-        width: 1280,
-        height: 720,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/03.jpeg",
-        alt: t("Le président et le vice-président pendant la troisième édition"),
-        width: 1280,
-        height: 720,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/04.jpeg",
-        alt: t("Échange entre le président et le vice-président lors de la troisième édition"),
-        width: 1280,
-        height: 720,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/05.jpeg",
-        alt: t("Le président et le vice-président réunis à Conakry"),
-        width: 1280,
-        height: 720,
-        layout: "wide",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/06.jpeg",
-        alt: t("Le président et le vice-président se saluant lors de la troisième édition"),
-        width: 1280,
-        height: 720,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/07.webp",
-        alt: t("Poignée de main devant le visuel de la conférence de la JECA, à Conakry"),
-        width: 1400,
-        height: 1058,
-        layout: "wide",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/08.webp",
-        alt: t("Remise d’un tee-shirt de la JECA floqué au nom de Mme Noah Marie Françoise"),
-        width: 1400,
-        height: 1027,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/09.webp",
-        alt: t("Remise d’une casquette aux couleurs de la troisième édition"),
-        width: 1400,
-        height: 1042,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/10.webp",
-        alt: t("Prise de parole lors de l’accueil des invités à Conakry"),
-        width: 1163,
-        height: 1280,
-        layout: "tall",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/11.webp",
-        alt: t("Échange avant la conférence, dans les locaux de Baruck Communication à Conakry"),
-        width: 1400,
-        height: 912,
-        layout: "wide",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-      {
-        src: "/images/jeca/edition-3/12.webp",
-        alt: t("Prise de parole devant la presse, aux côtés d’une hôtesse Baruck"),
-        width: 1280,
-        height: 1118,
-        layout: "standard",
-        caption: t("Troisième édition · Conakry · 2026"),
-      },
-    ],
-  },
-];
+export const jecaGalleries: JecaGallery[] = editions.map((value, index) => ({
+  edition: index + 1,
+  id: "edition-" + value.key,
+  caption: value.caption,
+  label: value.galleryLabel,
+  photos: value.photos.map(({ image, caption }) => ({ ...image, caption, layout: "standard" })),
+}));
+export const jecaGalleryOffsets = jecaGalleries.map((_, index) =>
+  jecaGalleries.slice(0, index).reduce((sum, gallery) => sum + gallery.photos.length, 0),
+);
 
 export type JecaNextEdition = {
   message: string;
@@ -341,14 +104,14 @@ export type JecaNextEdition = {
   emailHref: string;
 };
 
-const nextEditionMessage = t("Je souhaite être informé de la prochaine édition de la JECA");
+const nextEditionMessage = pageText("jeca", "request.message");
 
 /** Demandes d'information sur la prochaine édition : numéros et adresse jamais recopiés. */
 export const jecaNextEdition: JecaNextEdition = {
   message: nextEditionMessage,
   whatsappHref: `${contacts.whatsappHq.href}?text=${encodeURIComponent(nextEditionMessage)}`,
   emailHref: `${contacts.email.href}?subject=${encodeURIComponent(
-    t("Prochaine édition de la JECA"),
+    pageText("jeca", "request.subject"),
   )}&body=${encodeURIComponent(nextEditionMessage)}`,
 };
 
@@ -366,30 +129,14 @@ export type JecaVideo = {
   chapters: { number: string; title: string; text: string }[];
 };
 
-export const jecaSpeechVideo = {
-  src: "/videos/discours-pdg-jeca.mp4",
-  poster: "/images/jeca/discours-pdg-jeca.jpg",
-  width: 640,
-  height: 368,
-  eyebrow: t("La parole du président"),
-  title: t("Écouter la vision,"),
-  emphasis: t("dans ses mots."),
-  caption: t("Prise de parole du président de la JECA devant la presse."),
-  chapters: [
-    {
-      number: "01",
-      title: t("Se réunir"),
-      text: t("Les États ne peuvent pas tout faire : il faut se réunir pour s’occuper de l’Afrique."),
-    },
-    {
-      number: "02",
-      title: t("Dépasser la peur"),
-      text: t("Beaucoup ont peur d’investir après des expériences qui n’ont pas fonctionné. La réponse de la JECA est de sensibiliser la diaspora."),
-    },
-    {
-      number: "03",
-      title: t("Venir au Sénégal"),
-      text: t("L’île de Gorée et le voyage de non-retour : la JECA a compris qu’elle devait aussi venir au Sénégal."),
-    },
-  ],
-} satisfies JecaVideo;
+const speech = pageValue<Omit<JecaVideo, "poster" | "width" | "height" | "chapters"> & {
+  poster: ImageAsset;
+  chapters: { title: string; text: string }[];
+}>("jeca", "data.speech");
+export const jecaSpeechVideo: JecaVideo = {
+  ...speech,
+  poster: speech.poster.src,
+  width: speech.poster.width,
+  height: speech.poster.height,
+  chapters: speech.chapters.map((chapter, index) => ({ ...chapter, number: String(index + 1).padStart(2, "0") })),
+};

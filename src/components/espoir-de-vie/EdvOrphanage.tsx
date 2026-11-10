@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import { edvPhotos, edvTimeline } from "@/data/espoir-de-vie";
 import { asset } from "@/lib/asset";
 
@@ -25,15 +24,15 @@ export function EdvOrphanage() {
         />
         <div className="flex items-end justify-between gap-[clamp(2rem,5vw,5rem)] max-[1100px]:flex-col max-[1100px]:items-start max-[1100px]:gap-8">
           <div>
-            <p className="edv-kicker">{t("Un projet fondateur")}</p>
-            <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">{t("Construire un lieu")}<br />
-              <em className="font-[inherit] text-edv-gold">{t("où grandir en sécurité.")}</em>
+            <p className="edv-kicker">{pageText("espoir-de-vie", "EdvOrphanage.1")}</p>
+            <h2 className="m-0 text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">{pageText("espoir-de-vie", "EdvOrphanage.2")}<br />
+              <em className="font-[inherit] text-edv-gold">{pageText("espoir-de-vie", "EdvOrphanage.3")}</em>
             </h2>
           </div>
           <div className="w-[min(600px,46%)] text-body leading-[1.8] text-[rgba(255,255,255,.7)] max-[1100px]:w-full">
-            <p className="m-0">{t("De la construction à l’accueil des premiers enfants, l’orphelinat Espoir de Vie est né d’une volonté simple : offrir protection, stabilité et attention.")}</p>
+            <p className="m-0">{pageText("espoir-de-vie", "EdvOrphanage.4")}</p>
             {/* Faits donnés par le client le 29 septembre 2026. */}
-            <p className="mb-0 mt-4">{t("Agréé par l’État de Côte d’Ivoire depuis 2019, il accueille 60 orphelins. Il dispose d’un internat et d’une infirmerie.")}</p>
+            <p className="mb-0 mt-4">{pageText("espoir-de-vie", "EdvOrphanage.5")}</p>
           </div>
         </div>
       </div>

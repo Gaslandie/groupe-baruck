@@ -5,7 +5,7 @@ import { translate as t } from "../lib/language.ts";
 import type { ReactNode } from "react";
 
 import { edvPhotos } from "./espoir-de-vie";
-import { jecaGalleries } from "./jeca";
+import { jecaGalleries, jecaPortrait } from "./jeca";
 import { brandHero } from "./marque-baruck";
 import {
   hostessesHero,
@@ -176,7 +176,7 @@ export const pageTeasers: PageTeaser[] = [
   {
     id: "apercu-jeca",
     tone: "jeca",
-    image: jecaGalleries[2].photos[0],
+    image: jecaGalleries.at(-1)?.photos[0] ?? jecaPortrait,
     eyebrow: pageValue<string>("home", "apercu-jeca.eyebrow"),
     title: pageValue<string>("home", "apercu-jeca.title"),
     emphasis: pageValue<string>("home", "apercu-jeca.emphasis"),

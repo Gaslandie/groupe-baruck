@@ -1,4 +1,5 @@
-import { translate as t } from "../lib/language.ts";
+import { pageValue } from "@/lib/page-content";
+import { translate as t, isEnglish } from "../lib/language.ts";
 
 import { contactValues, mailtoHref, telHref, whatsappHref } from "./coordonnees";
 
@@ -288,9 +289,7 @@ export const footers = {
         title: "JECA",
         links: [
           { label: t("La vision"), href: "#vision" },
-          { label: t("Édition 2022"), href: "#edition-1" },
-          { label: t("Édition 2023"), href: "#edition-2" },
-          { label: t("Édition 2026"), href: "#edition-3" },
+          ...pageValue<{key:string;date:{iso:string}}[]>("jeca","data.editions").map(edition=>({label:isEnglish ? `${edition.date.iso.slice(0,4)} edition` : `Édition ${edition.date.iso.slice(0,4)}`,href:`#edition-${edition.key}`})),
         ],
       },
       {

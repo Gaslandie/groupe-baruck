@@ -15,9 +15,14 @@ function emptyPageField(array $field): mixed
 /** Champs autorisés par le modèle serveur ; aucun nom de champ créé par le navigateur. */
 function pageField(array $field, mixed $value, string $name): void
 {
-    global $secondaryClass, $pageInputClass, $pageCatalog;
+    global $secondaryClass, $pageInputClass, $pageCatalog, $pageValues;
     $id = 'field-' . preg_replace('/[^a-zA-Z0-9_-]/', '-', $name);
     $value = displayPageField($field, $value);
+    if ($field['kind'] === 'key') {
+        echo '<input type="hidden" data-page-key name="' . e($name) . '" value="' . e($value) . '">';
+        return;
+    }
+    if ($field['optional'] ?? false) echo '<p class="text-caption text-ink/60">' . (in_array($field['kind'], ['text','textarea'], true) ? 'Facultatif : laisser les deux langues vides pour masquer ce texte.' : 'Facultatif : laisser vide si la date n’est pas confirmée.') . '</p>';
     echo '<fieldset class="min-w-0 space-y-4"><legend class="text-small font-bold">' . e($field['label']) . '</legend>';
     if ($field['kind'] === 'list') {
         echo '<div data-page-list data-list-name="' . e($name) . '" data-max="' . (int) $field['max'] . '" class="space-y-4"><input type="hidden" name="' . e($name) . '[__empty]" value="1"><div data-list-items class="space-y-4">';
@@ -47,14 +52,18 @@ function pageField(array $field, mixed $value, string $name): void
             echo '</div>';
         }
         echo '</div>';
-    } elseif (in_array($field['kind'], ['video','slug','background'], true)) {
+    } elseif (in_array($field['kind'], ['video','slug','background','choice'], true)) {
         $options = match ($field['kind']) {
-            'video' => array_combine($field['options'], $field['options']),
+            'video', 'choice' => array_combine($field['options'], $field['options']),
             'background' => [$field['original']=>'Photo d’origine', ...array_column($pageCatalog, 'label', 'path')],
             default => array_column(query('SELECT slug,title FROM articles ORDER BY article_date DESC,slug')->fetchAll(), 'title', 'slug'),
         };
+        if (isset($field['referenceList'])) foreach ($pageValues[$field['referenceList']] ?? [] as $photo) {
+            $options[$photo['key']] = $photo['image']['alt']['fr'] ?: 'Nouvelle photo partagée';
+        }
+        if ($value && !array_key_exists($value, $options)) $options[$value] = 'Photo à remplacer avant validation';
         echo '<label for="' . e($id) . '" class="sr-only">' . e($field['label']) . '</label><select id="' . e($id) . '" name="' . e($name) . '" class="' . $pageInputClass . '"><option value="">À choisir</option>';
-        foreach ($options as $key => $label) echo '<option value="' . e($key) . '" ' . ($value === $key ? 'selected' : '') . '>' . e($label) . '</option>';
+        foreach ($options as $key => $label) echo '<option value="' . e($key) . '" ' . ($value === $key ? 'selected' : '') . '>' . e($field['optionLabels'][$key] ?? $label) . '</option>';
         echo '</select>';
     } else {
         echo '<label for="' . e($id) . '" class="sr-only">' . e($field['label']) . '</label><input id="' . e($id) . '" name="' . e($name) . '" value="' . e(is_string($value) ? $value : '') . '" maxlength="' . (int) $field['max'] . '" class="' . $pageInputClass . '"' . ($field['kind'] === 'link' ? ' list="page-known-links"' : '') . '>';

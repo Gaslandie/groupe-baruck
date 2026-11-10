@@ -1,6 +1,6 @@
 "use client";
 
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import { useState } from "react";
 
@@ -26,7 +26,7 @@ const tabClass =
   "inline-flex min-h-11 items-center border px-[1rem] text-label uppercase tracking-[.13em] transition-[background,color,border-color] duration-[250ms]";
 
 export function EdvGalleries() {
-  const [active, setActive] = useState(edvGalleryCategories[0].id);
+  const [active, setActive] = useState(edvGalleryCategories[0]?.id ?? "");
 
   return (
     <section
@@ -35,18 +35,17 @@ export function EdvGalleries() {
       className="scroll-mt-[72px] border-t border-edv-line bg-edv-cream px-[clamp(1.3rem,7vw,8rem)] py-[clamp(4.5rem,8vw,8rem)] max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <div className="reveal mb-[clamp(2rem,4vw,3rem)]">
-        <p className="edv-kicker">{t("Les actions en images")}</p>
+        <p className="edv-kicker">{pageText("espoir-de-vie", "EdvGalleries.1")}</p>
         <h2
           id="galerie-titre"
           className="m-0 text-balance font-display text-display-lg font-normal leading-[.92] tracking-[-.05em]"
         >
-          {edvGalleryPhotoCount} photos,
-          <em className="font-[inherit] text-edv-ember">{t(" onze rendez-vous.")}</em>
+          {edvGalleryPhotoCount} {pageText("espoir-de-vie", "EdvGalleries.2")}<em className="font-[inherit] text-edv-ember">{" "}{pageText("espoir-de-vie", "EdvGalleries.3")}</em>
         </h2>
-        <p className="mb-0 mt-6 max-w-[680px] text-body leading-[1.8] text-edv-muted">{t("Les archives de la fondation, classées par action : du premier Noël au village de Grôh à l’ouverture de l’orphelinat, puis aux repas partagés avec les enfants.")}</p>
+        <p className="mb-0 mt-6 max-w-[680px] text-body leading-[1.8] text-edv-muted">{pageText("espoir-de-vie", "EdvGalleries.4")}</p>
       </div>
 
-      <div role="tablist" aria-label={t("Choisir une action")} className="reveal mb-[clamp(1.8rem,3vw,2.6rem)] flex flex-wrap gap-[.5rem]">
+      <div role="tablist" aria-label={pageText("espoir-de-vie", "EdvGalleries.5")} className="reveal mb-[clamp(1.8rem,3vw,2.6rem)] flex flex-wrap gap-[.5rem]">
         {edvGalleryCategories.map((category) => {
           const selected = category.id === active;
           return (
@@ -59,6 +58,15 @@ export function EdvGalleries() {
               aria-controls={`galerie-${category.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(category.id)}
+              onKeyDown={event => {
+                const index = edvGalleryCategories.indexOf(category);
+                const next = event.key === "Home" ? 0 : event.key === "End" ? edvGalleryCategories.length - 1 : event.key === "ArrowRight" ? (index + 1) % edvGalleryCategories.length : event.key === "ArrowLeft" ? (index - 1 + edvGalleryCategories.length) % edvGalleryCategories.length : -1;
+                if (next < 0) return;
+                event.preventDefault();
+                const id = edvGalleryCategories[next].id;
+                setActive(id);
+                event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus();
+              }}
               className={[
                 tabClass,
                 selected

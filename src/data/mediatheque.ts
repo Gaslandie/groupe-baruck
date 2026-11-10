@@ -40,7 +40,7 @@ export const mediaCollections: MediaCollection[] = [
       id: `jeca-edition-${gallery.edition}`,
       category: "jeca",
       title: gallery.caption,
-      href: `${routes.jeca}#edition-${gallery.edition}`,
+      href: `${routes.jeca}#${gallery.id}`,
       photos: gallery.photos.map(({ src, alt, width, height, caption }) => ({
         src,
         alt,

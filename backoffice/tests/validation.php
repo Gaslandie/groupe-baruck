@@ -227,4 +227,38 @@ check(Baruck\validatePageValues($groupModel,$groupValues,true)['data.presenceCou
 
 check(Baruck\normalizePagePost(['kind'=>'list','item'=>['kind'=>'text']],['__empty'=>'1']) === [], 'liste HTML vidée reçue explicitement');
 
+// Les clés des listes ne peuvent pas créer une ancre arbitraire ni se doubler.
+$jeca = Baruck\pageModel('jeca');
+$jecaValues = array_map(fn($field) => $field['initial'], $jeca['fields']);
+$edition = $jecaValues['data.editions'][0];
+foreach ([
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[0=>['key'=>'vision']]]),
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[1=>['key'=>'1']]]),
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[0=>['date'=>['endIso'=>'2000-01-01']]]]),
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[0=>['title'=>['en'=>'']]]]),
+    fn($v) => array_replace_recursive($v, ['data.speech'=>['src'=>'/videos/invente.mp4']]),
+] as $change) check(!accepts(fn()=>Baruck\validatePageValues($jeca,$change($jecaValues),true)), 'JECA : clé, date, langue ou vidéo refusée');
+$jecaValues['data.editions'] = [];
+check(Baruck\validatePageValues($jeca,$jecaValues,true)['data.editions'] === [], 'retirer toutes les éditions reste possible');
+$edv = Baruck\pageModel('espoir-de-vie');
+$edvValues = array_map(fn($field) => $field['initial'], $edv['fields']);
+foreach ([
+    fn($v) => array_replace_recursive($v, ['data.videos'=>[0=>['key'=>'mission']]]),
+    fn($v) => array_replace_recursive($v, ['data.galleries'=>[1=>['key'=>$v['data.galleries'][0]['key']]]]),
+    fn($v) => array_replace_recursive($v, ['data.actions'=>[0=>['photo'=>'invente']]]),
+    fn($v) => array_replace_recursive($v, ['data.timeline'=>[0=>['date'=>['iso'=>'']]]]),
+    fn($v) => array_replace_recursive($v, ['data.actions'=>[0=>['date'=>['label'=>['en'=>'']]]]]),
+] as $change) check(!accepts(fn()=>Baruck\validatePageValues($edv,$change($edvValues),true)), 'Espoir de Vie : lien, date ou contenu incomplet refusé');
+$newPhotoKey = 'item-00000000-0000-4000-8000-000000000001';
+$edvValues['data.additionalPhotos'] = [['key'=>$newPhotoKey,'image'=>$edvValues['photo.divoKitsScolaires']]];
+$edvValues['data.actions'][0]['photo'] = $newPhotoKey;
+check(accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une nouvelle photo partagée est utilisable');
+$edvValues['data.additionalPhotos'] = [];
+check(!accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une référence de photo supprimée bloque la validation');
+$edvValues['data.additionalPhotos'] = 'invalide';
+check(!accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une liste de références mal typée est refusée');
+
+check(Baruck\decodePageFields(['page_fields_json'=>'{"titre":{"fr":"Texte","en":"Text"}}'])['titre']['en'] === 'Text', 'grand formulaire décodé sans limite de variables PHP');
+foreach ([['page_fields_json'=>'{'],['page_fields_json'=>[]],['page_fields_json'=>'{}','fields'=>[]],['page_fields_json'=>str_repeat('x',2000001)]] as $bad) check(!accepts(fn()=>Baruck\decodePageFields($bad)), 'transport de formulaire invalide refusé');
+
 echo $count . " contrôles de validation réussis.\n";

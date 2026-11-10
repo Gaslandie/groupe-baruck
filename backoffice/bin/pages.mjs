@@ -28,6 +28,9 @@ export function pageLinkTargets() {
     else if (field.kind === 'link' && typeof value === 'string' && value.includes('#')) targets.add(value.startsWith('#') ? route + value : value);
   };
   for (const page of Object.values(pageSource)) for (const [key,field] of Object.entries(page.fields ?? {})) visit(field,page.values[key],page.route);
+  for (const edition of pageSource.jeca.values['data.editions']) targets.add('/jeca/#edition-' + edition.key);
+  for (const gallery of pageSource['espoir-de-vie'].values['data.galleries']) targets.add('/espoir-de-vie/#galerie-' + gallery.key);
+  for (const video of pageSource['espoir-de-vie'].values['data.videos']) targets.add('/espoir-de-vie/#' + video.key);
   return linkTargets = [...targets].sort();
 }
 
@@ -75,6 +78,7 @@ export function validatePageValues(model, input, ready = true, options = {}) {
   if (!input || typeof input !== 'object' || Array.isArray(input)
     || Object.keys(input).length !== Object.keys(model.fields).length
     || Object.keys(input).some(key => !Object.hasOwn(model.fields, key))) throw new Error('Champs de page inconnus ou incomplets.');
+  options = { ...options, values: input };
   const values = {};
   for (const [key, field] of Object.entries(model.fields)) {
     values[key] = validatePageField(field, input[key], ready, options);
@@ -89,11 +93,19 @@ export function validatePageField(field, input, ready = true, options = {}) {
     if (!Array.isArray(input) || input.length > field.max) fail();
     const values = input.map(value => validatePageField(field.item, value, ready, options));
     if (field.item.kind === 'image' && new Set(values.map(value => value.src).filter(Boolean)).size !== values.filter(value => value.src).length) fail();
+    if (field.uniqueBy) {
+      const paths = values.map(value => field.uniqueBy.split('.').reduce((entry,key) => entry[key], value)).filter(Boolean);
+      if (new Set(paths).size !== paths.length) fail();
+    }
+    if (field.keyField && new Set(values.map(value => value[field.keyField])).size !== values.length) fail();
     return values;
   }
   if (field.kind === 'object') {
     if (!object(input) || Object.keys(input).length !== Object.keys(field.fields).length || Object.keys(input).some(key => !Object.hasOwn(field.fields, key))) fail();
-    return Object.fromEntries(Object.entries(field.fields).map(([key, child]) => [key, validatePageField(child, input[key], ready, options)]));
+    const value = Object.fromEntries(Object.entries(field.fields).map(([key, child]) => [key, validatePageField(child, input[key], ready, options)]));
+    if (ready && value.iso !== undefined && value.label !== undefined && Boolean(value.iso) !== Boolean(value.label.fr || value.label.en)) fail();
+    if (value.iso && value.endIso && value.iso > value.endIso) fail();
+    return value;
   }
   if (field.kind === 'image') {
     if (!object(input) || Object.keys(input).sort().join(',') !== 'alt,height,src,width') fail();
@@ -111,7 +123,7 @@ export function validatePageField(field, input, ready = true, options = {}) {
   if (!['text','textarea'].includes(field.kind)) {
     if (typeof input !== 'string' || input.includes('\0') || input.length > field.max) fail();
     const value = input.trim();
-    if (!value && !ready) return '';
+    if (!value && (!ready || field.optional)) return '';
     if (field.kind === 'link') {
       const internal = /^(?:\/(?:[a-z0-9-]+\/)*|\/(?:[a-z0-9-]+\/)*#[a-z0-9-]+|#[a-z0-9-]+)$/.test(value);
       const scope = field.scope ?? 'local';
@@ -130,17 +142,24 @@ export function validatePageField(field, input, ready = true, options = {}) {
       if (!/^\d{4}(?:-\d{2}-\d{2})?$/.test(value) || (value.length > 4 && new Date(value+'T00:00:00Z').toISOString().slice(0,10) !== value)) fail();
     } else if (field.kind === 'video') {
       if (!field.options.includes(value) || !fs.realpathSync(path.resolve('public', value.slice(1))).startsWith(fs.realpathSync('public/videos') + path.sep)) fail();
+    } else if (field.kind === 'key') {
+      if (!(field.options.includes(value) || /^item-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(value))) fail();
+    } else if (field.kind === 'choice') {
+      const source = field.referenceList ? options.values?.[field.referenceList] : [];
+      const references = Array.isArray(source) ? source : [];
+      if (!field.options.includes(value) && !references.some(item => item?.key === value)) fail();
     } else if (field.kind === 'slug') { if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)) fail(); }
     else fail();
     return value;
   }
     const pair = input;
     if (!pair || typeof pair !== 'object' || Array.isArray(pair) || Object.keys(pair).sort().join(',') !== 'en,fr') throw new Error('Versions française et anglaise attendues.');
+    const optionalEmpty = field.optional && pair.fr === '' && pair.en === '';
     const values = {};
     for (const language of ['fr', 'en']) {
       const value = pair[language];
       if (typeof value !== 'string' || value.includes('\0') || Buffer.from(value, 'utf8').toString('utf8') !== value
-        || Array.from(value.trim()).length > field.max || (ready && !value.trim())
+        || Array.from(value.trim()).length > field.max || (ready && !optionalEmpty && !value.trim())
         || /<\/?[a-z][^>]*>/iu.test(value) || (field.kind === 'text' && /[\r\n]/.test(value))) throw new Error(`Vérifiez « ${field.label} » (${language.toUpperCase()}).`);
       values[language] = value.trim();
     }

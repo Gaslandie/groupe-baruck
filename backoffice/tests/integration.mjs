@@ -455,7 +455,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       else fields[name] = String(value);
     };
     for (const [key, value] of Object.entries(values)) flatten(`fields[${key}]`, value);
-    return { action: 'save_page', id, version: String(version), ...fields };
+    return Object.keys(fields).length > 800 ? {action:'save_page',id,version:String(version),page_fields_json:JSON.stringify(values)} : { action: 'save_page', id, version: String(version), ...fields };
   };
   const pageExport = async () => JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
   const pageRecord = id => JSON.parse(Buffer.from(sql(`SELECT HEX(payload) FROM ${database}.settings WHERE name='page:${id}'`).split('\n')[1], 'hex').toString('utf8'));
@@ -633,6 +633,60 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       assert.equal(browser.status,0,browser.stderr||browser.stdout);
     }
   });
+  await t.test('JECA et Espoir de Vie : ordre, grands formulaires, validation et brouillons privés', async () => {
+    const version=id=>Number(sql(`SELECT version FROM ${database}.settings WHERE name='page:${id}'`).split('\n')[1]);
+    const save=async(id,section,values,extra={})=>admin.post('/?page=page_edit&id='+id+'&section='+section,{action:'save_page',id,section,version:String(version(id)),page_fields_json:JSON.stringify(values),...extra});
+    const ready=async id=>admin.post('/',{action:'validate_page',id,version:String(version(id)),english_reviewed:'yes'});
+    const original=pageRecord('jeca').validated;
+    const editions=structuredClone(original['data.editions']).reverse();
+    editions[0].photos.reverse();
+    editions[0].title={fr:'Édition validée de recette',en:'Approved test edition'};
+    assert.equal((await save('jeca','editions',{'data.editions':editions})).status,303);
+    assert.deepEqual(pageRecord('jeca').draft['data.editions'],editions);
+    assert.deepEqual((await pageExport()).pages.jeca['data.editions'],original['data.editions']);
+    assert.equal((await ready('jeca')).status,303);
+    assert.deepEqual((await pageExport()).pages.jeca['data.editions'],editions);
+    const stale=version('jeca')-1;
+    assert.equal((await save('jeca','editions',{'data.editions':editions},{version:String(stale)})).status,409);
+    const invalid=structuredClone(editions);invalid[1].key=invalid[0].key;
+    assert.equal((await save('jeca','editions',{'data.editions':invalid})).status,422);
+    assert.equal((await save('jeca','editions',{}, {page_fields_json:'{'})).status,422);
+    assert.equal((await editor.post('/',{action:'save_page',id:'jeca',version:String(version('jeca')),page_fields_json:'{}'})).status,403);
+    editions[0].title={fr:'EDITION PRIVEE NON PUBLIEE',en:''};
+    assert.equal((await save('jeca','editions',{'data.editions':editions})).status,303);
+    assert.equal((await ready('jeca')).status,422);
+    assert.equal((await pageExport()).pages.jeca['data.editions'][0].title.en,'Approved test edition');
+    const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l+0AAAAASUVORK5CYII=','base64');
+    const upload=new FormData();upload.set('csrf',(await admin.request('/')).csrf);upload.set('image',new Blob([png],{type:'image/png'}),'action.png');upload.set('alt','Nouvelle photo partagée');
+    const image=JSON.parse((await admin.request('/?page=media_api',upload)).html).item;
+    const photoKey='item-00000000-0000-4000-8000-000000000001';
+    const additional=[{key:photoKey,image:{src:image.path,alt:{fr:'Nouvelle photo de recette',en:''},width:999,height:999}}];
+    assert.equal((await save('espoir-de-vie','nouvelles-photos',{'data.additionalPhotos':additional})).status,303);
+    assert.equal((await admin.post('/?page=media',{action:'delete_media',id:image.id})).status,422);
+    assert.ok(!(await pageExport()).media.some(item=>item.path===image.path),'la nouvelle photo incomplète reste privée');
+    const actions=structuredClone(pageRecord('espoir-de-vie').draft['data.actions']);actions[0].photo=photoKey;actions[1].photo=photoKey;
+    assert.equal((await save('espoir-de-vie','actions',{'data.actions':actions})).status,303,'une action peut choisir une nouvelle photo partagée');
+    assert.equal((await ready('espoir-de-vie')).status,422,'la description anglaise est exigée sur la source partagée');
+    additional[0].image.alt.en='New test shared image';
+    assert.equal((await save('espoir-de-vie','nouvelles-photos',{'data.additionalPhotos':additional})).status,303);
+    assert.equal((await ready('espoir-de-vie')).status,303);
+    assert.ok((await pageExport()).media.some(item=>item.path===image.path));
+    assert.equal((await save('espoir-de-vie','nouvelles-photos',{'data.additionalPhotos':[]})).status,303);
+    assert.equal((await ready('espoir-de-vie')).status,422,'une référence manquante empêche la validation');
+    assert.equal((await admin.post('/?page=media',{action:'delete_media',id:image.id})).status,422,'l’image validée est toujours protégée');
+    assert.equal((await admin.post('/',{action:'restore_page',id:'espoir-de-vie',version:String(version('espoir-de-vie'))})).status,303);
+    const galleries=structuredClone(pageRecord('espoir-de-vie').draft['data.galleries']).reverse();
+    galleries[0].photos.reverse();galleries[0].title={fr:'Galerie validée de recette',en:'Approved test gallery'};
+    assert.equal((await save('espoir-de-vie','galeries',{'data.galleries':galleries})).status,303);
+    assert.equal((await ready('espoir-de-vie')).status,303);
+    assert.deepEqual((await pageExport()).pages['espoir-de-vie']['data.galleries'],galleries);
+    if(process.env.BARUCK_TEST_CHROME){
+      const browser=spawnSync(process.execPath,[path.join(directory,'tests/browser-form.mjs'),origin,'page-galleries'],{input:JSON.stringify({cookie:admin.cookie}),encoding:'utf8',timeout:60000});
+      assert.equal(browser.status,0,browser.stderr||browser.stdout);
+      assert.doesNotMatch(JSON.stringify((await pageExport()).pages['espoir-de-vie']),/DERNIERE PHOTO PRIVEE/);
+    }
+    assert.equal((await pageExport()).pageSchema,4);
+  });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);
     const response = await admin.post('/?page=publication', { action: 'export' });
@@ -640,7 +694,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const exported = JSON.parse(response.html);
     assert.ok(exported.articles.some((item) => item.slug === 'recette-mysql'));
     assert.ok(!exported.articles.some((item) => item.slug === 'brouillon-prive'));
-    assert.equal(exported.media.length, 1);
+    assert.equal(exported.media.length, 2);
     assert.ok(!response.html.includes(adminEmail));
     assert.ok(!response.html.includes(password));
     assert.ok(!response.html.includes(secret.password));
