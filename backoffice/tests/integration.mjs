@@ -282,6 +282,26 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', '-r', 'session_save_path("/tmp/baruck-data/sessions"); session_id($argv[1]); session_start(); unset($_SESSION["email_verified"]); session_write_close();', browser.cookie.split('=')[1]]);
     assert.equal((await browser.request('/?page=media_api')).status, 401);
   });
+  await t.test('adresse de recette puis adresse client : le serveur choisit le destinataire et révoque l’ancien accès', async () => {
+    const { browser, email } = await freshLogin('client-recipient', 'admin');
+    let previous = email;
+    for (const target of ['gassaza60@gmail.com', 'jokrasso2@gmail.com']) {
+      docker(['exec', '-i', container, 'php', 'bin/install.php', 'change-email'], JSON.stringify({ email: previous, new_email: target }));
+      assert.equal((await browser.request('/?page=media_api')).status, 401, 'ancienne session révoquée');
+      assert.equal((await browser.post('/', { action: 'login', email: previous, password })).status, 422);
+      mailbox.allow();
+      const otherAddress = target === 'gassaza60@gmail.com' ? 'jokrasso2@gmail.com' : 'gassaza60@gmail.com';
+      assert.equal((await browser.post('/', { action: 'login', email: target, password, to: otherAddress })).status, 303);
+      assert.equal((await browser.request('/?page=media_api')).status, 401, 'le mot de passe seul ne suffit toujours pas');
+      const pending = await browser.request('/?page=verify');
+      assert.ok(pending.html.includes(target.slice(0, 2) + '***@gmail.com'));
+      const code = mailbox.code(target); // Transport fichier privé : aucun email réel.
+      assert.ok(!pending.html.includes(code));
+      assert.equal((await browser.post('/', { action: 'verify_code', code, email: otherAddress })).status, 303);
+      assert.equal((await browser.request('/?page=media_api')).status, 200);
+      previous = target;
+    }
+  });
   await t.test('rédacteur : brouillons autorisés, validation et comptes interdits', async () => {
     assert.equal((await editor.request('/?page=users')).status, 403);
     assert.equal((await editor.post('/?page=edit', { ...fields, status: 'ready' })).status, 403);

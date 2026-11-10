@@ -28,6 +28,17 @@ test('codes de connexion : transport mail réel capturé sans aucun envoi extern
     assert.match(message, /012345/);
     assert.match(message, /Content-Transfer-Encoding: quoted-printable/);
   });
+  await t.test('production : les adresses de recette et du client restent des destinataires distincts', async () => {
+    await configure();
+    for (const email of ['gassaza60@gmail.com', 'jokrasso2@gmail.com']) {
+      assert.equal(send(email).status, 0);
+      const message = await fs.readFile(capture, 'utf8');
+      assert.ok(message.includes('To: ' + email));
+      assert.equal((message.match(/^To:/gm) ?? []).length, 1);
+      assert.doesNotMatch(message, /^(?:Cc|Bcc):/im);
+      assert.ok(!message.includes(email === 'jokrasso2@gmail.com' ? 'gassaza60@gmail.com' : 'jokrasso2@gmail.com'));
+    }
+  });
   await t.test('refus du transport et injections d’en-têtes ne donnent jamais un succès', async () => {
     await fs.writeFile(failure, 'refus');
     const refused = send();

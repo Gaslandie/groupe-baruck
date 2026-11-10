@@ -20,5 +20,8 @@ return [
     'contact_mail' => ['from' => '', 'to' => 'jokrasso2@gmail.com'],
     // Les codes utilisent par défaut l’expéditeur contact_mail.from. Le destinataire
     // est toujours l’adresse du compte enregistrée en base, jamais celle du formulaire.
+    // Production : conserver « mail ». « file » est réservé aux essais locaux privés.
+    // Modifier l’identifiant avec la commande CLI change-email, sans changer les
+    // coordonnées publiques ni contact_mail.to. Aucun destinataire de test ici.
     'login_mail' => ['from' => '', 'transport' => 'mail'],
 ];
