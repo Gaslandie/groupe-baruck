@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import type { ReactNode } from "react";
 import Link from "next/link";
 
@@ -32,10 +31,10 @@ export function AboutMilestones() {
       className="bg-ink px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] text-ivory"
     >
       <AboutSectionHead
-        eyebrow={t("Repères")}
-        title={t("Des initiatives,")}
-        emphasis={t("dans le temps.")}
-        text={t("Cette chronologie rassemble les dates déjà documentées pour le dirigeant, la JECA et Espoir de Vie. L’histoire propre du Groupe sera complétée après validation.")}
+        eyebrow={pageText("groupe", "AboutMilestones.1")}
+        title={pageText("groupe", "AboutMilestones.2")}
+        emphasis={pageText("groupe", "AboutMilestones.3")}
+        text={pageText("groupe", "AboutMilestones.4")}
         tone="light"
       />
 
@@ -66,7 +65,7 @@ export function AboutMilestones() {
       </ol>
 
       <div className="reveal mt-[clamp(3rem,5vw,4.5rem)] max-w-[540px] border-t border-[rgba(255,255,255,.18)] pt-[1.4rem]">
-        <p className="m-0 text-label uppercase tracking-[.15em] text-[rgba(255,255,255,.75)]">{t("Création du Groupe Baruck")}</p>
+        <p className="m-0 text-label uppercase tracking-[.15em] text-[rgba(255,255,255,.75)]">{pageText("groupe", "AboutMilestones.5")}</p>
       </div>
     </section>
   );

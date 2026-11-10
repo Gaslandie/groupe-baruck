@@ -96,6 +96,7 @@ jobs:
           exclude: |
             config.local.php
             storage/**
+            bin/backup.php
       - name: Fetch the private publication snapshot
         id: snapshot
         if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
@@ -150,6 +151,37 @@ jobs:
           exclude: |
             .well-known/**
             cgi-bin/**
+      - name: Verify public pages and protected back office
+        if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs/promises';
+          import crypto from 'node:crypto';
+          const get = async url => {
+            const response = await fetch(url, { redirect: 'error', signal: AbortSignal.timeout(30000), headers: { 'Cache-Control': 'no-cache' } });
+            if (!response.ok) throw new Error(`Delivery check failed: ${url} (HTTP ${response.status})`);
+            return response;
+          };
+          const pages = JSON.parse(await fs.readFile('content/pages.json', 'utf8'));
+          for (const language of ['fr','en']) for (const {route} of Object.values(pages)) {
+            const url = new URL((language === 'en' ? '/en' : '') + route, 'https://groupebaruck.com');
+            url.searchParams.set('delivery', process.env.GITHUB_SHA);
+            const html = await (await get(url)).text();
+            if (!html.includes(`lang="${language}"`) || !html.includes('/_next/static/') || !html.includes('<main')) throw new Error(`Site page unavailable: ${url.pathname}`);
+            console.log(`Verified ${url.pathname}`);
+          }
+          for (const name of ['editorial.js','pages.js','media-picker.js']) {
+            const bytes = Buffer.from(await (await get(`https://admin.groupebaruck.com/${name}?delivery=${process.env.GITHUB_SHA}`)).arrayBuffer());
+            const local = await fs.readFile(`backoffice/public/${name}`);
+            const hash = value => crypto.createHash('sha256').update(value).digest('hex');
+            if (hash(bytes) !== hash(local)) throw new Error(`Back-office file mismatch: ${name}`);
+          }
+          const login = await (await get('https://admin.groupebaruck.com/?page=pages')).text();
+          if (!login.includes('Recevoir mon code')) throw new Error('Private pages must require sign-in.');
+          const media = await fetch('https://admin.groupebaruck.com/?page=media_api', { redirect:'error', signal:AbortSignal.timeout(30000) });
+          if (media.status !== 401) throw new Error('Anonymous media access must be denied.');
+          console.log('Verified deployed back-office files and anonymous access denial.');
+          NODE
       - name: Confirm the publication on the public site
         if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
         env:

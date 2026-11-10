@@ -17,3 +17,6 @@ backoffice/public/*.woff2
 backoffice/dist/
 .backoffice-content/
 tools/dewatermark/planches/
+
+/backoffice/public/marked.esm.js
+/backoffice/public/marked-license.txt

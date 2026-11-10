@@ -21,6 +21,7 @@ fs.writeFileSync(path.join(fixture, "public/images/actualites/test.png"), Buffer
 // Node 24 lit TypeScript nativement ; seule la résolution de l’alias Next est ajoutée.
 registerHooks({
   resolve(specifier, context, nextResolve) {
+    if (specifier.startsWith("@content/")) return nextResolve(new URL(`../content/${specifier.slice(9)}`, import.meta.url).href, context);
     return nextResolve(specifier.startsWith("@/")
       ? new URL(`../src/${specifier.slice(2)}.ts`, import.meta.url).href
       : specifier, context);

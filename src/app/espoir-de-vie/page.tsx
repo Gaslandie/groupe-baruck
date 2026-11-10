@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageMetadata } from "@/lib/page-metadata";
 
 import type { Metadata, Viewport } from "next";
 
@@ -22,10 +22,10 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { espoirDeVieSchema } from "@/lib/structured-data";
 
 const description =
-  t("Découvrez Espoir de Vie, ses actions en faveur des enfants, des familles et des personnes vulnérables en Côte d’Ivoire, en Guinée et au Burkina Faso.");
+  pageMetadata("espoir-de-vie").description;
 
 export const metadata: Metadata = {
-  title: { absolute: t("Espoir de Vie — Protéger, accompagner, redonner espoir") },
+  title: { absolute: pageMetadata("espoir-de-vie").title },
   description,
   alternates: pageAlternates(site.url + routes.edv.slice(1)),
   openGraph: socialMetadata(edvLogo),

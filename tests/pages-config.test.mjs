@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import { test } from "node:test";
 import matter from "gray-matter";
-import { categoryLabels } from "../src/data/actualites.ts";
+import { registerHooks } from "node:module";
+registerHooks({resolve(specifier,context,nextResolve) {
+  if (specifier.startsWith("@/")) return nextResolve(new URL(`../src/${specifier.slice(2)}.ts`,import.meta.url).href,context);
+  if (specifier.startsWith("@content/")) return nextResolve(new URL(`../content/${specifier.slice(9)}`,import.meta.url).href,context);
+  return nextResolve(specifier,context);
+}});
+const { categoryLabels } = await import("../src/data/actualites.ts");
 
 const source = fs.readFileSync(new URL("../.pages.yml", import.meta.url), "utf8");
 const config = matter(`---\n${source}\n---`).data;

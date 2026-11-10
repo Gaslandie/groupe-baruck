@@ -11,7 +11,7 @@ namespace Baruck;
 function textGroups(): array
 {
     return [
-        'heroSlides' => ['Diaporama d’accueil', 'Les grands volets qui défilent en haut de la page d’accueil.', 60, 260],
+        'heroSlides' => ['Présentations principales', 'Les trois présentations du Groupe, de la JECA et d’Espoir de Vie sur l’accueil. Le texte du Groupe est aussi repris sur sa page.', 60, 260],
         'activities' => ['Activités du Groupe', 'Les cartes des secteurs d’activité, plus bas sur la page d’accueil.', 40, 130],
     ];
 }
@@ -37,5 +37,6 @@ function validateTextes(array $input): array
 
 function saveTextes(array $input, array $user): void
 {
-    saveSetting('textes', validateTextes($input), $input['version'] ?? 0, $user, 'Textes de l’accueil modifiés', 'Page d’accueil');
+    requireAdmin($user);
+    throw new ValidationError('Les textes d’accueil se modifient maintenant dans Pages, puis Accueil. Rechargez cette page pour conserver vos deux versions.');
 }

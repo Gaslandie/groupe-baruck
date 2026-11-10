@@ -12,6 +12,7 @@ try {
         $seed = json_decode(file_get_contents(dirname(__DIR__) . '/seed.json'), true, 512, JSON_THROW_ON_ERROR);
         $migrated = (bool) query('SELECT name FROM schema_migrations WHERE name=?', ['editorial-snapshots-v1'])->fetch();
         transaction(function () use ($seed, $migrated) {
+            if ($migrated) return; // Une réinstallation ne recrée pas les articles retirés.
             foreach ($seed['articles'] as $article) {
                 // Ne jamais écraser un contenu modifié lors d’une réinstallation.
                 if (query('SELECT id FROM articles WHERE slug=?', [$article['slug']])->fetch()) continue;
@@ -24,17 +25,23 @@ try {
                 }
             }
         });
-        transaction(function () use ($seed) {
+        transaction(function () use ($seed, $migrated) {
+            if ($migrated) return; // La boutique existante reste la seule référence.
             $rank = 0;
             foreach ($seed['products'] as $product) {
                 $rank++;
                 // Ne jamais écraser un article modifié lors d’une réinstallation.
                 if (query('SELECT id FROM products WHERE slug=?', [$product['id']])->fetch()) continue;
-                query('INSERT INTO products (id,slug,name,category,images,position,status,updated_at) VALUES (?,?,?,?,?,?,?,?)', [id(), $product['id'], $product['name'], $product['category'], json($product['images']), $rank, 'ready', now()]);
+                $productId=id();
+                query('INSERT INTO products (id,slug,name,category,images,position,status,updated_at) VALUES (?,?,?,?,?,?,?,?)', [$productId, $product['id'], $product['name'], $product['category'], json($product['images']), $rank, 'ready', now()]);
+                if (query('SELECT name FROM schema_migrations WHERE name=?',['product-snapshots-v1'])->fetch()) validateProductPublication(query('SELECT * FROM products WHERE id=?',[$productId])->fetch());
             }
         });
-        migrateEditorial();
+        ensureEditorialSchema();
         echo "Tables initialisées ; actualités et boutique existantes préservées.\n";
+    } elseif ($command === 'change-email') {
+        changeLoginEmail(json_decode(stream_get_contents(STDIN), true, 32, JSON_THROW_ON_ERROR));
+        echo "Identifiant modifié ; mot de passe conservé ; sessions et codes invalidés.\n";
     } elseif ($command === 'user' || $command === 'reset-password') {
         // Entrée JSON sur stdin : aucun mot de passe dans l’historique de commande.
         $input = json_decode(stream_get_contents(STDIN), true, 32, JSON_THROW_ON_ERROR);

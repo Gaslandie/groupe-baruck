@@ -1,9 +1,11 @@
+import { whatsappRequests } from "./site";
+import { pageValue } from "@/lib/page-content";
 import { translate as t } from "../lib/language.ts";
 
 import type { ReactNode } from "react";
 
 import { edvPhotos } from "./espoir-de-vie";
-import { jecaGalleries } from "./jeca";
+import { jecaGalleries, jecaPortrait } from "./jeca";
 import { brandHero } from "./marque-baruck";
 import {
   hostessesHero,
@@ -11,7 +13,7 @@ import {
   studioHero,
   type ImageAsset,
 } from "./media";
-import { routes, whatsappRequests } from "./site";
+
 import { siteTexts } from "./textes";
 
 /** Second lien d'une section : discret, sans flèche. */
@@ -64,13 +66,7 @@ export type PageTeaser = {
  * deux fois sur l'accueil (2026-10-01) : juste sous le hero, puis à la place
  * de la photo dans la section du studio.
  */
-export const studioVideo: TeaserVideo = {
-  src: "/videos/presentation-studio-photo.mp4",
-  poster: "/images/services/studio-photo-video.webp",
-  width: 640,
-  height: 360,
-  label: t("Vidéo de présentation du Studio Photo Baruck la Prospérité"),
-};
+export const studioVideo: TeaserVideo = { src: pageValue<`/${string}`>("home", "video.src"), label: pageValue<string>("home", "video.label"), poster: pageValue<ImageAsset>("home", "video.poster").src, width: 640, height: 360 };
 
 /**
  * Activités principales du Groupe : les trois volets qui défilaient dans le
@@ -86,32 +82,32 @@ export const mainActivities: PageTeaser[] = [
     band: true,
     title: siteTexts.heroSlides["guinee"].title,
     text: siteTexts.heroSlides["guinee"].description,
-    eyebrow: t("Groupe Baruck · Guinée"),
+    eyebrow: pageValue<string>("home", "activite-guinee.eyebrow"),
   },
   {
     id: "activite-studio",
     tone: "paper",
     title: siteTexts.heroSlides["studio-photo"].title,
     text: siteTexts.heroSlides["studio-photo"].description,
-    eyebrow: t("Baruck Communication · Guinée"),
+    eyebrow: pageValue<string>("home", "activite-studio.eyebrow"),
     image: { ...studioHero, position: "center" },
     video: studioVideo,
     href: whatsappRequests.studioPrices,
-    linkLabel: t("Connaître les prix"),
+    linkLabel: pageValue<string>("home", "activite-studio.linkLabel"),
     externalLink: true,
-    secondary: { label: t("Voir les détails"), href: routes.studio },
+    secondary: pageValue<TeaserAction>("home", "activite-studio.secondary"),
   },
   {
     id: "activite-hotesses",
     tone: "ink",
     title: siteTexts.heroSlides["hotesses"].title,
     text: siteTexts.heroSlides["hotesses"].description,
-    eyebrow: t("Baruck Communication · Guinée"),
+    eyebrow: pageValue<string>("home", "activite-hotesses.eyebrow"),
     image: { ...hostessesHero, position: "center 38%" },
     href: whatsappRequests.hostessBooking,
-    linkLabel: t("Réserver une équipe"),
+    linkLabel: pageValue<string>("home", "activite-hotesses.linkLabel"),
     externalLink: true,
-    secondary: { label: t("Voir les détails"), href: routes.hostesses },
+    secondary: pageValue<TeaserAction>("home", "activite-hotesses.secondary"),
   },
 ];
 
@@ -159,45 +155,45 @@ export const pageTeasers: PageTeaser[] = [
     id: "apercu-marque",
     tone: "ink",
     image: brandHero,
-    eyebrow: t("La marque Baruck"),
-    title: t("L’élégance,"),
-    emphasis: t("notre affaire."),
-    text: t("Vêtements, sacs, chaussures, parfums et accessoires : découvrez l’univers Baruck et préparez votre commande par WhatsApp."),
-    href: routes.brand,
-    linkLabel: t("Découvrir la collection"),
+    eyebrow: pageValue<string>("home", "apercu-marque.eyebrow"),
+    title: pageValue<string>("home", "apercu-marque.title"),
+    emphasis: pageValue<string>("home", "apercu-marque.emphasis"),
+    text: pageValue<string>("home", "apercu-marque.text"),
+    href: pageValue<string>("home", "apercu-marque.href"),
+    linkLabel: pageValue<string>("home", "apercu-marque.linkLabel"),
   },
   {
     id: "apercu-about",
     tone: "ink",
     image: { ...presidentOnu1, position: "center 30%" },
-    eyebrow: t("Le Groupe"),
-    title: t("Un homme, une vision,"),
-    emphasis: t("un groupe."),
-    text: t("À la tête du Groupe Baruck, il porte une vision fondée sur l’entrepreneuriat, la création de valeur et l’engagement au service de la société."),
-    href: routes.group,
-    linkLabel: t("Découvrir le Groupe"),
+    eyebrow: pageValue<string>("home", "apercu-about.eyebrow"),
+    title: pageValue<string>("home", "apercu-about.title"),
+    emphasis: pageValue<string>("home", "apercu-about.emphasis"),
+    text: pageValue<string>("home", "apercu-about.text"),
+    href: pageValue<string>("home", "apercu-about.href"),
+    linkLabel: pageValue<string>("home", "apercu-about.linkLabel"),
   },
   {
     id: "apercu-jeca",
     tone: "jeca",
-    image: jecaGalleries[2].photos[0],
-    eyebrow: "JECA · Jeunes Entrepreneurs Chrétiens Africains",
-    title: t("Réunir la diaspora."),
-    emphasis: t("Investir en Afrique."),
-    text: t("La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique."),
-    href: routes.jeca,
-    linkLabel: t("Voir les éditions"),
+    image: jecaGalleries.at(-1)?.photos[0] ?? jecaPortrait,
+    eyebrow: pageValue<string>("home", "apercu-jeca.eyebrow"),
+    title: pageValue<string>("home", "apercu-jeca.title"),
+    emphasis: pageValue<string>("home", "apercu-jeca.emphasis"),
+    text: pageValue<string>("home", "apercu-jeca.text"),
+    href: pageValue<string>("home", "apercu-jeca.href"),
+    linkLabel: pageValue<string>("home", "apercu-jeca.linkLabel"),
   },
   {
     id: "apercu-edv",
     tone: "edv",
     image: { ...edvPhotos.divoKitsScolaires, position: "center 40%" },
-    eyebrow: t("Engagement humanitaire · Afrique de l’Ouest"),
-    title: "Espoir de Vie.",
-    emphasis: t("Agir pour les plus vulnérables."),
-    text: t("Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire."),
-    href: routes.edv,
-    linkLabel: t("Découvrir les actions"),
+    eyebrow: pageValue<string>("home", "apercu-edv.eyebrow"),
+    title: pageValue<string>("home", "apercu-edv.title"),
+    emphasis: pageValue<string>("home", "apercu-edv.emphasis"),
+    text: pageValue<string>("home", "apercu-edv.text"),
+    href: pageValue<string>("home", "apercu-edv.href"),
+    linkLabel: pageValue<string>("home", "apercu-edv.linkLabel"),
   },
 ];
 
@@ -207,10 +203,10 @@ export const pageTeasers: PageTeaser[] = [
  * La section reprend l'article portant ce slug : titre, chapeau, photos et lien.
  * Slug inconnu ou article retiré : la section disparaît, l'accueil reste entier.
  */
-export const featuredEventSlug = "top-modele-baruck-guinee-2026";
+export const featuredEventSlug = pageValue<string>("home", "featuredEventSlug");
 
 /** Sur-titre de la section : ce que l'on met en avant, pas le titre de l'article. */
-export const featuredEventEyebrow = t("L’événement");
+export const featuredEventEyebrow = pageValue<string>("home", "featuredEventEyebrow");
 
 /**
  * Les autres concours organisés en Guinée, montrés en petit sous l'événement
@@ -218,13 +214,10 @@ export const featuredEventEyebrow = t("L’événement");
  * d'accueil ne les annonçait nulle part. Ordre du plus récent au plus ancien.
  * Un slug inconnu est simplement ignoré, la section reste entière.
  */
-export const featuredAlsoSlugs = [
-  "top-modele-baruck-guinee-2025",
-  "miss-baruck-guinee-2025",
-];
+export const featuredAlsoSlugs = pageValue<string[]>("home", "featuredAlsoSlugs");
 
 /** Sur-titre de la liste secondaire. */
-export const featuredAlsoTitle = t("Les autres concours Baruck");
+export const featuredAlsoTitle = pageValue<string>("home", "featuredAlsoTitle");
 
 /** Photos d’origine des trois concours sur l’accueil, conservées quand
  * le back-office fournit un article sans groupes. Ne modifie pas les articles. */

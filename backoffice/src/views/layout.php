@@ -1,8 +1,8 @@
 <?php
 namespace Baruck;
 
-$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'boutique' => 'Boutique', 'product' => empty($product['id']) ? 'Nouvel article' : 'Modifier l’article', 'media' => 'Médiathèque', 'coordonnees' => 'Coordonnées', 'textes' => 'Textes de l’accueil', 'stats' => 'Statistiques', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
-$title = $titles[$page] ?? 'Administration';
+$titles = ['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'edit' => empty($article['id']) ? 'Nouvelle actualité' : 'Modifier l’actualité', 'history' => 'Historique de l’actualité', 'boutique' => 'Boutique', 'product' => empty($product['id']) ? 'Nouvel article' : 'Modifier l’article', 'media' => 'Médiathèque', 'coordonnees' => 'Coordonnées', 'pages' => 'Pages', 'page_edit' => 'Modifier la page', 'stats' => 'Statistiques', 'users' => 'Équipe & accès', 'account' => 'Mon compte', 'publication' => 'Publication', 'login' => 'Connexion', 'setup' => 'Bienvenue', 'missing' => 'Page introuvable'];
+$title = $page === 'verify' ? 'Confirmer la connexion' : ($page === 'page_edit' && $pageModel ? $pageModel['label'] : ($titles[$page] ?? 'Administration'));
 $inputClass = 'mt-2 w-full rounded-lg border border-line bg-ivory px-4 py-3 text-sm focus:border-accent';
 $buttonClass = 'inline-flex items-center justify-center rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-ivory hover:bg-[#b64820] disabled:opacity-50';
 $secondaryClass = 'inline-flex items-center justify-center rounded-lg border border-line px-5 py-3 text-sm font-semibold hover:bg-paper-deep';
@@ -36,17 +36,34 @@ function statusLabel(array $row): string {
     <div><p class="eyebrow">Groupe Baruck</p><h1 class="font-display text-[clamp(2.8rem,5vw,5rem)] leading-[1.05]">L’espace de votre<br><span class="text-accent">équipe éditoriale.</span></h1><p class="mt-7 max-w-[410px] text-base leading-relaxed text-ink/65">Préparez les actualités, organisez les images et faites vivre les contenus du Groupe.</p><p class="mt-12 text-xs uppercase tracking-[.18em] text-ink/50">Vision · Excellence · Impact</p></div>
     <section class="rounded-2xl border border-line bg-ivory p-7 shadow-sm tablet:p-10" aria-labelledby="login-title">
         <p class="mb-3 text-xs font-semibold uppercase tracking-[.18em] text-accent"><?= $setup ? 'Première ouverture locale' : 'Administration' ?></p>
-        <h2 id="login-title" class="font-display text-3xl"><?= $setup ? 'Créez votre compte' : 'Ravi de vous retrouver' ?></h2>
-        <p class="mt-3 text-sm leading-relaxed text-ink/60"><?= $setup ? 'Choisissez les identifiants de votre compte administrateur pour cette installation locale.' : 'Connectez-vous avec votre compte Baruck.' ?></p>
+        <h2 id="login-title" class="font-display text-title"><?= $setup ? 'Créez votre compte' : ($page === 'verify' ? 'Vérifiez votre e-mail' : 'Ravi de vous retrouver') ?></h2>
+        <?php if ($page === 'verify'): ?>
+        <p class="mt-3 break-words text-small leading-relaxed text-ink/60">Un code a été envoyé à <strong><?= e(maskedLoginEmail($pending['email'])) ?></strong>. Il est valable 10 minutes.</p>
+        <?php else: ?>
+        <p class="mt-3 text-small leading-relaxed text-ink/60"><?= $setup ? 'Choisissez les identifiants de votre compte administrateur pour cette installation locale.' : 'Connectez-vous avec votre compte Baruck. Un code vous sera ensuite envoyé par e-mail.' ?></p>
+        <?php endif; ?>
         <?php if (isset($_SESSION['recovery'])): ?><p role="status" class="mt-6 rounded-lg bg-paper p-4 text-sm">Votre session a expiré. Reconnectez-vous avec le même compte pour retrouver votre saisie. Elle reste disponible pendant une heure.</p><?php endif; ?>
         <?php if ($error): ?><p role="alert" class="mt-6 rounded-lg border border-[#b64820]/30 bg-[#b64820]/10 p-4 text-sm"><?= e($error) ?></p><?php endif; ?>
+        <?php if ($flash): ?><p role="status" class="mt-6 rounded-lg bg-paper p-4 text-small"><?= e($flash) ?></p><?php endif; ?>
+        <?php if ($page === 'verify'): ?>
+        <form method="post" class="mt-7 space-y-5"><?= csrfField() ?><input type="hidden" name="action" value="verify_code">
+            <div><label for="code" class="block text-small font-bold">Code à 6 chiffres</label><input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required autofocus aria-describedby="code-help" class="mt-2 w-full rounded-lg border border-line bg-paper px-4 py-3 font-display text-lead tracking-[.2em] focus:border-accent"><p id="code-help" class="mt-2 text-caption text-ink/60">Utilisez le dernier code reçu. Vous pouvez le copier et le coller.</p></div>
+            <button type="submit" class="inline-flex w-full items-center justify-center rounded-lg bg-accent px-5 py-3 text-small font-bold text-ivory hover:bg-[#b64820]">Confirmer ma connexion</button>
+        </form>
+        <p class="mt-6 text-caption leading-relaxed text-ink/60">E-mail absent ? Vérifiez les courriers indésirables. Attendez une minute avant de demander un nouveau code.</p>
+        <div class="mt-4 flex flex-wrap gap-4">
+            <form method="post"><?= csrfField() ?><input type="hidden" name="action" value="resend_code"><button class="text-small underline underline-offset-4" type="submit">Renvoyer un code</button></form>
+            <form method="post"><?= csrfField() ?><input type="hidden" name="action" value="cancel_login"><button class="text-small underline underline-offset-4" type="submit">Changer de compte</button></form>
+        </div>
+        <?php else: ?>
         <form method="post" class="mt-7 space-y-5"><?= csrfField() ?><input type="hidden" name="action" value="<?= $setup ? 'setup' : 'login' ?>">
             <?php if ($setup): ?><div><?php field('Votre nom', 'name', $_POST['name'] ?? '', 'text', 'required maxlength="100" autocomplete="name"'); ?></div><?php endif; ?>
             <div><?php field('Adresse e-mail', 'email', $_POST['email'] ?? '', 'email', 'required maxlength="190" autocomplete="username"'); ?></div>
             <div><?php field('Mot de passe', 'password', '', 'password', 'required ' . ($setup ? 'minlength="12" maxlength="72" autocomplete="new-password"' : 'autocomplete="current-password"')); ?><?php if ($setup): ?><p class="mt-2 text-xs text-ink/60">Au moins 12 caractères. Une phrase de plusieurs mots convient.</p><?php endif; ?></div>
-            <button class="<?= $buttonClass ?> w-full" type="submit"><?= $setup ? 'Créer mon compte et entrer' : 'Se connecter' ?> <span aria-hidden="true" class="ml-3">→</span></button>
+            <button class="<?= $buttonClass ?> w-full" type="submit"><?= $setup ? 'Créer mon compte' : 'Recevoir mon code' ?></button>
         </form>
         <?php if (!$setup): ?><p class="mt-6 text-xs leading-relaxed text-ink/60">En cas de mot de passe oublié, contactez la personne qui gère les accès au site.</p><?php endif; ?>
+        <?php endif; ?>
     </section>
 </main>
 <?php else: ?>
@@ -54,7 +71,7 @@ function statusLabel(array $row): string {
     <aside class="bg-ink px-6 py-7 text-ivory desktop:sticky desktop:top-0 desktop:h-screen desktop:px-7">
         <a href="/" class="font-display text-3xl">Baruck<span class="text-accent">.</span></a><p class="mt-2 text-[10px] uppercase tracking-[.22em] text-ivory/45">Administration</p>
         <nav aria-label="Administration" class="mt-9 flex flex-wrap gap-2 desktop:flex-col">
-        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'boutique' => 'Boutique', 'media' => 'Médiathèque', 'coordonnees' => 'Coordonnées', 'textes' => 'Textes de l’accueil', 'stats' => 'Statistiques', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['boutique', 'coordonnees', 'textes', 'publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles') || ($page === 'product' && $key === 'boutique'); ?>
+        <?php foreach (['dashboard' => 'Vue d’ensemble', 'articles' => 'Actualités', 'boutique' => 'Boutique', 'media' => 'Médiathèque', 'coordonnees' => 'Coordonnées', 'pages' => 'Pages', 'stats' => 'Statistiques', 'publication' => 'Publication', 'users' => 'Équipe & accès', 'account' => 'Mon compte'] as $key => $label): if (in_array($key, ['boutique', 'coordonnees', 'pages', 'publication', 'users'], true) && $user['role'] !== 'admin') continue; $active = $page === $key || (in_array($page, ['edit', 'history'], true) && $key === 'articles') || ($page === 'product' && $key === 'boutique') || ($page === 'page_edit' && $key === 'pages'); ?>
             <a href="<?= e(url($key)) ?>" <?= $active ? 'aria-current="page"' : '' ?> class="rounded-lg px-4 py-3 text-sm <?= $active ? 'bg-ivory/10 text-ivory' : 'text-ivory/60 hover:bg-ivory/5 hover:text-ivory' ?>"><?= e($label) ?></a>
         <?php endforeach; ?>
         </nav>

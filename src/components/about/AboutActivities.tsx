@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import { activities } from "@/data/home";
 
 import { AboutSectionHead } from "./AboutSectionHead";
@@ -24,10 +23,10 @@ export function AboutActivities() {
       className="scroll-mt-[92px] bg-paper px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow={t("Activités principales")}
-        title={t("Les domaines")}
-        emphasis={t("du groupe.")}
-        text={t("Autour du pôle guinéen, le groupe réunit des domaines complémentaires : hospitalité, création, production et développement.")}
+        eyebrow={pageText("groupe", "AboutActivities.1")}
+        title={pageText("groupe", "AboutActivities.2")}
+        emphasis={pageText("groupe", "AboutActivities.3")}
+        text={pageText("groupe", "AboutActivities.4")}
         tone="dark"
       />
 
@@ -38,7 +37,7 @@ export function AboutActivities() {
             className="reveal flex min-h-[180px] flex-col border-b border-r border-line bg-ivory p-[clamp(1.3rem,2vw,1.9rem)] max-tablet:min-h-0"
           >
             <dt className="text-micro uppercase tracking-[.18em] text-[#8d8a84]">
-              {formatNumber(index + 1)} / {formatNumber(activities.length)}
+              {formatNumber(index + 1)} {" " + pageText("groupe", "AboutActivities.5") + " "}{formatNumber(activities.length)}
             </dt>
             <p className="mb-0 mt-[1.1rem] text-balance font-display text-display-sm font-normal leading-[1.08] tracking-[-.03em]">
               {activity.title}

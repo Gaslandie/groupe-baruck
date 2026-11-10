@@ -13,6 +13,9 @@ function mediaCatalog(): array
     foreach ($seed['articles'] as $article) {
         if (!empty($article['cover'])) $descriptions[$article['cover']] = $article['coverAlt'] ?? '';
         foreach ($article['gallery'] ?? [] as $image) $descriptions[$image['src']] = $image['alt'];
+        foreach ($article['groups'] ?? [] as $group) {
+            foreach ($group['photos'] as $image) $descriptions[$image['src']] = $image['alt'];
+        }
     }
     foreach ($seed['products'] as $product) {
         foreach ($product['images'] as $image) $descriptions[$image['src']] = $image['alt'];
@@ -32,7 +35,7 @@ function mediaCatalog(): array
 function mediaApi(?array $user): never
 {
     header('Content-Type: application/json; charset=utf-8');
-    if (!$user) { http_response_code(401); echo json(['error' => 'Reconnectez-vous dans un autre onglet, puis réessayez. Votre article reste dans cet onglet.']); exit; }
+    if (!$user) { http_response_code(401); echo json(['error' => 'Reconnectez-vous dans un autre onglet, puis réessayez. Votre saisie reste dans cet onglet.']); exit; }
     try {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') echo json(['items' => mediaCatalog()]);
         elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {

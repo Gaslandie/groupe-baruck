@@ -1,8 +1,5 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, pageValue } from "@/lib/page-content";
 import Link from "next/link";
-
-import { routes } from "@/data/site";
 
 import { AboutSectionHead } from "./AboutSectionHead";
 const sharedCardStyles =
@@ -12,36 +9,36 @@ export function AboutRoles() {
   return (
     <section id="fonctions" className="bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)]">
       <AboutSectionHead
-        eyebrow={t("Ses fonctions")}
-        title={t("Quatre fonctions,")}
-        emphasis={t("une même exigence.")}
-        text={t("Seules les fonctions confirmées par la direction figurent sur cette page. Le parcours détaillé du président sera ajouté après validation.")}
+        eyebrow={pageText("groupe", "AboutRoles.1")}
+        title={pageText("groupe", "AboutRoles.2")}
+        emphasis={pageText("groupe", "AboutRoles.3")}
+        text={pageText("groupe", "AboutRoles.4")}
         tone="dark"
       />
       <div className="reveal-stagger grid grid-cols-4 gap-[1.1rem] max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
-        <Link href="/#activites" className={`${sharedCardStyles} border-line bg-ivory`}>
+        <Link href={pageValue<string>("groupe", "AboutRoles.5")} className={`${sharedCardStyles} border-line bg-ivory`}>
           <span className="text-micro tracking-[.15em] text-accent">01</span>
-          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{t("PDG du Groupe Baruck")}</h3>
-          <p className="m-0 text-small leading-[1.7] text-[#65645f]">{t("Il dirige le pôle économique et entrepreneurial du groupe et porte sa stratégie de développement à travers l’ensemble de ses activités.")}</p>
-          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{t("Voir les activités")}</i>
+          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{pageText("groupe", "AboutRoles.6")}</h3>
+          <p className="m-0 text-small leading-[1.7] text-[#65645f]">{pageText("groupe", "AboutRoles.7")}</p>
+          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{pageText("groupe", "AboutRoles.8")}</i>
         </Link>
-        <Link href={routes.jeca} className={`${sharedCardStyles} border-line bg-ivory`}>
+        <Link href={pageValue<string>("groupe", "AboutRoles.9")} className={`${sharedCardStyles} border-line bg-ivory`}>
           <span className="text-micro tracking-[.15em] text-accent">02</span>
-          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{t("Président de la JECA")}</h3>
-          <p className="m-0 text-small leading-[1.7] text-[#65645f]">{t("Jeunes Entrepreneurs Chrétiens Africains : une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.")}</p>
-          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{t("Découvrir la JECA")}</i>
+          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{pageText("groupe", "AboutRoles.10")}</h3>
+          <p className="m-0 text-small leading-[1.7] text-[#65645f]">{pageText("groupe", "AboutRoles.11")}</p>
+          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{pageText("groupe", "AboutRoles.12")}</i>
         </Link>
-        <Link href={routes.edv} className={`${sharedCardStyles} border-line bg-ivory`}>
+        <Link href={pageValue<string>("groupe", "AboutRoles.13")} className={`${sharedCardStyles} border-line bg-ivory`}>
           <span className="text-micro tracking-[.15em] text-accent">03</span>
-          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{t("Président de l’ONG Espoir de Vie")}</h3>
-          <p className="m-0 text-small leading-[1.7] text-[#65645f]">{t("Une action sociale consacrée à la protection des enfants, à l’accompagnement des familles et au soutien des personnes vulnérables.")}</p>
-          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{t("Découvrir l’ONG")}</i>
+          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{pageText("groupe", "AboutRoles.14")}</h3>
+          <p className="m-0 text-small leading-[1.7] text-[#65645f]">{pageText("groupe", "AboutRoles.15")}</p>
+          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{pageText("groupe", "AboutRoles.16")}</i>
         </Link>
-        <a href="#experience-onu" className={`${sharedCardStyles} border-ink bg-ink text-ivory`}>
+        <a href={pageValue<string>("groupe", "AboutRoles.17")} className={`${sharedCardStyles} border-ink bg-ink text-ivory`}>
           <span className="text-micro tracking-[.15em] text-accent">04</span>
-          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{t("Agent de développement · ONU 2016")}</h3>
-          <p className="m-0 text-small leading-[1.7] text-[rgba(255,255,255,.68)]">{t("Agent de développement pour la protection de l’enfant au sein des Nations Unies, en 2016.")}</p>
-          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{t("Voir cette expérience")}</i>
+          <h3 className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">{pageText("groupe", "AboutRoles.18")}</h3>
+          <p className="m-0 text-small leading-[1.7] text-[rgba(255,255,255,.68)]">{pageText("groupe", "AboutRoles.19")}</p>
+          <i aria-hidden="true" className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent">{pageText("groupe", "AboutRoles.20")}</i>
         </a>
       </div>
     </section>

@@ -45,9 +45,9 @@ function adviceList(array $items, string $empty = ''): void {
 <?php elseif ($page === 'boutique'):
     $search = is_string($_GET['q'] ?? null) ? substr($_GET['q'], 0, 120) : '';
     $rayon = array_key_exists($_GET['rayon'] ?? '', brandCategories()) ? $_GET['rayon'] : '';
-    $rows = query('SELECT id,name,category,images,status,position FROM products WHERE name LIKE ? AND (? = ? OR category = ?) ORDER BY position,id', ['%' . $search . '%', $rayon, '', $rayon])->fetchAll();
+    $rows = query('SELECT d.id,d.name,d.category,d.images,d.status,d.position,p.product_id AS published FROM products d LEFT JOIN product_publications p ON p.product_id=d.id WHERE d.name LIKE ? AND (? = ? OR d.category = ?) ORDER BY d.position,d.id', ['%' . $search . '%', $rayon, '', $rayon])->fetchAll();
     $catalog = array_column(mediaCatalog(), null, 'path');
-    $online = count(array_filter($rows, fn($row) => $row['status'] === 'ready'));
+    $online = count(array_filter($rows, fn($row) => !empty($row['published'])));
     // Réordonner n’a de sens que sur la boutique entière : la liste filtrée saute des voisins.
     $sortable = $search === '' && $rayon === '';
 ?>
@@ -59,7 +59,7 @@ function adviceList(array $items, string $empty = ''): void {
         <div class="flex flex-wrap items-center gap-4 p-4">
             <img src="<?= e($thumb['preview'] ?? '') ?>" alt="" width="<?= (int) ($thumb['width'] ?? 1) ?>" height="<?= (int) ($thumb['height'] ?? 1) ?>" loading="lazy" class="size-16 shrink-0 rounded-lg bg-paper object-contain">
             <div class="min-w-0 grow"><a href="<?= e(url('product', ['id' => $row['id']])) ?>" class="text-sm font-semibold underline-offset-4 hover:underline"><?= e($row['name']) ?></a><p class="mt-1 text-xs text-ink/60"><?= e(brandCategories()[$row['category']] ?? $row['category']) ?> · <?= count(productImages($row)) ?> photo(s)</p></div>
-            <span class="whitespace-nowrap rounded-full bg-paper px-3 py-1 text-xs"><?= $row['status'] === 'ready' ? 'En boutique' : 'Masqué' ?></span>
+            <span class="whitespace-nowrap rounded-full bg-paper px-3 py-1 text-xs"><?= !empty($row['published']) ? ($row['status']==='ready'?'En boutique':'En boutique · brouillon en cours') : 'Masqué' ?></span>
             <?php if ($sortable): ?>
             <div class="flex gap-2">
                 <form method="post"><?= csrfField() ?><input type="hidden" name="action" value="move_product"><input type="hidden" name="id" value="<?= e($row['id']) ?>"><input type="hidden" name="direction" value="up"><button class="<?= $secondaryClass ?> px-3 py-2" <?= $rank === 0 ? 'disabled' : '' ?> aria-label="Monter <?= e($row['name']) ?>">↑</button></form>
@@ -72,7 +72,8 @@ function adviceList(array $items, string $empty = ''): void {
     </div>
 <?php elseif ($page === 'product'): require __DIR__ . '/product.php'; ?>
 <?php elseif ($page === 'coordonnees'): require __DIR__ . '/coordonnees.php'; ?>
-<?php elseif ($page === 'textes'): require __DIR__ . '/textes.php'; ?>
+<?php elseif ($page === 'pages'): require __DIR__ . '/pages.php'; ?>
+<?php elseif ($page === 'page_edit'): require __DIR__ . '/page-editor.php'; ?>
 <?php elseif ($page === 'edit'): require __DIR__ . '/editor.php'; ?>
 <?php elseif ($page === 'history'): require __DIR__ . '/history.php'; ?>
 <?php elseif ($page === 'stats'): require __DIR__ . '/statistics.php'; ?>
@@ -99,7 +100,11 @@ function adviceList(array $items, string $empty = ''): void {
     <?php $publication = publicationState(); $job = $publication['job']; $enabled = publicationConfigured(); $busy = in_array($job['status'] ?? '', ['queued', 'running'], true) && strtotime($job['started_at'] ?? $job['requested_at']) >= time() - 3600; ?>
     <section class="mb-6 <?= $cardClass ?> p-7" <?= $busy ? 'data-publication-pending' : '' ?> aria-labelledby="publication-title">
         <h2 id="publication-title" class="font-display text-title">Publier sur le site</h2>
-        <p class="mt-3 text-body text-ink/65">Les actualités validées, les articles en boutique, les coordonnées et les textes enregistrés seront envoyés ensemble. Les brouillons restent privés.</p>
+        <p class="mt-3 text-body text-ink/65">Les pages, les actualités et les produits validés partent ensemble, en français et en anglais, avec leurs images et les coordonnées. Les brouillons restent privés.</p>
+        <dl class="mt-5 grid gap-4 tablet:grid-cols-3">
+            <?php foreach (['Pages modifiées et validées'=>count(publishedPages()), 'Actualités validées'=>$editorial['validated'], 'Produits validés'=>count(publishedProducts())] as $label=>$count): ?><div><dt class="text-caption text-ink/65"><?= e($label) ?></dt><dd class="mt-1 font-display text-title"><?= (int) $count ?></dd></div><?php endforeach; ?>
+        </dl>
+        <p class="mt-4 text-small text-ink/65">Pour chaque contenu, seule la dernière version validée est retenue. Les pages sans modification validée gardent leur contenu actuel. Les titres pour les moteurs de recherche et les textes communs suivent leurs pages.</p>
         <?php if (!$enabled): ?>
             <p class="mt-4 text-body"><?= config()['environment'] === 'local' ? 'Cette installation locale ne publie pas sur le site du client.' : 'La mise en ligne automatique doit être activée par la personne qui gère le site.' ?></p>
             <button type="button" class="<?= $buttonClass ?> mt-5 opacity-50" disabled>Publier sur le site</button>
@@ -113,7 +118,7 @@ function adviceList(array $items, string $empty = ''): void {
         <?php endif; ?>
         <?php if ($publication['published']): ?><p class="mt-4 text-small text-ink/65">Dernière mise en ligne confirmée : <?= e(str_replace(['T', 'Z'], [' ', ' UTC'], $publication['published']['published_at'])) ?>.</p><?php endif; ?>
     </section>
-    <div class="grid gap-4 tablet:grid-cols-3"><?php kpi('Actualités validées', (string) $editorial['validated'], 'retenues pour la prochaine publication'); kpi('Nouvelles versions', (string) $editorial['pendingExport'], $editorial['lastExport'] === '' ? 'aucune publication préparée' : 'depuis la dernière préparation'); kpi('Dernière préparation', $editorial['lastExport'] !== '' ? frenchDate(substr($editorial['lastExport'], 0, 10), true) : '—', $editorial['withdrawnSinceExport'] > 0 ? $editorial['withdrawnSinceExport'] . ' retrait(s) depuis' : ''); ?></div>
-    <section class="mt-6 max-w-3xl <?= $cardClass ?> p-7"><h2 class="font-display text-2xl">Préparer la mise en ligne</h2><p class="mt-3 text-sm leading-relaxed text-ink/65">Le fichier réunit la dernière version validée de chaque actualité et ses images. Les brouillons restent privés. Le téléchargement ne modifie pas le site : la mise en ligne reste une étape distincte.</p><form method="post" class="mt-6"><?= csrfField() ?><input type="hidden" name="action" value="export"><button class="<?= $buttonClass ?>">Télécharger les contenus validés</button></form></section>
+    <div class="grid gap-4 tablet:grid-cols-3"><?php kpi('Brouillons d’actualités', (string) ($editorial['unpublished'] + $editorial['revising']), 'restent privés'); kpi('Nouvelles versions d’actualités', (string) $editorial['pendingExport'], $editorial['lastExport'] === '' ? 'aucune publication préparée' : 'depuis la dernière préparation'); kpi('Dernière préparation', $editorial['lastExport'] !== '' ? frenchDate(substr($editorial['lastExport'], 0, 10), true) : '—', $editorial['withdrawnSinceExport'] > 0 ? $editorial['withdrawnSinceExport'] . ' retrait(s) depuis' : ''); ?></div>
+    <section class="mt-6 max-w-3xl <?= $cardClass ?> p-7"><h2 class="font-display text-2xl">Préparer la mise en ligne</h2><p class="mt-3 text-sm leading-relaxed text-ink/65">Le fichier réunit les pages, les actualités, les produits et leurs traductions validées, les images utilisées et les coordonnées. Les brouillons restent privés. Le téléchargement ne modifie pas le site : la mise en ligne reste une étape distincte.</p><form method="post" class="mt-6"><?= csrfField() ?><input type="hidden" name="action" value="export"><button class="<?= $buttonClass ?>">Télécharger les contenus validés</button></form></section>
     <section class="mt-8 max-w-3xl"><h2 class="mb-4 font-display text-2xl">Journal de l’équipe</h2><ol class="divide-y divide-line <?= $cardClass ?>"><?php foreach (query('SELECT a.action,a.subject,a.created_at,u.name FROM audit_log a LEFT JOIN users u ON u.id=a.user_id ORDER BY a.created_at DESC,a.id DESC LIMIT 30')->fetchAll() as $event): ?><li class="p-5"><p class="text-sm"><strong><?= e($event['action']) ?></strong> · <?= e($event['subject']) ?></p><p class="mt-1 text-xs text-ink/60"><?= e($event['name'] ?? 'Installation') ?> · <?= e(str_replace(['T', 'Z'], [' ', ' UTC'], $event['created_at'])) ?></p></li><?php endforeach; ?></ol></section>
 <?php else: ?><p>Cette page n’existe pas.</p><a href="/" class="mt-5 inline-block underline">Retour à l’accueil</a><?php endif; ?>

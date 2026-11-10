@@ -6,9 +6,11 @@ namespace Baruck;
 /** Même liste de destinations que le chargeur Next. Le build reste le contrôle final. */
 function validateDestination(string $destination, bool $image = false, string $alt = ''): void
 {
+    $original = $destination;
     $destination = html_entity_decode($destination, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     if ($destination === '' || preg_match('/[\x00-\x20\\\\]/', $destination)) throw new ValidationError('Un lien contient un espace ou un caractère non autorisé.');
     if ($image) {
+        if ($original !== $destination) throw new ValidationError('Utilisez le chemin d’image tel qu’il apparaît dans la médiathèque.');
         if (trim($alt) === '') throw new ValidationError('Décrivez chaque image insérée dans le texte.');
         imagePath($destination);
         return;

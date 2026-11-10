@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { PageTeaser as PageTeaserProps } from "@/data/home";
 import { asset } from "@/lib/asset";
 import { publicFileExists } from "@/lib/public-file";
+import { pageHrefIcon } from "@/lib/page-content";
 import { Icon } from "../ui/Icon";
 import { VideoPlayer } from "../ui/VideoPlayer";
 
@@ -86,7 +87,7 @@ export function PageTeaser({
           <Link href={href} className="text-link w-fit">
             {linkLabel}{" "}
             <span className={tone === "jeca" ? "text-jeca-yellow" : tone === "edv" ? "text-edv-gold" : ""}>
-              <Icon name="arrow-up-right" />
+              <Icon name={pageHrefIcon("home", href)} />
             </span>
           </Link>
       )}

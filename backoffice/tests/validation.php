@@ -47,6 +47,22 @@ check(Baruck\overHttps(['trusted_proxy' => true], ['HTTP_X_FORWARDED_PROTO' => '
 check(!Baruck\overHttps(['trusted_proxy' => true], ['HTTP_X_FORWARDED_PROTO' => 'http']), 'proxy de confiance annonçant du clair refusé');
 check(!Baruck\overHttps(['trusted_proxy' => 'oui'], ['HTTP_X_FORWARDED_PROTO' => 'https']), 'déclaration non booléenne sans effet');
 
+$directId = str_repeat('a', 32);
+$direct = ['environment' => 'local', 'origin' => 'http://127.0.0.1:8091', 'local_direct_user_id' => $directId, 'local_direct_peer' => '172.18.0.1', 'database' => ['dsn' => 'mysql:host=baruck-admin-mysql;dbname=baruck;charset=utf8mb4']];
+$directServer = ['HTTP_HOST' => '127.0.0.1:8091', 'REMOTE_ADDR' => '172.18.0.1'];
+check(Baruck\localDirectUserId($direct, $directServer, 'cli-server') === $directId, 'accès direct explicitement activé sur le serveur local');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'REMOTE_ADDR' => '127.0.0.1'], 'cli-server') === $directId, 'boucle locale acceptée');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'HTTP_SEC_FETCH_SITE' => 'cross-site', 'HTTP_SEC_FETCH_MODE' => 'navigate', 'HTTP_SEC_FETCH_DEST' => 'document', 'HTTP_SEC_FETCH_USER' => '?1', 'REQUEST_METHOD' => 'GET'], 'cli-server') === $directId, 'clic volontaire vers le back-office local accepté');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'HTTP_SEC_FETCH_SITE' => 'cross-site', 'HTTP_SEC_FETCH_MODE' => 'no-cors', 'HTTP_SEC_FETCH_DEST' => 'image', 'REQUEST_METHOD' => 'GET'], 'cli-server') === null, 'ressource intégrée depuis un site tiers refusée');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'HTTP_ORIGIN' => 'https://hostile.example'], 'cli-server') === null, 'origine étrangère refusée');
+foreach (['apache2handler', 'fpm-fcgi', 'cli'] as $sapi) check(Baruck\localDirectUserId($direct, $directServer, $sapi) === null, 'accès direct absent hors serveur de développement : ' . $sapi);
+foreach ([['environment' => 'production'], ['trusted_proxy' => true], ['origin' => 'https://admin.groupebaruck.com'], ['local_direct_user_id' => null], ['local_direct_user_id' => ['forgé']], ['local_direct_peer' => ''], ['publication_key' => 'active'], ['publication_github_token' => 'active'], ['database' => ['dsn' => 'mysql:host=production;dbname=baruck;charset=utf8mb4']]] as $override) {
+    check(Baruck\localDirectUserId([...$direct, ...$override], $directServer, 'cli-server') === null, 'configuration hors périmètre refusée : ' . array_key_first($override));
+}
+foreach ([['HTTP_HOST' => 'admin.groupebaruck.com'], ['REMOTE_ADDR' => '198.51.100.1'], ['HTTP_X_FORWARDED_FOR' => '127.0.0.1'], ['HTTP_X_FORWARDED_HOST' => '127.0.0.1:8091'], ['HTTP_X_FORWARDED_PROTO' => 'http'], ['HTTP_FORWARDED' => 'for=127.0.0.1']] as $override) {
+    check(Baruck\localDirectUserId($direct, [...$directServer, ...$override], 'cli-server') === null, 'accès distant ou proxy refusé : ' . array_key_first($override));
+}
+
 // Mesure d’audience : normalisation des chemins, provenances, appareils et robots.
 check(Baruck\normalizePath('/actualites/mon-article') === '/actualites/mon-article/', 'chemin normalisé avec barre finale');
 check(Baruck\normalizePath('') === '/' && Baruck\normalizePath('/') === '/', 'accueil accepté');
@@ -158,5 +174,133 @@ $emptyText = $textInput;
 $emptyText['heroSlides']['guinee']['description'] = '';
 check(!accepts(fn() => Baruck\validateTextes($emptyText)), 'texte vide refusé');
 check(array_keys(Baruck\textGroups()) === ['heroSlides', 'activities'], 'groupes de textes déclarés');
+
+// Pages : même contrat strict dans le formulaire et dans la publication.
+check(count(Baruck\pageModels()) === 12, 'les douze pages existantes sont proposées');
+foreach (Baruck\pageModels() as $id => $model) {
+    $values = array_map(fn($field) => $field['initial'], $model['fields']);
+    check(Baruck\validatePageValues($model, $values, true) === $values, 'contenus initiaux bilingues : ' . $id);
+}
+$model = Baruck\pageModel('home');
+$values = array_map(fn($field) => $field['initial'], $model['fields']);
+$incomplete = $values;
+$incomplete['activities.cinema.title']['en'] = '';
+check(accepts(fn() => Baruck\validatePageValues($model, $incomplete, false)), 'anglais incomplet conservé en brouillon');
+check(!accepts(fn() => Baruck\validatePageValues($model, $incomplete, true)), 'anglais incomplet interdit à la validation');
+$notText = $values; $notText['meta.title']['en'] = null;
+check(!accepts(fn() => Baruck\validatePageValues($model, $notText, false)), 'valeur non textuelle refusée même en brouillon');
+$invalids = [];
+$missing = $values; unset($missing['meta.title']); $invalids[] = $missing;
+$extra = $values; $extra['route'] = ['fr' => '/intrus/', 'en' => '/intrus/']; $invalids[] = $extra;
+foreach (['', str_repeat('é', 41), "Titre\nforgé", '<script>alert(1)</script>', "Texte\0interdit", "UTF8\xFF", ['forgé']] as $invalid) {
+    $copy = $values; $copy['activities.cinema.title']['en'] = $invalid; $invalids[] = $copy;
+}
+$copy = $values; $copy['meta.title']['de'] = 'Forgé'; $invalids[] = $copy;
+foreach ($invalids as $index => $invalid) check(!accepts(fn() => Baruck\validatePageValues($model, $invalid, true)), 'page invalide refusée : ' . $index);
+$values['activities.cinema.title']['en'] = str_repeat('é', 40);
+check(accepts(fn() => Baruck\validatePageValues($model, $values, true)), 'plafond des pages compté en caractères Unicode');
+
+$groupModel = Baruck\pageModel('groupe');
+$groupValues = array_map(fn($field) => $field['initial'], $groupModel['fields']);
+$old = ['draft'=>array_intersect_key($groupValues,array_flip(['meta.title','meta.description'])), 'validated'=>array_intersect_key($groupValues,array_flip(['meta.title','meta.description'])), 'reviewed'=>true,'validated_at'=>'2026-11-10T00:00:00Z'];
+$completed = Baruck\completePageState('groupe',$old);
+check($completed['draft']['meta.title'] === $old['draft']['meta.title'] && count($completed['draft']) === count($groupValues), 'ancien instantané complété sans remplacer sa saisie');
+check($completed['needs_review'] && !$completed['reviewed'] && $completed['validated_at'] === $old['validated_at'], 'nouveaux champs à relire sans retirer la dernière validation');
+check(Baruck\completePageState('groupe',$completed) === $completed, 'complétion additive relançable');
+$partial = $old; $partial['draft'] = $groupValues;
+check(Baruck\completePageState('groupe',$partial)['needs_review'], 'ancienne version validée complétée même si le brouillon est déjà récent');
+$changes = [
+    fn($v) => array_replace($v,['data.presenceCountries'=>array_fill(0,21,$v['data.presenceCountries'][0])]),
+    function ($v) { $v['data.presenceCountries'][0]['links'][0]['href']='javascript:alert(1)'; return $v; },
+    function ($v) { $v['data.presenceCountries'][0]['links'][0]['href']='/page-inexistante/'; return $v; },
+    function ($v) { $v['data.presenceCountries'][0]['links'][0]['href']='/groupe/#ancre-inconnue'; return $v; },
+    function ($v) { $v['data.milestones'][0]['dateTime']='2026-02-30'; return $v; },
+    function ($v) { $v['media.presidentPortrait']['src']='/images/../config.php'; return $v; },
+    function ($v) { $v['media.presidentPortrait']['src']='https://hostile.example/image.jpg'; return $v; },
+    function ($v) { $v['media.presidentPortrait']['alt']['en']=''; return $v; },
+    function ($v) { $v['data.ambassadorPhotos'][]=$v['data.ambassadorPhotos'][0]; return $v; },
+    function ($v) { $v['data.presenceCountries'][0]['invente']='Intrus'; return $v; },
+];
+foreach ($changes as $index=>$change) check(!accepts(fn()=>Baruck\validatePageValues($groupModel,$change($groupValues),true)), 'contenu structuré refusé : '.$index);
+$groupValues['data.presenceCountries']=[];
+check(Baruck\validatePageValues($groupModel,$groupValues,true)['data.presenceCountries'] === [], 'liste explicitement vide conservée');
+
+check(Baruck\normalizePagePost(['kind'=>'list','item'=>['kind'=>'text']],['__empty'=>'1']) === [], 'liste HTML vidée reçue explicitement');
+
+// Les clés des listes ne peuvent pas créer une ancre arbitraire ni se doubler.
+$jeca = Baruck\pageModel('jeca');
+$jecaValues = array_map(fn($field) => $field['initial'], $jeca['fields']);
+$edition = $jecaValues['data.editions'][0];
+foreach ([
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[0=>['key'=>'vision']]]),
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[1=>['key'=>'1']]]),
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[0=>['date'=>['endIso'=>'2000-01-01']]]]),
+    fn($v) => array_replace_recursive($v, ['data.editions'=>[0=>['title'=>['en'=>'']]]]),
+    fn($v) => array_replace_recursive($v, ['data.speech'=>['src'=>'/videos/invente.mp4']]),
+] as $change) check(!accepts(fn()=>Baruck\validatePageValues($jeca,$change($jecaValues),true)), 'JECA : clé, date, langue ou vidéo refusée');
+$jecaValues['data.editions'] = [];
+check(Baruck\validatePageValues($jeca,$jecaValues,true)['data.editions'] === [], 'retirer toutes les éditions reste possible');
+$edv = Baruck\pageModel('espoir-de-vie');
+$edvValues = array_map(fn($field) => $field['initial'], $edv['fields']);
+foreach ([
+    fn($v) => array_replace_recursive($v, ['data.videos'=>[0=>['key'=>'mission']]]),
+    fn($v) => array_replace_recursive($v, ['data.galleries'=>[1=>['key'=>$v['data.galleries'][0]['key']]]]),
+    fn($v) => array_replace_recursive($v, ['data.actions'=>[0=>['photo'=>'invente']]]),
+    fn($v) => array_replace_recursive($v, ['data.timeline'=>[0=>['date'=>['iso'=>'']]]]),
+    fn($v) => array_replace_recursive($v, ['data.actions'=>[0=>['date'=>['label'=>['en'=>'']]]]]),
+] as $change) check(!accepts(fn()=>Baruck\validatePageValues($edv,$change($edvValues),true)), 'Espoir de Vie : lien, date ou contenu incomplet refusé');
+$newPhotoKey = 'item-00000000-0000-4000-8000-000000000001';
+$edvValues['data.additionalPhotos'] = [['key'=>$newPhotoKey,'image'=>$edvValues['photo.divoKitsScolaires']]];
+$edvValues['data.actions'][0]['photo'] = $newPhotoKey;
+check(accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une nouvelle photo partagée est utilisable');
+$edvValues['data.additionalPhotos'] = [];
+check(!accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une référence de photo supprimée bloque la validation');
+$edvValues['data.additionalPhotos'] = 'invalide';
+check(!accepts(fn()=>Baruck\validatePageValues($edv,$edvValues,true)), 'une liste de références mal typée est refusée');
+
+check(Baruck\decodePageFields(['page_fields_json'=>'{"titre":{"fr":"Texte","en":"Text"}}'])['titre']['en'] === 'Text', 'grand formulaire décodé sans limite de variables PHP');
+foreach ([['page_fields_json'=>'{'],['page_fields_json'=>[]],['page_fields_json'=>'{}','fields'=>[]],['page_fields_json'=>str_repeat('x',2000001)]] as $bad) check(!accepts(fn()=>Baruck\decodePageFields($bad)), 'transport de formulaire invalide refusé');
+
+// Étape 5 : formulaires restants et repères de coordonnées, sans HTML ni destinations libres.
+foreach (['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'] as $id) {
+    $model = Baruck\pageModel($id);
+    $values = array_map(fn($field) => $field['initial'], $model['fields']);
+    check(accepts(fn() => Baruck\validatePageValues($model,$values,true)), $id . ' : contenu initial complet');
+    $key = array_key_first(array_filter($model['fields'], fn($field) => ($field['since'] ?? 0) === 5 && in_array($field['kind'], ['text','textarea'],true)));
+    $values[$key]['en'] = '';
+    check(!accepts(fn() => Baruck\validatePageValues($model,$values,true)), $id . ' : anglais obligatoire');
+    check(accepts(fn() => Baruck\validatePageValues($model,$values,false)), $id . ' : brouillon anglais incomplet conservé');
+}
+$contact = Baruck\pageModel('contact');
+check(accepts(fn() => Baruck\validatePageField(['kind'=>'link','label'=>'Questions','max'=>255,'page'=>'contact','scope'=>'anchor'], '#questions-frequentes',true)), 'ancre définie dans la route Contact autorisée');
+$values = array_map(fn($field) => $field['initial'], $contact['fields']);
+foreach (['{password}','{adresse','{{adresse}}'] as $bad) {
+    $changed = $values; $changed['data.contactFaq'][0]['answer']['fr'] = $bad;
+    check(!accepts(fn() => Baruck\validatePageValues($contact,$changed,false)), 'repère inconnu ou mal formé refusé');
+}
+$changed = $values; $changed['data.contactFaq'][0]['answer']['en'] = 'No address token';
+check(!accepts(fn() => Baruck\validatePageValues($contact,$changed,true)), 'mêmes repères exigés dans les deux langues');
+check(accepts(fn() => Baruck\validatePageValues($contact,$changed,false)), 'traduction des repères possible en brouillon');
+$changed = $values; $changed['data.contactNeeds'][0]['target'] = 'javascript:alert(1)';
+check(!accepts(fn() => Baruck\validatePageValues($contact,$changed,false)), 'destination de contact inconnue refusée');
+$studio = Baruck\pageModel('studio-photo');
+$values = array_map(fn($field) => $field['initial'], $studio['fields']);
+$values['data.studioFaq'][1]['key'] = $values['data.studioFaq'][0]['key'];
+check(!accepts(fn() => Baruck\validatePageValues($studio,$values,false)), 'clé de question dupliquée refusée');
+
+$bilingual=['title'=>'Titre','excerpt'=>'Résumé','body'=>'Texte','cover_alt'=>'','gallery'=>[],'groups'=>[]];
+$english=['title'=>'Title','excerpt'=>'Summary','body'=>'English body','coverAlt'=>'','gallery'=>[],'groupsTitle'=>'','groupsIntro'=>'','groups'=>[]];
+check(accepts(fn()=>Baruck\validateEnglish($bilingual,$english,'article',true)), 'anglais complet accepté');
+foreach ([fn($en)=>[...$en,'title'=>''],fn($en)=>[...$en,'body'=>'<script>alert(1)</script>'],fn($en)=>[...$en,'body'=>'[Click](javascript:alert(1))'],fn($en)=>[...$en,'cover'=>'/images/autre.jpg']] as $change) check(!accepts(fn()=>Baruck\validateEnglish($bilingual,$change($english),'article',true)),'anglais incomplet ou forgé refusé');
+check(accepts(fn()=>Baruck\validateEnglish($bilingual,[...$english,'title'=>''],'article',false)),'anglais incomplet conservé en brouillon');
+check(!accepts(fn()=>Baruck\confirmEnglish([],true)),'validation sans relecture refusée');
+check(accepts(fn()=>Baruck\confirmEnglish(['english_reviewed'=>'yes'],true)),'relecture explicite acceptée');
+foreach ([['english_json'=>'{'],['english_json'=>'[]','english'=>[]],['english_json'=>[]]] as $bad) check(!accepts(fn()=>Baruck\englishInput($bad)),'traduction JSON invalide refusée');
+
+$recoveredEnglish=Baruck\recoverExpiredSubmission($session,[...$post,'english_json'=>json_encode($english)],$server,1000);
+check(($recoveredEnglish['draft']['english']['title'] ?? '')==='Title','traduction conservée après expiration de session');
+check(!isset($recoveredEnglish['draft']['english_reviewed']),'ancienne relecture non récupérée');
+check(!str_contains(json_encode(Baruck\recoverExpiredSubmission($session,[...$post,'english'=>[...$english,'password'=>'never-store-this']],$server,1000)),'never-store-this'),'secret ajouté à la traduction non conservé');
+check(!accepts(fn()=>Baruck\validateMarkdown('![Image](&#47;images/example.jpg)')),'chemin encodé qui échapperait au suivi des médias refusé');
 
 echo $count . " contrôles de validation réussis.\n";

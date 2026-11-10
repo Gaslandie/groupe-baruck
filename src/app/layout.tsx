@@ -1,4 +1,4 @@
-import { translate as t } from "../lib/language.ts";
+import { pageMetadata } from "@/lib/page-metadata";
 
 import { language } from "../lib/language.ts";
 
@@ -51,11 +51,11 @@ const montserrat = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "Groupe Baruck — Vision, excellence, impact",
+    default: pageMetadata("home").title,
     template: "%s — Groupe Baruck",
   },
   description:
-    t("Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée."),
+    pageMetadata("home").description,
   openGraph: socialMetadata(brandLogo, "Groupe Baruck"),
 };
 

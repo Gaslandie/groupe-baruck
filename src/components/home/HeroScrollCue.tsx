@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, pageValue } from "@/lib/page-content";
 import { Icon } from "@/components/ui/Icon";
 
 /**
@@ -22,10 +21,10 @@ export function HeroScrollCue() {
   return (
     <div className="pointer-events-none sticky bottom-0 z-20 flex h-0 items-end justify-center pl-[46%] max-desktop:pl-[44%] max-tablet:pl-0">
       <a
-        href="#activite-guinee"
+        href={pageValue<string>("home", "HeroScrollCue.1")}
         className="hero-cue pointer-events-auto mb-[clamp(.3rem,.9vh,.6rem)] flex flex-col items-center gap-[.3rem] py-1 text-ink max-tablet:text-ivory"
       >
-        <span className="sr-only">{t("Descendre vers la suite de la page")}</span>
+        <span className="sr-only">{pageText("home", "HeroScrollCue.2")}</span>
         <span aria-hidden="true" className="hero-cue-rail" />
         <Icon name="chevron-down" className="hero-cue-arrow text-[1.5rem] text-accent" />
       </a>

@@ -1,7 +1,6 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, presidentName, pageValue } from "@/lib/page-content";
 import { jecaLogo } from "@/data/media";
-import { jecaPortrait } from "@/data/jeca";
+import { jecaPortrait, jecaEditions } from "@/data/jeca";
 import { asset } from "@/lib/asset";
 import { Icon } from "../ui/Icon";
 
@@ -34,9 +33,8 @@ export function JecaHero() {
           className="absolute inset-0 bg-[linear-gradient(180deg,transparent_56%,rgba(3,12,37,.1)_72%,rgba(3,12,37,.84))] max-tablet:bg-[linear-gradient(180deg,rgba(3,12,37,.36)_12%,rgba(3,12,37,.62)_48%,rgba(3,12,37,.95)_100%)]"
         />
         <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
-          <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-jeca-yellow">{t("Président fondateur")}</span>
-          MR Djoro Joël Shaloom Krasso
-        </p>
+          <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-jeca-yellow">{pageText("jeca", "JecaHero.1")}</span>
+          {presidentName()}</p>
       </div>
       <div className="hero-in relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(2rem,6vw,7.5rem)] pr-[clamp(2rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1080px]:px-10 max-tablet:z-10 max-tablet:min-h-[100svh] max-tablet:w-full max-tablet:justify-end max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5rem,15vh,8rem)] max-tablet:pt-[7rem]">
         <span
@@ -45,31 +43,31 @@ export function JecaHero() {
         />
         <img
           src={asset(jecaLogo.src)}
-          alt="JECA — Jeunes Entrepreneurs Chrétiens Africains"
+          alt={pageText("jeca", "JecaHero.3")}
           width={jecaLogo.width}
           height={jecaLogo.height}
           fetchPriority="high"
           className="mb-6 h-16 w-24 bg-white p-1 object-contain max-tablet:mb-5 max-tablet:h-[59px] max-tablet:w-[88px] [@media(max-width:760px)_and_(max-height:700px)]:mb-[.8rem] [@media(max-width:760px)_and_(max-height:700px)]:h-[51px] [@media(max-width:760px)_and_(max-height:700px)]:w-[76px]"
         />
-        <p className="jeca-kicker max-tablet:text-[rgba(255,255,255,.72)] max-tablet:before:bg-jeca-yellow [@media(max-width:760px)_and_(max-height:700px)]:mb-[.8rem]">{t("Créée en 2019")}</p>
-        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.045em] max-tablet:max-w-[470px] max-tablet:text-white">{t("Réunir la diaspora.")}<br />
-          <em className="font-normal text-jeca-red max-tablet:text-jeca-yellow">{t("Investir en Afrique.")}</em>
+        <p className="jeca-kicker max-tablet:text-[rgba(255,255,255,.72)] max-tablet:before:bg-jeca-yellow [@media(max-width:760px)_and_(max-height:700px)]:mb-[.8rem]">{pageText("jeca", "JecaHero.4")}</p>
+        <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.045em] max-tablet:max-w-[470px] max-tablet:text-white">{pageText("jeca", "JecaHero.5")}<br />
+          <em className="font-normal text-jeca-red max-tablet:text-jeca-yellow">{pageText("jeca", "JecaHero.6")}</em>
         </h1>
-        <p className="mb-[1.6rem] mt-[1.4rem] max-w-[560px] text-body leading-[1.7] text-jeca-muted max-tablet:mb-6 max-tablet:mt-[1.3rem] max-tablet:max-w-[520px] max-tablet:text-small max-tablet:text-[rgba(255,255,255,.74)] [@media(max-width:760px)_and_(max-height:700px)]:mb-[1.1rem] [@media(max-width:760px)_and_(max-height:700px)]:mt-4 [@media(max-width:760px)_and_(max-height:700px)]:leading-[1.6]">{t("La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique.")}</p>
+        <p className="mb-[1.6rem] mt-[1.4rem] max-w-[560px] text-body leading-[1.7] text-jeca-muted max-tablet:mb-6 max-tablet:mt-[1.3rem] max-tablet:max-w-[520px] max-tablet:text-small max-tablet:text-[rgba(255,255,255,.74)] [@media(max-width:760px)_and_(max-height:700px)]:mb-[1.1rem] [@media(max-width:760px)_and_(max-height:700px)]:mt-4 [@media(max-width:760px)_and_(max-height:700px)]:leading-[1.6]">{pageText("jeca", "JecaHero.7")}</p>
         <div className="jeca-actions">
-          <a href="#editions" className="jeca-button jeca-button-primary">{t("Voir les éditions ")}<span><Icon name="arrow-down" /></span>
+          <a href={pageValue<string>("jeca", "JecaHero.link1")} className="jeca-button jeca-button-primary">{pageText("jeca", "JecaHero.8")}{" "}<span><Icon name="arrow-down" /></span>
           </a>
-          <a href="#vision" className="jeca-button jeca-button-line">{t("Notre vision ")}<span><Icon name="arrow-down" /></span>
+          <a href={pageValue<string>("jeca", "JecaHero.link2")} className="jeca-button jeca-button-line">{pageText("jeca", "JecaHero.9")}{" "}<span><Icon name="arrow-down" /></span>
           </a>
         </div>
         <dl className="mb-0 mt-[clamp(2rem,4vh,3.2rem)] grid max-w-[420px] grid-cols-[repeat(2,minmax(0,150px))] border-t border-jeca-line pt-[1.1rem] max-tablet:mt-8 max-tablet:border-[rgba(255,255,255,.22)] [@media(max-width:760px)_and_(max-height:700px)]:mt-[1.2rem]">
           <div className="pr-[.8rem]">
-            <dt className="font-display text-display-sm font-normal leading-none text-jeca-blue max-tablet:text-lead max-tablet:text-white">2019</dt>
-            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">{t("Création de la JECA")}</dd>
+            <dt className="font-display text-display-sm font-normal leading-none text-jeca-blue max-tablet:text-lead max-tablet:text-white">{pageText("jeca", "JecaHero.10")}</dt>
+            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">{pageText("jeca", "JecaHero.11")}</dd>
           </div>
           <div className="pr-[.8rem]">
-            <dt className="font-display text-display-sm font-normal leading-none text-jeca-blue max-tablet:text-lead max-tablet:text-white">03</dt>
-            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">{t("Éditions du forum")}</dd>
+            <dt className="font-display text-display-sm font-normal leading-none text-jeca-blue max-tablet:text-lead max-tablet:text-white">{String(jecaEditions.length).padStart(2, "0")}</dt>
+            <dd className="mb-0 ml-0 mr-0 mt-[.4rem] text-micro uppercase leading-[1.4] tracking-[.13em] text-jeca-muted max-tablet:text-micro max-tablet:text-[rgba(255,255,255,.5)]">{pageText("jeca", "JecaHero.13")}</dd>
           </div>
         </dl>
       </div>

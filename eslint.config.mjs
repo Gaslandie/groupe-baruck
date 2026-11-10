@@ -18,6 +18,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Copie générée du paquet Marked installé, sans modification de son code.
+    "backoffice/public/marked.esm.js",
   ]),
 ]);
 

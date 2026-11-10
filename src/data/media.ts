@@ -1,3 +1,4 @@
+import { pageValue } from "@/lib/page-content";
 import { translate as t } from "../lib/language.ts";
 
 export type ImageAsset = {
@@ -69,12 +70,7 @@ export const placeholderPhotos = {
   },
 } as const satisfies Record<string, RemotePhoto>;
 
-export const brandLogo: ImageAsset = {
-  src: "/images/brand/baruck-logo.jpg",
-  alt: "",
-  width: 1170,
-  height: 634,
-};
+export const brandLogo: ImageAsset = pageValue<ImageAsset>("home", "common.brandLogo");
 
 export const jecaLogo: ImageAsset = {
   src: "/images/brand/jeca-logo.webp",
@@ -90,52 +86,18 @@ export const edvLogo: ImageAsset = {
   height: 521,
 };
 
-export const presidentPortrait: ImageAsset = {
-  src: "/images/president/portrait.jpg",
-  alt: t("Portrait de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck"),
-  width: 683,
-  height: 1024,
-};
+export const presidentPortrait: ImageAsset = pageValue<ImageAsset>("groupe", "media.presidentPortrait");
 
-export const presidentOnu1: ImageAsset = {
-  src: "/images/president/onu-2016-1.jpg",
-  alt: t("MR Djoro Joël Shaloom Krasso participant à une séance de travail"),
-  width: 720,
-  height: 540,
-};
+export const presidentOnu1: ImageAsset = pageValue<ImageAsset>("groupe", "media.presidentOnu1");
 
-export const presidentOnu2: ImageAsset = {
-  src: "/images/president/onu-2016-2.jpg",
-  alt: t("MR Djoro Joël Shaloom Krasso devant un portrait de Kofi Annan"),
-  width: 720,
-  height: 540,
-};
+export const presidentOnu2: ImageAsset = pageValue<ImageAsset>("groupe", "media.presidentOnu2");
 
 /** Portrait fourni par le client pour le hero de la page Groupe. */
-export const groupHeroPortrait: ImageAsset = {
-  src: "/images/president/portrait-groupe-20261105.jpg",
-  alt: t("Portrait de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck"),
-  width: 720,
-  height: 1080,
-};
+export const groupHeroPortrait: ImageAsset = pageValue<ImageAsset>("groupe", "media.groupHeroPortrait");
 
 /** Photos complémentaires fournies par le client, sans date déduite des fichiers. */
-export const presidentOnuGallery: ImageAsset[] = [
-  { src: "/images/president/onu-seance-travail.jpg", alt: t("MR Djoro Joël Shaloom Krasso à une table de travail aux Nations Unies"), width: 720, height: 540 },
-  { src: "/images/president/onu-devant-drapeaux.jpg", alt: t("MR Djoro Joël Shaloom Krasso devant les drapeaux des Nations Unies"), width: 960, height: 720 },
-  { src: "/images/president/onu-salle-conference.jpg", alt: t("MR Djoro Joël Shaloom Krasso dans une salle de conférence des Nations Unies"), width: 960, height: 720 },
-];
+export const presidentOnuGallery: ImageAsset[] = pageValue<ImageAsset[]>("groupe", "media.presidentOnuGallery");
 
-export const studioHero: ImageAsset = {
-  src: "/images/services/studio-photo-hero.webp",
-  alt: "Studio Photo Baruck la Prospérité",
-  width: 1254,
-  height: 1254,
-};
+export const studioHero: ImageAsset = pageValue<ImageAsset>("home", "media.studioHero");
 
-export const hostessesHero: ImageAsset = {
-  src: "/images/services/hotesses-hero.webp",
-  alt: t("Hôtesses événementielles Baruck Communication Guinée"),
-  width: 941,
-  height: 1672,
-};
+export const hostessesHero: ImageAsset = pageValue<ImageAsset>("home", "media.hostessesHero");

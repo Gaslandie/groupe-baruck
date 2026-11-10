@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import Link from "next/link";
 
@@ -21,8 +21,8 @@ type ConstructionPageProps = {
 export function ConstructionPage({
   index,
   eyebrow,
-  title = t("Page en cours"),
-  emphasis = t("de construction."),
+  title = pageText("projets-realisations", "copy.ConstructionPage.1"),
+  emphasis = pageText("projets-realisations", "copy.ConstructionPage.2"),
   text,
   footerItems,
 }: ConstructionPageProps) {
@@ -35,8 +35,8 @@ export function ConstructionPage({
           href={routes.home}
           className="inline-flex items-center gap-4 border-b border-[rgba(255,255,255,.3)] pb-[.35rem] text-label uppercase tracking-[.15em] max-tablet:border-0 max-tablet:p-[.8rem] max-tablet:text-micro"
         >
-          <span className="max-tablet:hidden">{t("Retour à l’accueil")}</span>
-          <span className="hidden max-tablet:inline">{t("Accueil")}</span>
+          <span className="max-tablet:hidden">{pageText("projets-realisations", "copy.ConstructionPage.3")}</span>
+          <span className="hidden max-tablet:inline">{pageText("projets-realisations", "copy.ConstructionPage.4")}</span>
           <span aria-hidden="true" className="text-small text-accent">
             <Icon name="arrow-up-right" />
           </span>
@@ -69,7 +69,7 @@ export function ConstructionPage({
           <Link
             href={routes.home}
             className="inline-flex min-h-[54px] items-center justify-center gap-8 bg-[#fffdf8] px-[1.4rem] text-label uppercase tracking-[.13em] text-[#0b0c0e] transition-[background,color,transform] duration-[250ms] hover:translate-y-[-2px] hover:bg-accent hover:text-white"
-          >{t("Retourner à l’accueil ")}<span aria-hidden="true"><Icon name="arrow-up-left" /></span>
+          >{(pageText("projets-realisations", "copy.ConstructionPage.5") + " ")}<span aria-hidden="true"><Icon name="arrow-up-left" /></span>
           </Link>
         </div>
 

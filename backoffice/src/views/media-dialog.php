@@ -1,7 +1,7 @@
 <?php namespace Baruck; ?>
 <dialog id="media-dialog" aria-labelledby="media-dialog-title" class="fixed inset-0 m-auto max-h-[90dvh] w-[min(940px,94vw)] overflow-auto rounded-xl border border-line bg-paper p-6 text-ink backdrop:bg-ink/60">
     <div class="flex items-center justify-between gap-4"><h2 id="media-dialog-title" class="font-display text-title">Choisir une image</h2><button type="button" data-media-close class="<?= $secondaryClass ?>">Fermer</button></div>
-    <p class="mt-3 text-caption text-ink/60">Sélectionnez une photo existante ou importez un fichier. Votre texte reste dans l’article.</p>
+    <p class="mt-3 text-caption text-ink/60">Sélectionnez une photo existante ou importez un fichier. Votre saisie reste dans le formulaire.</p>
     <form id="media-upload-form" class="mt-5 space-y-4 rounded-lg border border-line bg-ivory p-5">
         <h3 class="font-display text-title">Importer depuis mon ordinateur</h3>
         <div><label for="picker-file" class="text-caption font-medium">Fichier image</label><input id="picker-file" name="image" type="file" accept="image/jpeg,image/png,image/webp" required class="<?= $inputClass ?>"><p class="mt-2 text-caption text-ink/60">JPG, PNG ou WebP · 8 Mo maximum · 40 mégapixels maximum.</p></div>

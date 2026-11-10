@@ -1,4 +1,6 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText, pageValue } from "@/lib/page-content";
+import { pageMetadata } from "@/lib/page-metadata";
+
 
 import type { Metadata } from "next";
 
@@ -18,29 +20,29 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: "Studio Photo Baruck la Prospérité",
+  title: pageMetadata("studio-photo").title,
   description:
-    t("Studio Photo Baruck la Prospérité à Kobayah, Conakry — deux studios équipés, ouverts à tous 24h/24 et 7j/7 : mariages, baptêmes, anniversaires, conférences, shootings, photos d’identité et spots publicitaires."),
+    pageMetadata("studio-photo").description,
   alternates: pageAlternates(site.url + routes.studio.slice(1)),
   openGraph: socialMetadata(studioHero),
 };
 
 const contactDetails = [
   {
-    label: t("Adresse"),
+    label: pageText("studio-photo", "copy.page.1"),
     text: hqAddress,
   },
   {
-    label: t("Ouverture"),
-    text: t("24h/24 et 7j/7 — le studio est ouvert à tout le monde."),
+    label: pageText("studio-photo", "copy.page.2"),
+    text: pageText("studio-photo", "copy.page.3"),
   },
   {
-    label: t("Téléphone fixe Baruck Siège Guinée"),
+    label: pageText("studio-photo", "copy.page.4"),
     text: contacts.landline.value,
     href: contacts.landline.href,
   },
   {
-    label: t("WhatsApp Baruck Siège Guinée"),
+    label: pageText("studio-photo", "copy.page.5"),
     text: contacts.whatsappHq.value,
     href: contacts.whatsappHq.href,
     external: true,
@@ -54,27 +56,27 @@ export default function StudioPhotoPage() {
         image={studioHero}
         position="center"
         size="studio"
-        eyebrow={t("Baruck Communication · Guinée")}
-        title="Studio Photo Baruck"
-        emphasis="la Prospérité."
-        text={t("Ouvert à tout le monde, à Kobayah (Conakry). Deux studios équipés et une équipe qui se déplace : nous réalisons vos photos au studio comme en extérieur, à toute heure.")}
-        badge={t("Ouvert 24h/24 · 7j/7")}
+        eyebrow={pageText("studio-photo", "copy.page.6")}
+        title={pageText("studio-photo", "copy.page.7")}
+        emphasis={pageText("studio-photo", "copy.page.8")}
+        text={pageText("studio-photo", "copy.page.9")}
+        badge={pageText("studio-photo", "copy.page.10")}
         actions={
           <>
-            <a href="#tarifs" className="button button-accent">{t("Connaître les prix ")}<span><Icon name="arrow-down" /></span>
+            <a href={pageValue<string>("studio-photo","links.page.1")} className="button button-accent">{(pageText("studio-photo", "copy.page.11") + " ")}<span><Icon name="arrow-down" /></span>
             </a>
-            <a href={contacts.landline.href} className="button button-ghost">{t("Appeler le studio")}</a>
+            <a href={contacts.landline.href} className="button button-ghost">{pageText("studio-photo", "copy.page.12")}</a>
           </>
         }
       />
       <ServiceIntro
-        eyebrow={t("Nos prestations")}
+        eyebrow={pageText("studio-photo", "copy.page.13")}
         title={
-          <>{t("Chaque moment")}<br />
+          <>{pageText("studio-photo", "copy.page.14")}<br />
           </>
         }
-        emphasis={t("mérite son image.")}
-        text={t("Le Studio Photo Baruck la Prospérité est ouvert à tout le monde, 24 heures sur 24 et 7 jours sur 7. Particuliers, familles, entreprises et organisations y trouvent deux studios et tout l’équipement nécessaire aux séances photo. Les prises de vue se font au studio comme en extérieur : l’équipe se déplace sur vos événements, à Conakry comme à l’intérieur du pays.")}
+        emphasis={pageText("studio-photo", "copy.page.15")}
+        text={pageText("studio-photo", "copy.page.16")}
         tags={studioTags}
       />
       <StudioSpaces />
@@ -82,18 +84,18 @@ export default function StudioPhotoPage() {
       <StudioGallery />
       <StudioPrices />
       <ServiceFaq
-        eyebrow={t("Vos questions")}
-        title={<>{t("Les questions")}<br /></>}
-        emphasis={t("les plus fréquentes.")}
+        eyebrow={pageText("studio-photo", "copy.page.17")}
+        title={<>{pageText("studio-photo", "copy.page.18")}<br /></>}
+        emphasis={pageText("studio-photo", "copy.page.19")}
         items={studioFaq}
       />
       <ServiceContact
-        eyebrow={t("Nous trouver")}
+        eyebrow={pageText("studio-photo", "copy.page.20")}
         title={
-          <>{t("Votre studio")}<br />
+          <>{pageText("studio-photo", "copy.page.21")}<br />
           </>
         }
-        emphasis={t("à Kobayah.")}
+        emphasis={pageText("studio-photo", "copy.page.22")}
         details={contactDetails}
       />
     </PageShell>

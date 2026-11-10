@@ -1,9 +1,11 @@
+import {checkEditorial} from './browser-editorial.mjs';
 // Régression : soumission HTML native dans un profil Chrome éphémère.
 // BARUCK_TEST_CHROME=/usr/bin/google-chrome npm run backoffice:test:mysql
 import assert from 'node:assert/strict';
 import {spawn} from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { checkMediaPicker, checkProductPicker } from './browser-media.mjs';
+import { checkPages, checkPageLists, checkPageGalleries, checkPublishedPages, checkRemainingPages } from './browser-pages.mjs';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -23,8 +25,8 @@ try {
  const send=(method,params={})=>new Promise((resolve,reject)=>{const next=++id;pending.set(next,{resolve,reject});socket.send(JSON.stringify({id:next,method,params}));});
  const load=()=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Chargement expiré')),15000);loaded=()=>{clearTimeout(timer);resolve();};});
  await send('Page.enable');
- if (process.argv[3] === 'media' || process.argv[3] === 'product') {
-   const check = process.argv[3] === 'media' ? checkMediaPicker : checkProductPicker;
+ if (['media', 'product', 'pages', 'page-lists', 'page-galleries', 'public-pages', 'remaining-pages', 'editorial'].includes(process.argv[3])) {
+   const check = { media: checkMediaPicker, product: checkProductPicker, pages: checkPages, 'page-lists': checkPageLists, 'page-galleries':checkPageGalleries, 'public-pages':checkPublishedPages, 'remaining-pages':checkRemainingPages, editorial:checkEditorial }[process.argv[3]];
    await check({ send, load, origin: process.argv[2], profile, session: JSON.parse(readFileSync(0, 'utf8')) });
  } else {
  let ready=load();await send('Page.navigate',{url:process.argv[2]});await ready;
@@ -35,4 +37,4 @@ try {
  assert.ok(text.includes('adresse e-mail complète et valide'), 'La requête doit atteindre la validation serveur de création du compte');
  console.log('Formulaire natif Chrome : origine, session et validation serveur OK');
  }
-} finally {socket?.close();if(chrome.exitCode===null){const stopped=new Promise(r=>chrome.once('exit',r));chrome.kill();await stopped;}await fs.rm(profile,{recursive:true,force:true});}
+} finally {socket?.close();if(chrome.exitCode===null){const stopped=new Promise(r=>chrome.once('exit',r));chrome.kill();await stopped;}await fs.rm(profile,{recursive:true,force:true,maxRetries:5,retryDelay:100});}

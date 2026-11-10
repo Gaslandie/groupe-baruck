@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import Link from "next/link";
 
 import { presenceCountries } from "@/data/about";
@@ -25,10 +24,10 @@ export function AboutPresence() {
       className="bg-ink px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] text-ivory max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow={t("Présence internationale")}
-        title={t("Cinq pays,")}
-        emphasis={t("une même ambition.")}
-        text={t("La Guinée comme point d’ancrage, le Sénégal et la Côte d’Ivoire comme horizon de développement, la France et le Cap-Vert où le groupe est représenté.")}
+        eyebrow={pageText("groupe", "AboutPresence.1")}
+        title={pageText("groupe", "AboutPresence.2")}
+        emphasis={pageText("groupe", "AboutPresence.3")}
+        text={pageText("groupe", "AboutPresence.4")}
         tone="light"
       />
 
@@ -51,7 +50,7 @@ export function AboutPresence() {
               <p className="m-0 max-w-[580px] text-body leading-[1.75] text-[rgba(255,255,255,.62)]">
                 {country.text}
               </p>
-              {country.links ? (
+              {country.links?.length ? (
                 <div className="mt-[1.5rem] flex flex-wrap gap-2">
                   {country.links.map((link) => (
                     <Link

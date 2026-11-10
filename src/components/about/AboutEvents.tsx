@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, pageValue, pageLinkIcon } from "@/lib/page-content";
 import Link from "next/link";
 
 import { jecaEditionNav } from "@/data/jeca";
@@ -29,29 +28,7 @@ import { AboutSectionHead } from "./AboutSectionHead";
  * sont donc devenues cliquables, comme celles de la JECA, et le lien isolé qui
  * renvoyait vers la seule finale 2026 a été retiré (il faisait doublon).
  */
-const baruckContests = [
-  {
-    number: "01",
-    title: "Miss Baruck Guinée",
-    dates: t("Première édition · 26 juillet 2025"),
-    text: t("Vingt millions de francs guinéens à partager entre les lauréats. Mama Adama Bangoura est couronnée Miss Baruck Guinée 2025."),
-    href: `${routes.news}miss-baruck-guinee-2025/`,
-  },
-  {
-    number: "02",
-    title: "Top Modèle Baruck Guinée",
-    dates: t("Première édition · 27 septembre 2025"),
-    text: t("La grande finale se tient à 22 h dans la salle Malick Condé de l’Université Kofi Annan, sous le parrainage du PDG du Groupe Baruck."),
-    href: `${routes.news}top-modele-baruck-guinee-2025/`,
-  },
-  {
-    number: "03",
-    title: "Top Modèle Baruck Guinée",
-    dates: t("Deuxième édition · 8 août 2026"),
-    text: t("Quatre-vingts millions de francs guinéens, et la dernière édition du genre : la suite passera par des défilés de mode, adossés à la maison de vêtements du groupe."),
-    href: `${routes.news}top-modele-baruck-guinee-2026/`,
-  },
-];
+const baruckContests = pageValue<{ title: string; text: string; dates: string; href: string }[]>("groupe", "AboutEvents.list").map((item, index) => ({ ...item, number: String(index + 1).padStart(2, "0") }));
 
 const familyTitleClass =
   "m-0 mb-[clamp(1.2rem,2vw,1.8rem)] font-display text-display-sm font-normal leading-[1.15]";
@@ -63,14 +40,14 @@ export function AboutEvents() {
       className="scroll-mt-[92px] bg-paper-deep px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow={t("Événements organisés")}
-        title={t("Le forum de la JECA,")}
-        emphasis={t("les concours Baruck.")}
-        text={t("Depuis 2022, la JECA réunit la diaspora africaine autour de l’investissement sur le continent. En Guinée, Baruck Communication organise ses propres rendez-vous.")}
+        eyebrow={pageText("groupe", "AboutEvents.1")}
+        title={pageText("groupe", "AboutEvents.2")}
+        emphasis={pageText("groupe", "AboutEvents.3")}
+        text={pageText("groupe", "AboutEvents.4")}
         tone="dark"
       />
 
-      <h3 className={`reveal ${familyTitleClass}`}>{t("Le forum de la JECA")}</h3>
+      <h3 className={`reveal ${familyTitleClass}`}>{pageText("groupe", "AboutEvents.5")}</h3>
       <ol className="reveal-stagger m-0 grid list-none grid-cols-3 gap-[1.1rem] p-0 max-[1080px]:grid-cols-1">
         {jecaEditionNav.map((edition) => (
           <li key={edition.href}>
@@ -78,7 +55,7 @@ export function AboutEvents() {
               href={`${routes.jeca}${edition.href}`}
               className="group flex h-full flex-col border border-line bg-ivory px-[1.7rem] pb-[1.7rem] pt-[1.8rem] transition-[transform,box-shadow] duration-[320ms] hover:translate-y-[-6px] hover:shadow-[0_18px_40px_rgba(11,12,14,.12)] focus-visible:translate-y-[-6px] focus-visible:shadow-[0_18px_40px_rgba(11,12,14,.12)]"
             >
-              <span className="text-micro tracking-[.15em] text-accent">{t("Édition ")}{edition.number}</span>
+              <span className="text-micro tracking-[.15em] text-accent">{pageText("groupe", "AboutEvents.6") + " "}{edition.number}</span>
               <span className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">
                 {edition.city}
               </span>
@@ -86,13 +63,13 @@ export function AboutEvents() {
               <i
                 aria-hidden="true"
                 className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent"
-              >{t("Voir l’édition")}</i>
+              >{pageText("groupe", "AboutEvents.7")}</i>
             </Link>
           </li>
         ))}
       </ol>
 
-      <h3 className={`reveal mt-[clamp(3rem,5vw,4.5rem)] ${familyTitleClass}`}>{t("Les concours Baruck")}</h3>
+      <h3 className={`reveal mt-[clamp(3rem,5vw,4.5rem)] ${familyTitleClass}`}>{pageText("groupe", "AboutEvents.8")}</h3>
       <ol className="reveal-stagger m-0 grid list-none grid-cols-3 gap-[1.1rem] p-0 max-[1080px]:grid-cols-1">
         {baruckContests.map((contest) => (
           <li key={contest.number}>
@@ -100,7 +77,7 @@ export function AboutEvents() {
               href={contest.href}
               className="group flex h-full flex-col border border-line bg-ivory px-[1.7rem] pb-[1.7rem] pt-[1.8rem] transition-[transform,box-shadow] duration-[320ms] hover:translate-y-[-6px] hover:shadow-[0_18px_40px_rgba(11,12,14,.12)] focus-visible:translate-y-[-6px] focus-visible:shadow-[0_18px_40px_rgba(11,12,14,.12)]"
             >
-              <span className="text-micro tracking-[.15em] text-accent">{t("Concours ")}{contest.number}</span>
+              <span className="text-micro tracking-[.15em] text-accent">{pageText("groupe", "AboutEvents.9") + " "}{contest.number}</span>
               <span className="mb-[.9rem] mt-[1.6rem] font-display text-display-sm font-normal leading-[1.15]">
                 {contest.title}
               </span>
@@ -109,16 +86,16 @@ export function AboutEvents() {
               <i
                 aria-hidden="true"
                 className="mb-0 mt-auto pt-[1.6rem] text-label not-italic uppercase tracking-[.12em] text-accent"
-              >{t("Lire l’article")}</i>
+              >{pageText("groupe", "AboutEvents.10")}</i>
             </Link>
           </li>
         ))}
       </ol>
 
       <div className="reveal mt-[clamp(2rem,4vw,3rem)] flex flex-wrap items-center gap-[.8rem]">
-        <Link href={routes.jeca} className="button button-dark">{t("Découvrir la JECA ")}<span><Icon name="arrow-up-right" /></span>
+        <Link href={pageValue<string>("groupe", "AboutEvents.11")} className="button button-dark">{pageText("groupe", "AboutEvents.12") + " "}<span><Icon name={pageLinkIcon("groupe", "AboutEvents.11")} /></span>
         </Link>
-        <Link href={`${routes.edv}#actions`} className="button button-outline">{t("Les actions d’Espoir de Vie")}</Link>
+        <Link href={pageValue<string>("groupe", "AboutEvents.13")} className="button button-outline">{pageText("groupe", "AboutEvents.14")}</Link>
       </div>
     </section>
   );

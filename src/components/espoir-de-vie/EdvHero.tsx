@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, pageValue } from "@/lib/page-content";
 import { edvHeroPhoto } from "@/data/espoir-de-vie";
 import { edvLogo } from "@/data/media";
 import { asset } from "@/lib/asset";
@@ -27,7 +26,7 @@ export function EdvHero() {
   return (
     <section
       id="accueil"
-      aria-label={t("Présentation d’Espoir de Vie")}
+      aria-label={pageText("espoir-de-vie", "EdvHero.1")}
       className="grid min-h-[clamp(640px,82svh,800px)] scroll-mt-[72px] grid-cols-[58%_42%] overflow-hidden bg-edv-ink text-white max-[1100px]:grid-cols-[55%_45%] max-tablet:relative max-tablet:block max-tablet:min-h-[100svh]"
     >
       <div className="relative col-start-2 row-start-1 min-h-0 overflow-hidden bg-edv-ink-soft max-tablet:absolute max-tablet:inset-0 max-tablet:z-0 max-tablet:h-full max-tablet:w-full">
@@ -45,7 +44,7 @@ export function EdvHero() {
           className="absolute inset-0 bg-[linear-gradient(180deg,transparent_56%,rgba(26,16,11,.12)_72%,rgba(26,16,11,.86))] max-tablet:bg-[linear-gradient(180deg,rgba(26,16,11,.34)_12%,rgba(26,16,11,.6)_48%,rgba(26,16,11,.95)_100%)]"
         />
         <p className="absolute bottom-[clamp(2rem,5vh,4rem)] left-[clamp(1.4rem,3.5vw,4rem)] right-6 z-[2] m-0 font-display text-display-sm font-normal leading-[1.1] text-white [text-shadow:0_2px_18px_rgba(0,0,0,.35)] max-tablet:hidden">
-          <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-edv-gold">{t("Depuis 2016")}</span>{t("L’orphelinat Espoir de Vie")}</p>
+          <span className="mb-[.65rem] block font-sans text-micro font-extrabold uppercase leading-none tracking-[.18em] text-edv-gold">{pageText("espoir-de-vie", "EdvHero.2")}</span>{pageText("espoir-de-vie", "EdvHero.3")}</p>
       </div>
       <div className="hero-in relative isolate col-start-1 row-start-1 flex flex-col justify-center pb-12 pl-[clamp(1.3rem,6vw,7.5rem)] pr-[clamp(1.3rem,6vw,7.5rem)] pt-[calc(92px+2rem)] max-[1100px]:px-10 max-tablet:z-10 max-tablet:min-h-[100svh] max-tablet:w-full max-tablet:justify-end max-tablet:px-[1.3rem] max-tablet:pb-[clamp(5rem,15vh,8rem)] max-tablet:pt-[7rem]">
         {/* Lueur ember conservée du hero précédent. Aucun motif en fond. */}
@@ -55,24 +54,23 @@ export function EdvHero() {
         />
         <img
           src={asset(edvLogo.src)}
-          alt={t("Logo Espoir de Vie")}
+          alt={pageText("espoir-de-vie", "EdvHero.4")}
           width={edvLogo.width}
           height={edvLogo.height}
           fetchPriority="high"
           className="mb-6 h-20 w-auto self-start object-contain mix-blend-screen drop-shadow-[0_18px_30px_rgba(0,0,0,.35)] max-tablet:hidden"
         />
-        <p className="edv-kicker edv-kicker-light">{t("Engagement humanitaire · Afrique de l’Ouest")}</p>
+        <p className="edv-kicker edv-kicker-light">{pageText("espoir-de-vie", "EdvHero.5")}</p>
         <h1 className="m-0 max-w-[760px] text-balance font-display text-display-xl font-normal leading-[.88] tracking-[-.055em]">
-          Espoir de Vie.
-          <br />
-          <em className="font-[inherit] text-edv-gold">{t("Agir pour les plus vulnérables.")}</em>
+          {pageText("espoir-de-vie", "EdvHero.6")}<br />
+          <em className="font-[inherit] text-edv-gold">{pageText("espoir-de-vie", "EdvHero.7")}</em>
         </h1>
-        <p className="mb-5 mt-[1.6rem] max-w-[560px] text-lead leading-[1.7] text-[rgba(255,255,255,.7)] max-tablet:mt-[1.4rem] max-tablet:text-small">{t("Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire.")}</p>
-        <blockquote className="mb-8 mt-0 font-display text-base italic leading-[1.5] text-[rgba(255,255,255,.82)] max-tablet:mb-7 max-tablet:text-body">{t("« Avec Dieu, nous ferons des exploits. »")}</blockquote>
+        <p className="mb-5 mt-[1.6rem] max-w-[560px] text-lead leading-[1.7] text-[rgba(255,255,255,.7)] max-tablet:mt-[1.4rem] max-tablet:text-small">{pageText("espoir-de-vie", "EdvHero.8")}</p>
+        <blockquote className="mb-8 mt-0 font-display text-base italic leading-[1.5] text-[rgba(255,255,255,.82)] max-tablet:mb-7 max-tablet:text-body">{pageText("espoir-de-vie", "EdvHero.9")}</blockquote>
         <div className="edv-actions">
-          <a href="#actions" className="edv-button edv-button-primary">{t("Découvrir les actions ")}<span><Icon name="arrow-down" /></span>
+          <a href={pageValue<string>("espoir-de-vie", "EdvHero.link1")} className="edv-button edv-button-primary">{pageText("espoir-de-vie", "EdvHero.10")}{" "}<span><Icon name="arrow-down" /></span>
           </a>
-          <a href="#orphelinat" className="edv-button edv-button-line">{t("L’orphelinat ")}<span><Icon name="arrow-down" /></span>
+          <a href={pageValue<string>("espoir-de-vie", "EdvHero.link2")} className="edv-button edv-button-line">{pageText("espoir-de-vie", "EdvHero.11")}{" "}<span><Icon name="arrow-down" /></span>
           </a>
         </div>
       </div>

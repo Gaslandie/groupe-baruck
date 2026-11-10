@@ -26,6 +26,7 @@ function startSession(): void
     if ($settings['environment'] === 'production' && !overHttps($settings, $_SERVER)) {
         http_response_code(400); exit('La connexion HTTPS est nécessaire.');
     }
+    if ($settings['environment'] === 'production') ensureEditorialSchema();
     header('Cache-Control: no-store, private');
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
@@ -67,11 +68,15 @@ function recoverExpiredSubmission(array $session, array $post, array $server, in
         if ($key === 'gallery' ? !is_array($value) : !is_string($value)) return null;
     }
     if (strlen(json_encode($draft, JSON_INVALID_UTF8_SUBSTITUTE)) > 300000) return null;
+    try { $english=englishInput($post); if ($english!==null) $english=recoverEnglishTexts($english); } catch (ValidationError $error) { return null; }
+    if ($english!==null) $draft['english']=$english;
+    if (strlen(json_encode($draft, JSON_INVALID_UTF8_SUBSTITUTE)) > 1100000) return null;
     return ['user_id' => $session['user_id'], 'draft' => $draft, 'expires' => $time + 3600, 'token' => bin2hex(random_bytes(16))];
 }
 
 function loginDestination(): never
 {
+    if (isset($_SESSION['login_challenge'])) redirect('verify');
     $recovery = $_SESSION['recovery'] ?? null;
     if ($recovery) redirect('edit', ['id' => $recovery['draft']['id'] ?? '', 'recover' => $recovery['token']]);
     redirect('dashboard');
@@ -87,11 +92,38 @@ function requireCsrf(): void
     }
 }
 
+/** Accès de travail explicitement activé dans la configuration privée du lanceur local. */
+function localDirectUserId(array $settings, array $server, string $sapi): ?string
+{
+    $id = $settings['local_direct_user_id'] ?? null;
+    $origin = $settings['origin'] ?? '';
+    $peer = $settings['local_direct_peer'] ?? '';
+    if ($sapi !== 'cli-server' || ($settings['environment'] ?? '') !== 'local' || ($settings['trusted_proxy'] ?? false) !== false
+        || !is_string($id) || !preg_match('/^[a-f0-9]{32}$/D', $id)
+        || !is_string($origin) || !preg_match('~^http://127\.0\.0\.1:[0-9]{1,5}$~D', $origin)
+        || ($server['HTTP_HOST'] ?? '') !== substr($origin, 7)
+        || !is_string($peer) || !filter_var($peer, FILTER_VALIDATE_IP)
+        || !in_array($server['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1', $peer], true)
+        || isset($server['HTTP_FORWARDED']) || isset($server['HTTP_X_FORWARDED_FOR']) || isset($server['HTTP_X_FORWARDED_HOST']) || isset($server['HTTP_X_FORWARDED_PROTO'])
+        || !preg_match('/^mysql:host=baruck-admin-mysql;dbname=[a-zA-Z0-9_]+;charset=utf8mb4$/D', $settings['database']['dsn'] ?? '')
+        || !empty($settings['publication_key']) || !empty($settings['publication_github_token'])) return null;
+    if (isset($server['HTTP_ORIGIN']) && $server['HTTP_ORIGIN'] !== $origin) return null;
+    if (($server['HTTP_SEC_FETCH_SITE'] ?? '') === 'cross-site'
+        && !(($server['REQUEST_METHOD'] ?? '') === 'GET' && ($server['HTTP_SEC_FETCH_MODE'] ?? '') === 'navigate'
+            && ($server['HTTP_SEC_FETCH_DEST'] ?? '') === 'document' && ($server['HTTP_SEC_FETCH_USER'] ?? '') === '?1')) return null;
+    return $id;
+}
+
 function currentUser(): ?array
 {
+    $localId = localDirectUserId(config(), $_SERVER, PHP_SAPI);
+    if ($localId) {
+        // Le rôle et l’activation sont relus à chaque requête ; aucune identité du navigateur.
+        return query('SELECT id,email,name,role,active,session_version FROM users WHERE id=? AND active=1 AND role=?', [$localId, 'admin'])->fetch() ?: null;
+    }
     if (!isset($_SESSION['user_id'])) return null;
     $user = query('SELECT id,email,name,role,active,session_version FROM users WHERE id = ?', [$_SESSION['user_id']])->fetch();
-    if (!$user || !$user['active'] || (int) $user['session_version'] !== ($_SESSION['session_version'] ?? 0)) {
+    if (!$user || !$user['active'] || ($_SESSION['email_verified'] ?? false) !== true || (int) $user['session_version'] !== ($_SESSION['session_version'] ?? 0)) {
         $_SESSION = ['csrf' => bin2hex(random_bytes(32))]; session_regenerate_id(true); return null;
     }
     return $user;
@@ -170,6 +202,7 @@ function withAttemptLimit(string $identity, callable $verify, string $scope = 'l
 
 function login(array $input): void
 {
+    cancelLoginChallenge();
     $email = strtolower(text($input, 'email', 190));
     $value = $input['password'] ?? '';
     if (!is_string($value) || strlen($value) > 72 || str_contains($value, "\0")) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
@@ -180,8 +213,14 @@ function login(array $input): void
         return $user && $verified && $user['active'] ? $user : null;
     });
     if (!$user) throw new ValidationError('Connexion impossible. Vérifiez vos identifiants.');
+    issueLoginChallenge($user);
+}
+
+/** Une session complète n’existe qu’après validation du code à usage unique. */
+function completeLogin(array $user): void
+{
     $recovery = $_SESSION['recovery'] ?? null;
     session_regenerate_id(true);
-    $_SESSION = ['user_id' => $user['id'], 'session_version' => (int) $user['session_version'], 'started' => time(), 'last_seen' => time(), 'csrf' => bin2hex(random_bytes(32))];
+    $_SESSION = ['user_id' => $user['id'], 'email_verified' => true, 'session_version' => (int) $user['session_version'], 'started' => time(), 'last_seen' => time(), 'csrf' => bin2hex(random_bytes(32))];
     if (is_array($recovery) && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()) $_SESSION['recovery'] = $recovery;
 }

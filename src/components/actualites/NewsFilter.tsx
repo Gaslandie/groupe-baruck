@@ -1,6 +1,7 @@
 "use client";
 
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
+
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -58,7 +59,7 @@ export function NewsFilterView({ articles, category, ref }: NewsFilterViewProps)
     <div ref={ref}>
       {categories.length > 1 ? (
         <nav
-          aria-label={t("Filtrer les actualités par catégorie")}
+          aria-label={pageText("actualites", "copy.NewsFilter.1")}
           className="mb-[clamp(2.5rem,4vw,4rem)]"
         >
           <ul className="m-0 flex list-none flex-wrap gap-[.6rem] p-0">
@@ -76,7 +77,7 @@ export function NewsFilterView({ articles, category, ref }: NewsFilterViewProps)
                         : "border-line text-[#696963] hover:border-ink hover:text-ink"
                     }`}
                   >
-                    {item ? categoryLabels[item] : t("Toutes")}
+                    {item ? categoryLabels[item] : pageText("actualites", "copy.NewsFilter.2")}
                   </Link>
                 </li>
               );

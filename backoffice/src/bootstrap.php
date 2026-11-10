@@ -98,7 +98,9 @@ function brandCategories(): array
 }
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/login-code.php';
 require __DIR__ . '/markdown.php';
+require __DIR__ . '/translations.php';
 require __DIR__ . '/content.php';
 require __DIR__ . '/media.php';
 require __DIR__ . '/editorial.php';
@@ -106,5 +108,6 @@ require __DIR__ . '/boutique.php';
 require __DIR__ . '/settings.php';
 require __DIR__ . '/coordonnees.php';
 require __DIR__ . '/textes.php';
+require __DIR__ . '/pages.php';
 require __DIR__ . '/stats.php';
 require __DIR__ . '/publication.php';

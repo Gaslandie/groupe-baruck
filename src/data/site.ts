@@ -1,4 +1,5 @@
-import { translate as t } from "../lib/language.ts";
+import { pageValue, pageText } from "@/lib/page-content";
+import { isEnglish } from "../lib/language.ts";
 
 import { contactValues, mailtoHref, telHref, whatsappHref } from "./coordonnees";
 
@@ -84,21 +85,21 @@ const contactHrefs: Record<ContactId, string> = {
   email: mailtoHref(contactValues.email),
 };
 
-/** Intitulés des lignes de contact : nomenclature du site, pas une donnée modifiable. */
+/** Intitulés partagés ; numéros et adresses conservent leur source dans Coordonnées. */
 const contactLabels: Record<ContactId, string> = {
-  landline: t("Téléphone fixe Baruck Siège Guinée"),
-  mobile: t("Téléphone mobile"),
-  whatsappHq: t("WhatsApp Baruck Siège Guinée"),
-  whatsappCeo: t("WhatsApp PDG"),
-  email: t("E-mail"),
+  landline: pageText("home", "common.site.1"),
+  mobile: pageText("home", "common.site.2"),
+  whatsappHq: pageText("home", "common.site.3"),
+  whatsappCeo: pageText("home", "common.site.4"),
+  email: pageText("home", "common.site.5"),
 };
 
 export const site = {
-  name: "Groupe Baruck",
+  name: pageText("home", "common.Brand.2"),
   designer: "GassTech Solutions",
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://gaslandie.github.io/groupe-baruck/").replace(/\/?$/, "/"),
   description:
-    t("Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée."),
+    pageText("home", "common.site.6"),
 };
 
 export const contacts: Record<ContactId, ContactLink> = {
@@ -115,69 +116,69 @@ const whatsappRequest = (text: string) =>
 
 export const whatsappRequests = {
   studioPrices: whatsappRequest(
-    t("Bonjour, je souhaite connaître les tarifs du Studio Photo Baruck."),
+    pageText("home", "common.site.7"),
   ),
   hostessBooking: whatsappRequest(
-    t("Bonjour, je souhaite réserver les hôtesses événementielles Baruck."),
+    pageText("home", "common.site.8"),
   ),
 } as const;
 
 export const mainNav: NavItem[] = [
-  { number: "01", label: t("Accueil"), href: routes.home },
-  { number: "02", label: t("Le Groupe"), href: routes.group },
+  { number: "01", label: pageText("home", "common.site.9"), href: routes.home },
+  { number: "02", label: pageText("home", "common.site.10"), href: routes.group },
   {
     number: "03",
-    label: t("Nos services"),
-    shortLabel: "Services",
+    label: pageText("home", "common.site.11"),
+    shortLabel: pageText("home", "common.site.12"),
     href: routes.services,
     children: [
-      { label: t("Studio photo"), href: routes.studio, featured: true },
-      { label: t("Hôtesses événementielles"), href: routes.hostesses, featured: true },
+      { label: pageText("home", "common.site.13"), href: routes.studio, featured: true },
+      { label: pageText("home", "common.site.14"), href: routes.hostesses, featured: true },
       // Les autres domaines ne sont plus listés un à un dans le menu
       // (demande du 2026-09-18) : ce lien mène à leurs cartes sur l'accueil.
-      { label: t("Nos autres services"), href: routes.services, featured: true },
+      { label: pageText("home", "common.site.15"), href: routes.services, featured: true },
     ],
   },
-  { number: "04", label: "JECA", href: routes.jeca },
-  { number: "05", label: "Espoir de Vie", href: routes.edv },
+  { number: "04", label: pageText("home", "common.site.16"), href: routes.jeca },
+  { number: "05", label: pageText("home", "common.site.17"), href: routes.edv },
   {
     number: "06",
-    label: t("Actualités"),
+    label: pageText("home", "common.site.18"),
     href: routes.news,
     children: [
-      { label: t("Toutes les actualités"), href: routes.news, featured: true },
-      { label: t("Médiathèque"), href: routes.media, featured: true },
+      { label: pageText("home", "common.site.19"), href: routes.news, featured: true },
+      { label: pageText("home", "common.site.20"), href: routes.media, featured: true },
     ],
   },
-  { number: "07", label: t("La marque"), href: routes.brand },
-  { number: "08", label: "Contact", href: routes.contact },
+  { number: "07", label: pageText("home", "common.site.21"), href: routes.brand },
+  { number: "08", label: pageText("home", "common.site.22"), href: routes.contact },
 ];
 
 export const footers = {
   home: {
     blurb:
-      t("Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert."),
+      pageText("home", "common.site.23"),
     columns: [
       {
-        title: "Navigation",
+        title: pageText("home", "common.site.24"),
         links: [
-          { label: t("Le Groupe"), href: routes.group },
-          { label: t("Studio photo"), href: routes.studio },
-          { label: t("Hôtesses événementielles"), href: routes.hostesses },
-          { label: t("Le PDG"), href: "#president" },
-          { label: t("Actualités"), href: routes.news },
+          { label: pageText("home", "common.site.10"), href: routes.group },
+          { label: pageText("home", "common.site.13"), href: routes.studio },
+          { label: pageText("home", "common.site.14"), href: routes.hostesses },
+          { label: pageText("home", "common.site.25"), href: "#president" },
+          { label: pageText("home", "common.site.18"), href: routes.news },
         ],
       },
       {
-        title: t("Engagements"),
+        title: pageText("home", "common.site.26"),
         links: [
-          { label: "JECA", href: routes.jeca },
-          { label: "Espoir de Vie", href: routes.edv },
-          { label: "Contact", href: routes.contact },
+          { label: pageText("home", "common.site.16"), href: routes.jeca },
+          { label: pageText("home", "common.site.17"), href: routes.edv },
+          { label: pageText("home", "common.site.22"), href: routes.contact },
         ],
       },
       {
-        title: t("Contact direct"),
+        title: pageText("home", "common.site.27"),
         links: [
           { label: contacts.landline.label, href: contactHrefs.landline },
           {
@@ -194,32 +195,32 @@ export const footers = {
         ],
       },
     ],
-    backToTop: "#accueil",
+    backToTop: pageText("home", "common.site.28"),
   },
   about: {
     blurb:
-      t("Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert."),
+      pageText("home", "common.site.23"),
     columns: [
       {
-        title: "Navigation",
+        title: pageText("home", "common.site.24"),
         links: [
-          { label: t("Accueil"), href: routes.home },
-          { label: t("Le Groupe"), href: routes.group },
-          { label: t("Studio photo"), href: routes.studio },
-          { label: t("Hôtesses événementielles"), href: routes.hostesses },
-          { label: t("Actualités"), href: routes.news },
+          { label: pageText("home", "common.site.9"), href: routes.home },
+          { label: pageText("home", "common.site.10"), href: routes.group },
+          { label: pageText("home", "common.site.13"), href: routes.studio },
+          { label: pageText("home", "common.site.14"), href: routes.hostesses },
+          { label: pageText("home", "common.site.18"), href: routes.news },
         ],
       },
       {
-        title: t("Engagements"),
+        title: pageText("home", "common.site.26"),
         links: [
-          { label: "JECA", href: routes.jeca },
-          { label: "Espoir de Vie", href: routes.edv },
-          { label: "Contact", href: routes.contact },
+          { label: pageText("home", "common.site.16"), href: routes.jeca },
+          { label: pageText("home", "common.site.17"), href: routes.edv },
+          { label: pageText("home", "common.site.22"), href: routes.contact },
         ],
       },
       {
-        title: t("Contact direct"),
+        title: pageText("home", "common.site.27"),
         links: [
           { label: contacts.landline.label, href: contactHrefs.landline },
           {
@@ -236,32 +237,32 @@ export const footers = {
         ],
       },
     ],
-    backToTop: "#top",
+    backToTop: pageText("home", "common.site.29"),
   },
   service: {
     blurb:
-      t("Un groupe multisectoriel porté par la vision, l’excellence et l’impact, présent en Guinée, au Sénégal, en Côte d’Ivoire, en France et au Cap-Vert."),
+      pageText("home", "common.site.23"),
     columns: [
       {
-        title: "Navigation",
+        title: pageText("home", "common.site.24"),
         links: [
-          { label: t("Accueil"), href: routes.home },
-          { label: t("Le Groupe"), href: routes.group },
-          { label: t("Studio photo"), href: routes.studio },
-          { label: t("Hôtesses événementielles"), href: routes.hostesses },
-          { label: t("Actualités"), href: routes.news },
+          { label: pageText("home", "common.site.9"), href: routes.home },
+          { label: pageText("home", "common.site.10"), href: routes.group },
+          { label: pageText("home", "common.site.13"), href: routes.studio },
+          { label: pageText("home", "common.site.14"), href: routes.hostesses },
+          { label: pageText("home", "common.site.18"), href: routes.news },
         ],
       },
       {
-        title: t("Engagements"),
+        title: pageText("home", "common.site.26"),
         links: [
-          { label: "JECA", href: routes.jeca },
-          { label: "Espoir de Vie", href: routes.edv },
-          { label: "Contact", href: routes.contact },
+          { label: pageText("home", "common.site.16"), href: routes.jeca },
+          { label: pageText("home", "common.site.17"), href: routes.edv },
+          { label: pageText("home", "common.site.22"), href: routes.contact },
         ],
       },
       {
-        title: t("Contact direct"),
+        title: pageText("home", "common.site.27"),
         links: [
           { label: contacts.landline.label, href: contactHrefs.landline },
           {
@@ -278,35 +279,33 @@ export const footers = {
         ],
       },
     ],
-    backToTop: "#top",
+    backToTop: pageText("home", "common.site.29"),
   },
   jeca: {
     blurb:
-      t("Créée en 2019, la JECA œuvre pour sensibiliser la diaspora africaine à l’investissement en Afrique."),
+      pageText("home", "common.site.30"),
     columns: [
       {
-        title: "JECA",
+        title: pageText("home", "common.site.16"),
         links: [
-          { label: t("La vision"), href: "#vision" },
-          { label: t("Édition 2022"), href: "#edition-1" },
-          { label: t("Édition 2023"), href: "#edition-2" },
-          { label: t("Édition 2026"), href: "#edition-3" },
+          { label: pageText("home", "common.site.31"), href: "#vision" },
+          ...pageValue<{key:string;date:{iso:string}}[]>("jeca","data.editions").map(edition=>({label:isEnglish ? `${edition.date.iso.slice(0,4)} edition` : `Édition ${edition.date.iso.slice(0,4)}`,href:`#edition-${edition.key}`})),
         ],
       },
       {
-        title: "Groupe Baruck",
+        title: pageText("home", "common.Brand.2"),
         links: [
-          { label: t("Le Groupe"), href: routes.group },
-          { label: "Espoir de Vie", href: routes.edv },
-          { label: t("Actualités"), href: routes.news },
+          { label: pageText("home", "common.site.10"), href: routes.group },
+          { label: pageText("home", "common.site.17"), href: routes.edv },
+          { label: pageText("home", "common.site.18"), href: routes.news },
         ],
       },
       {
-        title: t("Contact direct"),
+        title: pageText("home", "common.site.27"),
         links: [
           { label: contacts.landline.value, href: contactHrefs.landline },
           {
-            label: t("WhatsApp Baruck Guinée"),
+            label: pageText("home", "common.site.32"),
             href: contactHrefs.whatsappHq,
             external: true,
           },
@@ -314,35 +313,35 @@ export const footers = {
         ],
       },
     ],
-    backToTop: "#accueil",
+    backToTop: pageText("home", "common.site.28"),
   },
   edv: {
     blurb:
-      t("Espoir de Vie agit en faveur des enfants, des familles et des personnes vulnérables en Afrique de l’Ouest."),
+      pageText("home", "common.site.33"),
     columns: [
       {
-        title: "Espoir de Vie",
+        title: pageText("home", "common.site.17"),
         links: [
-          { label: t("Notre mission"), href: "#mission" },
-          { label: t("L’orphelinat"), href: "#orphelinat" },
-          { label: t("Nos actions"), href: "#actions" },
-          { label: t("Notre présence"), href: "#presence" },
+          { label: pageText("home", "common.site.34"), href: "#mission" },
+          { label: pageText("home", "common.site.35"), href: "#orphelinat" },
+          { label: pageText("home", "common.site.36"), href: "#actions" },
+          { label: pageText("home", "common.site.37"), href: "#presence" },
         ],
       },
       {
-        title: "Groupe Baruck",
+        title: pageText("home", "common.Brand.2"),
         links: [
-          { label: t("Le Groupe"), href: routes.group },
-          { label: "JECA", href: routes.jeca },
-          { label: t("Actualités"), href: routes.news },
+          { label: pageText("home", "common.site.10"), href: routes.group },
+          { label: pageText("home", "common.site.16"), href: routes.jeca },
+          { label: pageText("home", "common.site.18"), href: routes.news },
         ],
       },
       {
-        title: t("Contact direct"),
+        title: pageText("home", "common.site.27"),
         links: [
           { label: contacts.landline.value, href: contactHrefs.landline },
           {
-            label: t("WhatsApp Baruck Guinée"),
+            label: pageText("home", "common.site.32"),
             href: contactHrefs.whatsappHq,
             external: true,
           },
@@ -350,6 +349,6 @@ export const footers = {
         ],
       },
     ],
-    backToTop: "#top",
+    backToTop: pageText("home", "common.site.29"),
   },
 } satisfies Record<FooterVariant, FooterContent>;

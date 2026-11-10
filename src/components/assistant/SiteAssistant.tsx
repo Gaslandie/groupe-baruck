@@ -1,6 +1,8 @@
 "use client";
 
-import { translate as t, language } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
+
+import { language } from "../../lib/language.ts";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -463,7 +465,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
         ].join(" ")}
       >
         <Monogram className="h-[38px] w-[38px] text-lead max-tablet:h-[34px] max-tablet:w-[34px] max-tablet:text-body" />
-        <span className="max-tablet:hidden">{open ? t("Fermer") : assistantMeta.launcher}</span>
+        <span className="max-tablet:hidden">{open ? pageText("home", "common.SiteHeader.6") : assistantMeta.launcher}</span>
       </button>
 
       {open ? (
@@ -494,7 +496,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
               onClick={close}
               className="flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-micro uppercase tracking-[.16em] text-inherit"
             >
-              <span className="max-tablet:hidden">{t("Fermer")}</span>
+              <span className="max-tablet:hidden">{pageText("home", "common.SiteHeader.6")}</span>
               <span aria-hidden="true" className="font-sans text-[1.6rem] font-normal leading-none">
                 <Icon name="close" />
               </span>
@@ -506,7 +508,7 @@ export function SiteAssistant({ variant }: SiteAssistantProps) {
             role="log"
             aria-live="polite"
             aria-busy={typing}
-            aria-label={t("Conversation avec l’assistant")}
+            aria-label={pageText("home", "common.SiteAssistant.1")}
             tabIndex={0}
             className="flex flex-1 flex-col gap-[.9rem] overflow-y-auto px-[1.1rem] py-[1rem]"
           >

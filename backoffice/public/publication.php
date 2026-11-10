@@ -23,6 +23,7 @@ try {
     if ($body === false || strlen($body) > 1024) throw new ValidationError('Requête trop volumineuse.');
     $input = json_decode($body, true, 8, JSON_THROW_ON_ERROR);
     if (!is_array($input)) throw new ValidationError('Requête incorrecte.');
+    ensureEditorialSchema();
     $result = publicationWorker($input);
     if (isset($result['obsolete'])) @unlink(publicationFile($result['obsolete']));
     unset($result['obsolete']);

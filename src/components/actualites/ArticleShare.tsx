@@ -1,6 +1,7 @@
 "use client";
 
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
+
 
 import { useState } from "react";
 
@@ -21,19 +22,19 @@ export function ArticleShare({ title, url }: ArticleShareProps) {
   const copyLink = async () => {
     try {
       await navigator.clipboard.writeText(url);
-      setFeedback(t("Lien copié"));
+      setFeedback(pageText("actualites", "copy.ArticleShare.1"));
     } catch {
-      setFeedback(t("Copie impossible"));
+      setFeedback(pageText("actualites", "copy.ArticleShare.2"));
     }
   };
 
   return (
     <div className="mx-auto mt-[clamp(3rem,5vw,5rem)] max-w-[1100px] border-t border-line pt-8">
-      <h2 className="eyebrow">{t("Partager cet article")}</h2>
+      <h2 className="eyebrow">{pageText("actualites", "copy.ArticleShare.3")}</h2>
       <div className="flex flex-wrap gap-3">
-        <a href={whatsappHref} target="_blank" rel="noreferrer" className={actionClass}>{t("Partager sur WhatsApp")}</a>
-        <a href={facebookHref} target="_blank" rel="noreferrer" className={actionClass}>{t("Partager sur Facebook")}</a>
-        <button type="button" onClick={copyLink} className={actionClass}>{t("Copier le lien")}</button>
+        <a href={whatsappHref} target="_blank" rel="noreferrer" className={actionClass}>{pageText("actualites", "copy.ArticleShare.4")}</a>
+        <a href={facebookHref} target="_blank" rel="noreferrer" className={actionClass}>{pageText("actualites", "copy.ArticleShare.5")}</a>
+        <button type="button" onClick={copyLink} className={actionClass}>{pageText("actualites", "copy.ArticleShare.6")}</button>
       </div>
       <p
         aria-live="polite"

@@ -58,10 +58,20 @@ function saveArticle(array $input, array $user): string
     $id = text($input, 'id', 32, false);
     $version = filter_var($input['version'] ?? 0, FILTER_VALIDATE_INT);
     try {
-        return transaction(function () use ($id, $version, $article, $status, $user) {
+        return transaction(function () use ($id, $version, $article, $status, $user, $input) {
+            requireEditorialActor($user,$status === 'ready');
+            $article = validateArticle($input,$status === 'ready');
             $old = $id ? query('SELECT * FROM articles WHERE id = ? FOR UPDATE', [$id])->fetch() : false;
             if ($id && (!$old || $version !== (int) $old['version'])) throw new ConflictError('Cet article a été modifié ailleurs. Rechargez la page avant d’enregistrer. Votre saisie est conservée ci-dessous.');
             if ($old && $old['slug'] !== $article['slug']) throw new ValidationError('L’adresse d’un article existant ne peut pas changer.');
+            // Le formulaire actuel ne modifie pas les groupes : seuls les instantanés serveur font foi.
+            $attachments = $old ? articleAttachments(articleData($old)) : ['groups' => []];
+            if ($old && $old['article_date'] !== $article['date']) unset($attachments['datePrecision']);
+            $article = [...$article, ...$attachments];
+            confirmEnglish($input,$status === 'ready');
+            $english = englishInput($input);
+            if ($english === null && isset($article['translations'])) throw new ValidationError('Rechargez le formulaire pour conserver les traductions de cet article.');
+            $article['translations'] = ['en'=>validateEnglish($article,$english ?? initialEnglish($article,'article'),'article',$status === 'ready')];
             $values = [$article['title'], $article['category'], $article['date'], $article['excerpt'], $article['body'], $article['cover'], $article['cover_alt'], json_encode($article['gallery'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), $status, now(), $user['id']];
             if ($old) {
                 query('UPDATE articles SET title=?,category=?,article_date=?,excerpt=?,body=?,cover=?,cover_alt=?,gallery=?,status=?,updated_at=?,updated_by=?,version=version+1 WHERE id=?', [...$values, $id]);
@@ -109,30 +119,30 @@ function uploadMedia(array $file, string $alt, array $user): array
 function exportContent(array $user, bool $record = true): array
 {
     requireAdmin($user);
+    // Même copie cohérente pour le téléchargement et pour « Publier sur le site ».
+    // Les droits et les fichiers ne peuvent pas changer pendant sa préparation.
+    if (!db()->inTransaction()) return transaction(fn() => exportContent($user, $record));
+    requireEditorialActor($user, true);
     $articles = query('SELECT payload FROM article_publications')->fetchAll();
     $data = array_map(fn($row) => json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR), $articles);
-    foreach ($data as &$article) {
-        foreach (seed()['articles'] as $reference) {
-            if ($reference['slug'] === $article['slug'] && $reference['date'] === $article['date'] && ($reference['datePrecision'] ?? '') === 'year') {
-                $article['datePrecision'] = 'year';
-                break;
-            }
-        }
-    }
+    foreach ($data as &$article) $article = [...$article, ...articleAttachments($article)];
     unset($article);
     usort($data, fn($first, $second) => strcmp($second['date'], $first['date']) ?: strcmp($first['slug'], $second['slug']));
     $products = publishedProducts();
-    $encoded = json_encode([$data, $products], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    $pages = publishedPages();
+    $encoded = json_encode([$data, $products, $pages], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     $media = [];
     $total = 0;
     foreach (query('SELECT * FROM media')->fetchAll() as $row) {
         $path = '/images/actualites/uploads/' . $row['filename'];
         if (!str_contains($encoded, $path)) continue;
         $file = config()['storage'] . '/media/' . $row['filename'];
-        $total += filesize($file);
+        $bytes = @file_get_contents($file);
+        if ($bytes === false) throw new ValidationError('Une image validée est indisponible. Vérifiez les médias avant de relancer la publication.');
+        $total += strlen($bytes);
         if ($total > 32 * 1024 * 1024) throw new ValidationError('Les images à exporter dépassent 32 Mo. Réduisez leur taille avant de préparer la publication.');
-        $media[] = ['path' => $path, 'sha256' => hash_file('sha256', $file), 'data' => base64_encode(file_get_contents($file))];
+        $media[] = ['path' => $path, 'sha256' => hash('sha256', $bytes), 'data' => base64_encode($bytes)];
     }
     if ($record) audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
-    return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => setting('coordonnees'), 'texts' => setting('textes'), 'media' => $media];
+    return ['format' => 'baruck-editorial-v1', 'pageSchema' => 5, 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => setting('coordonnees'), 'texts' => publishedTextes(), 'pages' => (object) $pages, 'media' => $media];
 }

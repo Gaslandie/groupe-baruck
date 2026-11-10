@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import Link from "next/link";
 
@@ -55,7 +55,7 @@ export function SiteFooter({ variant }: SiteFooterProps) {
         styles.footer,
       ].join(" ")}
     >
-      <div className="max-tablet:col-span-full">
+      <div className="min-w-0 break-words max-tablet:col-span-full">
         <Brand className="[--brand-width:200px] [--brand-mobile-width:175px]" />
         <p className="mt-6 max-w-[380px] text-body leading-[1.75] text-[rgba(255,255,255,.6)]">
           {content.blurb}
@@ -65,7 +65,7 @@ export function SiteFooter({ variant }: SiteFooterProps) {
             "mt-8 block font-sans text-caption font-normal uppercase tracking-[.16em]",
             styles.title,
           ].join(" ")}
-        >{t("Siège du Groupe Baruck · Guinée")}</span>
+        >{pageText("home", "common.SiteFooter.4")}</span>
         <p className="mt-[.85rem] max-w-[380px] text-body leading-[1.75] text-[rgba(255,255,255,.6)]">
           {hqAddress}
         </p>
@@ -80,7 +80,7 @@ export function SiteFooter({ variant }: SiteFooterProps) {
       </div>
 
       {content.columns.map((column) => (
-        <div key={column.title} className="flex flex-col gap-[.85rem] font-display text-body">
+        <div key={column.title} className="flex min-w-0 flex-col gap-[.85rem] break-words font-display text-body">
           <span
             className={[
               "mb-[.6rem] font-sans text-caption font-normal uppercase tracking-[.16em]",
@@ -96,11 +96,11 @@ export function SiteFooter({ variant }: SiteFooterProps) {
       ))}
 
       <div className="col-span-full flex flex-wrap justify-between gap-x-6 gap-y-[.6rem] border-t border-[rgba(255,255,255,.12)] pt-[1.6rem] text-caption uppercase tracking-[.1em] text-[rgba(255,255,255,.6)] max-tablet:flex-col">
-        <p>© {year}{t(" Groupe Baruck. Tous droits réservés.")}</p>
-        <span>{t("Site web conçu par ")}{site.designer}</span>
-        <Link href={routes.legal} className="hover:text-accent">{t("Mentions légales")}</Link>
-        <Link href={routes.brand} className="hover:text-accent">{t("La marque Baruck")}</Link>
-        <a href={content.backToTop}>{t("Retour en haut ")}<Icon name="arrow-up" /></a>
+        <p>© {year}{(" " + pageText("home", "common.SiteFooter.5"))}</p>
+        <span>{(pageText("home", "common.SiteFooter.6") + " ")}{site.designer}</span>
+        <Link href={routes.legal} className="hover:text-accent">{pageText("home", "common.SiteFooter.7")}</Link>
+        <Link href={routes.brand} className="hover:text-accent">{pageText("home", "common.SiteFooter.8")}</Link>
+        <a href={content.backToTop}>{(pageText("home", "common.SiteFooter.9") + " ")}<Icon name="arrow-up" /></a>
       </div>
     </footer>
   );

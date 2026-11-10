@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ export function Brand({ className = "" }: BrandProps) {
     <Link
       prefetch={false}
       href={routes.home}
-      aria-label={t("Groupe Baruck — Accueil")}
+      aria-label={pageText("home", "common.Brand.1")}
       className={[
         "relative z-[2] inline-flex w-[var(--brand-width,180px)] origin-left flex-col items-stretch gap-[.3rem] uppercase transition-transform duration-[350ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:scale-[1.15] focus-visible:scale-[1.15] max-tablet:w-[var(--brand-mobile-width,142px)] max-tablet:gap-[.24rem]",
         className,
@@ -35,8 +35,7 @@ export function Brand({ className = "" }: BrandProps) {
           aria-hidden="true"
           className="block h-px w-[27px] bg-current opacity-[.58] max-tablet:w-[18px]"
         />
-        Groupe Baruck
-      </span>
+        {pageText("home", "common.Brand.2")}</span>
     </Link>
   );
 }

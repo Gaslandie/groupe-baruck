@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
 
 import { studioPriceGroups } from "@/data/services";
 
@@ -10,10 +10,10 @@ export function StudioPrices() {
     >
       <div className="mb-14 flex items-end justify-between gap-12 max-tablet:block">
         <div>
-          <p className="eyebrow light">{t("Nos tarifs")}</p>
-          <h2 className="m-0 font-display text-display-xl font-normal leading-[.9] tracking-[-.045em]">{t("Les prix")}<br />{t("du studio")}</h2>
+          <p className="eyebrow light">{pageText("studio-photo", "copy.StudioPrices.1")}</p>
+          <h2 className="m-0 font-display text-display-xl font-normal leading-[.9] tracking-[-.045em]">{pageText("studio-photo", "copy.StudioPrices.2")}<br />{pageText("studio-photo", "copy.StudioPrices.3")}</h2>
         </div>
-        <p className="my-[1em] max-w-[430px] leading-[1.7] text-[rgba(255,255,255,.6)] max-tablet:mt-6">{t("Tarifs communiqués par Baruck Communication Guinée. Contactez l’équipe pour confirmer les disponibilités et les conditions de chaque formule.")}</p>
+        <p className="my-[1em] max-w-[430px] leading-[1.7] text-[rgba(255,255,255,.6)] max-tablet:mt-6">{pageText("studio-photo", "copy.StudioPrices.4")}</p>
       </div>
       <div className="grid grid-cols-3 border-l border-t border-[rgba(255,255,255,.16)] max-[1080px]:grid-cols-2 max-tablet:grid-cols-1">
         {studioPriceGroups.map((group) => (
@@ -50,7 +50,7 @@ export function StudioPrices() {
           </article>
         ))}
       </div>
-      <p className="mb-0 mt-[2.2rem] max-w-[620px] text-caption leading-[1.7] text-[rgba(255,255,255,.5)]">{t("Prix en francs guinéens (GNF). Les formules peuvent être adaptées à votre événement : demandez un devis à l’équipe du studio.")}</p>
+      <p className="mb-0 mt-[2.2rem] max-w-[620px] text-caption leading-[1.7] text-[rgba(255,255,255,.5)]">{pageText("studio-photo", "copy.StudioPrices.5")}</p>
     </section>
   );
 }

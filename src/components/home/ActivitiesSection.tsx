@@ -1,9 +1,8 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, pageValue } from "@/lib/page-content";
 import Link from "next/link";
 
 import { activities } from "@/data/home";
-import { routes } from "@/data/site";
+
 import { SectionHead } from "../ui/SectionHead";
 
 function formatNumber(value: number) {
@@ -24,8 +23,8 @@ export function ActivitiesSection() {
       className="bg-paper-deep px-[clamp(1.3rem,6vw,7.5rem)] py-[clamp(5rem,10vw,10rem)] text-ink max-tablet:px-[1.3rem] max-tablet:py-20"
     >
       <SectionHead
-        title={t("Nos autres activités")}
-        text={t("Des domaines complémentaires réunis autour de l’hospitalité, de la création, de la production et du développement.")}
+        title={pageText("home", "ActivitiesSection.1")}
+        text={pageText("home", "ActivitiesSection.2")}
         tone="dark"
       />
       <div className="reveal-stagger grid grid-cols-3 gap-[clamp(.9rem,1.6vw,1.4rem)] max-desktop:grid-cols-2 max-tablet:grid-cols-1">
@@ -33,13 +32,13 @@ export function ActivitiesSection() {
           <Link
             key={activity.id}
             id={activity.id}
-            href={`${routes.home}#activites`}
-            aria-label={(t("Découvrir l’activité ") + String(activity.title) + t(""))}
+            href={pageValue<string>("home", "ActivitiesSection.3")}
+            aria-label={(pageText("home", "ActivitiesSection.4") + " " + String(activity.title) + "")}
             className="group reveal flex min-h-[170px] scroll-mt-[92px] flex-col rounded-[10px] border border-[rgba(11,12,14,.09)] bg-ivory p-[1.7rem] shadow-[0_1px_2px_rgba(11,12,14,.05)] transition-[transform,border-color,box-shadow] duration-[420ms] ease-[cubic-bezier(.2,.7,.2,1)] hover:translate-y-[-4px] hover:border-[rgba(11,12,14,.18)] hover:shadow-[0_18px_40px_rgba(11,12,14,.12)] focus-visible:translate-y-[-4px] focus-visible:border-[rgba(11,12,14,.18)] focus-visible:shadow-[0_18px_40px_rgba(11,12,14,.12)] max-tablet:min-h-0 max-tablet:p-[1.5rem]"
           >
             <div className="flex items-baseline gap-[1.05rem]">
               <span className="shrink-0 text-micro uppercase tracking-[.18em] text-[#8d8a84] transition-colors duration-[320ms] group-hover:text-accent group-focus-visible:text-accent">
-                {formatNumber(index + 1)} / {formatNumber(activities.length)}
+                {formatNumber(index + 1)} {" " + pageText("home", "ActivitiesSection.5") + " "}{formatNumber(activities.length)}
               </span>
               <h3 className="m-0 text-balance font-display text-display-sm font-normal leading-[1.08] tracking-[-.03em]">
                 {activity.title}

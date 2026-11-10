@@ -25,10 +25,18 @@ declare module "@content/coordonnees.json" {
 declare module "@content/textes.json" {
   type Entry = { title: string; description: string };
 
-  const textes: {
+  type Textes = {
     heroSlides: Record<"guinee" | "studio-photo" | "hotesses", Entry>;
     activities: Record<"hotellerie" | "restauration" | "agrobusiness" | "studio" | "cinema" | "mobilite" | "communication" | "artistes" | "clips", Entry>;
   };
 
+  const textes: Textes & { translations?: { en: Textes } };
+
   export default textes;
+}
+
+declare module "@content/pages.json" {
+  type PageField = { kind: string; fields?: Record<string, PageField>; item?: PageField };
+  const pages: Record<string, { label: string; route: string; fields?: Record<string, PageField>; values: Record<string, unknown> }>;
+  export default pages;
 }

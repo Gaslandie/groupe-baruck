@@ -17,6 +17,9 @@ $revisions = query('SELECT r.id,r.version,r.payload,r.action,r.created_at,u.name
             <dl class="mt-4 space-y-2 text-sm"><dt class="font-semibold">Titre</dt><dd><?= e($data['title']) ?></dd><dt class="font-semibold">Résumé</dt><dd><?= e($data['excerpt']) ?></dd><dt class="font-semibold">Catégorie et date</dt><dd><?= e(categories()[$data['category']]) ?> · <?= e($data['date']) ?></dd></dl>
             <pre class="mt-4 max-h-[420px] overflow-auto whitespace-pre-wrap break-words rounded-lg bg-paper p-4 text-sm font-sans"><?= e($data['body']) ?></pre>
             <p class="mt-3 text-xs text-ink/60"><?= count($data['gallery']) ?> image(s) de galerie<?= $data['cover'] !== '' ? ' · Couverture : ' . e($data['cover_alt']) : '' ?></p>
+            <?php if (isset($data['translations']['en'])): $en=$data['translations']['en']; ?>
+            <section lang="en" class="mt-5 min-w-0 space-y-3 border-t border-line pt-5"><h4 lang="fr" class="font-display text-title">Version anglaise</h4><p class="break-words font-bold"><?= e($en['title']) ?></p><p class="break-words"><?= e($en['excerpt']) ?></p><pre class="max-h-[420px] overflow-auto whitespace-pre-wrap break-words rounded-lg bg-paper p-4 text-small font-sans"><?= e($en['body']) ?></pre></section>
+            <?php else: ?><p class="mt-4 text-caption text-ink/60">Cette ancienne version ne contient pas de traduction anglaise enregistrée.</p><?php endif; ?>
         </details>
         <?php if ((int) $revision['version'] !== (int) $article['version']): ?>
         <form method="post" class="mt-5">

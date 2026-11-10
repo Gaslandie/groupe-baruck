@@ -1,6 +1,7 @@
 "use client";
 
-import { translate as t } from "../../lib/language.ts";
+import { pageText } from "@/lib/page-content";
+
 
 import { useState } from "react";
 
@@ -73,7 +74,7 @@ export function ArticleGroups({ title, intro, groups }: ArticleGroupsProps) {
 
       <div
         role="tablist"
-        aria-label={t("Choisir un groupe de photos")}
+        aria-label={pageText("actualites", "copy.ArticleGroups.1")}
         className="reveal mb-[clamp(1.8rem,3vw,2.6rem)] flex flex-wrap gap-[.5rem]"
       >
         {groups.map((group, index) => {

@@ -16,18 +16,21 @@ try {
     $flash = $_SESSION['flash'] ?? '';
     unset($_SESSION['flash']);
     $setup = config()['environment'] === 'local' && (int) query('SELECT COUNT(*) FROM users')->fetchColumn() === 0;
+    $pending = !$user ? pendingLoginChallenge() : null;
     if ($setup) $page = 'setup';
-    elseif (!$user) $page = 'login';
-    if (!in_array($page, ['setup', 'login', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+    elseif (!$user) $page = $pending ? 'verify' : 'login';
+    if (!in_array($page, ['setup', 'login', 'verify', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'pages', 'page_edit', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
-    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'users', 'publication'], true)) requireAdmin($user);
+    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'pages', 'page_edit', 'users', 'publication'], true)) requireAdmin($user);
+    if ($page === 'textes' && in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD'], true)) redirect('page_edit', ['id' => 'home']);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
         requireCsrf();
         try {
             $action = text($_POST, 'action', 32);
+            if (in_array($action,['save_article','save_product'],true) && array_key_exists('english_json',$_POST)) { $_POST['english']=englishInput($_POST); unset($_POST['english_json']); }
             if ($setup && $action === 'setup') {
                 // Initialisation locale uniquement. En production : commande CLI privée.
                 if ((int) query("SELECT GET_LOCK('baruck_setup', 10)")->fetchColumn() !== 1) throw new ConflictError('Une initialisation est déjà en cours. Réessayez dans quelques instants.');
@@ -38,6 +41,11 @@ try {
                 login($_POST); loginDestination();
             }
             if (!$setup && !$user && $action === 'login') { login($_POST); loginDestination(); }
+            if (!$setup && !$user && $action === 'verify_code') { verifyLoginCode($_POST); loginDestination(); }
+            if (!$setup && !$user && $action === 'resend_code') {
+                resendLoginCode(); $_SESSION['flash'] = 'Un nouveau code a été envoyé. Le précédent ne fonctionne plus.'; redirect('verify');
+            }
+            if (!$setup && !$user && $action === 'cancel_login') { cancelLoginChallenge(); session_regenerate_id(true); redirect('login'); }
             if (!$user) throw new ValidationError('Connectez-vous pour continuer.');
             switch ($action) {
                 case 'logout':
@@ -61,7 +69,7 @@ try {
                     redirect('articles');
                 case 'save_product':
                     $id = saveProduct($_POST, $user);
-                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article en boutique. Il partira avec la prochaine publication.' : 'Article enregistré. Il reste masqué sur le site.';
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Version validée pour la prochaine publication.' : 'Brouillon enregistré. La dernière version validée est conservée.';
                     redirect('product', ['id' => $id]);
                 case 'switch_product':
                     $product = switchProduct($_POST, $user);
@@ -83,6 +91,21 @@ try {
                     saveTextes($_POST, $user);
                     $_SESSION['flash'] = 'Textes enregistrés. Ils partiront sur le site avec la prochaine publication.';
                     redirect('textes');
+                case 'save_page':
+                    requireAdmin($user);
+                    $_POST['fields'] = decodePageFields($_POST);
+                    unset($_POST['page_fields_json']);
+                    $id = savePageDraft($_POST, $user);
+                    $_SESSION['flash'] = 'Brouillon enregistré. La dernière version validée est conservée.';
+                    redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);
+                case 'validate_page':
+                    $id = validatePage($_POST, $user);
+                    $_SESSION['flash'] = 'Versions française et anglaise validées pour la prochaine publication.';
+                    redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);
+                case 'restore_page':
+                    $id = restorePage($_POST, $user);
+                    $_SESSION['flash'] = 'Le brouillon reprend la dernière version validée. Le site reste inchangé.';
+                    redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);
                 case 'delete_media':
                     deleteMedia($_POST, $user);
                     $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
@@ -135,6 +158,7 @@ try {
         } catch (ValidationError | ConflictError $exception) {
             http_response_code($exception instanceof ConflictError ? 409 : 422);
             $error = $exception->getMessage();
+            if (!$user && !$setup) { $pending = pendingLoginChallenge(); $page = $pending ? 'verify' : 'login'; }
         }
     } elseif ($_SERVER['REQUEST_METHOD'] !== 'GET' && $_SERVER['REQUEST_METHOD'] !== 'HEAD') {
         header('Allow: GET, HEAD, POST'); http_response_code(405); exit;
@@ -146,23 +170,29 @@ try {
     $publication = null;
     $product = null;
     $coordonnees = null;
-    $textes = null;
     $version = 0;
-    if ($page === 'textes') {
-        $saved = setting('textes');
-        $posted = $error && ($_POST['action'] ?? '') === 'save_textes';
-        $textes = [];
-        foreach ($saved as $group => $entries) {
-            foreach ($entries as $key => $entry) {
-                $sent = $posted && is_array($_POST[$group][$key] ?? null) ? $_POST[$group][$key] : [];
-                $textes[$group][$key] = [
-                    'title' => is_string($sent['title'] ?? null) ? $sent['title'] : $entry['title'],
-                    'description' => is_string($sent['description'] ?? null) ? $sent['description'] : $entry['description'],
-                ];
+    $pageModel = null;
+    $pageState = null;
+    $pageValues = [];
+    $pagePosted = false;
+    if ($page === 'page_edit') {
+        $pageId = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
+        if (!isset(pageModels()[$pageId])) { http_response_code(404); $page = 'missing'; }
+        else {
+            $pageModel = pageModel($pageId);
+            $pageState = pageState($pageId);
+            $pageValues = $pageState['draft'];
+            $sectionId = is_string($_GET['section'] ?? null) ? $_GET['section'] : 'section-0';
+            $pageSection = null;
+            foreach ($pageModel['sections'] as $candidate) if ($candidate['id'] === $sectionId) $pageSection = $candidate;
+            if (!$pageSection) { http_response_code(404); $page = 'missing'; }
+
+            $pagePosted = $error && ($_POST['action'] ?? '') === 'save_page';
+            $version = $pagePosted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : $pageState['version'];
+            if ($pagePosted && is_array($_POST['fields'] ?? null)) foreach ($pageModel['fields'] as $key => $field) {
+                if (array_key_exists($key, $_POST['fields'])) $pageValues[$key] = normalizePagePost($field, $_POST['fields'][$key]);
             }
         }
-        // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
-        $version = $posted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : settingVersion('textes');
     }
     if ($page === 'coordonnees') {
         $coordonnees = $error && ($_POST['action'] ?? '') === 'save_coordonnees'
@@ -175,7 +205,8 @@ try {
         $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
         $product = $id ? query('SELECT * FROM products WHERE id=?', [$id])->fetch() : null;
         if ($id && !$product) { http_response_code(404); $page = 'missing'; }
-        if ($product) $product['images'] = productImages($product);
+        if ($product) { $data=productData($product); unset($data['id']); $product=[...$product,...$data]; }
+        $productPublication=$id ? query('SELECT version FROM product_publications WHERE product_id=?',[$id])->fetch() : null;
         if ($error && ($_POST['action'] ?? '') === 'save_product') $product = $_POST;
         $product ??= ['id' => '', 'version' => 0, 'name' => '', 'category' => 'homme', 'images' => [], 'status' => 'draft'];
     }
@@ -185,15 +216,18 @@ try {
         if (($id || $page === 'history') && !$article) { http_response_code(404); $page = 'missing'; }
         if ($article) {
             $publication = query('SELECT version,validated_at FROM article_publications WHERE article_id=?', [$id])->fetch() ?: null;
+            $article=[...$article,...articleData($article)];
             $article['date'] = $article['article_date'];
-            $article['gallery'] = json_decode($article['gallery'], true, 512, JSON_THROW_ON_ERROR);
+
         }
-        if ($error && ($_POST['action'] ?? '') === 'save_article') $article = $_POST;
+        $storedAttachments=$article ? articleAttachments($article) : ['groups'=>[]];
+        if ($error && ($_POST['action'] ?? '') === 'save_article') $article = [...$_POST,...$storedAttachments];
         $recovery = $_SESSION['recovery'] ?? null;
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $page === 'edit' && $recovery
             && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()
             && ($_GET['recover'] ?? '') === $recovery['token'] && ($recovery['draft']['id'] ?? '') === $id) {
-            $article = [...($article ?: []), ...$recovery['draft'], 'status' => 'draft'];
+            $article = [...($article ?: []), ...$recovery['draft'], 'status' => 'draft',...$storedAttachments];
+            if (isset($article['english_json'])) { $article['english']=englishInput($article); unset($article['english_json']); }
             $flash = 'Votre saisie a été récupérée. Relisez-la puis enregistrez votre brouillon. Elle n’a pas remplacé la version validée.';
         }
         $article ??= ['id' => '', 'version' => 0, 'title' => '', 'slug' => '', 'category' => 'groupe', 'date' => '', 'excerpt' => '', 'body' => '', 'cover' => '', 'cover_alt' => '', 'gallery' => [], 'status' => 'draft'];
