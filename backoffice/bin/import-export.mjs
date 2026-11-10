@@ -6,6 +6,7 @@ import { pathToFileURL } from 'node:url';
 import { imageSize } from 'image-size';
 import matter from 'gray-matter';
 import { pageModels, pageSource, pageTexts, validatePageValues } from './pages.mjs';
+import {editorialEnglish} from '../../src/lib/editorial-translations.ts';
 
 export async function importExport(file, destination) {
   const info = await fs.stat(file);
@@ -100,6 +101,8 @@ export async function importExport(file, destination) {
         if (details.datePrecision !== 'year') throw new Error('Précision de date invalide.');
         clean.datePrecision = details.datePrecision;
       }
+      const english=editorialEnglish({...clean,body:article.body,...(article.translations === undefined ? {} : {translations:article.translations})},'article');
+      if(english)clean.translations={en:english};
       // JSON est un sous-ensemble de YAML : valeurs systématiquement citées,
       // aucune interpolation de YAML/frontmatter fourni par un utilisateur.
       const yaml = Object.entries(clean).map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join('\n');
@@ -111,11 +114,13 @@ export async function importExport(file, destination) {
       if (!product || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(product.id) || product.id.length > 120 || identifiers.has(product.id)) throw new Error('Identifiant d’article de boutique invalide ou dupliqué.');
       identifiers.add(product.id);
       if (!Array.isArray(product.images) || product.images.length === 0 || product.images.length > 6) throw new Error(`L’article de boutique « ${product.id} » doit porter de 1 à 6 photos.`);
+      const english=editorialEnglish(product,'product');
       return {
         id: product.id,
         name: string(product.name, 'name', 160),
         category: string(product.category, 'category', 32),
         images: product.images.map((image) => ({ src: string(image?.src, 'src', 255), alt: string(image?.alt, 'alt', 500) })),
+        ...(english ? {translations:{en:english}} : {}),
       };
     });
     if (source.products !== undefined) await fs.writeFile(path.join(destination, 'content/boutique.json'), JSON.stringify({ products }, null, 2) + '\n');

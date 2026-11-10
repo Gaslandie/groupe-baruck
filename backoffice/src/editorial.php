@@ -19,7 +19,7 @@ function articleAttachments(array $article): array
         }
     }
     $attachments = ['groups' => $source['groups'] ?? []];
-    foreach (['groupsTitle', 'groupsIntro', 'datePrecision'] as $field) {
+    foreach (['groupsTitle', 'groupsIntro', 'datePrecision', 'translations'] as $field) {
         if (array_key_exists($field, $source)) $attachments[$field] = $source[$field];
     }
     return $attachments;

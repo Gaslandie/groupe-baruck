@@ -1,3 +1,5 @@
+import {readFileSync} from 'node:fs';
+import {englishProjection} from '../../src/lib/editorial-translations.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -30,6 +32,7 @@ class Browser {
     return this.post('/?page=verify', { action: 'verify_code', code: this.mailbox.code(fields.email) });
   }
   async post(route, fields, extraHeaders = {}) {
+    if (this.editorialFields) fields=this.editorialFields(fields);
     const { csrf } = await this.request(route);
     assert.ok(csrf, 'Formulaire avec jeton CSRF attendu');
     return this.request(route, { csrf, ...fields }, extraHeaders);
@@ -77,6 +80,38 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   let uploadedPath;
   let productId;
   const fields = { action: 'save_article', id: '', version: '0', slug: 'recette-mysql', title: 'Recette MySQL', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Texte de recette.', cover: '', cover_alt: '', status: 'draft' };
+  // Les anciennes recettes utilisent désormais des traductions de test explicites.
+  // Les essais d'anglais invalide fournissent english_json et contournent ce confort.
+  const editorialFields = fields => {
+    fields={...fields};
+    if (['switch_product','delete_product'].includes(fields.action) && fields.version===undefined && /^[a-f0-9]{32}$/.test(fields.id||'')) fields.version=sql(`SELECT version FROM ${database}.products WHERE id='${fields.id}'`).split('\n')[1] || '0';
+    if(fields.action==='switch_product' && fields.status==='ready' && fields.english_reviewed===undefined)fields.english_reviewed='yes';
+    if(!['save_article','save_product'].includes(fields.action) || Object.keys(fields).some(key=>key==='english_json'||key==='english'||key.startsWith('english[')))return fields;
+    const images=field=>{
+      const result=[];
+      for(const [key,value]of Object.entries(fields)){const match=key.match(new RegExp('^'+field+'\\[(\\d+)\\]\\[([^\\]]+)\\]$'));if(match){result[Number(match[1])]??={};result[Number(match[1])][match[2]]=value;}}
+      return result.filter(item=>item.src);
+    };
+    const translate=value=>value ? 'English test text' : '';
+    let english;
+    if(fields.action==='save_product')english={name:translate(fields.name),images:images('images').map(p=>({alt:translate(p.alt)}))};
+    else{
+      let saved;
+      if(/^[a-f0-9]{32}$/.test(fields.id||'')){
+        const hex=sql(`SELECT HEX(r.payload) FROM ${database}.articles a JOIN ${database}.article_revisions r ON r.article_id=a.id AND r.version=a.version WHERE a.id='${fields.id}'`).split('\n')[1];
+        if(hex)saved=JSON.parse(Buffer.from(hex,'hex').toString('utf8'));
+      }
+      const reference=JSON.parse(readFileSync(path.join(directory,'seed.json'),'utf8')).articles.find(a=>a.slug===fields.slug)||{};
+      saved??=reference;
+      if(!Object.hasOwn(saved,'groups'))saved={...saved,groups:reference.groups||[],groupsTitle:reference.groupsTitle,groupsIntro:reference.groupsIntro};
+      english={title:translate(fields.title),excerpt:translate(fields.excerpt),body:translate(fields.body),coverAlt:translate(fields.cover_alt),gallery:images('gallery').map(p=>({alt:translate(p.alt),caption:translate(p.caption)})),groupsTitle:translate(saved.groupsTitle),groupsIntro:translate(saved.groupsIntro),groups:(saved.groups||[]).map(g=>({label:translate(g.label),note:translate(g.note),photos:g.photos.map(p=>({alt:translate(p.alt),caption:translate(p.caption)}))}))};
+    }
+    fields.english_json=JSON.stringify(english);
+    if(fields.status==='ready')fields.english_reviewed='yes';
+    return fields;
+  };
+  admin.editorialFields=editorialFields;editor.editorialFields=editorialFields;
+
   await t.test('migration additive et réinstallation conservent les versions initiales', () => {
     const counts = () => sql(`SELECT (SELECT COUNT(*) FROM ${database}.articles),(SELECT COUNT(*) FROM ${database}.article_revisions),(SELECT COUNT(*) FROM ${database}.article_publications);`);
     const before = counts();
@@ -722,6 +757,46 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       assert.doesNotMatch(JSON.stringify(await pageExport()),/SAISIE NAVIGATEUR PRIVEE/);
     }
   });
+  await t.test('Éditorial bilingue : anglais obligatoire, versions retenues, restauration et aperçu', async () => {
+    const original={...fields,slug:'article-bilingue-recette',title:'Titre français validé',excerpt:'Résumé français validé',body:'Corps français validé'};
+    const english={...englishProjection({...original,gallery:[],groups:[]},'article'),title:'Approved English title',excerpt:'Approved English summary',body:'## English heading\n\n**Approved English body**.'};
+    const form={...original,english_json:JSON.stringify(english)};
+    const created=await admin.post('/?page=edit',form);assert.equal(created.status,303,created.html);
+    const articleId=new URL(created.headers.get('location'),origin).searchParams.get('id'),route='/?page=edit&id='+articleId;
+    const published=async()=>JSON.parse((await admin.post('/?page=publication',{action:'export'})).html);
+    const validate={...form,id:articleId,version:'1',status:'ready'};
+    assert.equal((await admin.post(route,validate)).status,422,'relecture exigée');
+    assert.equal((await admin.post(route,{...validate,english_reviewed:'yes',english_json:JSON.stringify({...english,title:''})})).status,422,'anglais incomplet refusé');
+    assert.equal((await admin.post(route,{...validate,english_reviewed:'yes',english_json:JSON.stringify({...english,body:'[Click](javascript:alert(1))'})})).status,422,'lien actif anglais refusé');
+    assert.equal((await editor.post(route,{...validate,english_reviewed:'yes'})).status,403);
+    assert.equal((await admin.post(route,{...validate,english_reviewed:'yes'})).status,303);
+    assert.equal((await published()).articles.find(a=>a.slug===original.slug).translations.en.title,english.title);
+    const revision=sql(`SELECT id FROM ${database}.article_revisions WHERE article_id='${articleId}' AND version=1`).split('\n')[1];
+    assert.equal((await admin.post(route,{...form,id:articleId,version:'2',title:'BROUILLON FR PRIVE',english_json:JSON.stringify({...english,title:'PRIVATE ENGLISH DRAFT'})})).status,303);
+    assert.equal((await published()).articles.find(a=>a.slug===original.slug).title,original.title);
+    assert.equal((await admin.post('/?page=history&id='+articleId,{action:'restore_revision',id:articleId,version:'3',revision})).status,303);
+    assert.equal(JSON.parse(Buffer.from(sql(`SELECT HEX(payload) FROM ${database}.article_revisions WHERE article_id='${articleId}' AND version=4`).split('\n')[1],'hex')).translations.en.title,english.title);
+    const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aB9sAAAAASUVORK5CYII=','base64');
+    const upload=new FormData();upload.set('csrf',(await admin.request('/')).csrf);upload.set('image',new Blob([png],{type:'image/png'}),'bilingual.png');upload.set('alt','Photo produit bilingue');
+    const image=JSON.parse((await admin.request('/?page=media_api',upload)).html).item;
+    const product={action:'save_product',id:'',version:'0',name:'Produit bilingue validé',category:'sacs',status:'draft','images[0][src]':image.path,'images[0][alt]':'Photo du produit',english_json:JSON.stringify({name:'Approved bilingual product',images:[{alt:'Approved product photo'}]})};
+    const productCreated=await admin.post('/?page=product',product);assert.equal(productCreated.status,303,productCreated.html);
+    const productId=new URL(productCreated.headers.get('location'),origin).searchParams.get('id'),productRoute='/?page=product&id='+productId;
+    assert.equal((await admin.post(productRoute,{...product,id:productId,version:'1',status:'ready'})).status,422);
+    assert.equal((await admin.post(productRoute,{...product,id:productId,version:'1',status:'ready',english_reviewed:'yes'})).status,303);
+    const retained=(await published()).products.find(p=>p.name===product.name);assert.equal(retained.translations.en.name,'Approved bilingual product');
+    const seedImage=JSON.parse(readFileSync(path.join(directory,'seed.json'),'utf8')).products[0].images[0].src;
+    assert.equal((await admin.post(productRoute,{...product,id:productId,version:'2',name:'BROUILLON PRODUIT PRIVE','images[0][src]':seedImage})).status,303);
+    assert.deepEqual((await published()).products.find(p=>p.id===retained.id),retained,'le brouillon produit ne remplace pas la validation');
+    assert.equal((await admin.post('/?page=media',{action:'delete_media',id:image.id})).status,422,'la photo de la version validée reste protégée');
+    docker(['exec',container,'php','bin/install.php','init']);
+    assert.deepEqual((await published()).products.find(p=>p.id===retained.id),retained,'réinstallation sans écrasement ni recréation de validation');
+    if(process.env.BARUCK_TEST_CHROME){
+      const browser=spawnSync(process.execPath,[path.join(directory,'tests/browser-form.mjs'),origin,'editorial'],{input:JSON.stringify({cookie:admin.cookie,articleId,productId}),encoding:'utf8',timeout:60000});
+      assert.equal(browser.status,0,browser.stderr||browser.stdout);
+    }
+    assert.doesNotMatch(JSON.stringify(await published()),/BROUILLON NAVIGATEUR|PRIVATE ENGLISH DRAFT|BROUILLON PRODUIT PRIVE/);
+  });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);
     const response = await admin.post('/?page=publication', { action: 'export' });
@@ -729,7 +804,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const exported = JSON.parse(response.html);
     assert.ok(exported.articles.some((item) => item.slug === 'recette-mysql'));
     assert.ok(!exported.articles.some((item) => item.slug === 'brouillon-prive'));
-    assert.equal(exported.media.length, 2);
+    assert.equal(exported.media.length, 3);
     assert.ok(!response.html.includes(adminEmail));
     assert.ok(!response.html.includes(password));
     assert.ok(!response.html.includes(secret.password));

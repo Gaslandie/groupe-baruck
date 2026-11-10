@@ -131,6 +131,15 @@ export async function checkPublishedPages({send,load,origin,session}) {
     return response.result.value;
   };
   for(const language of ['', '/en']){
+    if(session.editorial){
+      let ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/actualites/article-bilingue-recette/'});await ready;
+      assert.equal(await evaluate('document.querySelector("h1").textContent.trim()'),language?'Approved English title':'Titre français validé');
+      if(language)assert.equal(await evaluate('document.querySelector(".article-body strong").textContent'),'Approved English body');
+      assert.equal(await evaluate('/BROUILLON NAVIGATEUR|PRIVATE ENGLISH DRAFT/.test(document.body.textContent)'),false);
+      ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/marque-baruck/'});await ready;
+      assert.equal(await evaluate('document.querySelector("#produit-produit-bilingue-valide h3").textContent.trim()'),language?'Approved bilingual product':'Produit bilingue validé');
+      assert.equal(await evaluate('document.querySelector("#produit-produit-bilingue-valide img").alt'),language?'Approved product photo':'Photo du produit');
+    }
     let ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/jeca/'});await ready;
     const galleries=await evaluate('Array.from(document.querySelectorAll("section[id^=edition-]")).map(section=>({id:section.id,count:section.querySelectorAll("button img").length,src:section.querySelector("button img")?.getAttribute("src")}))');
     let offset=0;

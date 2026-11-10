@@ -1,4 +1,5 @@
-import { translateContent } from "./language.ts";
+import { translateContent, isEnglish } from "./language.ts";
+import {editorialEnglish, applyEnglish} from "./editorial-translations.ts";
 
 import fs from "node:fs";
 import path from "node:path";
@@ -103,7 +104,7 @@ function parseProduct(value: unknown, seen: Set<string>): BrandProduct {
 
 /** Catalogue de la marque, lu au build : ordre du fichier, aucune valeur par défaut. */
 export function loadProducts(): BrandProduct[] {
-  const source: unknown = translateContent(JSON.parse(fs.readFileSync(catalogueFile, "utf8")));
+  const source: unknown = JSON.parse(fs.readFileSync(catalogueFile, "utf8"));
   const list = (source as { products?: unknown }).products;
   if (!Array.isArray(list)) {
     error("le fichier doit contenir une liste « products ».");
@@ -113,5 +114,8 @@ export function loadProducts(): BrandProduct[] {
   }
 
   const seen = new Set<string>();
-  return list.map((product) => parseProduct(product, seen));
+  return list.map((product) => {
+    const english=editorialEnglish(product as Record<string,unknown>,"product");
+    return parseProduct(isEnglish && english ? applyEnglish(product,english) : translateContent(product),seen);
+  });
 }

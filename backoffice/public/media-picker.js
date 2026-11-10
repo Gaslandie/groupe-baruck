@@ -38,9 +38,16 @@
         input.id = `${field}-${index}-${key}`;
         row.querySelector(`[data-${key}-label]`)?.setAttribute('for', input.id);
       }
+      for (const input of row.querySelectorAll('[name^="english["]')) {
+        const key=input.name.endsWith('[caption]')?'caption':'alt';
+        input.name=`english[${field}][${index}][${key}]`;
+        input.id=`en-${field}-${index}-${key}`;
+        input.closest('div').querySelector('label')?.setAttribute('for',input.id);
+      }
       row.querySelector('[data-media-up]').disabled = index === 0;
       row.querySelector('[data-media-down]').disabled = index === rows.length - 1;
     });
+    form.dispatchEvent(new Event('input',{bubbles:true}));
     add.disabled = rows.length >= max;
     form.querySelector('[data-gallery-status]').textContent = `${rows.length} image(s) sur ${max}.`;
   }
@@ -50,6 +57,7 @@
     const alt = row.querySelector('[data-image-alt]');
     if (!pageMode || previous !== item?.path) alt.value = item?.alt || '';
     alt.required = !pageMode && Boolean(item);
+    if (!pageMode && previous !== item?.path) for(const input of row.querySelectorAll('[name^="english["]'))input.value='';
     if (pageMode) {
       const english = row.querySelector('[lang=en]');
       if (previous !== item?.path && english) english.value = '';

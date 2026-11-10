@@ -1,3 +1,4 @@
+import {checkEditorial} from './browser-editorial.mjs';
 // Régression : soumission HTML native dans un profil Chrome éphémère.
 // BARUCK_TEST_CHROME=/usr/bin/google-chrome npm run backoffice:test:mysql
 import assert from 'node:assert/strict';
@@ -24,8 +25,8 @@ try {
  const send=(method,params={})=>new Promise((resolve,reject)=>{const next=++id;pending.set(next,{resolve,reject});socket.send(JSON.stringify({id:next,method,params}));});
  const load=()=>new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Chargement expiré')),15000);loaded=()=>{clearTimeout(timer);resolve();};});
  await send('Page.enable');
- if (['media', 'product', 'pages', 'page-lists', 'page-galleries', 'public-pages', 'remaining-pages'].includes(process.argv[3])) {
-   const check = { media: checkMediaPicker, product: checkProductPicker, pages: checkPages, 'page-lists': checkPageLists, 'page-galleries':checkPageGalleries, 'public-pages':checkPublishedPages, 'remaining-pages':checkRemainingPages }[process.argv[3]];
+ if (['media', 'product', 'pages', 'page-lists', 'page-galleries', 'public-pages', 'remaining-pages', 'editorial'].includes(process.argv[3])) {
+   const check = { media: checkMediaPicker, product: checkProductPicker, pages: checkPages, 'page-lists': checkPageLists, 'page-galleries':checkPageGalleries, 'public-pages':checkPublishedPages, 'remaining-pages':checkRemainingPages, editorial:checkEditorial }[process.argv[3]];
    await check({ send, load, origin: process.argv[2], profile, session: JSON.parse(readFileSync(0, 'utf8')) });
  } else {
  let ready=load();await send('Page.navigate',{url:process.argv[2]});await ready;

@@ -67,6 +67,9 @@ function recoverExpiredSubmission(array $session, array $post, array $server, in
         if ($key === 'gallery' ? !is_array($value) : !is_string($value)) return null;
     }
     if (strlen(json_encode($draft, JSON_INVALID_UTF8_SUBSTITUTE)) > 300000) return null;
+    try { $english=englishInput($post); if ($english!==null) $english=recoverEnglishTexts($english); } catch (ValidationError $error) { return null; }
+    if ($english!==null) $draft['english']=$english;
+    if (strlen(json_encode($draft, JSON_INVALID_UTF8_SUBSTITUTE)) > 1100000) return null;
     return ['user_id' => $session['user_id'], 'draft' => $draft, 'expires' => $time + 3600, 'token' => bin2hex(random_bytes(16))];
 }
 

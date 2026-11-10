@@ -358,3 +358,19 @@ test('les huit pages restantes : export bilingue strict et migration additive du
   bad['data.contactFaq'][0].answer.en='Address: {adresse}';
   assert.doesNotThrow(()=>validatePageValues(models.contact,bad));
 });
+
+test('export bilingue : textes anglais conservés, médias partagés et champs techniques refusés', async t => {
+  const english={title:'Approved English title',excerpt:'English summary',body:'## English heading\n\n**English body**.',coverAlt:'',gallery:[],groupsTitle:'',groupsIntro:'',groups:[]};
+  const good=await fixture(t,input=>{input.articles[0].translations={en:english};input.products[0].translations={en:{name:'English bag',images:[{alt:'English product image'}]}}});
+  await importExport(good.file,good.out);
+  const saved=matter(await fs.readFile(path.join(good.out,'content/actualites/actualite-test.md'),'utf8'));
+  assert.deepEqual(saved.data.translations.en,english);
+  const catalogue=JSON.parse(await fs.readFile(path.join(good.out,'content/boutique.json'),'utf8'));
+  assert.equal(catalogue.products[0].translations.en.name,'English bag');
+  assert.equal(catalogue.products[0].images[0].src,product.images[0].src);
+  for(const change of [en=>en.title='',en=>en.body='<script>alert(1)</script>',en=>en.body='[Click](javascript:alert(1))',en=>en.cover='/images/autre.jpg',en=>en.gallery=[{alt:'Extra image'}]]){
+    const bad=await fixture(t,input=>{input.articles[0].translations={en:structuredClone(english)};change(input.articles[0].translations.en)});
+    await assert.rejects(importExport(bad.file,bad.out));
+    await assert.rejects(fs.stat(bad.out),{code:'ENOENT'});
+  }
+});

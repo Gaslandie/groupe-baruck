@@ -30,10 +30,13 @@ try {
                 $rank++;
                 // Ne jamais écraser un article modifié lors d’une réinstallation.
                 if (query('SELECT id FROM products WHERE slug=?', [$product['id']])->fetch()) continue;
-                query('INSERT INTO products (id,slug,name,category,images,position,status,updated_at) VALUES (?,?,?,?,?,?,?,?)', [id(), $product['id'], $product['name'], $product['category'], json($product['images']), $rank, 'ready', now()]);
+                $productId=id();
+                query('INSERT INTO products (id,slug,name,category,images,position,status,updated_at) VALUES (?,?,?,?,?,?,?,?)', [$productId, $product['id'], $product['name'], $product['category'], json($product['images']), $rank, 'ready', now()]);
+                if (query('SELECT name FROM schema_migrations WHERE name=?',['product-snapshots-v1'])->fetch()) validateProductPublication(query('SELECT * FROM products WHERE id=?',[$productId])->fetch());
             }
         });
         migrateEditorial();
+        migrateProductPublications();
         echo "Tables initialisées ; actualités et boutique existantes préservées.\n";
     } elseif ($command === 'change-email') {
         changeLoginEmail(json_decode(stream_get_contents(STDIN), true, 32, JSON_THROW_ON_ERROR));

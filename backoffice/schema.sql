@@ -113,3 +113,10 @@ CREATE TABLE IF NOT EXISTS settings (
     updated_at VARCHAR(25) NOT NULL,
     updated_by CHAR(32) NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_publications (
+    product_id CHAR(32) PRIMARY KEY,
+    version INT NOT NULL,
+    payload MEDIUMTEXT NOT NULL,
+    validated_at VARCHAR(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

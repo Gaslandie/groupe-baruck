@@ -30,6 +30,7 @@ try {
         requireCsrf();
         try {
             $action = text($_POST, 'action', 32);
+            if (in_array($action,['save_article','save_product'],true) && array_key_exists('english_json',$_POST)) { $_POST['english']=englishInput($_POST); unset($_POST['english_json']); }
             if ($setup && $action === 'setup') {
                 // Initialisation locale uniquement. En production : commande CLI privée.
                 if ((int) query("SELECT GET_LOCK('baruck_setup', 10)")->fetchColumn() !== 1) throw new ConflictError('Une initialisation est déjà en cours. Réessayez dans quelques instants.');
@@ -204,7 +205,8 @@ try {
         $id = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
         $product = $id ? query('SELECT * FROM products WHERE id=?', [$id])->fetch() : null;
         if ($id && !$product) { http_response_code(404); $page = 'missing'; }
-        if ($product) $product['images'] = productImages($product);
+        if ($product) { $data=productData($product); unset($data['id']); $product=[...$product,...$data]; }
+        $productPublication=$id ? query('SELECT version FROM product_publications WHERE product_id=?',[$id])->fetch() : null;
         if ($error && ($_POST['action'] ?? '') === 'save_product') $product = $_POST;
         $product ??= ['id' => '', 'version' => 0, 'name' => '', 'category' => 'homme', 'images' => [], 'status' => 'draft'];
     }
@@ -214,15 +216,18 @@ try {
         if (($id || $page === 'history') && !$article) { http_response_code(404); $page = 'missing'; }
         if ($article) {
             $publication = query('SELECT version,validated_at FROM article_publications WHERE article_id=?', [$id])->fetch() ?: null;
+            $article=[...$article,...articleData($article)];
             $article['date'] = $article['article_date'];
-            $article['gallery'] = json_decode($article['gallery'], true, 512, JSON_THROW_ON_ERROR);
+
         }
-        if ($error && ($_POST['action'] ?? '') === 'save_article') $article = $_POST;
+        $storedAttachments=$article ? articleAttachments($article) : ['groups'=>[]];
+        if ($error && ($_POST['action'] ?? '') === 'save_article') $article = [...$_POST,...$storedAttachments];
         $recovery = $_SESSION['recovery'] ?? null;
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $page === 'edit' && $recovery
             && $recovery['user_id'] === $user['id'] && $recovery['expires'] > time()
             && ($_GET['recover'] ?? '') === $recovery['token'] && ($recovery['draft']['id'] ?? '') === $id) {
-            $article = [...($article ?: []), ...$recovery['draft'], 'status' => 'draft'];
+            $article = [...($article ?: []), ...$recovery['draft'], 'status' => 'draft',...$storedAttachments];
+            if (isset($article['english_json'])) { $article['english']=englishInput($article); unset($article['english_json']); }
             $flash = 'Votre saisie a été récupérée. Relisez-la puis enregistrez votre brouillon. Elle n’a pas remplacé la version validée.';
         }
         $article ??= ['id' => '', 'version' => 0, 'title' => '', 'slug' => '', 'category' => 'groupe', 'date' => '', 'excerpt' => '', 'body' => '', 'cover' => '', 'cover_alt' => '', 'gallery' => [], 'status' => 'draft'];

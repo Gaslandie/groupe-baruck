@@ -1,4 +1,5 @@
 import { isEnglish, hasEnglishMarkdown, translateContent, translateMarkdown } from "./language.ts";
+import {editorialEnglish, applyEnglish} from "./editorial-translations.ts";
 
 import fs from "node:fs";
 import path from "node:path";
@@ -251,9 +252,10 @@ function parseArticle(filename: string): Article | undefined {
     error(filename, "le fichier doit commencer par un frontmatter YAML délimité par ---.");
   }
   const parsed = matter(source, { language: "yaml" });
-  const translationPending = isEnglish && !hasEnglishMarkdown(parsed.content);
-  const data = translationPending ? parsed.data : translateContent(parsed.data);
-  const content = translationPending ? parsed.content : translateMarkdown(parsed.content);
+  const explicitEnglish = editorialEnglish({...parsed.data, body:parsed.content.trim()}, "article");
+  const translationPending = isEnglish && !explicitEnglish && !hasEnglishMarkdown(parsed.content);
+  const data = isEnglish && explicitEnglish ? applyEnglish(parsed.data, explicitEnglish) : translationPending ? parsed.data : translateContent(parsed.data);
+  const content = isEnglish && explicitEnglish ? explicitEnglish.body as string : translationPending ? parsed.content : translateMarkdown(parsed.content);
   const frontmatter = parsed.matter;
   if (data.draft !== undefined && typeof data.draft !== "boolean") {
     error(filename, 'le champ "draft" doit être un booléen.');

@@ -58,7 +58,9 @@ function saveArticle(array $input, array $user): string
     $id = text($input, 'id', 32, false);
     $version = filter_var($input['version'] ?? 0, FILTER_VALIDATE_INT);
     try {
-        return transaction(function () use ($id, $version, $article, $status, $user) {
+        return transaction(function () use ($id, $version, $article, $status, $user, $input) {
+            requireEditorialActor($user,$status === 'ready');
+            $article = validateArticle($input,$status === 'ready');
             $old = $id ? query('SELECT * FROM articles WHERE id = ? FOR UPDATE', [$id])->fetch() : false;
             if ($id && (!$old || $version !== (int) $old['version'])) throw new ConflictError('Cet article a été modifié ailleurs. Rechargez la page avant d’enregistrer. Votre saisie est conservée ci-dessous.');
             if ($old && $old['slug'] !== $article['slug']) throw new ValidationError('L’adresse d’un article existant ne peut pas changer.');
@@ -66,6 +68,10 @@ function saveArticle(array $input, array $user): string
             $attachments = $old ? articleAttachments(articleData($old)) : ['groups' => []];
             if ($old && $old['article_date'] !== $article['date']) unset($attachments['datePrecision']);
             $article = [...$article, ...$attachments];
+            confirmEnglish($input,$status === 'ready');
+            $english = englishInput($input);
+            if ($english === null && isset($article['translations'])) throw new ValidationError('Rechargez le formulaire pour conserver les traductions de cet article.');
+            $article['translations'] = ['en'=>validateEnglish($article,$english ?? initialEnglish($article,'article'),'article',$status === 'ready')];
             $values = [$article['title'], $article['category'], $article['date'], $article['excerpt'], $article['body'], $article['cover'], $article['cover_alt'], json_encode($article['gallery'], JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), $status, now(), $user['id']];
             if ($old) {
                 query('UPDATE articles SET title=?,category=?,article_date=?,excerpt=?,body=?,cover=?,cover_alt=?,gallery=?,status=?,updated_at=?,updated_by=?,version=version+1 WHERE id=?', [...$values, $id]);

@@ -45,9 +45,9 @@ function adviceList(array $items, string $empty = ''): void {
 <?php elseif ($page === 'boutique'):
     $search = is_string($_GET['q'] ?? null) ? substr($_GET['q'], 0, 120) : '';
     $rayon = array_key_exists($_GET['rayon'] ?? '', brandCategories()) ? $_GET['rayon'] : '';
-    $rows = query('SELECT id,name,category,images,status,position FROM products WHERE name LIKE ? AND (? = ? OR category = ?) ORDER BY position,id', ['%' . $search . '%', $rayon, '', $rayon])->fetchAll();
+    $rows = query('SELECT d.id,d.name,d.category,d.images,d.status,d.position,p.product_id AS published FROM products d LEFT JOIN product_publications p ON p.product_id=d.id WHERE d.name LIKE ? AND (? = ? OR d.category = ?) ORDER BY d.position,d.id', ['%' . $search . '%', $rayon, '', $rayon])->fetchAll();
     $catalog = array_column(mediaCatalog(), null, 'path');
-    $online = count(array_filter($rows, fn($row) => $row['status'] === 'ready'));
+    $online = count(array_filter($rows, fn($row) => !empty($row['published'])));
     // Réordonner n’a de sens que sur la boutique entière : la liste filtrée saute des voisins.
     $sortable = $search === '' && $rayon === '';
 ?>
@@ -59,7 +59,7 @@ function adviceList(array $items, string $empty = ''): void {
         <div class="flex flex-wrap items-center gap-4 p-4">
             <img src="<?= e($thumb['preview'] ?? '') ?>" alt="" width="<?= (int) ($thumb['width'] ?? 1) ?>" height="<?= (int) ($thumb['height'] ?? 1) ?>" loading="lazy" class="size-16 shrink-0 rounded-lg bg-paper object-contain">
             <div class="min-w-0 grow"><a href="<?= e(url('product', ['id' => $row['id']])) ?>" class="text-sm font-semibold underline-offset-4 hover:underline"><?= e($row['name']) ?></a><p class="mt-1 text-xs text-ink/60"><?= e(brandCategories()[$row['category']] ?? $row['category']) ?> · <?= count(productImages($row)) ?> photo(s)</p></div>
-            <span class="whitespace-nowrap rounded-full bg-paper px-3 py-1 text-xs"><?= $row['status'] === 'ready' ? 'En boutique' : 'Masqué' ?></span>
+            <span class="whitespace-nowrap rounded-full bg-paper px-3 py-1 text-xs"><?= !empty($row['published']) ? ($row['status']==='ready'?'En boutique':'En boutique · brouillon en cours') : 'Masqué' ?></span>
             <?php if ($sortable): ?>
             <div class="flex gap-2">
                 <form method="post"><?= csrfField() ?><input type="hidden" name="action" value="move_product"><input type="hidden" name="id" value="<?= e($row['id']) ?>"><input type="hidden" name="direction" value="up"><button class="<?= $secondaryClass ?> px-3 py-2" <?= $rank === 0 ? 'disabled' : '' ?> aria-label="Monter <?= e($row['name']) ?>">↑</button></form>

@@ -288,4 +288,19 @@ $values = array_map(fn($field) => $field['initial'], $studio['fields']);
 $values['data.studioFaq'][1]['key'] = $values['data.studioFaq'][0]['key'];
 check(!accepts(fn() => Baruck\validatePageValues($studio,$values,false)), 'clé de question dupliquée refusée');
 
+$bilingual=['title'=>'Titre','excerpt'=>'Résumé','body'=>'Texte','cover_alt'=>'','gallery'=>[],'groups'=>[]];
+$english=['title'=>'Title','excerpt'=>'Summary','body'=>'English body','coverAlt'=>'','gallery'=>[],'groupsTitle'=>'','groupsIntro'=>'','groups'=>[]];
+check(accepts(fn()=>Baruck\validateEnglish($bilingual,$english,'article',true)), 'anglais complet accepté');
+foreach ([fn($en)=>[...$en,'title'=>''],fn($en)=>[...$en,'body'=>'<script>alert(1)</script>'],fn($en)=>[...$en,'body'=>'[Click](javascript:alert(1))'],fn($en)=>[...$en,'cover'=>'/images/autre.jpg']] as $change) check(!accepts(fn()=>Baruck\validateEnglish($bilingual,$change($english),'article',true)),'anglais incomplet ou forgé refusé');
+check(accepts(fn()=>Baruck\validateEnglish($bilingual,[...$english,'title'=>''],'article',false)),'anglais incomplet conservé en brouillon');
+check(!accepts(fn()=>Baruck\confirmEnglish([],true)),'validation sans relecture refusée');
+check(accepts(fn()=>Baruck\confirmEnglish(['english_reviewed'=>'yes'],true)),'relecture explicite acceptée');
+foreach ([['english_json'=>'{'],['english_json'=>'[]','english'=>[]],['english_json'=>[]]] as $bad) check(!accepts(fn()=>Baruck\englishInput($bad)),'traduction JSON invalide refusée');
+
+$recoveredEnglish=Baruck\recoverExpiredSubmission($session,[...$post,'english_json'=>json_encode($english)],$server,1000);
+check(($recoveredEnglish['draft']['english']['title'] ?? '')==='Title','traduction conservée après expiration de session');
+check(!isset($recoveredEnglish['draft']['english_reviewed']),'ancienne relecture non récupérée');
+check(!str_contains(json_encode(Baruck\recoverExpiredSubmission($session,[...$post,'english'=>[...$english,'password'=>'never-store-this']],$server,1000)),'never-store-this'),'secret ajouté à la traduction non conservé');
+check(!accepts(fn()=>Baruck\validateMarkdown('![Image](&#47;images/example.jpg)')),'chemin encodé qui échapperait au suivi des médias refusé');
+
 echo $count . " contrôles de validation réussis.\n";

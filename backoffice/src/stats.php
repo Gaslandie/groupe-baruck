@@ -215,6 +215,7 @@ function mediaUsage(): array
         }
     }
     foreach (query('SELECT id,images FROM products')->fetchAll() as $row) $documents['produit-' . $row['id']] = $row['images'];
+    foreach (query('SELECT product_id,payload FROM product_publications')->fetchAll() as $row) $documents['produit-' . $row['product_id']]=($documents['produit-' . $row['product_id']] ?? '') . ' ' . $row['payload'];
     foreach (query("SELECT name,payload FROM settings WHERE name LIKE 'page:%'")->fetchAll() as $row) $documents[$row['name']] = $row['payload'];
     foreach ($usage as $id => $item) {
         foreach ($documents as $document) if (str_contains($document, $item['path'])) $usage[$id]['count']++;
