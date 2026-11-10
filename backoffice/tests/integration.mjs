@@ -797,6 +797,21 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     }
     assert.doesNotMatch(JSON.stringify(await published()),/BROUILLON NAVIGATEUR|PRIVATE ENGLISH DRAFT|BROUILLON PRODUIT PRIVE/);
   });
+  await t.test('export : droits révoqués relus et image indisponible refusée sans fichier partiel', async () => {
+    const output = docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; $id=Baruck\\createUser(["email"=>"export-revoked@example.test","password"=>"Recette export 2026!","name"=>"Export révoqué","role"=>"admin"]); $user=Baruck\\query("SELECT * FROM users WHERE id=?",[$id])->fetch(); Baruck\\query("UPDATE users SET role=? WHERE id=?",["editor",$id]); Baruck\\exportContent($user); echo "EXPORT_INTERDIT";']);
+    assert.match(output, /Vos accès ont changé/);
+    assert.doesNotMatch(output, /EXPORT_INTERDIT|baruck-editorial-v1/);
+    const good = JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
+    const filename = path.basename(good.products.find(item => item.name === 'Produit bilingue validé').images[0].src);
+    const move = (restore) => docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; $f=Baruck\\config()["storage"]."/media/".$argv[1]; if(!rename($argv[2]==="restore"?$f.".test-missing":$f,$argv[2]==="restore"?$f:$f.".test-missing"))exit(1);', filename, restore ? 'restore' : 'hide']);
+    move(false);
+    try {
+      const refused = await admin.post('/?page=publication', { action: 'export' });
+      assert.equal(refused.status, 422);
+      assert.match(refused.html, /image validée est indisponible/);
+      assert.doesNotMatch(refused.html, /baruck-editorial-v1/);
+    } finally { move(true); }
+  });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);
     const response = await admin.post('/?page=publication', { action: 'export' });
@@ -884,6 +899,11 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal(claimed.status, 200, claimed.body);
     assert.equal(claimed.headers.get('x-baruck-claimed'), 'yes');
     assert.equal(JSON.parse(claimed.body).articles.find(item => item.slug === 'publication-automatique').title, 'Avant la demande', 'l’envoi reste une copie fixe');
+    const snapshot = JSON.parse(claimed.body);
+    assert.equal(Object.keys(snapshot.pages).length, 12, 'toutes les pages validées suivent le même envoi');
+    assert.equal(snapshot.articles.find(item => item.slug === 'article-bilingue-recette').translations.en.title, 'Approved English title');
+    assert.equal(snapshot.products.find(item => item.name === 'Produit bilingue validé').translations.en.name, 'Approved bilingual product');
+    assert.doesNotMatch(claimed.body, /PRIVATE ENGLISH DRAFT|BROUILLON PRODUIT PRIVE|SAISIE NAVIGATEUR PRIVEE/);
     assert.ok(!claimed.body.includes('brouillon-prive'));
     for (const secretValue of [key, password, secret.password, adminEmail]) assert.ok(!claimed.body.includes(secretValue));
     assert.equal(crypto.createHash('sha256').update(claimed.body).digest('hex'), claimed.headers.get('x-baruck-sha256'));

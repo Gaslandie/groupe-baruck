@@ -119,6 +119,10 @@ function uploadMedia(array $file, string $alt, array $user): array
 function exportContent(array $user, bool $record = true): array
 {
     requireAdmin($user);
+    // Même copie cohérente pour le téléchargement et pour « Publier sur le site ».
+    // Les droits et les fichiers ne peuvent pas changer pendant sa préparation.
+    if (!db()->inTransaction()) return transaction(fn() => exportContent($user, $record));
+    requireEditorialActor($user, true);
     $articles = query('SELECT payload FROM article_publications')->fetchAll();
     $data = array_map(fn($row) => json_decode($row['payload'], true, 512, JSON_THROW_ON_ERROR), $articles);
     foreach ($data as &$article) $article = [...$article, ...articleAttachments($article)];
@@ -133,9 +137,11 @@ function exportContent(array $user, bool $record = true): array
         $path = '/images/actualites/uploads/' . $row['filename'];
         if (!str_contains($encoded, $path)) continue;
         $file = config()['storage'] . '/media/' . $row['filename'];
-        $total += filesize($file);
+        $bytes = @file_get_contents($file);
+        if ($bytes === false) throw new ValidationError('Une image validée est indisponible. Vérifiez les médias avant de relancer la publication.');
+        $total += strlen($bytes);
         if ($total > 32 * 1024 * 1024) throw new ValidationError('Les images à exporter dépassent 32 Mo. Réduisez leur taille avant de préparer la publication.');
-        $media[] = ['path' => $path, 'sha256' => hash_file('sha256', $file), 'data' => base64_encode(file_get_contents($file))];
+        $media[] = ['path' => $path, 'sha256' => hash('sha256', $bytes), 'data' => base64_encode($bytes)];
     }
     if ($record) audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
     return ['format' => 'baruck-editorial-v1', 'pageSchema' => 5, 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => setting('coordonnees'), 'texts' => publishedTextes(), 'pages' => (object) $pages, 'media' => $media];

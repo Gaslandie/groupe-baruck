@@ -69,7 +69,7 @@ try {
                     redirect('articles');
                 case 'save_product':
                     $id = saveProduct($_POST, $user);
-                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Article en boutique. Il partira avec la prochaine publication.' : 'Article enregistré. Il reste masqué sur le site.';
+                    $_SESSION['flash'] = ($_POST['status'] ?? '') === 'ready' ? 'Version validée pour la prochaine publication.' : 'Brouillon enregistré. La dernière version validée est conservée.';
                     redirect('product', ['id' => $id]);
                 case 'switch_product':
                     $product = switchProduct($_POST, $user);
