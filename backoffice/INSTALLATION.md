@@ -93,7 +93,11 @@ docker build -t baruck-backoffice-php:local backoffice
 npm run backoffice:local
 ```
 
-Ouvrir <http://127.0.0.1:8091/>. La première ouverture permet de créer son compte, avec son propre mot de passe. Cette initialisation web est strictement réservée à `environment=local` et à une origine `127.0.0.1`. Aucun identifiant prédéfini ni connexion de démonstration contournant l’authentification.
+Ouvrir <http://127.0.0.1:8091/>. La première ouverture permet de créer son compte, avec son propre mot de passe. Cette initialisation web est strictement réservée à `environment=local` et à une origine `127.0.0.1`.
+
+Pour travailler sans écran de connexion dans n’importe quel navigateur de cette machine : `npm run backoffice:local -- --direct`. Un seul administrateur local actif doit déjà exister. Le lanceur écrit son identifiant dans la configuration privée ignorée de Git ; le serveur relit son activation et son rôle à chaque requête. L’accès direct exige le serveur PHP de développement, une origine `127.0.0.1`, la base Docker locale et une provenance réseau locale sans proxy ; il est refusé en production et quand la publication distante est configurée. Les protections CSRF restent obligatoires pour les écritures. Relancer `npm run backoffice:local` retire ce mode immédiatement. Le lien public temporaire utilise une autre configuration et conserve son authentification.
+
+Références revérifiées le 10 novembre 2026 : le client de test [Django](https://docs.djangoproject.com/en/5.2/topics/testing/tools/#django.test.Client.force_login) propose une connexion forcée liée à son client ; ce n’est pas un accès partagé entre navigateurs. [OWASP](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html) recommande de protéger les actions sensibles par une authentification adaptée. Ici, la commodité demandée est un mode de développement explicite et révocable ; aucune exception n’est activée en production et la vérification du mot de passe actuel reste nécessaire pour le modifier.
 
 Les conteneurs `baruck-admin-web` et `baruck-admin-mysql`, leur réseau et leurs volumes sont réservés à ce projet. MySQL n’expose aucun port hôte. Le serveur HTTP écoute uniquement sur `127.0.0.1:8091`. Les secrets locaux sont aléatoires dans `.local/`, ignorés de Git. Relancer la commande conserve les données. Pour arrêter sans les effacer :
 

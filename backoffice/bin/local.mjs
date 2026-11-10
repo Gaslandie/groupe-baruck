@@ -40,4 +40,13 @@ if (!exists('container', 'baruck-admin-web')) {
   docker('run', '-d', '--name', 'baruck-admin-web', '--network', 'baruck-admin', '-p', '127.0.0.1:8091:8080', '-e', 'BARUCK_CONFIG=/config.php', '-v', `${directory}:/app:ro`, '-v', `${config}:/config.php:ro`, '-v', 'baruck-admin-storage:/data', 'baruck-backoffice-php:local');
 } else docker('start', 'baruck-admin-web');
 console.log(docker('exec', 'baruck-admin-web', 'php', 'bin/install.php', 'init'));
-console.log('Back-office local : http://127.0.0.1:8091/ — créez votre compte à la première ouverture.');
+if (process.argv.includes('--direct')) {
+  const ids = JSON.parse(docker('exec', 'baruck-admin-web', 'php', '-r', 'require "src/bootstrap.php"; echo json_encode(Baruck\\query("SELECT id FROM users WHERE role=? AND active=1",["admin"])->fetchAll(PDO::FETCH_COLUMN));'));
+  if (ids.length !== 1 || !/^[a-f0-9]{32}$/.test(ids[0])) throw new Error('L’accès direct exige un seul administrateur local actif.');
+  const peer = docker('inspect', '-f', '{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}', 'baruck-admin-web');
+  if (!/^[0-9.]+$/.test(peer)) throw new Error('Adresse du réseau local incorrecte.');
+  const source = await fs.readFile(config, 'utf8');
+  await fs.writeFile(config, source.replace("'environment'=>'local'", `'local_direct_user_id'=>'${ids[0]}','local_direct_peer'=>'${peer}','environment'=>'local'`), { mode: 0o600 });
+  console.log('Accès administrateur direct activé uniquement sur cette machine.');
+}
+console.log('Back-office local : http://127.0.0.1:8091/');

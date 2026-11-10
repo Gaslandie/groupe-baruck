@@ -689,4 +689,38 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal(response.status, 422);
     assert.match(response.html, /Trop de tentatives/);
   });
+  await t.test('accès direct local : nouvelle session, CSRF, droits révoqués et désactivation du mode', async () => {
+    const original = await fs.readFile(configFile, 'utf8');
+    // Le scénario de publication précédent a laissé des clés fictives dans sa configuration.
+    const localOnly = original.replace(/,'publication_(?:key|github_token|dispatch_url)'=>'[^']*'/g, '');
+    const id = sql(`SELECT id FROM ${database}.users WHERE email='${adminEmail}';`).split('\n')[1];
+    const peer = docker(['inspect', '-f', '{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}', container]);
+    const direct = new Browser(origin, mailbox);
+    assert.match((await direct.request('/')).html, /Recevoir mon code/);
+    try {
+      const directConfig = localOnly.replace("'environment'=>'local'", `'local_direct_user_id'=>'${id}','local_direct_peer'=>'${peer}','environment'=>'local'`);
+      await fs.writeFile(configFile, directConfig);
+      assert.match((await direct.request('/')).html, /<h1[^>]*>Vue d’ensemble/);
+      assert.equal((await direct.request('/?page=media_api')).status, 200);
+      assert.equal((await direct.request('/?page=users')).status, 200);
+      assert.equal((await direct.post('/?page=users', { action: 'create_user', email: 'direct-local@example.test', password, name: 'Compte de recette local', role: 'editor' })).status, 303, 'Les écritures locales autorisées fonctionnent avec un jeton CSRF valide');
+      assert.equal((await direct.request('/', { action: 'logout' })).status, 403, 'La protection CSRF reste obligatoire');
+      assert.equal((await direct.post('/', { action: 'logout' }, { Origin: 'https://hostile.example' })).status, 403);
+      for (const header of ['X-Forwarded-For', 'X-Forwarded-Host', 'X-Forwarded-Proto', 'Forwarded']) {
+        assert.match((await direct.request('/', undefined, { [header]: '127.0.0.1' })).html, /Recevoir mon code/);
+      }
+      await fs.writeFile(configFile, directConfig.replace("'environment'=>'local'", "'publication_key'=>'configured','environment'=>'local'"));
+      assert.equal((await direct.request('/?page=media_api')).status, 401, 'Le mode est refusé si une publication distante est configurée');
+      await fs.writeFile(configFile, directConfig);
+      sql(`UPDATE ${database}.users SET active=0 WHERE id='${id}';`);
+      assert.equal((await direct.request('/?page=media_api')).status, 401);
+      sql(`UPDATE ${database}.users SET active=1,role='editor' WHERE id='${id}';`);
+      assert.equal((await direct.request('/?page=media_api')).status, 401);
+    } finally {
+      sql(`UPDATE ${database}.users SET active=1,role='admin' WHERE id='${id}';`);
+      await fs.writeFile(configFile, original);
+    }
+    assert.equal((await direct.request('/?page=media_api')).status, 401, 'Aucun droit de contournement ne persiste dans le cookie');
+    assert.match((await direct.request('/')).html, /Recevoir mon code/);
+  });
 });

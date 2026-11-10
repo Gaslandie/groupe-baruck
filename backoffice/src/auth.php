@@ -88,8 +88,35 @@ function requireCsrf(): void
     }
 }
 
+/** Accès de travail explicitement activé dans la configuration privée du lanceur local. */
+function localDirectUserId(array $settings, array $server, string $sapi): ?string
+{
+    $id = $settings['local_direct_user_id'] ?? null;
+    $origin = $settings['origin'] ?? '';
+    $peer = $settings['local_direct_peer'] ?? '';
+    if ($sapi !== 'cli-server' || ($settings['environment'] ?? '') !== 'local' || ($settings['trusted_proxy'] ?? false) !== false
+        || !is_string($id) || !preg_match('/^[a-f0-9]{32}$/D', $id)
+        || !is_string($origin) || !preg_match('~^http://127\.0\.0\.1:[0-9]{1,5}$~D', $origin)
+        || ($server['HTTP_HOST'] ?? '') !== substr($origin, 7)
+        || !is_string($peer) || !filter_var($peer, FILTER_VALIDATE_IP)
+        || !in_array($server['REMOTE_ADDR'] ?? '', ['127.0.0.1', '::1', $peer], true)
+        || isset($server['HTTP_FORWARDED']) || isset($server['HTTP_X_FORWARDED_FOR']) || isset($server['HTTP_X_FORWARDED_HOST']) || isset($server['HTTP_X_FORWARDED_PROTO'])
+        || !preg_match('/^mysql:host=baruck-admin-mysql;dbname=[a-zA-Z0-9_]+;charset=utf8mb4$/D', $settings['database']['dsn'] ?? '')
+        || !empty($settings['publication_key']) || !empty($settings['publication_github_token'])) return null;
+    if (isset($server['HTTP_ORIGIN']) && $server['HTTP_ORIGIN'] !== $origin) return null;
+    if (($server['HTTP_SEC_FETCH_SITE'] ?? '') === 'cross-site'
+        && !(($server['REQUEST_METHOD'] ?? '') === 'GET' && ($server['HTTP_SEC_FETCH_MODE'] ?? '') === 'navigate'
+            && ($server['HTTP_SEC_FETCH_DEST'] ?? '') === 'document' && ($server['HTTP_SEC_FETCH_USER'] ?? '') === '?1')) return null;
+    return $id;
+}
+
 function currentUser(): ?array
 {
+    $localId = localDirectUserId(config(), $_SERVER, PHP_SAPI);
+    if ($localId) {
+        // Le rôle et l’activation sont relus à chaque requête ; aucune identité du navigateur.
+        return query('SELECT id,email,name,role,active,session_version FROM users WHERE id=? AND active=1 AND role=?', [$localId, 'admin'])->fetch() ?: null;
+    }
     if (!isset($_SESSION['user_id'])) return null;
     $user = query('SELECT id,email,name,role,active,session_version FROM users WHERE id = ?', [$_SESSION['user_id']])->fetch();
     if (!$user || !$user['active'] || ($_SESSION['email_verified'] ?? false) !== true || (int) $user['session_version'] !== ($_SESSION['session_version'] ?? 0)) {

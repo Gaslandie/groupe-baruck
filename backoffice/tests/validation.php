@@ -47,6 +47,22 @@ check(Baruck\overHttps(['trusted_proxy' => true], ['HTTP_X_FORWARDED_PROTO' => '
 check(!Baruck\overHttps(['trusted_proxy' => true], ['HTTP_X_FORWARDED_PROTO' => 'http']), 'proxy de confiance annonçant du clair refusé');
 check(!Baruck\overHttps(['trusted_proxy' => 'oui'], ['HTTP_X_FORWARDED_PROTO' => 'https']), 'déclaration non booléenne sans effet');
 
+$directId = str_repeat('a', 32);
+$direct = ['environment' => 'local', 'origin' => 'http://127.0.0.1:8091', 'local_direct_user_id' => $directId, 'local_direct_peer' => '172.18.0.1', 'database' => ['dsn' => 'mysql:host=baruck-admin-mysql;dbname=baruck;charset=utf8mb4']];
+$directServer = ['HTTP_HOST' => '127.0.0.1:8091', 'REMOTE_ADDR' => '172.18.0.1'];
+check(Baruck\localDirectUserId($direct, $directServer, 'cli-server') === $directId, 'accès direct explicitement activé sur le serveur local');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'REMOTE_ADDR' => '127.0.0.1'], 'cli-server') === $directId, 'boucle locale acceptée');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'HTTP_SEC_FETCH_SITE' => 'cross-site', 'HTTP_SEC_FETCH_MODE' => 'navigate', 'HTTP_SEC_FETCH_DEST' => 'document', 'HTTP_SEC_FETCH_USER' => '?1', 'REQUEST_METHOD' => 'GET'], 'cli-server') === $directId, 'clic volontaire vers le back-office local accepté');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'HTTP_SEC_FETCH_SITE' => 'cross-site', 'HTTP_SEC_FETCH_MODE' => 'no-cors', 'HTTP_SEC_FETCH_DEST' => 'image', 'REQUEST_METHOD' => 'GET'], 'cli-server') === null, 'ressource intégrée depuis un site tiers refusée');
+check(Baruck\localDirectUserId($direct, [...$directServer, 'HTTP_ORIGIN' => 'https://hostile.example'], 'cli-server') === null, 'origine étrangère refusée');
+foreach (['apache2handler', 'fpm-fcgi', 'cli'] as $sapi) check(Baruck\localDirectUserId($direct, $directServer, $sapi) === null, 'accès direct absent hors serveur de développement : ' . $sapi);
+foreach ([['environment' => 'production'], ['trusted_proxy' => true], ['origin' => 'https://admin.groupebaruck.com'], ['local_direct_user_id' => null], ['local_direct_user_id' => ['forgé']], ['local_direct_peer' => ''], ['publication_key' => 'active'], ['publication_github_token' => 'active'], ['database' => ['dsn' => 'mysql:host=production;dbname=baruck;charset=utf8mb4']]] as $override) {
+    check(Baruck\localDirectUserId([...$direct, ...$override], $directServer, 'cli-server') === null, 'configuration hors périmètre refusée : ' . array_key_first($override));
+}
+foreach ([['HTTP_HOST' => 'admin.groupebaruck.com'], ['REMOTE_ADDR' => '198.51.100.1'], ['HTTP_X_FORWARDED_FOR' => '127.0.0.1'], ['HTTP_X_FORWARDED_HOST' => '127.0.0.1:8091'], ['HTTP_X_FORWARDED_PROTO' => 'http'], ['HTTP_FORWARDED' => 'for=127.0.0.1']] as $override) {
+    check(Baruck\localDirectUserId($direct, [...$directServer, ...$override], 'cli-server') === null, 'accès distant ou proxy refusé : ' . array_key_first($override));
+}
+
 // Mesure d’audience : normalisation des chemins, provenances, appareils et robots.
 check(Baruck\normalizePath('/actualites/mon-article') === '/actualites/mon-article/', 'chemin normalisé avec barre finale');
 check(Baruck\normalizePath('') === '/' && Baruck\normalizePath('/') === '/', 'accueil accepté');
