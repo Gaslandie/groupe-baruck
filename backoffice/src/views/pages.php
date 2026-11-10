@@ -1,6 +1,6 @@
 <?php namespace Baruck; ?>
 <p class="mb-6 max-w-[760px] text-body leading-relaxed text-ink/70">Préparez vos textes en français et en anglais. Enregistrer un brouillon garde la dernière version validée. Seule une version validée sera prise en compte lors de la prochaine publication.</p>
-<p class="mb-6 max-w-[760px] text-small leading-relaxed text-ink/60">Les titres et descriptions sont disponibles pour toutes les pages. L’accueil comprend aussi ses présentations et cartes d’activité. Les autres contenus restent gérés par votre prestataire.</p>
+<p class="mb-6 max-w-[760px] text-small leading-relaxed text-ink/60">L’accueil et le Groupe se modifient section par section : textes, photos, liens et listes. Les autres pages proposent leurs titres et descriptions ; leurs sections seront ajoutées ensuite.</p>
 <div class="grid gap-4 tablet:grid-cols-2 wide:grid-cols-3">
 <?php foreach (pageModels() as $id => $model): $state = pageState($id); $pending = pagePending($state); ?>
     <article class="flex min-w-0 flex-col items-start rounded-xl border border-line bg-ivory p-6">

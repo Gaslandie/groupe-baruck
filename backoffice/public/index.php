@@ -93,15 +93,15 @@ try {
                 case 'save_page':
                     $id = savePageDraft($_POST, $user);
                     $_SESSION['flash'] = 'Brouillon enregistré. La dernière version validée est conservée.';
-                    redirect('page_edit', ['id' => $id]);
+                    redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);
                 case 'validate_page':
                     $id = validatePage($_POST, $user);
                     $_SESSION['flash'] = 'Versions française et anglaise validées pour la prochaine publication.';
-                    redirect('page_edit', ['id' => $id]);
+                    redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);
                 case 'restore_page':
                     $id = restorePage($_POST, $user);
                     $_SESSION['flash'] = 'Le brouillon reprend la dernière version validée. Le site reste inchangé.';
-                    redirect('page_edit', ['id' => $id]);
+                    redirect('page_edit', ['id' => $id, 'section' => is_string($_POST['section'] ?? null) ? $_POST['section'] : 'section-0']);
                 case 'delete_media':
                     deleteMedia($_POST, $user);
                     $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
@@ -178,11 +178,15 @@ try {
             $pageModel = pageModel($pageId);
             $pageState = pageState($pageId);
             $pageValues = $pageState['draft'];
+            $sectionId = is_string($_GET['section'] ?? null) ? $_GET['section'] : 'section-0';
+            $pageSection = null;
+            foreach ($pageModel['sections'] as $candidate) if ($candidate['id'] === $sectionId) $pageSection = $candidate;
+            if (!$pageSection) { http_response_code(404); $page = 'missing'; }
+
             $pagePosted = $error && ($_POST['action'] ?? '') === 'save_page';
             $version = $pagePosted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : $pageState['version'];
-            if ($pagePosted) foreach ($pageModel['fields'] as $key => $field) foreach (['fr', 'en'] as $language) {
-                $sent = $_POST['fields'][$key][$language] ?? null;
-                if (is_string($sent)) $pageValues[$key][$language] = $sent;
+            if ($pagePosted && is_array($_POST['fields'] ?? null)) foreach ($pageModel['fields'] as $key => $field) {
+                if (array_key_exists($key, $_POST['fields'])) $pageValues[$key] = normalizePagePost($field, $_POST['fields'][$key]);
             }
         }
     }

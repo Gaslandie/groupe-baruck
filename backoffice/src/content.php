@@ -119,7 +119,8 @@ function exportContent(array $user, bool $record = true): array
     unset($article);
     usort($data, fn($first, $second) => strcmp($second['date'], $first['date']) ?: strcmp($first['slug'], $second['slug']));
     $products = publishedProducts();
-    $encoded = json_encode([$data, $products], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    $pages = publishedPages();
+    $encoded = json_encode([$data, $products, $pages], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     $media = [];
     $total = 0;
     foreach (query('SELECT * FROM media')->fetchAll() as $row) {
@@ -131,5 +132,5 @@ function exportContent(array $user, bool $record = true): array
         $media[] = ['path' => $path, 'sha256' => hash_file('sha256', $file), 'data' => base64_encode(file_get_contents($file))];
     }
     if ($record) audit('Publication préparée', count($data) . ' actualité(s) et ' . count($products) . ' article(s) de boutique', $user['id']);
-    return ['format' => 'baruck-editorial-v1', 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => setting('coordonnees'), 'texts' => publishedTextes(), 'pages' => (object) publishedPages(), 'media' => $media];
+    return ['format' => 'baruck-editorial-v1', 'pageSchema' => 3, 'createdAt' => now(), 'articles' => $data, 'products' => $products, 'contacts' => setting('coordonnees'), 'texts' => publishedTextes(), 'pages' => (object) $pages, 'media' => $media];
 }

@@ -106,6 +106,46 @@ test('pages : compatibilité des anciens exports, anglais complet et champs auto
   values['meta.title'].en = '';
   assert.doesNotThrow(() => validatePageValues(pageModels().contact, values, false), 'saisie incomplète permise seulement en brouillon');
 });
+test('pages structurées : listes, dates, liens, images et contrat de l’étape 3', async (t) => {
+  const model = pageModels().groupe;
+  const values = Object.fromEntries(Object.entries(model.fields).map(([key,field])=>[key,structuredClone(field.initial)]));
+  for (const list of ['data.milestones','AboutEvents.list']) for (const entry of values[list]) {
+    if (entry.href.startsWith('/actualites/')) entry.href='/actualites/actualite-test/';
+  }
+  const valid = await fixture(t,input=>{input.pageSchema=3;input.pages={groupe:structuredClone(values)};});
+  await importExport(valid.file,valid.out);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(valid.out,'content/pages.json'),'utf8')).groupe.values,values);
+  const withdrawn = await fixture(t,input=>{input.pageSchema=3;input.pages={groupe:Object.fromEntries(Object.entries(model.fields).map(([key,field])=>[key,structuredClone(field.initial)]))};});
+  await importExport(withdrawn.file,withdrawn.out);
+  assert.ok(!((await fs.readdir(path.join(withdrawn.out,'content/actualites'))).includes('top-modele-baruck-guinee-2026.md')), 'les références historiques ne remettent pas en ligne une actualité retirée');
+  const changes = [
+    input => { delete input.pages.groupe['media.presidentPortrait']; },
+    input => { input.pageSchema=999; },
+    input => { input.pages.groupe['data.presenceCountries'][0].links[0].href='/page-inconnue/'; },
+    input => { input.pages.groupe['data.presenceCountries'][0].links[0].href='/actualites/article-inexistant/'; },
+    input => { input.pages.groupe['data.presenceCountries'][0].links[0].href='//hostile.example/'; },
+    input => { input.pages.groupe['data.presenceCountries'][0].links[0].href='/groupe/#ancre-inconnue'; },
+    input => { input.pages.groupe['data.milestones'][0].dateTime='2026-02-30'; },
+    input => { input.pages.groupe['data.presenceCountries']=Array.from({length:21},()=>values['data.presenceCountries'][0]); },
+    input => { input.pages.groupe['media.presidentPortrait'].alt.en=''; },
+    input => { input.pages.groupe['media.presidentPortrait'].src='/images/../config.php'; },
+    input => { input.pages.groupe['media.presidentPortrait'].src=`/images/actualites/uploads/${'f'.repeat(32)}.jpg`; },
+    input => { input.pages.groupe['data.ambassadorPhotos'].push(input.pages.groupe['data.ambassadorPhotos'][0]); },
+    input => { input.pages.groupe['data.presenceCountries'][0].links[0].invente='Intrus'; },
+  ];
+  for(const change of changes){
+    const {file,out}=await fixture(t,input=>{input.pageSchema=3;input.pages={groupe:structuredClone(values)};change(input)});
+    await assert.rejects(importExport(file,out));
+    await assert.rejects(fs.stat(out),{code:'ENOENT'});
+  }
+  const legacy=await fixture(t,input=>{input.pages={groupe:{'meta.title':values['meta.title'],'meta.description':values['meta.description']}}});
+  await importExport(legacy.file,legacy.out);
+  const upgraded=JSON.parse(await fs.readFile(path.join(legacy.out,'content/pages.json'),'utf8')).groupe.values;
+  assert.deepEqual(upgraded['meta.title'],values['meta.title']);
+  assert.deepEqual(upgraded['data.presenceCountries'],values['data.presenceCountries']);
+  values['data.presenceCountries']=[];
+  assert.deepEqual(validatePageValues(model,values,true,{articleSlugs:['actualite-test']})['data.presenceCountries'],[],'une liste vide reste vide');
+});
 test('refuse des coordonnées incomplètes ou des liens détournés', async (t) => {
   const changes = [
     (input) => { input.contacts.contacts.whatsappHq = '623 72 04 27'; },

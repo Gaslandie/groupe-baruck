@@ -1,12 +1,13 @@
 (() => {
-  const form = document.querySelector('[data-media-form]');
+  const form = document.querySelector('[data-media-form], [data-page-editor]');
   const dialog = document.querySelector('#media-dialog');
   if (!form || !dialog) return;
+  const pageMode = form.hasAttribute('data-page-editor');
   const gallery = form.querySelector('[data-gallery]');
   // Actualités et boutique partagent ce sélecteur : le groupe de champs et sa
   // limite sont portés par le formulaire, jamais écrits en dur ici.
-  const field = gallery.dataset.field;
-  const max = Number(gallery.dataset.max);
+  const field = gallery?.dataset.field;
+  const max = Number(gallery?.dataset.max);
   const add = form.querySelector('[data-gallery-add]');
   const status = dialog.querySelector('#media-picker-status');
   const grid = dialog.querySelector('#media-picker-grid');
@@ -26,6 +27,7 @@
   }
 
   function renumber() {
+    if (pageMode) return;
     const rows = [...gallery.children];
     rows.forEach((row, index) => {
       row.querySelector('legend').textContent = `Image ${index + 1}`;
@@ -43,10 +45,16 @@
     form.querySelector('[data-gallery-status]').textContent = `${rows.length} image(s) sur ${max}.`;
   }
   function applyImage(row, item) {
+    const previous = row.querySelector('[data-image-path]').value;
     row.querySelector('[data-image-path]').value = item?.path || '';
     const alt = row.querySelector('[data-image-alt]');
-    alt.value = item?.alt || '';
-    alt.required = Boolean(item);
+    if (!pageMode || previous !== item?.path) alt.value = item?.alt || '';
+    alt.required = !pageMode && Boolean(item);
+    if (pageMode) {
+      const english = row.querySelector('[lang=en]');
+      if (previous !== item?.path && english) english.value = '';
+      for (const key of ['width','height']) row.querySelector(`[data-image-${key}]`).value = item?.[key] || 1;
+    }
     const preview = row.querySelector('[data-preview]');
     if (item) {
       preview.src = item.preview; preview.alt = item.alt;
@@ -83,9 +91,9 @@
     if (!filtered.length) { const empty = document.createElement('p'); empty.textContent = 'Aucune image ne correspond à votre recherche.'; grid.append(empty); }
   }
   async function responseData(response) {
-    if (response.status === 401 || response.status === 403) throw new Error('Votre session a changé. Votre texte reste affiché : copiez-le avant de vous reconnecter et de recharger l’article.');
+    if (response.status === 401 || response.status === 403) throw new Error('Votre session a changé. Votre texte reste affiché : copiez-le avant de vous reconnecter et de recharger le formulaire.');
     let data;
-    try { data = await response.json(); } catch { throw new Error('Le service d’images ne répond pas. Réessayez sans fermer votre article.'); }
+    try { data = await response.json(); } catch { throw new Error('Le service d’images ne répond pas. Réessayez sans fermer votre formulaire.'); }
     if (!response.ok) throw new Error(data.error || 'L’image n’a pas pu être importée.');
     return data;
   }
@@ -105,11 +113,11 @@
   }
   form.addEventListener('click', event => {
     const button = event.target.closest('button'); if (!button) return;
-    const row = button.closest('[data-gallery-item], [data-cover]');
+    const row = button.closest('[data-gallery-item], [data-cover], [data-page-image]');
     if (button.hasAttribute('data-gallery-add')) open(null, button);
     if (button.hasAttribute('data-media-choose')) open(row, button);
     if (button.hasAttribute('data-media-remove')) {
-      if (row.hasAttribute('data-cover')) applyImage(row, null); else { row.remove(); renumber(); add.focus(); }
+      if (pageMode || row.hasAttribute('data-cover')) applyImage(row, null); else { row.remove(); renumber(); add.focus(); }
     }
     if (button.hasAttribute('data-media-up') && row.previousElementSibling) { gallery.insertBefore(row, row.previousElementSibling); renumber(); button.focus(); }
     if (button.hasAttribute('data-media-down') && row.nextElementSibling) { gallery.insertBefore(row.nextElementSibling, row); renumber(); button.focus(); }

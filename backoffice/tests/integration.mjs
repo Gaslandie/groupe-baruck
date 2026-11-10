@@ -447,7 +447,16 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal(JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).contacts.contacts.whatsappHq, '+224 111 22 33 44', 'une réinstallation ne rétablit pas les coordonnées du dépôt');
   });
   const pageValues = id => Object.fromEntries(Object.entries(pageModels()[id].fields).map(([key, field]) => [key, structuredClone(field.initial)]));
-  const pageForm = (id, version, values) => ({ action: 'save_page', id, version: String(version), ...Object.fromEntries(Object.entries(values).flatMap(([key, pair]) => Object.entries(pair).map(([language, value]) => [`fields[${key}][${language}]`, value]))) });
+  const pageForm = (id, version, values) => {
+    const fields = {};
+    const flatten = (name, value) => {
+      if (Array.isArray(value) && !value.length) fields[name + '[__empty]'] = '1';
+      else if (value && typeof value === 'object') for (const [key, child] of Object.entries(value)) flatten(`${name}[${key}]`, child);
+      else fields[name] = String(value);
+    };
+    for (const [key, value] of Object.entries(values)) flatten(`fields[${key}]`, value);
+    return { action: 'save_page', id, version: String(version), ...fields };
+  };
   const pageExport = async () => JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
   const pageRecord = id => JSON.parse(Buffer.from(sql(`SELECT HEX(payload) FROM ${database}.settings WHERE name='page:${id}'`).split('\n')[1], 'hex').toString('utf8'));
   await t.test('Pages : douze formulaires bilingues, droits serveur et anciens liens', async () => {
@@ -460,11 +469,11 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     const listing = await admin.request('/?page=pages');
     assert.equal(listing.status, 200);
     assert.equal((listing.html.match(/Modifier cette page/g) || []).length, 12);
-    for (const [id, model] of Object.entries(pageModels())) {
+    for (const id of Object.keys(pageModels())) {
       const form = await admin.request('/?page=page_edit&id=' + id);
       assert.equal(form.status, 200, id);
       assert.match(form.html, /name="version" value="0"/);
-      assert.equal((form.html.match(/name="fields\[/g) || []).length, Object.keys(model.fields).length * 2, id);
+      assert.equal((form.html.match(/name="fields\[/g) || []).length, 4, id);
       assert.match(form.html, /lang="fr"/); assert.match(form.html, /lang="en"/);
     }
     assert.equal(sql(`SELECT COUNT(*) FROM ${database}.settings WHERE name LIKE 'page:%'`).split('\n')[1], '0', 'consulter ne crée aucune ligne');
@@ -476,7 +485,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     legacy.heroSlides.guinee.title = 'Ancien titre personnalisé';
     const payload = Buffer.from(JSON.stringify(legacy)).toString('hex');
     sql(`INSERT INTO ${database}.settings (name,payload,version,updated_at,updated_by) SELECT 'textes',CONVERT(0x${payload} USING utf8mb4),1,UTC_TIMESTAMP(),id FROM ${database}.users WHERE email='${adminEmail}';`);
-    const initial = await admin.request('/?page=page_edit&id=home');
+    const initial = await admin.request('/?page=page_edit&id=home&section=section-1');
     assert.match(initial.html, /Ancien titre personnalisé/);
     assert.match(initial.html, /name="fields\[heroSlides.guinee.title\]\[en\]"[^>]*value=""/, 'aucune traduction inventée pour une ancienne saisie personnalisée');
     const exported = await pageExport();
@@ -486,7 +495,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     values['heroSlides.guinee.title'] = { fr: 'Le Groupe Baruck, Conakry', en: '' };
     const saved = await admin.post('/?page=page_edit&id=home', pageForm('home', 0, values));
     assert.equal(saved.status, 303, saved.html);
-    assert.match((await admin.request('/?page=page_edit&id=home')).html, /Le Groupe Baruck, Conakry/);
+    assert.equal(pageRecord('home').draft['heroSlides.guinee.title'].fr, 'Le Groupe Baruck, Conakry');
     assert.equal(pageRecord('home').draft['heroSlides.guinee.title'].en, '');
     assert.equal(pageRecord('home').validated['heroSlides.guinee.title'].fr, legacy.heroSlides.guinee.title);
     assert.equal((await pageExport()).texts.heroSlides.guinee.title, legacy.heroSlides.guinee.title, 'brouillon ne remplace pas l’ancien texte');
@@ -504,7 +513,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal((await admin.post('/?page=page_edit&id=home', pageForm('home', 3, values))).status, 303);
     assert.equal(pageRecord('home').reviewed, false, 'changer le français remet la relecture à zéro');
     assert.deepEqual((await pageExport()).pages.home, approved.pages.home, 'la dernière validation reste la seule version publique');
-    const conflict = await admin.post('/?page=page_edit&id=home', pageForm('home', 3, { ...values, 'heroSlides.guinee.title': { fr: 'SAISIE DU SECOND ONGLET', en: 'Second tab' } }));
+    const conflict = await admin.post('/?page=page_edit&id=home&section=section-1', pageForm('home', 3, { ...values, 'heroSlides.guinee.title': { fr: 'SAISIE DU SECOND ONGLET', en: 'Second tab' } }));
     assert.equal(conflict.status, 409);
     assert.match(conflict.html, /SAISIE DU SECOND ONGLET/);
     assert.match(conflict.html, /name="version" value="3"/);
@@ -559,6 +568,69 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
       assert.equal((await pageExport()).pages[id], undefined, 'le premier brouillon reste privé : ' + id);
       assert.equal((await admin.post(route, { action: 'validate_page', id, version: String(version + 1), english_reviewed: 'yes' })).status, 303, id);
       assert.deepEqual((await pageExport()).pages[id], values, id);
+    }
+  });
+  await t.test('Pages : reprendre les instantanés de l’étape 2 sans les écraser', async () => {
+    const current = pageRecord('groupe');
+    const version = Number(sql(`SELECT version FROM ${database}.settings WHERE name='page:groupe'`).split('\n')[1]);
+    const old = { draft: { 'meta.title': current.draft['meta.title'], 'meta.description': current.draft['meta.description'] }, validated: { 'meta.title': current.validated['meta.title'], 'meta.description': current.validated['meta.description'] }, reviewed: true, validated_at: current.validated_at };
+    const write = (payload, value) => sql(`UPDATE ${database}.settings SET payload=CONVERT(0x${Buffer.from(JSON.stringify(payload)).toString('hex')} USING utf8mb4),version=${value} WHERE name='page:groupe'`);
+    write(old, 700);
+    try {
+      const page = await admin.request('/?page=page_edit&id=groupe&section=portraits');
+      assert.equal(page.status, 200);
+      assert.match(page.html, /name="version" value="700"/);
+      assert.deepEqual(pageRecord('groupe'), old, 'la consultation ne réécrit pas la base');
+      docker(['exec', container, 'php', 'bin/install.php', 'init']);
+      assert.deepEqual(pageRecord('groupe'), old, 'une réinstallation laisse intact l’ancien instantané');
+      const exported = (await pageExport()).pages.groupe;
+      assert.deepEqual(exported['meta.title'], old.validated['meta.title']);
+      assert.equal(exported['media.presidentPortrait'].src, pageValues('groupe')['media.presidentPortrait'].src, 'les nouvelles pièces reprennent les contenus déjà publics');
+    } finally { write(current, version); }
+  });
+  await t.test('Pages : sections, listes, photos privées, validation et suppression protégée', async () => {
+    const route = section => '/?page=page_edit&id=groupe&section=' + section;
+    const version = () => Number(sql(`SELECT version FROM ${database}.settings WHERE name='page:groupe'`).split('\n')[1]);
+    const saveSection = async (section, change = {}, forged = {}) => {
+      const keys = pageModels().groupe.sections.find(item => item.id === section).fields;
+      const values = Object.fromEntries(keys.map(key => [key, pageRecord('groupe').draft[key]]));
+      const result = await admin.post(route(section), { ...pageForm('groupe', version(), { ...values, ...change }), section, ...forged });
+      return result;
+    };
+    assert.equal((await admin.request(route('inconnue'))).status, 404);
+    assert.equal((await saveSection('nom-dirigeant', {}, { 'fields[meta.title][fr]': 'Intrus', 'fields[meta.title][en]': 'Intruder' })).status, 422, 'un formulaire de section ne touche pas une autre section');
+    assert.equal((await saveSection('nom-dirigeant', { 'president.givenNames': {fr:'Prénoms validés de recette',en:'Approved test given names'} })).status, 303);
+    const beforePhoto = pageRecord('groupe').draft['media.presidentPortrait'];
+    const png = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l+0AAAAASUVORK5CYII=', 'base64');
+    const upload = new FormData(); upload.set('image',new Blob([png],{type:'image/png'}),'page.png'); upload.set('alt','Photo de page de recette'); upload.set('csrf',(await admin.request('/')).csrf);
+    const image = JSON.parse((await admin.request('/?page=media_api',upload)).html).item;
+    const photo = {src:image.path,alt:{fr:'Photo de page de recette',en:''},width:9999,height:9999};
+    assert.equal((await saveSection('portraits', {'media.presidentPortrait':photo})).status,303);
+    assert.equal(pageRecord('groupe').draft['media.presidentPortrait'].width,1,'la dimension est déduite du fichier, pas du navigateur');
+    assert.equal((await admin.post('/?page=media',{action:'delete_media',id:image.id})).status,422,'le brouillon protège son image');
+    assert.ok(!(await pageExport()).media.some(item=>item.path===image.path),'la photo privée reste absente de l’export');
+    assert.equal((await admin.post(route('portraits'),{action:'validate_page',id:'groupe',version:String(version()),english_reviewed:'yes'})).status,422,'description anglaise obligatoire pour la photo');
+    photo.alt.en='Test page photograph';
+    assert.equal((await saveSection('portraits', {'media.presidentPortrait':photo})).status,303);
+    const countries = pageRecord('groupe').draft['data.presenceCountries'];
+    const changed = [countries[1], countries[0], {...countries[2],name:{fr:'Pays de recette',en:'Test country'},links:[]}];
+    const invalid = structuredClone(changed); invalid[0].links[0].href='javascript:alert(1)';
+    const refused = await saveSection('AboutPresence', {'data.presenceCountries':invalid});
+    assert.equal(refused.status,422); assert.doesNotMatch(refused.html,/Warning|\/app\//);
+    assert.equal((await saveSection('AboutPresence', {'data.presenceCountries':changed})).status,303);
+    assert.deepEqual(pageRecord('groupe').draft['data.presenceCountries'],changed,'ajout, retrait, ordre et liste de liens vide conservés');
+    assert.equal(pageRecord('groupe').draft['president.givenNames'].fr,'Prénoms validés de recette','enregistrer une autre section conserve la saisie précédente');
+    assert.equal((await admin.post(route('AboutPresence'),{action:'validate_page',id:'groupe',version:String(version()),english_reviewed:'yes'})).status,303);
+    const ready = await pageExport();
+    assert.equal(ready.pages.groupe['media.presidentPortrait'].src,image.path);
+    assert.ok(ready.media.some(item=>item.path===image.path),'les images des pages validées sont exportées');
+    assert.equal((await saveSection('portraits',{'media.presidentPortrait':beforePhoto})).status,303);
+    assert.equal((await admin.post('/?page=media',{action:'delete_media',id:image.id})).status,422,'la dernière version validée protège encore son image');
+    assert.equal((await admin.post(route('portraits'),{action:'validate_page',id:'groupe',version:String(version()),english_reviewed:'yes'})).status,303);
+    assert.equal((await admin.post('/?page=media',{action:'delete_media',id:image.id})).status,303,'suppression possible seulement quand les deux versions ont libéré l’image');
+    if (process.env.BARUCK_TEST_CHROME) {
+      const browser = spawnSync(process.execPath, [path.join(directory,'tests/browser-form.mjs'),origin,'page-lists'],{input:JSON.stringify({cookie:admin.cookie}),encoding:'utf8',timeout:30000});
+      assert.equal(browser.status,0,browser.stderr||browser.stdout);
     }
   });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {

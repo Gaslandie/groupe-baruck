@@ -1,9 +1,8 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText, pageValue, pageLinkIcon } from "@/lib/page-content";
 import Link from "next/link";
 
 import { ambassadorPhotos } from "@/data/about";
-import { routes } from "@/data/site";
+
 import { asset } from "@/lib/asset";
 
 import { Icon } from "../ui/Icon";
@@ -30,10 +29,10 @@ export function AboutAmbassadors() {
       className="scroll-mt-[92px] bg-ink px-[clamp(1.3rem,7vw,8rem)] py-[clamp(5rem,9vw,9rem)] text-ivory max-tablet:px-[1.3rem] max-tablet:py-16"
     >
       <AboutSectionHead
-        eyebrow={t("La marque en représentation")}
-        title={t("Les ambassadeurs")}
-        emphasis={t("de la marque Baruck.")}
-        text={t("Vêtus de noir des pieds à la tête, les ambassadeurs portent l’image de la marque lors de ses sorties et de ses campagnes. Reçus par le PDG au siège de Baruck Communication, ils posent ensuite devant l’objectif du Studio Photo Baruck la Prospérité.")}
+        eyebrow={pageText("groupe", "AboutAmbassadors.1")}
+        title={pageText("groupe", "AboutAmbassadors.2")}
+        emphasis={pageText("groupe", "AboutAmbassadors.3")}
+        text={pageText("groupe", "AboutAmbassadors.4")}
         tone="light"
       />
 
@@ -54,9 +53,9 @@ export function AboutAmbassadors() {
       </ul>
 
       <div className="reveal mt-[clamp(2rem,4vw,3rem)] flex flex-wrap items-center gap-[.8rem]">
-        <Link href={routes.brand} className="button button-primary">{t("Découvrir la marque Baruck ")}<span><Icon name="arrow-up-right" /></span>
+        <Link href={pageValue<string>("groupe", "AboutAmbassadors.5")} className="button button-primary">{pageText("groupe", "AboutAmbassadors.6") + " "}<span><Icon name={pageLinkIcon("groupe", "AboutAmbassadors.5")} /></span>
         </Link>
-        <Link href={routes.studio} className="button button-ghost">{t("Le Studio Photo Baruck")}</Link>
+        <Link href={pageValue<string>("groupe", "AboutAmbassadors.7")} className="button button-ghost">{pageText("groupe", "AboutAmbassadors.8")}</Link>
       </div>
     </section>
   );

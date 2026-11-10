@@ -10,6 +10,932 @@
       "meta.description": {
         "fr": "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
         "en": "Groupe Baruck — A multisector group driven by an entrepreneurial, creative and committed vision."
+      },
+      "HeroIntro.5": "/groupe/",
+      "HeroIntro.6": {
+        "fr": "PDG du Groupe Baruck",
+        "en": "CEO of Groupe Baruck"
+      },
+      "HeroIntro.7": "/jeca/",
+      "HeroIntro.8": {
+        "fr": "Président de la JECA",
+        "en": "President of JECA"
+      },
+      "HeroIntro.9": "/espoir-de-vie/",
+      "HeroIntro.10": {
+        "fr": "Président de l’ONG Espoir de Vie",
+        "en": "President of the NGO Espoir de Vie"
+      },
+      "HeroIntro.11": "/groupe/#experience-onu",
+      "HeroIntro.12": {
+        "fr": "Agent de développement pour la protection de l’enfant au sein de l’ONU en 2016",
+        "en": "Development officer for child protection within the UN in 2016"
+      },
+      "HeroIntro.13": "/groupe/",
+      "HeroIntro.14": {
+        "fr": "Découvrir le Groupe",
+        "en": "Discover the Group"
+      },
+      "HeroIntro.15": "/contact/",
+      "HeroIntro.16": {
+        "fr": "Nous contacter",
+        "en": "Contact us"
+      },
+      "HeroSection.1": {
+        "fr": "Présentation du Groupe Baruck",
+        "en": "Introducing Groupe Baruck"
+      },
+      "HeroScrollCue.1": "#activite-guinee",
+      "HeroScrollCue.2": {
+        "fr": "Descendre vers la suite de la page",
+        "en": "Scroll down the page"
+      },
+      "ActivitiesSection.1": {
+        "fr": "Nos autres activités",
+        "en": "Our other activities"
+      },
+      "ActivitiesSection.2": {
+        "fr": "Des domaines complémentaires réunis autour de l’hospitalité, de la création, de la production et du développement.",
+        "en": "Complementary areas brought together around hospitality, creativity, production and development."
+      },
+      "ActivitiesSection.3": "/#activites",
+      "ActivitiesSection.4": {
+        "fr": "Découvrir l’activité",
+        "en": "Explore this activity"
+      },
+      "ActivitiesSection.5": {
+        "fr": "/",
+        "en": "/"
+      },
+      "ContactCta.1": {
+        "fr": "Une ambition en commun ?",
+        "en": "A shared ambition?"
+      },
+      "ContactCta.2": {
+        "fr": "Construisons ensemble",
+        "en": "Let’s build together"
+      },
+      "ContactCta.3": {
+        "fr": "des projets qui ont",
+        "en": "projects that make"
+      },
+      "ContactCta.4": {
+        "fr": "de l’impact.",
+        "en": "an impact."
+      },
+      "ContactCta.5": {
+        "fr": "Pour une collaboration, un partenariat ou plus d’informations sur nos activités, échangeons.",
+        "en": "For a collaboration, partnership or more information about our activities, let’s talk."
+      },
+      "ContactCta.6": "/contact/",
+      "ContactCta.7": {
+        "fr": "Contacter le Groupe",
+        "en": "Contact the Group"
+      },
+      "ContactCta.8": {
+        "fr": "WhatsApp Baruck",
+        "en": "Baruck WhatsApp"
+      },
+      "NewsPreview.1": {
+        "fr": "Actualités",
+        "en": "News"
+      },
+      "NewsPreview.2": {
+        "fr": "Les dernières nouvelles",
+        "en": "The latest news"
+      },
+      "NewsPreview.3": {
+        "fr": "Annonces, événements et communiqués du Groupe Baruck, de la JECA et d’Espoir de Vie.",
+        "en": "Announcements, events and statements from Groupe Baruck, JECA and Espoir de Vie."
+      },
+      "NewsPreview.4": "/actualites/",
+      "NewsPreview.5": {
+        "fr": "Toutes les actualités",
+        "en": "All news"
+      },
+      "FeaturedEvent.1": {
+        "fr": "Voir l’article :",
+        "en": "View the article:"
+      },
+      "FeaturedEvent.2": {
+        "fr": "Voir l’événement",
+        "en": "View the event"
+      },
+      "activite-guinee.eyebrow": {
+        "fr": "Groupe Baruck · Guinée",
+        "en": "Groupe Baruck · Guinea"
+      },
+      "activite-studio.eyebrow": {
+        "fr": "Baruck Communication · Guinée",
+        "en": "Baruck Communication · Guinea"
+      },
+      "activite-studio.linkLabel": {
+        "fr": "Connaître les prix",
+        "en": "See prices"
+      },
+      "activite-studio.secondary": {
+        "label": {
+          "fr": "Voir les détails",
+          "en": "View details"
+        },
+        "href": "/studio-photo/"
+      },
+      "activite-hotesses.eyebrow": {
+        "fr": "Baruck Communication · Guinée",
+        "en": "Baruck Communication · Guinea"
+      },
+      "activite-hotesses.linkLabel": {
+        "fr": "Réserver une équipe",
+        "en": "Book a team"
+      },
+      "activite-hotesses.secondary": {
+        "label": {
+          "fr": "Voir les détails",
+          "en": "View details"
+        },
+        "href": "/hotesses-evenementielles/"
+      },
+      "apercu-marque.eyebrow": {
+        "fr": "La marque Baruck",
+        "en": "The Baruck brand"
+      },
+      "apercu-marque.title": {
+        "fr": "L’élégance,",
+        "en": "Elegance,"
+      },
+      "apercu-marque.emphasis": {
+        "fr": "notre affaire.",
+        "en": "our business."
+      },
+      "apercu-marque.text": {
+        "fr": "Vêtements, sacs, chaussures, parfums et accessoires : découvrez l’univers Baruck et préparez votre commande par WhatsApp.",
+        "en": "Clothing, bags, shoes, fragrances and accessories: discover the world of Baruck and prepare your order on WhatsApp."
+      },
+      "apercu-marque.href": "/marque-baruck/",
+      "apercu-marque.linkLabel": {
+        "fr": "Découvrir la collection",
+        "en": "Explore the collection"
+      },
+      "apercu-about.eyebrow": {
+        "fr": "Le Groupe",
+        "en": "The Group"
+      },
+      "apercu-about.title": {
+        "fr": "Un homme, une vision,",
+        "en": "One man, one vision,"
+      },
+      "apercu-about.emphasis": {
+        "fr": "un groupe.",
+        "en": "one group."
+      },
+      "apercu-about.text": {
+        "fr": "À la tête du Groupe Baruck, il porte une vision fondée sur l’entrepreneuriat, la création de valeur et l’engagement au service de la société.",
+        "en": "At the head of Groupe Baruck, he champions a vision based on entrepreneurship, value creation and commitment to serving society."
+      },
+      "apercu-about.href": "/groupe/",
+      "apercu-about.linkLabel": {
+        "fr": "Découvrir le Groupe",
+        "en": "Discover the Group"
+      },
+      "apercu-jeca.eyebrow": {
+        "fr": "JECA · Jeunes Entrepreneurs Chrétiens Africains",
+        "en": "JECA · Jeunes Entrepreneurs Chrétiens Africains"
+      },
+      "apercu-jeca.title": {
+        "fr": "Réunir la diaspora.",
+        "en": "Bring the diaspora together."
+      },
+      "apercu-jeca.emphasis": {
+        "fr": "Investir en Afrique.",
+        "en": "Invest in Africa."
+      },
+      "apercu-jeca.text": {
+        "fr": "La JECA sensibilise la diaspora africaine à l’investissement sur le continent et veut se placer comme un lien entre la diaspora et l’Afrique.",
+        "en": "JECA raises awareness among the African diaspora about investment on the continent and aims to act as a link between the diaspora and Africa."
+      },
+      "apercu-jeca.href": "/jeca/",
+      "apercu-jeca.linkLabel": {
+        "fr": "Voir les éditions",
+        "en": "View the editions"
+      },
+      "apercu-edv.eyebrow": {
+        "fr": "Engagement humanitaire · Afrique de l’Ouest",
+        "en": "Humanitarian commitment · West Africa"
+      },
+      "apercu-edv.title": {
+        "fr": "Espoir de Vie.",
+        "en": "Espoir de Vie."
+      },
+      "apercu-edv.emphasis": {
+        "fr": "Agir pour les plus vulnérables.",
+        "en": "Working for the most vulnerable."
+      },
+      "apercu-edv.text": {
+        "fr": "Protéger les enfants, accompagner les familles et apporter une aide concrète là où elle est nécessaire.",
+        "en": "Protect children, support families and provide practical help where it is needed."
+      },
+      "apercu-edv.href": "/espoir-de-vie/",
+      "apercu-edv.linkLabel": {
+        "fr": "Découvrir les actions",
+        "en": "Discover our work"
+      },
+      "video.src": "/videos/presentation-studio-photo.mp4",
+      "video.label": {
+        "fr": "Vidéo de présentation du Studio Photo Baruck la Prospérité",
+        "en": "Presentation video of Studio Photo Baruck la Prospérité"
+      },
+      "video.poster": {
+        "src": "/images/services/studio-photo-video.webp",
+        "alt": {
+          "fr": "Vidéo de présentation du Studio Photo Baruck la Prospérité",
+          "en": "Presentation video of Studio Photo Baruck la Prospérité"
+        },
+        "width": 640,
+        "height": 360
+      },
+      "featuredEventSlug": "top-modele-baruck-guinee-2026",
+      "featuredAlsoSlugs": [
+        "top-modele-baruck-guinee-2025",
+        "miss-baruck-guinee-2025"
+      ],
+      "featuredEventEyebrow": {
+        "fr": "L’événement",
+        "en": "The event"
+      },
+      "featuredAlsoTitle": {
+        "fr": "Les autres concours Baruck",
+        "en": "Other Baruck competitions"
+      },
+      "media.studioHero": {
+        "src": "/images/services/studio-photo-hero.webp",
+        "alt": {
+          "fr": "Studio Photo Baruck la Prospérité",
+          "en": "Studio Photo Baruck la Prospérité"
+        },
+        "width": 1254,
+        "height": 1254
+      },
+      "media.hostessesHero": {
+        "src": "/images/services/hotesses-hero.webp",
+        "alt": {
+          "fr": "Hôtesses événementielles Baruck Communication Guinée",
+          "en": "Baruck Communication Guinea event hostesses"
+        },
+        "width": 941,
+        "height": 1672
+      },
+      "media.contact": {
+        "src": "/images/placeholders/contact-collaboration.webp",
+        "alt": {
+          "fr": "",
+          "en": ""
+        },
+        "width": 2000,
+        "height": 1333
+      },
+      "media.brandHero": {
+        "src": "/images/marque-baruck/sac-main-noir-hero.jpg",
+        "alt": {
+          "fr": "Sac à main noir Baruck",
+          "en": "Black Baruck handbag"
+        },
+        "width": 928,
+        "height": 928
+      }
+    },
+    "sections": [
+      {
+        "id": "HeroIntro",
+        "label": "En-tête de l’accueil",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "HeroIntro.5",
+          "HeroIntro.6",
+          "HeroIntro.7",
+          "HeroIntro.8",
+          "HeroIntro.9",
+          "HeroIntro.10",
+          "HeroIntro.11",
+          "HeroIntro.12",
+          "HeroIntro.13",
+          "HeroIntro.14",
+          "HeroIntro.15",
+          "HeroIntro.16"
+        ]
+      },
+      {
+        "id": "HeroSection",
+        "label": "Présentation de l’accueil",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "HeroSection.1"
+        ]
+      },
+      {
+        "id": "HeroScrollCue",
+        "label": "Navigation dans l’accueil",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "HeroScrollCue.1",
+          "HeroScrollCue.2"
+        ]
+      },
+      {
+        "id": "ActivitiesSection",
+        "label": "Présentation des activités",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "ActivitiesSection.1",
+          "ActivitiesSection.2",
+          "ActivitiesSection.3",
+          "ActivitiesSection.4",
+          "ActivitiesSection.5"
+        ]
+      },
+      {
+        "id": "ContactCta",
+        "label": "Contact de l’accueil",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "ContactCta.1",
+          "ContactCta.2",
+          "ContactCta.3",
+          "ContactCta.4",
+          "ContactCta.5",
+          "ContactCta.6",
+          "ContactCta.7",
+          "ContactCta.8"
+        ]
+      },
+      {
+        "id": "NewsPreview",
+        "label": "Présentation des actualités",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "NewsPreview.1",
+          "NewsPreview.2",
+          "NewsPreview.3",
+          "NewsPreview.4",
+          "NewsPreview.5"
+        ]
+      },
+      {
+        "id": "FeaturedEvent",
+        "label": "Présentation des événements",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "FeaturedEvent.1",
+          "FeaturedEvent.2"
+        ]
+      },
+      {
+        "id": "activite-guinee",
+        "label": "Présentation : guinee",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "activite-guinee.eyebrow"
+        ]
+      },
+      {
+        "id": "activite-studio",
+        "label": "Présentation : studio",
+        "help": "Le lien WhatsApp reprend les coordonnées du siège. Les autres textes et liens se modifient ici.",
+        "fields": [
+          "activite-studio.eyebrow",
+          "activite-studio.linkLabel",
+          "activite-studio.secondary"
+        ]
+      },
+      {
+        "id": "activite-hotesses",
+        "label": "Présentation : hotesses",
+        "help": "Le lien WhatsApp reprend les coordonnées du siège. Les autres textes et liens se modifient ici.",
+        "fields": [
+          "activite-hotesses.eyebrow",
+          "activite-hotesses.linkLabel",
+          "activite-hotesses.secondary"
+        ]
+      },
+      {
+        "id": "apercu-marque",
+        "label": "Aperçu : marque",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "apercu-marque.eyebrow",
+          "apercu-marque.title",
+          "apercu-marque.emphasis",
+          "apercu-marque.text",
+          "apercu-marque.href",
+          "apercu-marque.linkLabel"
+        ]
+      },
+      {
+        "id": "apercu-about",
+        "label": "Aperçu : about",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "apercu-about.eyebrow",
+          "apercu-about.title",
+          "apercu-about.emphasis",
+          "apercu-about.text",
+          "apercu-about.href",
+          "apercu-about.linkLabel"
+        ]
+      },
+      {
+        "id": "apercu-jeca",
+        "label": "Aperçu : jeca",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "apercu-jeca.eyebrow",
+          "apercu-jeca.title",
+          "apercu-jeca.emphasis",
+          "apercu-jeca.text",
+          "apercu-jeca.href",
+          "apercu-jeca.linkLabel"
+        ]
+      },
+      {
+        "id": "apercu-edv",
+        "label": "Aperçu : edv",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "apercu-edv.eyebrow",
+          "apercu-edv.title",
+          "apercu-edv.emphasis",
+          "apercu-edv.text",
+          "apercu-edv.href",
+          "apercu-edv.linkLabel"
+        ]
+      },
+      {
+        "id": "video-studio",
+        "label": "Vidéo de présentation du studio",
+        "help": "La même vidéo est reprise deux fois sur l’accueil. Seuls les fichiers déjà présents sont proposés.",
+        "fields": [
+          "video.src",
+          "video.label",
+          "video.poster"
+        ]
+      },
+      {
+        "id": "selection-evenements",
+        "label": "Événements mis en avant",
+        "help": "Les titres, textes, dates et galeries viennent de leurs actualités. Modifier une actualité met à jour tous ses aperçus.",
+        "fields": [
+          "featuredEventSlug",
+          "featuredAlsoSlugs",
+          "featuredEventEyebrow",
+          "featuredAlsoTitle"
+        ]
+      },
+      {
+        "id": "photos-partagees",
+        "label": "Photos partagées avec les autres pages",
+        "help": "Ces photos sont utilisées sur l’accueil et sur leurs pages respectives. Les photos JECA et Espoir de Vie restent liées à leurs galeries d’origine.",
+        "fields": [
+          "media.studioHero",
+          "media.hostessesHero",
+          "media.contact",
+          "media.brandHero"
+        ]
+      }
+    ],
+    "fields": {
+      "HeroIntro.5": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "HeroIntro.6": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "HeroIntro.7": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "HeroIntro.8": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "HeroIntro.9": {
+        "kind": "link",
+        "label": "Lien 3",
+        "max": 500,
+        "scope": "internal"
+      },
+      "HeroIntro.10": {
+        "kind": "text",
+        "label": "Texte du lien 3",
+        "max": 240
+      },
+      "HeroIntro.11": {
+        "kind": "link",
+        "label": "Lien 4",
+        "max": 500,
+        "scope": "internal"
+      },
+      "HeroIntro.12": {
+        "kind": "text",
+        "label": "Texte du lien 4",
+        "max": 278
+      },
+      "HeroIntro.13": {
+        "kind": "link",
+        "label": "Lien 5",
+        "max": 500,
+        "scope": "internal"
+      },
+      "HeroIntro.14": {
+        "kind": "text",
+        "label": "Texte du lien 5",
+        "max": 240
+      },
+      "HeroIntro.15": {
+        "kind": "link",
+        "label": "Lien 6",
+        "max": 500,
+        "scope": "internal"
+      },
+      "HeroIntro.16": {
+        "kind": "text",
+        "label": "Texte du lien 6",
+        "max": 240
+      },
+      "HeroSection.1": {
+        "kind": "text",
+        "label": "Description lue à voix haute",
+        "max": 240
+      },
+      "HeroScrollCue.1": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "anchor"
+      },
+      "HeroScrollCue.2": {
+        "kind": "text",
+        "label": "Libellé",
+        "max": 240
+      },
+      "ActivitiesSection.1": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "ActivitiesSection.2": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 314
+      },
+      "ActivitiesSection.3": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "ActivitiesSection.4": {
+        "kind": "text",
+        "label": "Description lue à voix haute",
+        "max": 240
+      },
+      "ActivitiesSection.5": {
+        "kind": "text",
+        "label": "Libellé",
+        "max": 240
+      },
+      "ContactCta.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "ContactCta.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "ContactCta.3": {
+        "kind": "text",
+        "label": "Titre 2",
+        "max": 240
+      },
+      "ContactCta.4": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "ContactCta.5": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 292
+      },
+      "ContactCta.6": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "ContactCta.7": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "ContactCta.8": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "NewsPreview.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "NewsPreview.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "NewsPreview.3": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 284
+      },
+      "NewsPreview.4": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "NewsPreview.5": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "FeaturedEvent.1": {
+        "kind": "text",
+        "label": "Description lue à voix haute",
+        "max": 240
+      },
+      "FeaturedEvent.2": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "activite-guinee.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "activite-studio.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "activite-studio.linkLabel": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "activite-studio.secondary": {
+        "kind": "object",
+        "label": "secondary",
+        "fields": {
+          "label": {
+            "kind": "text",
+            "label": "Libellé",
+            "max": 240
+          },
+          "href": {
+            "kind": "link",
+            "label": "Lien",
+            "max": 500
+          }
+        }
+      },
+      "activite-hotesses.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "activite-hotesses.linkLabel": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "activite-hotesses.secondary": {
+        "kind": "object",
+        "label": "secondary",
+        "fields": {
+          "label": {
+            "kind": "text",
+            "label": "Libellé",
+            "max": 240
+          },
+          "href": {
+            "kind": "link",
+            "label": "Lien",
+            "max": 500
+          }
+        }
+      },
+      "apercu-marque.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "apercu-marque.title": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "apercu-marque.emphasis": {
+        "kind": "text",
+        "label": "Texte mis en avant",
+        "max": 240
+      },
+      "apercu-marque.text": {
+        "kind": "text",
+        "label": "Texte",
+        "max": 240
+      },
+      "apercu-marque.href": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "apercu-marque.linkLabel": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "apercu-about.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "apercu-about.title": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "apercu-about.emphasis": {
+        "kind": "text",
+        "label": "Texte mis en avant",
+        "max": 240
+      },
+      "apercu-about.text": {
+        "kind": "text",
+        "label": "Texte",
+        "max": 241
+      },
+      "apercu-about.href": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "apercu-about.linkLabel": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "apercu-jeca.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "apercu-jeca.title": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "apercu-jeca.emphasis": {
+        "kind": "text",
+        "label": "Texte mis en avant",
+        "max": 240
+      },
+      "apercu-jeca.text": {
+        "kind": "text",
+        "label": "Texte",
+        "max": 241
+      },
+      "apercu-jeca.href": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "apercu-jeca.linkLabel": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "apercu-edv.eyebrow": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "apercu-edv.title": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "apercu-edv.emphasis": {
+        "kind": "text",
+        "label": "Texte mis en avant",
+        "max": 240
+      },
+      "apercu-edv.text": {
+        "kind": "text",
+        "label": "Texte",
+        "max": 240
+      },
+      "apercu-edv.href": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "apercu-edv.linkLabel": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "video.src": {
+        "kind": "video",
+        "label": "Vidéo",
+        "max": 255,
+        "options": [
+          "/videos/discours-pdg-jeca.mp4",
+          "/videos/don-orphelinat-precieux-soleils.mp4",
+          "/videos/espoir-de-vie-aide-medicale-2021.mp4",
+          "/videos/espoir-de-vie-nzerekore-2021.mp4",
+          "/videos/presentation-studio-photo.mp4",
+          "/videos/top-modele-2026/candidat-01.mp4",
+          "/videos/top-modele-2026/candidat-03.mp4",
+          "/videos/top-modele-2026/candidat-04.mp4",
+          "/videos/top-modele-2026/candidat-14.mp4",
+          "/videos/top-modele-2026/candidat-17.mp4",
+          "/videos/top-modele-2026/candidat-18.mp4"
+        ]
+      },
+      "video.label": {
+        "kind": "text",
+        "label": "Description de la vidéo",
+        "max": 500
+      },
+      "video.poster": {
+        "kind": "image",
+        "label": "Image d’attente"
+      },
+      "featuredEventSlug": {
+        "kind": "slug",
+        "label": "Événement principal",
+        "max": 180
+      },
+      "featuredAlsoSlugs": {
+        "kind": "list",
+        "label": "Autres événements",
+        "max": 10,
+        "item": {
+          "kind": "slug",
+          "label": "Actualité",
+          "max": 180
+        }
+      },
+      "featuredEventEyebrow": {
+        "kind": "text",
+        "label": "Sur-titre principal",
+        "max": 240
+      },
+      "featuredAlsoTitle": {
+        "kind": "text",
+        "label": "Titre des autres événements",
+        "max": 240
+      },
+      "media.studioHero": {
+        "kind": "image",
+        "label": "Studio photo"
+      },
+      "media.hostessesHero": {
+        "kind": "image",
+        "label": "Hôtesses événementielles"
+      },
+      "media.contact": {
+        "kind": "image",
+        "label": "Photo de fond · Contact",
+        "decorative": true
+      },
+      "media.brandHero": {
+        "kind": "image",
+        "label": "Marque Baruck · Photo partagée"
       }
     }
   },
@@ -24,6 +950,2154 @@
       "meta.description": {
         "fr": "Le Groupe Baruck — la direction, les fonctions et les engagements de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, président de la JECA et de l’ONG Espoir de Vie.",
         "en": "Groupe Baruck — the leadership, roles and commitments of MR Djoro Joël Shaloom Krasso, CEO of Groupe Baruck, President of JECA and the NGO Espoir de Vie."
+      },
+      "media.presidentPortrait": {
+        "src": "/images/president/portrait.jpg",
+        "alt": {
+          "fr": "Portrait de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck",
+          "en": "Portrait of MR Djoro Joël Shaloom Krasso, CEO of Groupe Baruck"
+        },
+        "width": 683,
+        "height": 1024
+      },
+      "media.groupHeroPortrait": {
+        "src": "/images/president/portrait-groupe-20261105.jpg",
+        "alt": {
+          "fr": "Portrait de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck",
+          "en": "Portrait of MR Djoro Joël Shaloom Krasso, CEO of Groupe Baruck"
+        },
+        "width": 720,
+        "height": 1080
+      },
+      "media.presidentOnu1": {
+        "src": "/images/president/onu-2016-1.jpg",
+        "alt": {
+          "fr": "MR Djoro Joël Shaloom Krasso participant à une séance de travail",
+          "en": "MR Djoro Joël Shaloom Krasso participating in a working session"
+        },
+        "width": 720,
+        "height": 540
+      },
+      "media.presidentOnu2": {
+        "src": "/images/president/onu-2016-2.jpg",
+        "alt": {
+          "fr": "MR Djoro Joël Shaloom Krasso devant un portrait de Kofi Annan",
+          "en": "MR Djoro Joël Shaloom Krasso in front of a portrait of Kofi Annan"
+        },
+        "width": 720,
+        "height": 540
+      },
+      "media.presidentOnuGallery": [
+        {
+          "src": "/images/president/onu-seance-travail.jpg",
+          "alt": {
+            "fr": "MR Djoro Joël Shaloom Krasso à une table de travail aux Nations Unies",
+            "en": "MR Djoro Joël Shaloom Krasso at a working table at the United Nations"
+          },
+          "width": 720,
+          "height": 540
+        },
+        {
+          "src": "/images/president/onu-devant-drapeaux.jpg",
+          "alt": {
+            "fr": "MR Djoro Joël Shaloom Krasso devant les drapeaux des Nations Unies",
+            "en": "MR Djoro Joël Shaloom Krasso in front of United Nations flags"
+          },
+          "width": 960,
+          "height": 720
+        },
+        {
+          "src": "/images/president/onu-salle-conference.jpg",
+          "alt": {
+            "fr": "MR Djoro Joël Shaloom Krasso dans une salle de conférence des Nations Unies",
+            "en": "MR Djoro Joël Shaloom Krasso in a United Nations conference room"
+          },
+          "width": 960,
+          "height": 720
+        }
+      ],
+      "data.milestones": [
+        {
+          "year": "2015",
+          "dateTime": "2015-12-23",
+          "title": {
+            "fr": "Premières actions de solidarité",
+            "en": "First acts of solidarity"
+          },
+          "text": {
+            "fr": "À Grôh, mille jouets sont remis aux enfants du village autour d’un arbre de Noël et d’un moment de partage.",
+            "en": "In Grôh, one thousand toys are given to the village’s children around a Christmas tree and a shared celebration."
+          },
+          "href": "/espoir-de-vie/#actions"
+        },
+        {
+          "year": "2016",
+          "dateTime": "2016",
+          "title": {
+            "fr": "Protection de l’enfant",
+            "en": "Child protection"
+          },
+          "text": {
+            "fr": "MR Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.",
+            "en": "MR Djoro Joël Shaloom Krasso serves as a development officer for child protection within the United Nations."
+          },
+          "href": "#experience-onu"
+        },
+        {
+          "year": "2016",
+          "dateTime": "2016",
+          "title": {
+            "fr": "Premiers pensionnaires",
+            "en": "First residents"
+          },
+          "text": {
+            "fr": "L’orphelinat, construit en 2015, accueille ses premiers enfants et ouvre officiellement ses portes.",
+            "en": "The orphanage, built in 2015, welcomes its first children and officially opens its doors."
+          },
+          "href": "/espoir-de-vie/#orphelinat"
+        },
+        {
+          "year": "2019",
+          "dateTime": "2019",
+          "title": {
+            "fr": "Création de la JECA",
+            "en": "Establishment of JECA"
+          },
+          "text": {
+            "fr": "La JECA est créée pour sensibiliser la diaspora africaine à l’investissement en Afrique.",
+            "en": "JECA is established to raise awareness among the African diaspora about investment in Africa."
+          },
+          "href": "/jeca/#vision"
+        },
+        {
+          "year": "2022",
+          "dateTime": "2022-08-04",
+          "title": {
+            "fr": "Première édition de la JECA",
+            "en": "First JECA edition"
+          },
+          "text": {
+            "fr": "La première édition se tient à Dakar, du 04 au 14 août 2022.",
+            "en": "The first edition takes place in Dakar, from 04 to 14 August 2022."
+          },
+          "href": "/jeca/#edition-1"
+        },
+        {
+          "year": "2023",
+          "dateTime": "2023-12-02",
+          "title": {
+            "fr": "Deuxième édition de la JECA",
+            "en": "Second JECA edition"
+          },
+          "text": {
+            "fr": "La deuxième édition se tient à Dakar, du 02 au 08 décembre 2023.",
+            "en": "The second edition takes place in Dakar, from 02 to 08 December 2023."
+          },
+          "href": "/jeca/#edition-2"
+        },
+        {
+          "year": "2025",
+          "dateTime": "2025-07-26",
+          "title": {
+            "fr": "Les premiers concours Baruck",
+            "en": "The first Baruck competitions"
+          },
+          "text": {
+            "fr": "Baruck Communication lance ses propres rendez-vous en Guinée : Miss Baruck Guinée le 26 juillet, puis le Top Modèle Baruck Guinée le 27 septembre.",
+            "en": "Baruck Communication launches its own events in Guinea: Miss Baruck Guinée on 26 July, followed by Top Modèle Baruck Guinée on 27 September."
+          },
+          "href": "/actualites/miss-baruck-guinee-2025/"
+        },
+        {
+          "year": "2026",
+          "dateTime": "2026-07-30",
+          "title": {
+            "fr": "Troisième édition de la JECA",
+            "en": "Third JECA edition"
+          },
+          "text": {
+            "fr": "La troisième édition se tient à Conakry, du 30 juillet au 04 août 2026.",
+            "en": "The third edition takes place in Conakry, from 30 July to 04 August 2026."
+          },
+          "href": "/jeca/#edition-3"
+        }
+      ],
+      "data.ambassadorPhotos": [
+        {
+          "src": "/images/groupe/ambassadeurs/01.webp",
+          "alt": {
+            "fr": "Le PDG du Groupe Baruck entouré des ambassadeurs de la marque, tous vêtus de noir, devant le siège de Baruck Communication",
+            "en": "The CEO of Groupe Baruck surrounded by the brand ambassadors, all dressed in black, in front of Baruck Communication headquarters"
+          },
+          "width": 1000,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/02.webp",
+          "alt": {
+            "fr": "Le PDG du Groupe Baruck posant avec deux ambassadeurs de la marque dans son bureau",
+            "en": "The CEO of Groupe Baruck posing with two brand ambassadors in his office"
+          },
+          "width": 1000,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/03.webp",
+          "alt": {
+            "fr": "Les ambassadeurs brandissant les flyers du Studio Photo Baruck devant le mur Baruck Communication",
+            "en": "Ambassadors holding up Studio Photo Baruck flyers in front of the Baruck Communication wall"
+          },
+          "width": 1000,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/04.webp",
+          "alt": {
+            "fr": "Les ambassadeurs rassemblés, l’un d’eux agenouillé au premier plan",
+            "en": "Ambassadors gathered together, with one kneeling in the foreground"
+          },
+          "width": 1000,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/05.webp",
+          "alt": {
+            "fr": "L’équipe des ambassadeurs réunie en studio, un membre agenouillé au premier plan",
+            "en": "The ambassador team gathered in the studio, with a member kneeling in the foreground"
+          },
+          "width": 668,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/06.webp",
+          "alt": {
+            "fr": "L’équipe des ambassadeurs en studio, certains portant le tee-shirt aux couleurs de Baruck",
+            "en": "The ambassador team in the studio, some wearing Baruck-coloured T-shirts"
+          },
+          "width": 1000,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/07.webp",
+          "alt": {
+            "fr": "Un ambassadeur assis en tailleur, capuche et gants noirs, un chapeau posé sur un sac de voyage",
+            "en": "An ambassador sitting cross-legged, wearing a black hood and gloves, with a hat resting on a travel bag"
+          },
+          "width": 716,
+          "height": 1080
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/08.webp",
+          "alt": {
+            "fr": "Un ambassadeur soulevant le bord de son chapeau noir, en studio",
+            "en": "An ambassador lifting the brim of his black hat in the studio"
+          },
+          "width": 1000,
+          "height": 667
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/09.webp",
+          "alt": {
+            "fr": "Une ambassadrice en trench noir, les mains dans les poches, sur fond sombre",
+            "en": "A female ambassador in a black trench coat, hands in her pockets, against a dark background"
+          },
+          "width": 720,
+          "height": 1080
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/10.webp",
+          "alt": {
+            "fr": "Un ambassadeur en veste de cuir noire et casquette plate, en studio",
+            "en": "An ambassador in a black leather jacket and flat cap in the studio"
+          },
+          "width": 720,
+          "height": 1080
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/11.webp",
+          "alt": {
+            "fr": "Un ambassadeur les bras croisés tenant un sac de voyage noir, en studio",
+            "en": "An ambassador with crossed arms holding a black travel bag in the studio"
+          },
+          "width": 720,
+          "height": 1080
+        },
+        {
+          "src": "/images/groupe/ambassadeurs/12.webp",
+          "alt": {
+            "fr": "Deux ambassadeurs accroupis de part et d’autre d’un sac de voyage noir, en studio",
+            "en": "Two ambassadors crouching on either side of a black travel bag in the studio"
+          },
+          "width": 1000,
+          "height": 667
+        }
+      ],
+      "data.presenceCountries": [
+        {
+          "name": {
+            "fr": "Guinée",
+            "en": "Guinea"
+          },
+          "role": {
+            "fr": "Point d’ancrage",
+            "en": "Home base"
+          },
+          "text": {
+            "fr": "Siège du groupe. Baruck Communication y opère le Studio Photo Baruck la Prospérité, à Kobayah (Conakry), ainsi que ses équipes d’hôtesses événementielles.",
+            "en": "Group headquarters. Baruck Communication operates Studio Photo Baruck la Prospérité in Kobayah (Conakry), along with its event hostess teams."
+          },
+          "links": [
+            {
+              "label": {
+                "fr": "Studio photo",
+                "en": "Photography studio"
+              },
+              "href": "/studio-photo/"
+            },
+            {
+              "label": {
+                "fr": "Hôtesses événementielles",
+                "en": "Event hostesses"
+              },
+              "href": "/hotesses-evenementielles/"
+            }
+          ]
+        },
+        {
+          "name": {
+            "fr": "Sénégal",
+            "en": "Senegal"
+          },
+          "role": {
+            "fr": "Présence régionale",
+            "en": "Regional presence"
+          },
+          "text": {
+            "fr": "C’est à Dakar que la JECA a réuni la diaspora lors de ses deux premiers forums, en 2022 et 2023.",
+            "en": "In Dakar, JECA brought the diaspora together for its first two forums, in 2022 and 2023."
+          },
+          "links": [
+            {
+              "label": {
+                "fr": "Les forums JECA",
+                "en": "The JECA forums"
+              },
+              "href": "/jeca/"
+            }
+          ]
+        },
+        {
+          "name": {
+            "fr": "Côte d’Ivoire",
+            "en": "Côte d’Ivoire"
+          },
+          "role": {
+            "fr": "Présence régionale · Abidjan",
+            "en": "Regional presence · Abidjan"
+          },
+          "text": {
+            "fr": "Terre d’engagement d’Espoir de Vie : à Grôh, Hiré, Zaroko et Divo — jouets, kits scolaires, aide aux familles et construction de l’orphelinat.",
+            "en": "A centre of Espoir de Vie’s work: in Grôh, Hiré, Zaroko and Divo — toys, school kits, family support and construction of the orphanage."
+          },
+          "links": [
+            {
+              "label": {
+                "fr": "Espoir de Vie",
+                "en": "Espoir de Vie"
+              },
+              "href": "/espoir-de-vie/"
+            }
+          ]
+        },
+        {
+          "name": {
+            "fr": "France",
+            "en": "France"
+          },
+          "role": {
+            "fr": "Représentation",
+            "en": "Representation"
+          },
+          "text": {
+            "fr": "Le Groupe Baruck y est représenté, hors du continent africain.",
+            "en": "Groupe Baruck is represented here, outside the African continent."
+          },
+          "links": []
+        },
+        {
+          "name": {
+            "fr": "Cap-Vert",
+            "en": "Cape Verde"
+          },
+          "role": {
+            "fr": "Représentation",
+            "en": "Representation"
+          },
+          "text": {
+            "fr": "Le Groupe Baruck y est représenté, dans l’archipel au large du Sénégal.",
+            "en": "Groupe Baruck is represented here, in the archipelago off the coast of Senegal."
+          },
+          "links": []
+        }
+      ],
+      "data.baruckCommunication": {
+        "eyebrow": {
+          "fr": "Pôle opérationnel · Guinée",
+          "en": "Operational hub · Guinea"
+        },
+        "description": {
+          "fr": "Baruck Communication est une maison de communication, pas une agence de mannequinat : la distinction est celle du PDG lui-même. En Guinée, elle opère le Studio Photo Baruck la Prospérité et les services d’hôtesses événementielles présentés sur ce site, et organise les rendez-vous du groupe.",
+          "en": "Baruck Communication is a communications company, rather than a modelling agency: this distinction comes from the CEO himself. In Guinea, it operates Studio Photo Baruck la Prospérité and the event hostess services presented on this website, and organises the Group’s events."
+        },
+        "presence": {
+          "fr": "Guinée",
+          "en": "Guinea"
+        },
+        "servicesLabel": {
+          "fr": "Studio photo · Hôtesses événementielles · Événements",
+          "en": "Photography studio · Event hostesses · Events"
+        },
+        "services": [
+          {
+            "title": {
+              "fr": "Studio Photo Baruck la Prospérité",
+              "en": "Studio Photo Baruck la Prospérité"
+            },
+            "text": {
+              "fr": "Deux studios équipés à Kobayah, à Conakry, pour des prises de vue au studio comme en extérieur.",
+              "en": "Two equipped studios in Kobayah, Conakry, for studio and outdoor photography."
+            },
+            "href": "/studio-photo/",
+            "cta": {
+              "fr": "Découvrir le studio",
+              "en": "Discover the studio"
+            }
+          },
+          {
+            "title": {
+              "fr": "Hôtesses événementielles",
+              "en": "Event hostesses"
+            },
+            "text": {
+              "fr": "Une équipe élégante, professionnelle et dynamique pour la couverture de différents événements en Guinée.",
+              "en": "An elegant, professional and dynamic team covering various events in Guinea."
+            },
+            "href": "/hotesses-evenementielles/",
+            "cta": {
+              "fr": "Découvrir les hôtesses",
+              "en": "Discover the hostesses"
+            }
+          }
+        ]
+      },
+      "AboutHero.1": {
+        "fr": "Présentation du Groupe Baruck",
+        "en": "Introducing Groupe Baruck"
+      },
+      "AboutHero.2": {
+        "fr": "Président-directeur général",
+        "en": "Chairman and Chief Executive Officer"
+      },
+      "AboutHero.4": {
+        "fr": "Le Groupe Baruck · Guinée",
+        "en": "Groupe Baruck · Guinea"
+      },
+      "AboutHero.5": {
+        "fr": "Un groupe ancré en Guinée,",
+        "en": "A group rooted in Guinea,"
+      },
+      "AboutHero.6": {
+        "fr": "tourné vers l’impact.",
+        "en": "focused on impact."
+      },
+      "AboutHero.7": "/studio-photo/",
+      "AboutHero.8": {
+        "fr": "Studio Photo Baruck",
+        "en": "Studio Photo Baruck"
+      },
+      "AboutHero.9": "/hotesses-evenementielles/",
+      "AboutHero.10": {
+        "fr": "Hôtesses événementielles",
+        "en": "Event hostesses"
+      },
+      "AboutHero.11": "/hotesses-evenementielles/",
+      "AboutHero.12": {
+        "fr": "Restauration & hôtellerie",
+        "en": "Restaurants & hospitality"
+      },
+      "AboutHero.13": "#identite",
+      "AboutHero.14": {
+        "fr": "Notre identité",
+        "en": "Our identity"
+      },
+      "AboutHero.15": "/contact/",
+      "AboutHero.16": {
+        "fr": "Nous contacter",
+        "en": "Contact us"
+      },
+      "AboutIntro.list": [
+        {
+          "title": {
+            "fr": "Vision",
+            "en": "Vision"
+          },
+          "text": {
+            "fr": "Voir plus loin et ouvrir de nouvelles perspectives.",
+            "en": "Look further and open up new opportunities."
+          }
+        },
+        {
+          "title": {
+            "fr": "Excellence",
+            "en": "Excellence"
+          },
+          "text": {
+            "fr": "Placer la qualité au centre de chaque initiative.",
+            "en": "Place quality at the heart of every initiative."
+          }
+        },
+        {
+          "title": {
+            "fr": "Impact",
+            "en": "Impact"
+          },
+          "text": {
+            "fr": "Créer une valeur durable pour la société.",
+            "en": "Create lasting value for society."
+          }
+        }
+      ],
+      "AboutIntro.1": {
+        "fr": "Notre identité",
+        "en": "Our identity"
+      },
+      "AboutIntro.2": {
+        "fr": "Entreprendre,",
+        "en": "Build businesses,"
+      },
+      "AboutIntro.3": {
+        "fr": "et créer de l’impact.",
+        "en": "and create impact."
+      },
+      "AboutIntro.4": {
+        "fr": "Le Groupe Baruck est ancré en Guinée. Il y développe au quotidien, à travers Baruck Communication, le Studio Photo Baruck, ses services d’hôtesses événementielles et ses activités de communication.",
+        "en": "Groupe Baruck is rooted in Guinea. Through Baruck Communication, it develops Studio Photo Baruck, its event hostess services and its communications activities every day."
+      },
+      "AboutIntro.5": {
+        "fr": "Autour de cette base, le groupe réunit des domaines complémentaires — hôtellerie, restauration, agro-business avec la culture du piment, de l’oignon et du manioc, mobilité, industries créatives, sans oublier la marque de vêtements Baruck. Il porte une ambition assumée, du Sénégal à la Côte d’Ivoire et jusqu’à la France et au Cap-Vert : bâtir des projets solides, modernes et créateurs de valeur.",
+        "en": "Around this base, the Group brings together complementary areas — hospitality, restaurants, agribusiness growing chilli peppers, onions and cassava, mobility, creative industries, and the Baruck clothing brand. It has a clear ambition, from Senegal to Côte d’Ivoire and on to France and Cape Verde: to build strong, modern projects that create value."
+      },
+      "AboutIntro.6": {
+        "fr": "À cette activité économique répond une seconde dimension, indissociable du parcours de son dirigeant : l’engagement, porté par la JECA auprès des jeunes entrepreneurs et par l’ONG Espoir de Vie auprès des plus vulnérables.",
+        "en": "Alongside this economic activity is a second dimension, inseparable from its leader’s journey: a commitment expressed through JECA for young entrepreneurs and through the NGO Espoir de Vie for the most vulnerable."
+      },
+      "AboutIntro.7": "/#activite-studio",
+      "AboutIntro.8": {
+        "fr": "Découvrir nos activités",
+        "en": "Discover our activities"
+      },
+      "AboutIntro.9": {
+        "fr": "Valeurs du Groupe Baruck",
+        "en": "Groupe Baruck’s values"
+      },
+      "AboutPresident.list": [
+        {
+          "title": {
+            "fr": "Entreprendre en Guinée",
+            "en": "Build businesses in Guinea"
+          },
+          "text": {
+            "fr": "Faire de la Guinée le point d’ancrage du groupe et y développer des activités qui tiennent dans la durée.",
+            "en": "Make Guinea the Group’s home base and develop lasting activities there."
+          }
+        },
+        {
+          "title": {
+            "fr": "Ouvrir vers la région",
+            "en": "Connect with the region"
+          },
+          "text": {
+            "fr": "Porter cette base vers le Sénégal et la Côte d’Ivoire, où le dirigeant conduit déjà ses engagements, et jusqu’aux représentations de France et du Cap-Vert.",
+            "en": "Extend this base to Senegal and Côte d’Ivoire, where the leader already pursues his commitments, and to the representations in France and Cape Verde."
+          }
+        },
+        {
+          "title": {
+            "fr": "Rendre à la société",
+            "en": "Give back to society"
+          },
+          "text": {
+            "fr": "Faire répondre à l’activité économique un engagement social, par la JECA et par l’ONG Espoir de Vie.",
+            "en": "Complement economic activity with social commitment, through JECA and the NGO Espoir de Vie."
+          }
+        }
+      ],
+      "AboutPresident.2": {
+        "fr": "Le président",
+        "en": "The President"
+      },
+      "AboutPresident.3": {
+        "fr": "Un dirigeant,",
+        "en": "A leader,"
+      },
+      "AboutPresident.4": {
+        "fr": "une vision.",
+        "en": "a vision."
+      },
+      "AboutPresident.5": {
+        "fr": "MR Djoro Joël Shaloom Krasso dirige le Groupe Baruck. Il préside la JECA, qui réunit la diaspora autour de l’investissement en Afrique, et l’ONG Espoir de Vie, qui protège les enfants et accompagne les familles. En 2016, il exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.",
+        "en": "MR Djoro Joël Shaloom Krasso leads Groupe Baruck. He chairs JECA, which brings the diaspora together around investment in Africa, and the NGO Espoir de Vie, which protects children and supports families. In 2016, he serves as a development officer for child protection within the United Nations."
+      },
+      "AboutPresident.6": {
+        "fr": "« Construire, entreprendre et créer un impact durable. »",
+        "en": "“Build, undertake and create lasting impact.”"
+      },
+      "AboutPresident.7": {
+        "fr": "Sa vision, en trois axes",
+        "en": "His vision, in three areas"
+      },
+      "AboutPresident.8": "#fonctions",
+      "AboutPresident.9": {
+        "fr": "Ses quatre fonctions",
+        "en": "His four roles"
+      },
+      "AboutPresident.10": "/jeca/",
+      "AboutPresident.11": {
+        "fr": "La JECA",
+        "en": "JECA"
+      },
+      "AboutRoles.1": {
+        "fr": "Ses fonctions",
+        "en": "His roles"
+      },
+      "AboutRoles.2": {
+        "fr": "Quatre fonctions,",
+        "en": "Four roles,"
+      },
+      "AboutRoles.3": {
+        "fr": "une même exigence.",
+        "en": "one shared standard."
+      },
+      "AboutRoles.4": {
+        "fr": "Seules les fonctions confirmées par la direction figurent sur cette page. Le parcours détaillé du président sera ajouté après validation.",
+        "en": "Only roles confirmed by the management appear on this page. The President’s detailed background will be added following validation."
+      },
+      "AboutRoles.5": "/#activites",
+      "AboutRoles.6": {
+        "fr": "PDG du Groupe Baruck",
+        "en": "CEO of Groupe Baruck"
+      },
+      "AboutRoles.7": {
+        "fr": "Il dirige le pôle économique et entrepreneurial du groupe et porte sa stratégie de développement à travers l’ensemble de ses activités.",
+        "en": "He leads the Group’s economic and entrepreneurial activities and drives its development strategy across all its areas of activity."
+      },
+      "AboutRoles.8": {
+        "fr": "Voir les activités",
+        "en": "View the activities"
+      },
+      "AboutRoles.9": "/jeca/",
+      "AboutRoles.10": {
+        "fr": "Président de la JECA",
+        "en": "President of JECA"
+      },
+      "AboutRoles.11": {
+        "fr": "Jeunes Entrepreneurs Chrétiens Africains : une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.",
+        "en": "Jeunes Entrepreneurs Chrétiens Africains: an initiative dedicated to African Christian entrepreneurship and networking among young entrepreneurs."
+      },
+      "AboutRoles.12": {
+        "fr": "Découvrir la JECA",
+        "en": "Discover JECA"
+      },
+      "AboutRoles.13": "/espoir-de-vie/",
+      "AboutRoles.14": {
+        "fr": "Président de l’ONG Espoir de Vie",
+        "en": "President of the NGO Espoir de Vie"
+      },
+      "AboutRoles.15": {
+        "fr": "Une action sociale consacrée à la protection des enfants, à l’accompagnement des familles et au soutien des personnes vulnérables.",
+        "en": "Social work dedicated to protecting children, supporting families and helping vulnerable people."
+      },
+      "AboutRoles.16": {
+        "fr": "Découvrir l’ONG",
+        "en": "Discover the NGO"
+      },
+      "AboutRoles.17": "#experience-onu",
+      "AboutRoles.18": {
+        "fr": "Agent de développement · ONU 2016",
+        "en": "Development officer · UN 2016"
+      },
+      "AboutRoles.19": {
+        "fr": "Agent de développement pour la protection de l’enfant au sein des Nations Unies, en 2016.",
+        "en": "Development officer for child protection within the United Nations, in 2016."
+      },
+      "AboutRoles.20": {
+        "fr": "Voir cette expérience",
+        "en": "View this experience"
+      },
+      "AboutOnu.1": {
+        "fr": "MR Djoro Joël Shaloom Krasso lors d’une séance de travail aux Nations Unies",
+        "en": "MR Djoro Joël Shaloom Krasso during a working session at the United Nations"
+      },
+      "AboutOnu.2": {
+        "fr": "MR Djoro Joël Shaloom Krasso devant un portrait de Kofi Annan",
+        "en": "MR Djoro Joël Shaloom Krasso in front of a portrait of Kofi Annan"
+      },
+      "AboutOnu.3": {
+        "fr": "Nations Unies · 2016",
+        "en": "United Nations · 2016"
+      },
+      "AboutOnu.4": {
+        "fr": "La protection",
+        "en": "Protecting"
+      },
+      "AboutOnu.5": {
+        "fr": "de l’enfant.",
+        "en": "children."
+      },
+      "AboutOnu.6": {
+        "fr": "En 2016, MR Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.",
+        "en": "In 2016, MR Djoro Joël Shaloom Krasso serves as a development officer for child protection within the United Nations."
+      },
+      "AboutOnu.7": {
+        "fr": "Cette expérience éclaire la manière dont il conduit aujourd’hui le Groupe Baruck : une attention constante portée à l’utilité sociale des projets, au-delà de leur seule performance économique.",
+        "en": "This experience informs the way he leads Groupe Baruck today: with a constant focus on the social value of projects, beyond their economic performance alone."
+      },
+      "AboutOnu.8": {
+        "fr": "— ouvrir la photo",
+        "en": "— open the photo"
+      },
+      "AboutCommunication.1": {
+        "fr": "Baruck",
+        "en": "Baruck"
+      },
+      "AboutCommunication.2": {
+        "fr": "Communication.",
+        "en": "Communication."
+      },
+      "AboutCommunication.3": {
+        "fr": "Présence",
+        "en": "Presence"
+      },
+      "AboutCommunication.4": {
+        "fr": "Services présentés",
+        "en": "Services presented"
+      },
+      "AboutActivities.1": {
+        "fr": "Activités principales",
+        "en": "Main activities"
+      },
+      "AboutActivities.2": {
+        "fr": "Les domaines",
+        "en": "The Group’s"
+      },
+      "AboutActivities.3": {
+        "fr": "du groupe.",
+        "en": "areas of activity."
+      },
+      "AboutActivities.4": {
+        "fr": "Autour du pôle guinéen, le groupe réunit des domaines complémentaires : hospitalité, création, production et développement.",
+        "en": "Around its Guinean hub, the Group brings together complementary areas: hospitality, creativity, production and development."
+      },
+      "AboutActivities.5": {
+        "fr": "/",
+        "en": "/"
+      },
+      "AboutAmbassadors.1": {
+        "fr": "La marque en représentation",
+        "en": "Representing the brand"
+      },
+      "AboutAmbassadors.2": {
+        "fr": "Les ambassadeurs",
+        "en": "The Baruck brand’s"
+      },
+      "AboutAmbassadors.3": {
+        "fr": "de la marque Baruck.",
+        "en": "ambassadors."
+      },
+      "AboutAmbassadors.4": {
+        "fr": "Vêtus de noir des pieds à la tête, les ambassadeurs portent l’image de la marque lors de ses sorties et de ses campagnes. Reçus par le PDG au siège de Baruck Communication, ils posent ensuite devant l’objectif du Studio Photo Baruck la Prospérité.",
+        "en": "Dressed in black from head to toe, the ambassadors represent the brand during its appearances and campaigns. After being received by the CEO at Baruck Communication headquarters, they pose for Studio Photo Baruck la Prospérité."
+      },
+      "AboutAmbassadors.5": "/marque-baruck/",
+      "AboutAmbassadors.6": {
+        "fr": "Découvrir la marque Baruck",
+        "en": "Discover the Baruck brand"
+      },
+      "AboutAmbassadors.7": "/studio-photo/",
+      "AboutAmbassadors.8": {
+        "fr": "Le Studio Photo Baruck",
+        "en": "Studio Photo Baruck"
+      },
+      "AboutEvents.list": [
+        {
+          "title": {
+            "fr": "Miss Baruck Guinée",
+            "en": "Miss Baruck Guinée"
+          },
+          "dates": {
+            "fr": "Première édition · 26 juillet 2025",
+            "en": "First edition · 26 July 2025"
+          },
+          "text": {
+            "fr": "Vingt millions de francs guinéens à partager entre les lauréats. Mama Adama Bangoura est couronnée Miss Baruck Guinée 2025.",
+            "en": "Twenty million Guinean francs to be shared among the winners. Mama Adama Bangoura is crowned Miss Baruck Guinée 2025."
+          },
+          "href": "/actualites/miss-baruck-guinee-2025/"
+        },
+        {
+          "title": {
+            "fr": "Top Modèle Baruck Guinée",
+            "en": "Top Modèle Baruck Guinée"
+          },
+          "dates": {
+            "fr": "Première édition · 27 septembre 2025",
+            "en": "First edition · 27 September 2025"
+          },
+          "text": {
+            "fr": "La grande finale se tient à 22 h dans la salle Malick Condé de l’Université Kofi Annan, sous le parrainage du PDG du Groupe Baruck.",
+            "en": "The grand final takes place at 10 pm in the Malick Condé hall at Kofi Annan University, under the patronage of the CEO of Groupe Baruck."
+          },
+          "href": "/actualites/top-modele-baruck-guinee-2025/"
+        },
+        {
+          "title": {
+            "fr": "Top Modèle Baruck Guinée",
+            "en": "Top Modèle Baruck Guinée"
+          },
+          "dates": {
+            "fr": "Deuxième édition · 8 août 2026",
+            "en": "Second edition · 8 August 2026"
+          },
+          "text": {
+            "fr": "Quatre-vingts millions de francs guinéens, et la dernière édition du genre : la suite passera par des défilés de mode, adossés à la maison de vêtements du groupe.",
+            "en": "Eighty million Guinean francs, and the final edition of its kind: future events will take the form of fashion shows linked to the Group’s clothing brand."
+          },
+          "href": "/actualites/top-modele-baruck-guinee-2026/"
+        }
+      ],
+      "AboutEvents.1": {
+        "fr": "Événements organisés",
+        "en": "Events organised"
+      },
+      "AboutEvents.2": {
+        "fr": "Le forum de la JECA,",
+        "en": "The JECA forum,"
+      },
+      "AboutEvents.3": {
+        "fr": "les concours Baruck.",
+        "en": "the Baruck competitions."
+      },
+      "AboutEvents.4": {
+        "fr": "Depuis 2022, la JECA réunit la diaspora africaine autour de l’investissement sur le continent. En Guinée, Baruck Communication organise ses propres rendez-vous.",
+        "en": "Since 2022, JECA has brought the African diaspora together around investment on the continent. In Guinea, Baruck Communication organises its own events."
+      },
+      "AboutEvents.5": {
+        "fr": "Le forum de la JECA",
+        "en": "The JECA forum"
+      },
+      "AboutEvents.6": {
+        "fr": "Édition",
+        "en": "Edition"
+      },
+      "AboutEvents.7": {
+        "fr": "Voir l’édition",
+        "en": "View the edition"
+      },
+      "AboutEvents.8": {
+        "fr": "Les concours Baruck",
+        "en": "The Baruck competitions"
+      },
+      "AboutEvents.9": {
+        "fr": "Concours",
+        "en": "Competition"
+      },
+      "AboutEvents.10": {
+        "fr": "Lire l’article",
+        "en": "Read the article"
+      },
+      "AboutEvents.11": "/jeca/",
+      "AboutEvents.12": {
+        "fr": "Découvrir la JECA",
+        "en": "Discover JECA"
+      },
+      "AboutEvents.13": "/espoir-de-vie/#actions",
+      "AboutEvents.14": {
+        "fr": "Les actions d’Espoir de Vie",
+        "en": "Espoir de Vie’s work"
+      },
+      "AboutMilestones.1": {
+        "fr": "Repères",
+        "en": "Milestones"
+      },
+      "AboutMilestones.2": {
+        "fr": "Des initiatives,",
+        "en": "Initiatives,"
+      },
+      "AboutMilestones.3": {
+        "fr": "dans le temps.",
+        "en": "over time."
+      },
+      "AboutMilestones.4": {
+        "fr": "Cette chronologie rassemble les dates déjà documentées pour le dirigeant, la JECA et Espoir de Vie. L’histoire propre du Groupe sera complétée après validation.",
+        "en": "This timeline brings together dates already documented for the leader, JECA and Espoir de Vie. The Group’s own history will be completed following validation."
+      },
+      "AboutMilestones.5": {
+        "fr": "Création du Groupe Baruck",
+        "en": "Establishment of Groupe Baruck"
+      },
+      "AboutPresence.1": {
+        "fr": "Présence internationale",
+        "en": "International presence"
+      },
+      "AboutPresence.2": {
+        "fr": "Cinq pays,",
+        "en": "Five countries,"
+      },
+      "AboutPresence.3": {
+        "fr": "une même ambition.",
+        "en": "one shared ambition."
+      },
+      "AboutPresence.4": {
+        "fr": "La Guinée comme point d’ancrage, le Sénégal et la Côte d’Ivoire comme horizon de développement, la France et le Cap-Vert où le groupe est représenté.",
+        "en": "Guinea as the Group’s home base, Senegal and Côte d’Ivoire as its development horizon, and France and Cape Verde, where the Group is represented."
+      },
+      "AboutCommitments.1": {
+        "fr": "Engagements",
+        "en": "Commitments"
+      },
+      "AboutCommitments.2": {
+        "fr": "Au-delà",
+        "en": "Beyond"
+      },
+      "AboutCommitments.3": {
+        "fr": "de l’entreprise.",
+        "en": "business."
+      },
+      "AboutCommitments.4": {
+        "fr": "Deux structures présidées par le dirigeant du Groupe Baruck, chacune avec sa propre page.",
+        "en": "Two organisations chaired by the leader of Groupe Baruck, each with its own page."
+      },
+      "AboutCommitments.5": "/jeca/",
+      "AboutCommitments.6": {
+        "fr": "Logo de la JECA, Jeunes Entrepreneurs Chrétiens Africains",
+        "en": "JECA logo, Jeunes Entrepreneurs Chrétiens Africains"
+      },
+      "AboutCommitments.7": {
+        "fr": "Entrepreneuriat",
+        "en": "Entrepreneurship"
+      },
+      "AboutCommitments.8": {
+        "fr": "JECA",
+        "en": "JECA"
+      },
+      "AboutCommitments.9": {
+        "fr": "Une initiative consacrée à l’entrepreneuriat chrétien africain et à la mise en réseau des jeunes entrepreneurs.",
+        "en": "An initiative dedicated to African Christian entrepreneurship and networking among young entrepreneurs."
+      },
+      "AboutCommitments.10": "/espoir-de-vie/",
+      "AboutCommitments.11": {
+        "fr": "Logo de l’ONG Espoir de Vie",
+        "en": "Logo of the NGO Espoir de Vie"
+      },
+      "AboutCommitments.12": {
+        "fr": "Engagement social",
+        "en": "Social commitment"
+      },
+      "AboutCommitments.13": {
+        "fr": "Espoir de Vie",
+        "en": "Espoir de Vie"
+      },
+      "AboutCommitments.14": {
+        "fr": "Protéger les enfants, accompagner les familles et apporter une aide concrète aux personnes vulnérables.",
+        "en": "Protect children, support families and provide practical help to vulnerable people."
+      },
+      "AboutCta.1": {
+        "fr": "Une ambition en commun ?",
+        "en": "A shared ambition?"
+      },
+      "AboutCta.2": {
+        "fr": "Échangeons sur",
+        "en": "Let’s discuss"
+      },
+      "AboutCta.3": {
+        "fr": "vos projets.",
+        "en": "your projects."
+      },
+      "AboutCta.4": {
+        "fr": "Partenariat, collaboration ou simple demande d’information : l’équipe du Groupe Baruck vous répond.",
+        "en": "Partnership, collaboration or a simple request for information: the Groupe Baruck team is here to help."
+      },
+      "AboutCta.5": "/contact/",
+      "AboutCta.6": {
+        "fr": "Nous contacter",
+        "en": "Contact us"
+      },
+      "president.honorific": {
+        "fr": "MR",
+        "en": "MR"
+      },
+      "president.givenNames": {
+        "fr": "Djoro Joël",
+        "en": "Djoro Joël"
+      },
+      "president.highlight": {
+        "fr": "Shaloom",
+        "en": "Shaloom"
+      },
+      "president.surname": {
+        "fr": "Krasso",
+        "en": "Krasso"
+      },
+      "contact.background": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Madina_1.jpg/1920px-Madina_1.jpg"
+    },
+    "sections": [
+      {
+        "id": "nom-dirigeant",
+        "label": "Nom du dirigeant",
+        "help": "Le même nom apparaît sur l’accueil et sur la page Groupe. Les quatre parties conservent la présentation actuelle.",
+        "fields": [
+          "president.honorific",
+          "president.givenNames",
+          "president.highlight",
+          "president.surname"
+        ]
+      },
+      {
+        "id": "portraits",
+        "label": "Portraits et photos du dirigeant",
+        "help": "Le portrait principal est partagé avec l’accueil. Les images des Nations Unies sont aussi reprises quand elles apparaissent ailleurs sur le site.",
+        "fields": [
+          "media.presidentPortrait",
+          "media.groupHeroPortrait",
+          "media.presidentOnu1",
+          "media.presidentOnu2",
+          "media.presidentOnuGallery"
+        ]
+      },
+      {
+        "id": "AboutHero",
+        "label": "En-tête du Groupe",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutHero.1",
+          "AboutHero.2",
+          "AboutHero.4",
+          "AboutHero.5",
+          "AboutHero.6",
+          "AboutHero.7",
+          "AboutHero.8",
+          "AboutHero.9",
+          "AboutHero.10",
+          "AboutHero.11",
+          "AboutHero.12",
+          "AboutHero.13",
+          "AboutHero.14",
+          "AboutHero.15",
+          "AboutHero.16"
+        ]
+      },
+      {
+        "id": "AboutIntro",
+        "label": "Identité et valeurs",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutIntro.list",
+          "AboutIntro.1",
+          "AboutIntro.2",
+          "AboutIntro.3",
+          "AboutIntro.4",
+          "AboutIntro.5",
+          "AboutIntro.6",
+          "AboutIntro.7",
+          "AboutIntro.8",
+          "AboutIntro.9"
+        ]
+      },
+      {
+        "id": "AboutPresident",
+        "label": "Présentation et vision du dirigeant",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutPresident.list",
+          "AboutPresident.2",
+          "AboutPresident.3",
+          "AboutPresident.4",
+          "AboutPresident.5",
+          "AboutPresident.6",
+          "AboutPresident.7",
+          "AboutPresident.8",
+          "AboutPresident.9",
+          "AboutPresident.10",
+          "AboutPresident.11"
+        ]
+      },
+      {
+        "id": "AboutRoles",
+        "label": "Fonctions du dirigeant",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutRoles.1",
+          "AboutRoles.2",
+          "AboutRoles.3",
+          "AboutRoles.4",
+          "AboutRoles.5",
+          "AboutRoles.6",
+          "AboutRoles.7",
+          "AboutRoles.8",
+          "AboutRoles.9",
+          "AboutRoles.10",
+          "AboutRoles.11",
+          "AboutRoles.12",
+          "AboutRoles.13",
+          "AboutRoles.14",
+          "AboutRoles.15",
+          "AboutRoles.16",
+          "AboutRoles.17",
+          "AboutRoles.18",
+          "AboutRoles.19",
+          "AboutRoles.20"
+        ]
+      },
+      {
+        "id": "AboutOnu",
+        "label": "Expérience aux Nations Unies",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutOnu.1",
+          "AboutOnu.2",
+          "AboutOnu.3",
+          "AboutOnu.4",
+          "AboutOnu.5",
+          "AboutOnu.6",
+          "AboutOnu.7",
+          "AboutOnu.8"
+        ]
+      },
+      {
+        "id": "AboutCommunication",
+        "label": "Baruck Communication",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutCommunication.1",
+          "AboutCommunication.2",
+          "AboutCommunication.3",
+          "AboutCommunication.4",
+          "data.baruckCommunication"
+        ]
+      },
+      {
+        "id": "AboutActivities",
+        "label": "Présentation des activités",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutActivities.1",
+          "AboutActivities.2",
+          "AboutActivities.3",
+          "AboutActivities.4",
+          "AboutActivities.5"
+        ]
+      },
+      {
+        "id": "AboutAmbassadors",
+        "label": "Ambassadeurs et galerie",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutAmbassadors.1",
+          "AboutAmbassadors.2",
+          "AboutAmbassadors.3",
+          "AboutAmbassadors.4",
+          "AboutAmbassadors.5",
+          "AboutAmbassadors.6",
+          "AboutAmbassadors.7",
+          "AboutAmbassadors.8",
+          "data.ambassadorPhotos"
+        ]
+      },
+      {
+        "id": "AboutEvents",
+        "label": "Événements organisés",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutEvents.list",
+          "AboutEvents.1",
+          "AboutEvents.2",
+          "AboutEvents.3",
+          "AboutEvents.4",
+          "AboutEvents.5",
+          "AboutEvents.6",
+          "AboutEvents.7",
+          "AboutEvents.8",
+          "AboutEvents.9",
+          "AboutEvents.10",
+          "AboutEvents.11",
+          "AboutEvents.12",
+          "AboutEvents.13",
+          "AboutEvents.14"
+        ]
+      },
+      {
+        "id": "AboutMilestones",
+        "label": "Chronologie",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutMilestones.1",
+          "AboutMilestones.2",
+          "AboutMilestones.3",
+          "AboutMilestones.4",
+          "AboutMilestones.5",
+          "data.milestones"
+        ]
+      },
+      {
+        "id": "AboutPresence",
+        "label": "Pays et représentations",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutPresence.1",
+          "AboutPresence.2",
+          "AboutPresence.3",
+          "AboutPresence.4",
+          "data.presenceCountries"
+        ]
+      },
+      {
+        "id": "AboutCommitments",
+        "label": "Engagements",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutCommitments.1",
+          "AboutCommitments.2",
+          "AboutCommitments.3",
+          "AboutCommitments.4",
+          "AboutCommitments.5",
+          "AboutCommitments.6",
+          "AboutCommitments.7",
+          "AboutCommitments.8",
+          "AboutCommitments.9",
+          "AboutCommitments.10",
+          "AboutCommitments.11",
+          "AboutCommitments.12",
+          "AboutCommitments.13",
+          "AboutCommitments.14"
+        ]
+      },
+      {
+        "id": "AboutCta",
+        "label": "Contact du Groupe",
+        "help": "Textes, liens et médias de cette section.",
+        "fields": [
+          "AboutCta.1",
+          "AboutCta.2",
+          "AboutCta.3",
+          "AboutCta.4",
+          "AboutCta.5",
+          "AboutCta.6",
+          "contact.background"
+        ]
+      }
+    ],
+    "fields": {
+      "media.presidentPortrait": {
+        "kind": "image",
+        "label": "Portrait principal · Accueil et Groupe"
+      },
+      "media.groupHeroPortrait": {
+        "kind": "image",
+        "label": "Portrait en haut de la page Groupe"
+      },
+      "media.presidentOnu1": {
+        "kind": "image",
+        "label": "Nations Unies · Photo principale"
+      },
+      "media.presidentOnu2": {
+        "kind": "image",
+        "label": "Nations Unies · Seconde photo"
+      },
+      "media.presidentOnuGallery": {
+        "kind": "list",
+        "label": "Nations Unies · Galerie",
+        "max": 40,
+        "item": {
+          "kind": "image",
+          "label": "Photo"
+        }
+      },
+      "data.milestones": {
+        "kind": "list",
+        "label": "Chronologie",
+        "max": 40,
+        "item": {
+          "kind": "object",
+          "label": "milestones",
+          "fields": {
+            "year": {
+              "kind": "date",
+              "label": "Année affichée",
+              "max": 500
+            },
+            "dateTime": {
+              "kind": "date",
+              "label": "Date",
+              "max": 500
+            },
+            "title": {
+              "kind": "text",
+              "label": "Titre",
+              "max": 240
+            },
+            "text": {
+              "kind": "text",
+              "label": "Texte",
+              "max": 240
+            },
+            "href": {
+              "kind": "link",
+              "label": "Lien",
+              "max": 500
+            }
+          }
+        }
+      },
+      "data.ambassadorPhotos": {
+        "kind": "list",
+        "label": "Galerie des ambassadeurs",
+        "max": 40,
+        "item": {
+          "kind": "image",
+          "label": "Photo"
+        }
+      },
+      "data.presenceCountries": {
+        "kind": "list",
+        "label": "Pays et représentations",
+        "max": 20,
+        "item": {
+          "kind": "object",
+          "label": "presenceCountries",
+          "fields": {
+            "name": {
+              "kind": "text",
+              "label": "Nom",
+              "max": 240
+            },
+            "role": {
+              "kind": "text",
+              "label": "Rôle",
+              "max": 240
+            },
+            "text": {
+              "kind": "text",
+              "label": "Texte",
+              "max": 254
+            },
+            "links": {
+              "kind": "list",
+              "label": "Liens",
+              "max": 6,
+              "item": {
+                "kind": "object",
+                "label": "Liens",
+                "fields": {
+                  "label": {
+                    "kind": "text",
+                    "label": "Libellé",
+                    "max": 240
+                  },
+                  "href": {
+                    "kind": "link",
+                    "label": "Lien",
+                    "max": 500
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "data.baruckCommunication": {
+        "kind": "object",
+        "label": "Baruck Communication",
+        "fields": {
+          "eyebrow": {
+            "kind": "text",
+            "label": "Sur-titre",
+            "max": 240
+          },
+          "description": {
+            "kind": "text",
+            "label": "Description",
+            "max": 391
+          },
+          "presence": {
+            "kind": "text",
+            "label": "Présence",
+            "max": 240
+          },
+          "servicesLabel": {
+            "kind": "text",
+            "label": "Services présentés",
+            "max": 240
+          },
+          "services": {
+            "kind": "list",
+            "label": "Services",
+            "max": 40,
+            "item": {
+              "kind": "object",
+              "label": "Services",
+              "fields": {
+                "title": {
+                  "kind": "text",
+                  "label": "Titre",
+                  "max": 240
+                },
+                "text": {
+                  "kind": "text",
+                  "label": "Texte",
+                  "max": 240
+                },
+                "href": {
+                  "kind": "link",
+                  "label": "Lien",
+                  "max": 500
+                },
+                "cta": {
+                  "kind": "text",
+                  "label": "Texte du bouton",
+                  "max": 240
+                }
+              }
+            }
+          }
+        }
+      },
+      "AboutHero.1": {
+        "kind": "text",
+        "label": "Description lue à voix haute",
+        "max": 240
+      },
+      "AboutHero.2": {
+        "kind": "text",
+        "label": "Libellé",
+        "max": 240
+      },
+      "AboutHero.4": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutHero.5": {
+        "kind": "text",
+        "label": "Titre principal",
+        "max": 240
+      },
+      "AboutHero.6": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutHero.7": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutHero.8": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "AboutHero.9": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutHero.10": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "AboutHero.11": {
+        "kind": "link",
+        "label": "Lien 3",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutHero.12": {
+        "kind": "text",
+        "label": "Texte du lien 3",
+        "max": 240
+      },
+      "AboutHero.13": {
+        "kind": "link",
+        "label": "Lien 4",
+        "max": 500,
+        "scope": "anchor"
+      },
+      "AboutHero.14": {
+        "kind": "text",
+        "label": "Texte du lien 4",
+        "max": 240
+      },
+      "AboutHero.15": {
+        "kind": "link",
+        "label": "Lien 5",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutHero.16": {
+        "kind": "text",
+        "label": "Texte du lien 5",
+        "max": 240
+      },
+      "AboutIntro.list": {
+        "kind": "list",
+        "label": "Valeurs du Groupe",
+        "max": 40,
+        "item": {
+          "kind": "object",
+          "label": "values",
+          "fields": {
+            "title": {
+              "kind": "text",
+              "label": "Titre",
+              "max": 240
+            },
+            "text": {
+              "kind": "text",
+              "label": "Texte",
+              "max": 240
+            }
+          }
+        }
+      },
+      "AboutIntro.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutIntro.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutIntro.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutIntro.4": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 397
+      },
+      "AboutIntro.5": {
+        "kind": "textarea",
+        "label": "Paragraphe 2",
+        "max": 597
+      },
+      "AboutIntro.6": {
+        "kind": "textarea",
+        "label": "Paragraphe 3",
+        "max": 422
+      },
+      "AboutIntro.7": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutIntro.8": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "AboutIntro.9": {
+        "kind": "text",
+        "label": "Description lue à voix haute",
+        "max": 240
+      },
+      "AboutPresident.list": {
+        "kind": "list",
+        "label": "Axes de la vision",
+        "max": 40,
+        "item": {
+          "kind": "object",
+          "label": "visionPoints",
+          "fields": {
+            "title": {
+              "kind": "text",
+              "label": "Titre",
+              "max": 240
+            },
+            "text": {
+              "kind": "text",
+              "label": "Texte",
+              "max": 240
+            }
+          }
+        }
+      },
+      "AboutPresident.2": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutPresident.3": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutPresident.4": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutPresident.5": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 525
+      },
+      "AboutPresident.6": {
+        "kind": "text",
+        "label": "Citation",
+        "max": 256
+      },
+      "AboutPresident.7": {
+        "kind": "textarea",
+        "label": "Paragraphe 2",
+        "max": 240
+      },
+      "AboutPresident.8": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "anchor"
+      },
+      "AboutPresident.9": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "AboutPresident.10": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutPresident.11": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "AboutRoles.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutRoles.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutRoles.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutRoles.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 337
+      },
+      "AboutRoles.5": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutRoles.6": {
+        "kind": "text",
+        "label": "Titre 2",
+        "max": 240
+      },
+      "AboutRoles.7": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 335
+      },
+      "AboutRoles.8": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "AboutRoles.9": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutRoles.10": {
+        "kind": "text",
+        "label": "Titre 3",
+        "max": 240
+      },
+      "AboutRoles.11": {
+        "kind": "textarea",
+        "label": "Paragraphe 2",
+        "max": 354
+      },
+      "AboutRoles.12": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "AboutRoles.13": {
+        "kind": "link",
+        "label": "Lien 3",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutRoles.14": {
+        "kind": "text",
+        "label": "Titre 4",
+        "max": 240
+      },
+      "AboutRoles.15": {
+        "kind": "textarea",
+        "label": "Paragraphe 3",
+        "max": 330
+      },
+      "AboutRoles.16": {
+        "kind": "text",
+        "label": "Texte du lien 3",
+        "max": 240
+      },
+      "AboutRoles.17": {
+        "kind": "link",
+        "label": "Lien 4",
+        "max": 500,
+        "scope": "anchor"
+      },
+      "AboutRoles.18": {
+        "kind": "text",
+        "label": "Titre 5",
+        "max": 240
+      },
+      "AboutRoles.19": {
+        "kind": "textarea",
+        "label": "Paragraphe 4",
+        "max": 289
+      },
+      "AboutRoles.20": {
+        "kind": "text",
+        "label": "Texte du lien 4",
+        "max": 240
+      },
+      "AboutOnu.1": {
+        "kind": "text",
+        "label": "Description de la photo",
+        "max": 275
+      },
+      "AboutOnu.2": {
+        "kind": "text",
+        "label": "Description de la photo 2",
+        "max": 261
+      },
+      "AboutOnu.3": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutOnu.4": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutOnu.5": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutOnu.6": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 339
+      },
+      "AboutOnu.7": {
+        "kind": "textarea",
+        "label": "Paragraphe 2",
+        "max": 392
+      },
+      "AboutOnu.8": {
+        "kind": "text",
+        "label": "Description lue à voix haute",
+        "max": 240
+      },
+      "AboutCommunication.1": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutCommunication.2": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutCommunication.3": {
+        "kind": "text",
+        "label": "Présence",
+        "max": 240
+      },
+      "AboutCommunication.4": {
+        "kind": "text",
+        "label": "Services présentés",
+        "max": 240
+      },
+      "AboutActivities.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutActivities.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutActivities.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutActivities.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 323
+      },
+      "AboutActivities.5": {
+        "kind": "text",
+        "label": "/",
+        "max": 240
+      },
+      "AboutAmbassadors.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutAmbassadors.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutAmbassadors.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutAmbassadors.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 447
+      },
+      "AboutAmbassadors.5": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutAmbassadors.6": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "AboutAmbassadors.7": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutAmbassadors.8": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "AboutEvents.list": {
+        "kind": "list",
+        "label": "Concours Baruck",
+        "max": 40,
+        "item": {
+          "kind": "object",
+          "label": "baruckContests",
+          "fields": {
+            "title": {
+              "kind": "text",
+              "label": "Titre",
+              "max": 240
+            },
+            "dates": {
+              "kind": "text",
+              "label": "Dates affichées",
+              "max": 240
+            },
+            "text": {
+              "kind": "text",
+              "label": "Texte",
+              "max": 240
+            },
+            "href": {
+              "kind": "link",
+              "label": "Lien",
+              "max": 500
+            }
+          }
+        }
+      },
+      "AboutEvents.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutEvents.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutEvents.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutEvents.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 360
+      },
+      "AboutEvents.5": {
+        "kind": "text",
+        "label": "Titre 2",
+        "max": 240
+      },
+      "AboutEvents.6": {
+        "kind": "text",
+        "label": "Libellé",
+        "max": 240
+      },
+      "AboutEvents.7": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "AboutEvents.8": {
+        "kind": "text",
+        "label": "Titre 3",
+        "max": 240
+      },
+      "AboutEvents.9": {
+        "kind": "text",
+        "label": "Libellé 2",
+        "max": 240
+      },
+      "AboutEvents.10": {
+        "kind": "text",
+        "label": "Texte du lien 2",
+        "max": 240
+      },
+      "AboutEvents.11": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutEvents.12": {
+        "kind": "text",
+        "label": "Texte du lien 3",
+        "max": 240
+      },
+      "AboutEvents.13": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutEvents.14": {
+        "kind": "text",
+        "label": "Texte du lien 4",
+        "max": 240
+      },
+      "AboutMilestones.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutMilestones.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutMilestones.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutMilestones.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 360
+      },
+      "AboutMilestones.5": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 240
+      },
+      "AboutPresence.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutPresence.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutPresence.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutPresence.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 349
+      },
+      "AboutCommitments.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutCommitments.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutCommitments.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutCommitments.4": {
+        "kind": "textarea",
+        "label": "Texte de présentation",
+        "max": 289
+      },
+      "AboutCommitments.5": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutCommitments.6": {
+        "kind": "text",
+        "label": "Description de la photo",
+        "max": 257
+      },
+      "AboutCommitments.7": {
+        "kind": "text",
+        "label": "Libellé",
+        "max": 240
+      },
+      "AboutCommitments.8": {
+        "kind": "text",
+        "label": "Titre 2",
+        "max": 240
+      },
+      "AboutCommitments.9": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 311
+      },
+      "AboutCommitments.10": {
+        "kind": "link",
+        "label": "Lien 2",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutCommitments.11": {
+        "kind": "text",
+        "label": "Description de la photo 2",
+        "max": 240
+      },
+      "AboutCommitments.12": {
+        "kind": "text",
+        "label": "Libellé 2",
+        "max": 240
+      },
+      "AboutCommitments.13": {
+        "kind": "text",
+        "label": "Titre 3",
+        "max": 240
+      },
+      "AboutCommitments.14": {
+        "kind": "textarea",
+        "label": "Paragraphe 2",
+        "max": 303
+      },
+      "AboutCta.1": {
+        "kind": "text",
+        "label": "Sur-titre",
+        "max": 240
+      },
+      "AboutCta.2": {
+        "kind": "text",
+        "label": "Titre",
+        "max": 240
+      },
+      "AboutCta.3": {
+        "kind": "text",
+        "label": "Partie du titre mise en avant",
+        "max": 240
+      },
+      "AboutCta.4": {
+        "kind": "textarea",
+        "label": "Paragraphe",
+        "max": 299
+      },
+      "AboutCta.5": {
+        "kind": "link",
+        "label": "Lien",
+        "max": 500,
+        "scope": "internal"
+      },
+      "AboutCta.6": {
+        "kind": "text",
+        "label": "Texte du lien",
+        "max": 240
+      },
+      "president.honorific": {
+        "kind": "text",
+        "label": "Civilité",
+        "max": 240
+      },
+      "president.givenNames": {
+        "kind": "text",
+        "label": "Prénoms",
+        "max": 240
+      },
+      "president.highlight": {
+        "kind": "text",
+        "label": "Prénom mis en avant",
+        "max": 240
+      },
+      "president.surname": {
+        "kind": "text",
+        "label": "Nom",
+        "max": 240
+      },
+      "contact.background": {
+        "kind": "background",
+        "label": "Photo de fond du contact",
+        "max": 500,
+        "original": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Madina_1.jpg/1920px-Madina_1.jpg"
       }
     }
   },

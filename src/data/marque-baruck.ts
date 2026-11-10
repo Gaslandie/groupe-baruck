@@ -1,3 +1,4 @@
+import { pageValue } from "@/lib/page-content";
 import { translate as t } from "../lib/language.ts";
 
 import type { ImageAsset } from "./media";
@@ -30,9 +31,4 @@ export const brandStory = {
 };
 
 /** Visuel d’ouverture de la page : choix de mise en page, indépendant du catalogue. */
-export const brandHero: ImageAsset = {
-  src: "/images/marque-baruck/sac-main-noir-hero.jpg",
-  alt: t("Sac à main noir Baruck"),
-  width: 928,
-  height: 928,
-};
+export const brandHero: ImageAsset = pageValue<ImageAsset>("home", "media.brandHero");

@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import { presidentOnu1, presidentOnu2, presidentOnuGallery } from "@/data/media";
 import { asset } from "@/lib/asset";
 
@@ -14,7 +13,7 @@ export function AboutOnu() {
         <figure className="absolute inset-[0_14%_34%_0] z-[1] m-0 overflow-hidden bg-[#cac5bb] shadow-[0_22px_55px_rgba(25,22,16,.16)]">
           <img
             src={asset(presidentOnu1.src)}
-            alt={t("MR Djoro Joël Shaloom Krasso lors d’une séance de travail aux Nations Unies")}
+            alt={pageText("groupe", "AboutOnu.1")}
             width={presidentOnu1.width}
             height={presidentOnu1.height}
             loading="lazy"
@@ -24,7 +23,7 @@ export function AboutOnu() {
         <figure className="absolute inset-[44%_0_0_22%] z-[2] m-0 overflow-hidden border-[10px] border-ivory bg-[#cac5bb] shadow-[0_22px_55px_rgba(25,22,16,.16)] max-tablet:border-[7px]">
           <img
             src={asset(presidentOnu2.src)}
-            alt={t("MR Djoro Joël Shaloom Krasso devant un portrait de Kofi Annan")}
+            alt={pageText("groupe", "AboutOnu.2")}
             width={presidentOnu2.width}
             height={presidentOnu2.height}
             loading="lazy"
@@ -34,16 +33,16 @@ export function AboutOnu() {
         <span aria-hidden="true" className="absolute bottom-[4%] left-[-.6rem] z-[3] rotate-180 [writing-mode:vertical-rl] font-display text-display-lg italic leading-none tracking-[-.04em] text-accent">2016</span>
       </div>
       <div className="reveal">
-        <p className="eyebrow">{t("Nations Unies · 2016")}</p>
-        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{t("La protection")}<em className="block font-normal text-accent">{t("de l’enfant.")}</em>
+        <p className="eyebrow">{pageText("groupe", "AboutOnu.3")}</p>
+        <h2 className="m-[.4rem_0_0] text-balance font-display text-display-xl font-normal leading-[.92] tracking-[-.05em]">{pageText("groupe", "AboutOnu.4")}<em className="block font-normal text-accent">{pageText("groupe", "AboutOnu.5")}</em>
         </h2>
-        <p className="lead mb-[1.4rem] mt-6">{t("En 2016, MR Djoro Joël Shaloom Krasso exerce la fonction d’agent de développement pour la protection de l’enfant au sein des Nations Unies.")}</p>
-        <p className="m-0 max-w-[560px] text-body leading-[1.8] text-[#64645f]">{t("Cette expérience éclaire la manière dont il conduit aujourd’hui le Groupe Baruck : une attention constante portée à l’utilité sociale des projets, au-delà de leur seule performance économique.")}</p>
+        <p className="lead mb-[1.4rem] mt-6">{pageText("groupe", "AboutOnu.6")}</p>
+        <p className="m-0 max-w-[560px] text-body leading-[1.8] text-[#64645f]">{pageText("groupe", "AboutOnu.7")}</p>
       </div>
       <div className="col-span-full grid grid-cols-3 gap-6 max-tablet:grid-cols-1">
         {presidentOnuGallery.map((photo) => (
           <figure key={photo.src} className="reveal m-0">
-            <a href={asset(photo.src)} target="_blank" rel="noreferrer" aria-label={(t("") + String(photo.alt) + t(" — ouvrir la photo"))}>
+            <a href={asset(photo.src)} target="_blank" rel="noreferrer" aria-label={("" + String(photo.alt) + " " + pageText("groupe", "AboutOnu.8"))}>
               <img src={asset(photo.src)} alt={photo.alt} width={photo.width} height={photo.height} loading="lazy" className="aspect-[4/3] h-auto w-full bg-paper-deep object-contain" />
             </a>
             <figcaption className="mt-3 text-small leading-[1.6] text-[#64645f]">{photo.alt}</figcaption>

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import postcss from 'postcss';
 import tailwind from '@tailwindcss/postcss';
-import { pageModels } from './pages.mjs';
+import { pageModels, pageLinkTargets } from './pages.mjs';
 
 const directory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const root = path.resolve(directory, '..');
@@ -33,7 +33,7 @@ for (const name of images.filter((name) => /\.(?:jpe?g|png|webp)$/i.test(name)))
   await fs.mkdir(path.dirname(destination), { recursive: true });
   await fs.copyFile(path.join(root, 'public/images', name), destination);
 }
-await fs.writeFile(path.join(directory, 'seed.json'), JSON.stringify({ articles, products, brandCategories, coordonnees, textes, pageModels: pageModels(), english, existingImages: images.filter((name) => /\.(?:jpe?g|png|webp)$/i.test(name)).map((name) => '/images/' + name).sort() }, null, 2) + '\n');
+await fs.writeFile(path.join(directory, 'seed.json'), JSON.stringify({ articles, products, brandCategories, coordonnees, textes, pageModels: pageModels(), pageLinkTargets: pageLinkTargets(), english, existingImages: images.filter((name) => /\.(?:jpe?g|png|webp)$/i.test(name)).map((name) => '/images/' + name).sort() }, null, 2) + '\n');
 const result = await postcss([tailwind({ base: root })]).process('@import "../../src/app/globals.css";\n@source "../src";\n@source "./media-picker.js";\n@source "./admin.js";\n@font-face { font-family: Lato; src: url("/lato-400.woff2") format("woff2"); font-display: swap; font-weight: 400; }\n@font-face { font-family: Lato; src: url("/lato-700.woff2") format("woff2"); font-display: swap; font-weight: 700; }\n@font-face { font-family: Montserrat; src: url("/montserrat.woff2") format("woff2"); font-display: swap; font-weight: 300 800; }\n@font-face { font-family: Montserrat; src: url("/montserrat-italic.woff2") format("woff2"); font-display: swap; font-weight: 300 800; font-style: italic; }\n:root { --font-lato: Lato; --font-montserrat: Montserrat; }', { from: path.join(directory, 'public/source.css'), to: path.join(directory, 'public/admin.css') });
 await fs.writeFile(path.join(directory, 'public/admin.css'), result.css);
 // Les mêmes polices que le site (Lato pour le texte, Montserrat pour les titres), copiées depuis `src/app/fonts/`.

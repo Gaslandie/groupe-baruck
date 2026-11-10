@@ -36,6 +36,6 @@ declare module "@content/textes.json" {
 }
 
 declare module "@content/pages.json" {
-  const pages: Record<string, { label: string; route: string; values: Record<string, { fr: string; en: string }> }>;
+  const pages: Record<string, { label: string; route: string; values: Record<string, unknown> }>;
   export default pages;
 }

@@ -200,4 +200,31 @@ foreach ($invalids as $index => $invalid) check(!accepts(fn() => Baruck\validate
 $values['activities.cinema.title']['en'] = str_repeat('é', 40);
 check(accepts(fn() => Baruck\validatePageValues($model, $values, true)), 'plafond des pages compté en caractères Unicode');
 
+$groupModel = Baruck\pageModel('groupe');
+$groupValues = array_map(fn($field) => $field['initial'], $groupModel['fields']);
+$old = ['draft'=>array_intersect_key($groupValues,array_flip(['meta.title','meta.description'])), 'validated'=>array_intersect_key($groupValues,array_flip(['meta.title','meta.description'])), 'reviewed'=>true,'validated_at'=>'2026-11-10T00:00:00Z'];
+$completed = Baruck\completePageState('groupe',$old);
+check($completed['draft']['meta.title'] === $old['draft']['meta.title'] && count($completed['draft']) === count($groupValues), 'ancien instantané complété sans remplacer sa saisie');
+check($completed['needs_review'] && !$completed['reviewed'] && $completed['validated_at'] === $old['validated_at'], 'nouveaux champs à relire sans retirer la dernière validation');
+check(Baruck\completePageState('groupe',$completed) === $completed, 'complétion additive relançable');
+$partial = $old; $partial['draft'] = $groupValues;
+check(Baruck\completePageState('groupe',$partial)['needs_review'], 'ancienne version validée complétée même si le brouillon est déjà récent');
+$changes = [
+    fn($v) => array_replace($v,['data.presenceCountries'=>array_fill(0,21,$v['data.presenceCountries'][0])]),
+    function ($v) { $v['data.presenceCountries'][0]['links'][0]['href']='javascript:alert(1)'; return $v; },
+    function ($v) { $v['data.presenceCountries'][0]['links'][0]['href']='/page-inexistante/'; return $v; },
+    function ($v) { $v['data.presenceCountries'][0]['links'][0]['href']='/groupe/#ancre-inconnue'; return $v; },
+    function ($v) { $v['data.milestones'][0]['dateTime']='2026-02-30'; return $v; },
+    function ($v) { $v['media.presidentPortrait']['src']='/images/../config.php'; return $v; },
+    function ($v) { $v['media.presidentPortrait']['src']='https://hostile.example/image.jpg'; return $v; },
+    function ($v) { $v['media.presidentPortrait']['alt']['en']=''; return $v; },
+    function ($v) { $v['data.ambassadorPhotos'][]=$v['data.ambassadorPhotos'][0]; return $v; },
+    function ($v) { $v['data.presenceCountries'][0]['invente']='Intrus'; return $v; },
+];
+foreach ($changes as $index=>$change) check(!accepts(fn()=>Baruck\validatePageValues($groupModel,$change($groupValues),true)), 'contenu structuré refusé : '.$index);
+$groupValues['data.presenceCountries']=[];
+check(Baruck\validatePageValues($groupModel,$groupValues,true)['data.presenceCountries'] === [], 'liste explicitement vide conservée');
+
+check(Baruck\normalizePagePost(['kind'=>'list','item'=>['kind'=>'text']],['__empty'=>'1']) === [], 'liste HTML vidée reçue explicitement');
+
 echo $count . " contrôles de validation réussis.\n";

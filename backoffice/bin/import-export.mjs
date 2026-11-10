@@ -171,13 +171,22 @@ export async function importExport(file, destination) {
       await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(clean, null, 2) + '\n');
     }
     if (source.pages !== undefined) {
+      if (source.pageSchema !== undefined && source.pageSchema !== 3) throw new Error('Version des pages inconnue.');
       if (!source.pages || typeof source.pages !== 'object' || Array.isArray(source.pages)) throw new Error('Pages exportées invalides.');
       const models = pageModels();
       const published = structuredClone(pageSource);
+      // Une actualité retirée peut encore être citée dans les contenus historiques.
+      // Conserver les adresses connues du dépôt ; refuser toute adresse inventée.
+      const articleSlugs = [...slugs, ...(await fs.readdir('content/actualites')).map(file => file.replace(/\.md$/, ''))];
       for (const [id, input] of Object.entries(source.pages)) {
         if (!Object.hasOwn(models, id)) throw new Error('Page exportée inconnue.');
-        const values = validatePageValues(models[id], input);
-        published[id].values = values;
+        if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Champs de page invalides.');
+        const required = Object.keys(models[id].fields).filter(key => /^(?:meta\.|heroSlides\.|activities\.)/.test(key));
+        if (required.some(key => !Object.hasOwn(input, key))) throw new Error('Champs de page incomplets.');
+        // Les exports de l’étape 2 sont complétés sans remplacer leurs valeurs.
+        const defaults = Object.fromEntries(Object.entries(models[id].fields).map(([key, field]) => [key, field.initial]));
+        const values = validatePageValues(models[id], source.pageSchema === 3 ? input : { ...defaults, ...input }, true, { mediaRoot: path.join(destination, 'public'), articleSlugs });
+        published[id].values = { ...published[id].values, ...values };
         // Les anciens champs d’accueil sont une projection du même contenu validé.
         if (id === 'home') await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(pageTexts(values), null, 2) + '\n');
       }

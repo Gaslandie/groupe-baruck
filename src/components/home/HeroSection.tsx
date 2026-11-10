@@ -1,5 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
-
+import { pageText } from "@/lib/page-content";
 import { HeroIntro } from "./HeroIntro";
 import { HeroScrollCue } from "./HeroScrollCue";
 import { PresidentPanel } from "./PresidentPanel";
@@ -32,7 +31,7 @@ export function HeroSection() {
   return (
     <section
       id="accueil"
-      aria-label={t("Présentation du Groupe Baruck")}
+      aria-label={pageText("home", "HeroSection.1")}
       className="relative border-b border-line bg-paper text-ink max-tablet:border-0 max-tablet:bg-ink"
     >
       <div className="grid min-h-[max(72svh,640px)] grid-cols-[46%_54%] max-desktop:grid-cols-[44%_56%] wide:min-h-[104svh] max-tablet:block max-tablet:min-h-0">
