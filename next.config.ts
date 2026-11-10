@@ -13,7 +13,7 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
  * L'alias est toujours posé : le dépôt et une publication empruntent le même
  * mécanisme.
  */
-const bundledContent = ["coordonnees.json", "textes.json"];
+const bundledContent = ["coordonnees.json", "textes.json", "pages.json"];
 const contentAlias = Object.fromEntries(
   bundledContent.map((name) => {
     const published = `./.backoffice-content/${name}`;

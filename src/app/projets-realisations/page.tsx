@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/page-metadata";
+
 import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata } from "next";
@@ -7,8 +9,8 @@ import { routes, site } from "@/data/site";
 import { pageAlternates } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: t("Projets & Réalisations"),
-  description: t("Projets et réalisations du Groupe Baruck — page en cours de construction."),
+  title: pageMetadata("projets-realisations").title,
+  description: pageMetadata("projets-realisations").description,
   alternates: pageAlternates(site.url + routes.projects.slice(1)),
 };
 

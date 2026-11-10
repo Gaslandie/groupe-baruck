@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/page-metadata";
+
 import type { Metadata } from "next";
 
 import { PageShell } from "@/components/layout/PageShell";
@@ -16,6 +18,8 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { organizationSchema } from "@/lib/structured-data";
 
 export const metadata: Metadata = {
+  title: { absolute: pageMetadata("home").title },
+  description: pageMetadata("home").description,
   alternates: pageAlternates(site.url),
   openGraph: socialMetadata(presidentPortrait),
 };

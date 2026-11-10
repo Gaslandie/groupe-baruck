@@ -175,4 +175,29 @@ $emptyText['heroSlides']['guinee']['description'] = '';
 check(!accepts(fn() => Baruck\validateTextes($emptyText)), 'texte vide refusé');
 check(array_keys(Baruck\textGroups()) === ['heroSlides', 'activities'], 'groupes de textes déclarés');
 
+// Pages : même contrat strict dans le formulaire et dans la publication.
+check(count(Baruck\pageModels()) === 12, 'les douze pages existantes sont proposées');
+foreach (Baruck\pageModels() as $id => $model) {
+    $values = array_map(fn($field) => $field['initial'], $model['fields']);
+    check(Baruck\validatePageValues($model, $values, true) === $values, 'contenus initiaux bilingues : ' . $id);
+}
+$model = Baruck\pageModel('home');
+$values = array_map(fn($field) => $field['initial'], $model['fields']);
+$incomplete = $values;
+$incomplete['activities.cinema.title']['en'] = '';
+check(accepts(fn() => Baruck\validatePageValues($model, $incomplete, false)), 'anglais incomplet conservé en brouillon');
+check(!accepts(fn() => Baruck\validatePageValues($model, $incomplete, true)), 'anglais incomplet interdit à la validation');
+$notText = $values; $notText['meta.title']['en'] = null;
+check(!accepts(fn() => Baruck\validatePageValues($model, $notText, false)), 'valeur non textuelle refusée même en brouillon');
+$invalids = [];
+$missing = $values; unset($missing['meta.title']); $invalids[] = $missing;
+$extra = $values; $extra['route'] = ['fr' => '/intrus/', 'en' => '/intrus/']; $invalids[] = $extra;
+foreach (['', str_repeat('é', 41), "Titre\nforgé", '<script>alert(1)</script>', "Texte\0interdit", "UTF8\xFF", ['forgé']] as $invalid) {
+    $copy = $values; $copy['activities.cinema.title']['en'] = $invalid; $invalids[] = $copy;
+}
+$copy = $values; $copy['meta.title']['de'] = 'Forgé'; $invalids[] = $copy;
+foreach ($invalids as $index => $invalid) check(!accepts(fn() => Baruck\validatePageValues($model, $invalid, true)), 'page invalide refusée : ' . $index);
+$values['activities.cinema.title']['en'] = str_repeat('é', 40);
+check(accepts(fn() => Baruck\validatePageValues($model, $values, true)), 'plafond des pages compté en caractères Unicode');
+
 echo $count . " contrôles de validation réussis.\n";

@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import crypto from 'node:crypto';
+import { pageModels } from '../bin/pages.mjs';
 import { spawnSync } from 'node:child_process';
 
 const directory = path.resolve('backoffice');
@@ -445,36 +446,120 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
     assert.equal(JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).contacts.contacts.whatsappHq, '+224 111 22 33 44', 'une réinstallation ne rétablit pas les coordonnées du dépôt');
   });
-  await t.test('textes de l’accueil : droits, longueurs, structure imposée et conflit', async () => {
-    assert.equal((await editor.request('/?page=textes')).status, 403);
-    const page = await admin.request('/?page=textes');
-    assert.match(page.html, /Présentations principales/);
-    assert.doesNotMatch(page.html, /Diaporama d’accueil|volets qui défilent/);
-    assert.match(page.html, /Activités du Groupe/);
-    assert.match(page.html, /Le Groupe Baruck en Guinée/, 'les textes du site servent de point de départ');
-    // Le formulaire renvoie toutes les entrées : la structure appartient au site.
-    const fields = Object.fromEntries([...page.html.matchAll(/name="((?:heroSlides|activities)\[[a-z0-9-]+\]\[(?:title|description)\])"[^>]*value="([^"]*)"/g)].map(([, name, value]) => [name, value]));
-    for (const [, name, value] of page.html.matchAll(/name="((?:heroSlides|activities)\[[a-z0-9-]+\]\[description\])"[^>]*>([^<]*)<\/textarea>/g)) fields[name] = value;
-    assert.equal(Object.keys(fields).length, 24, '3 volets et 9 activités, titre et texte');
-    const form = { action: 'save_textes', version: '0', ...fields, 'heroSlides[guinee][title]': 'Le Groupe Baruck, Conakry' };
-    const editorCsrf = (await editor.request('/?page=edit')).csrf;
-    assert.equal((await editor.request('/', { ...form, csrf: editorCsrf })).status, 403);
-    assert.equal((await admin.post('/?page=textes', { ...form, 'activities[cinema][description]': 'x'.repeat(131) })).status, 422, 'texte trop long refusé');
-    assert.equal((await admin.post('/?page=textes', { ...form, 'heroSlides[guinee][title]': 'a'.repeat(61) })).status, 422, 'titre trop long refusé');
-    assert.equal((await admin.post('/?page=textes', { ...form, 'activities[cinema][title]': '' })).status, 422, 'titre vide refusé');
-    const partial = { ...form };
-    delete partial['activities[cinema][title]'];
-    assert.equal((await admin.post('/?page=textes', partial)).status, 422, 'entrée manquante refusée');
-    assert.equal((await admin.post('/?page=textes', { ...form, 'activities[invente][title]': 'Faux', 'activities[invente][description]': 'Faux texte' })).status, 303);
-    const saved = await admin.request('/?page=textes');
-    assert.match(saved.html, /Le Groupe Baruck, Conakry/);
-    assert.doesNotMatch(saved.html, /invente|Faux texte/, 'une entrée inventée n’entre pas dans la structure');
-    assert.equal((await admin.post('/?page=textes', form)).status, 409, 'la version périmée est refusée');
-    const exported = JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
-    assert.equal(exported.texts.heroSlides.guinee.title, 'Le Groupe Baruck, Conakry');
-    assert.equal(Object.keys(exported.texts.activities).length, 9);
+  const pageValues = id => Object.fromEntries(Object.entries(pageModels()[id].fields).map(([key, field]) => [key, structuredClone(field.initial)]));
+  const pageForm = (id, version, values) => ({ action: 'save_page', id, version: String(version), ...Object.fromEntries(Object.entries(values).flatMap(([key, pair]) => Object.entries(pair).map(([language, value]) => [`fields[${key}][${language}]`, value]))) });
+  const pageExport = async () => JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
+  const pageRecord = id => JSON.parse(Buffer.from(sql(`SELECT HEX(payload) FROM ${database}.settings WHERE name='page:${id}'`).split('\n')[1], 'hex').toString('utf8'));
+  await t.test('Pages : douze formulaires bilingues, droits serveur et anciens liens', async () => {
+    assert.match((await anonymous.request('/?page=pages')).html, /Connectez-vous/);
+    for (const page of ['pages', 'page_edit&id=home', 'textes']) assert.equal((await editor.request('/?page=' + page)).status, 403);
+    const csrf = (await editor.request('/')).csrf;
+    for (const action of ['save_page', 'validate_page', 'restore_page', 'save_textes']) assert.equal((await editor.request('/', { action, id: 'home', version: '0', csrf, english_reviewed: 'yes' })).status, 403);
+    assert.equal((await admin.request('/?page=textes')).headers.get('location'), '/?page=page_edit&id=home');
+    assert.equal((await admin.post('/', { action: 'save_textes', version: '0' })).status, 422, 'ancienne écriture ne contourne pas la validation bilingue');
+    const listing = await admin.request('/?page=pages');
+    assert.equal(listing.status, 200);
+    assert.equal((listing.html.match(/Modifier cette page/g) || []).length, 12);
+    for (const [id, model] of Object.entries(pageModels())) {
+      const form = await admin.request('/?page=page_edit&id=' + id);
+      assert.equal(form.status, 200, id);
+      assert.match(form.html, /name="version" value="0"/);
+      assert.equal((form.html.match(/name="fields\[/g) || []).length, Object.keys(model.fields).length * 2, id);
+      assert.match(form.html, /lang="fr"/); assert.match(form.html, /lang="en"/);
+    }
+    assert.equal(sql(`SELECT COUNT(*) FROM ${database}.settings WHERE name LIKE 'page:%'`).split('\n')[1], '0', 'consulter ne crée aucune ligne');
+    assert.equal((await admin.request('/?page=page_edit&id=inconnue')).status, 404);
+    assert.equal((await admin.post('/', { action: 'validate_page', id: 'inconnue', version: '0', english_reviewed: 'yes' })).status, 422);
+  });
+  await t.test('Pages : anciennes saisies conservées, brouillon privé et anglais obligatoire', async () => {
+    const legacy = JSON.parse(await fs.readFile('content/textes.json', 'utf8'));
+    legacy.heroSlides.guinee.title = 'Ancien titre personnalisé';
+    const payload = Buffer.from(JSON.stringify(legacy)).toString('hex');
+    sql(`INSERT INTO ${database}.settings (name,payload,version,updated_at,updated_by) SELECT 'textes',CONVERT(0x${payload} USING utf8mb4),1,UTC_TIMESTAMP(),id FROM ${database}.users WHERE email='${adminEmail}';`);
+    const initial = await admin.request('/?page=page_edit&id=home');
+    assert.match(initial.html, /Ancien titre personnalisé/);
+    assert.match(initial.html, /name="fields\[heroSlides.guinee.title\]\[en\]"[^>]*value=""/, 'aucune traduction inventée pour une ancienne saisie personnalisée');
+    const exported = await pageExport();
+    assert.deepEqual(exported.pages, {});
+    assert.equal(exported.texts.heroSlides.guinee.title, legacy.heroSlides.guinee.title);
+    const values = pageValues('home');
+    values['heroSlides.guinee.title'] = { fr: 'Le Groupe Baruck, Conakry', en: '' };
+    const saved = await admin.post('/?page=page_edit&id=home', pageForm('home', 0, values));
+    assert.equal(saved.status, 303, saved.html);
+    assert.match((await admin.request('/?page=page_edit&id=home')).html, /Le Groupe Baruck, Conakry/);
+    assert.equal(pageRecord('home').draft['heroSlides.guinee.title'].en, '');
+    assert.equal(pageRecord('home').validated['heroSlides.guinee.title'].fr, legacy.heroSlides.guinee.title);
+    assert.equal((await pageExport()).texts.heroSlides.guinee.title, legacy.heroSlides.guinee.title, 'brouillon ne remplace pas l’ancien texte');
+    assert.deepEqual((await pageExport()).pages, {});
+    assert.equal((await admin.post('/?page=page_edit&id=home', { ...pageForm('home', 1, pageValues('home')), action: 'validate_page', english_reviewed: 'yes' })).status, 422, 'les valeurs envoyées à valider ne remplacent pas le brouillon enregistré');
+    assert.equal((await admin.post('/?page=page_edit&id=home', { action: 'validate_page', id: 'home', version: '1' })).status, 422);
+    values['heroSlides.guinee.title'].en = 'Baruck Group, Conakry';
+    assert.equal((await admin.post('/?page=page_edit&id=home', pageForm('home', 1, values))).status, 303);
+    assert.equal((await admin.post('/?page=page_edit&id=home', { action: 'validate_page', id: 'home', version: '2', english_reviewed: 'yes' })).status, 303);
+    assert.equal(pageRecord('home').reviewed, true);
+    const approved = await pageExport();
+    assert.equal(approved.texts.translations.en.heroSlides.guinee.title, values['heroSlides.guinee.title'].en);
+    assert.deepEqual(approved.pages.home, values);
+    values['heroSlides.guinee.title'].fr = 'MODIFICATION PRIVEE NON PUBLIEE';
+    assert.equal((await admin.post('/?page=page_edit&id=home', pageForm('home', 3, values))).status, 303);
+    assert.equal(pageRecord('home').reviewed, false, 'changer le français remet la relecture à zéro');
+    assert.deepEqual((await pageExport()).pages.home, approved.pages.home, 'la dernière validation reste la seule version publique');
+    const conflict = await admin.post('/?page=page_edit&id=home', pageForm('home', 3, { ...values, 'heroSlides.guinee.title': { fr: 'SAISIE DU SECOND ONGLET', en: 'Second tab' } }));
+    assert.equal(conflict.status, 409);
+    assert.match(conflict.html, /SAISIE DU SECOND ONGLET/);
+    assert.match(conflict.html, /name="version" value="3"/);
+    assert.match(conflict.html, /data-page-validate disabled/);
+    assert.equal((await admin.post('/?page=page_edit&id=home', { action: 'restore_page', id: 'home', version: '3' })).status, 409);
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
-    assert.equal(JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html).texts.heroSlides.guinee.title, 'Le Groupe Baruck, Conakry', 'une réinstallation ne rétablit pas les textes du dépôt');
+    assert.equal(pageRecord('home').draft['heroSlides.guinee.title'].fr, 'MODIFICATION PRIVEE NON PUBLIEE', 'réinstallation additive, brouillon conservé');
+    assert.deepEqual((await pageExport()).pages.home, approved.pages.home);
+    assert.equal((await admin.post('/?page=page_edit&id=home', { action: 'restore_page', id: 'home', version: '4' })).status, 303);
+    assert.deepEqual(pageRecord('home').draft, approved.pages.home);
+  });
+  await t.test('Pages : versions séparées par page et entrées forgées refusées', async () => {
+    const values = pageValues('contact');
+    const route = '/?page=page_edit&id=contact';
+    const form = pageForm('contact', 0, values);
+    const cases = [
+      { ...form, version: '-1' },
+      { ...form, status: 'ready' },
+      { ...form, 'fields[route][fr]': '/intrus/', 'fields[route][en]': '/intrus/' },
+      { ...form, 'fields[meta.title][en]': '<script>alert(1)</script>' },
+      { ...form, 'fields[meta.title][en]': 'x'.repeat(241) },
+      { ...form, 'fields[meta.title][en]': 'Titre\nforgé' },
+      { ...form, 'fields[meta.title][de]': 'Intrus' },
+    ];
+    const missing = { ...form }; delete missing['fields[meta.title][fr]']; cases.push(missing);
+    for (const bad of cases) assert.equal((await admin.post(route, bad)).status, 422);
+    assert.deepEqual((await pageExport()).pages.contact, undefined);
+    values['meta.title'] = { fr: 'Contact de recette', en: 'Test contact' };
+    values['meta.description'] = { fr: 'Description française de recette.', en: 'English test description.' };
+    assert.equal((await admin.post(route, pageForm('contact', 0, values))).status, 303);
+    assert.equal((await admin.post(route, { action: 'validate_page', id: 'contact', version: '1', english_reviewed: 'yes' })).status, 303);
+    assert.deepEqual((await pageExport()).pages.contact, values);
+    // Le prochain export sert aussi à vérifier l’absence réelle du brouillon dans les builds.
+    const pending = pageValues('home'); pending['meta.title'].fr = 'MODIFICATION PRIVEE NON PUBLIEE';
+    assert.equal((await admin.post('/?page=page_edit&id=home', pageForm('home', 5, pending))).status, 303);
+    if (process.env.BARUCK_TEST_CHROME) {
+      const browser = spawnSync(process.execPath, [path.join(directory, 'tests/browser-form.mjs'), origin, 'pages'], { input: JSON.stringify({ cookie: admin.cookie }), encoding: 'utf8', timeout: 30000 });
+      assert.equal(browser.status, 0, browser.stderr || browser.stdout);
+    }
+  });
+  await t.test('Pages : enregistrer, recharger et valider chacune des autres pages', async () => {
+    for (const [id, model] of Object.entries(pageModels())) {
+      if (['home', 'contact'].includes(id)) continue;
+      const route = '/?page=page_edit&id=' + id;
+      const current = await admin.request(route);
+      const version = Number(current.html.match(/name="version" value="(\d+)"/)[1]);
+      const values = pageValues(id);
+      values['meta.title'] = { fr: 'Titre validé : ' + model.label, en: 'Approved title: ' + id };
+      assert.equal((await admin.post(route, pageForm(id, version, values))).status, 303, id);
+      const reloaded = await admin.request(route);
+      assert.match(reloaded.html, /Titre validé : /, id);
+      assert.equal((await pageExport()).pages[id], undefined, 'le premier brouillon reste privé : ' + id);
+      assert.equal((await admin.post(route, { action: 'validate_page', id, version: String(version + 1), english_reviewed: 'yes' })).status, 303, id);
+      assert.deepEqual((await pageExport()).pages[id], values, id);
+    }
   });
   await t.test('export exclut brouillons, utilisateurs, secrets et médias non utilisés', async () => {
     assert.equal((await admin.post('/?page=edit', { ...fields, slug: 'brouillon-prive', title: 'Brouillon privé' })).status, 303);

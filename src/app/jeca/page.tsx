@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageMetadata } from "@/lib/page-metadata";
 
 import type { Metadata, Viewport } from "next";
 
@@ -19,9 +19,9 @@ import { routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: { absolute: t("JECA — Vision, engagement et forums") },
+  title: { absolute: pageMetadata("jeca").title },
   description:
-    t("Découvrez la JECA, créée en 2019, sa vision pour l’investissement en Afrique et les trois éditions de son forum."),
+    pageMetadata("jeca").description,
   alternates: pageAlternates(site.url + routes.jeca.slice(1)),
   openGraph: socialMetadata(jecaGalleries[0].photos[0]),
 };

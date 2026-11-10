@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageMetadata } from "@/lib/page-metadata";
 
 import type { Metadata } from "next";
 
@@ -10,9 +10,9 @@ import { pageAlternates } from "@/lib/metadata";
 
 // Pas d'openGraph propre : l'image sociale du layout (logo) reste le repli.
 export const metadata: Metadata = {
-  title: t("Mentions légales et confidentialité"),
+  title: pageMetadata("mentions-legales").title,
   description:
-    t("Mentions légales, hébergement, confidentialité, formulaire de contact et crédits photographiques du site Groupe Baruck."),
+    pageMetadata("mentions-legales").description,
   alternates: pageAlternates(site.url + routes.legal.slice(1)),
 };
 

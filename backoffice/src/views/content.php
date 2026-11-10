@@ -72,7 +72,8 @@ function adviceList(array $items, string $empty = ''): void {
     </div>
 <?php elseif ($page === 'product'): require __DIR__ . '/product.php'; ?>
 <?php elseif ($page === 'coordonnees'): require __DIR__ . '/coordonnees.php'; ?>
-<?php elseif ($page === 'textes'): require __DIR__ . '/textes.php'; ?>
+<?php elseif ($page === 'pages'): require __DIR__ . '/pages.php'; ?>
+<?php elseif ($page === 'page_edit'): require __DIR__ . '/page-editor.php'; ?>
 <?php elseif ($page === 'edit'): require __DIR__ . '/editor.php'; ?>
 <?php elseif ($page === 'history'): require __DIR__ . '/history.php'; ?>
 <?php elseif ($page === 'stats'): require __DIR__ . '/statistics.php'; ?>
@@ -99,7 +100,7 @@ function adviceList(array $items, string $empty = ''): void {
     <?php $publication = publicationState(); $job = $publication['job']; $enabled = publicationConfigured(); $busy = in_array($job['status'] ?? '', ['queued', 'running'], true) && strtotime($job['started_at'] ?? $job['requested_at']) >= time() - 3600; ?>
     <section class="mb-6 <?= $cardClass ?> p-7" <?= $busy ? 'data-publication-pending' : '' ?> aria-labelledby="publication-title">
         <h2 id="publication-title" class="font-display text-title">Publier sur le site</h2>
-        <p class="mt-3 text-body text-ink/65">Les actualités validées, les articles en boutique, les coordonnées et les textes enregistrés seront envoyés ensemble. Les brouillons restent privés.</p>
+        <p class="mt-3 text-body text-ink/65">Les actualités et pages validées, les articles en boutique et les coordonnées seront envoyés ensemble. Les brouillons restent privés.</p>
         <?php if (!$enabled): ?>
             <p class="mt-4 text-body"><?= config()['environment'] === 'local' ? 'Cette installation locale ne publie pas sur le site du client.' : 'La mise en ligne automatique doit être activée par la personne qui gère le site.' ?></p>
             <button type="button" class="<?= $buttonClass ?> mt-5 opacity-50" disabled>Publier sur le site</button>

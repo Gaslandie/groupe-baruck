@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/page-metadata";
+
 import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata, Viewport } from "next";
@@ -13,8 +15,8 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: t("La marque Baruck — L’élégance, notre affaire"),
-  description: t("Découvrez la marque Baruck : vêtements, sacs, chaussures, parfums et accessoires. Parcourez la collection et préparez votre commande par WhatsApp."),
+  title: pageMetadata("marque-baruck").title,
+  description: pageMetadata("marque-baruck").description,
   alternates: pageAlternates(site.url + routes.brand.slice(1)),
   openGraph: socialMetadata(brandHero),
 };

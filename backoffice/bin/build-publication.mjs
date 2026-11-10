@@ -10,7 +10,7 @@ const destination = path.join(os.tmpdir(), 'baruck-publication-' + crypto.random
 // Coordonnées et textes partent dans le bundle du navigateur : ils ne peuvent
 // pas être lus depuis le dossier temporaire. Ils sont déposés le temps du build
 // dans un emplacement ignoré par Git, que next.config.ts préfère au dépôt.
-const bundledContent = ['coordonnees.json', 'textes.json'];
+const bundledContent = ['coordonnees.json', 'textes.json', 'pages.json'];
 const publishedDirectory = path.resolve('.backoffice-content');
 try {
   const result = await importExport(path.resolve(process.argv[2]), destination);

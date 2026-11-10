@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/page-metadata";
+
 import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata } from "next";
@@ -15,9 +17,9 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: t("Hôtesses événementielles"),
+  title: pageMetadata("hotesses-evenementielles").title,
   description:
-    t("Hôtesses événementielles Baruck Communication Guinée — une équipe élégante, professionnelle et dynamique pour vos événements."),
+    pageMetadata("hotesses-evenementielles").description,
   alternates: pageAlternates(site.url + routes.hostesses.slice(1)),
   openGraph: socialMetadata(hostessesHero),
 };

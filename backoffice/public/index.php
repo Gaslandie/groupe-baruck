@@ -19,10 +19,11 @@ try {
     $pending = !$user ? pendingLoginChallenge() : null;
     if ($setup) $page = 'setup';
     elseif (!$user) $page = $pending ? 'verify' : 'login';
-    if (!in_array($page, ['setup', 'login', 'verify', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'stats', 'users', 'account', 'publication', 'image'], true)) {
+    if (!in_array($page, ['setup', 'login', 'verify', 'dashboard', 'articles', 'edit', 'history', 'boutique', 'product', 'media', 'coordonnees', 'textes', 'pages', 'page_edit', 'stats', 'users', 'account', 'publication', 'image'], true)) {
         http_response_code(404); $page = 'missing';
     }
-    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'users', 'publication'], true)) requireAdmin($user);
+    if ($user && in_array($page, ['boutique', 'product', 'coordonnees', 'textes', 'pages', 'page_edit', 'users', 'publication'], true)) requireAdmin($user);
+    if ($page === 'textes' && in_array($_SERVER['REQUEST_METHOD'], ['GET', 'HEAD'], true)) redirect('page_edit', ['id' => 'home']);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$user && isset($_SESSION['recovery']) && ($_POST['action'] ?? '') === 'save_article') redirect('login');
@@ -89,6 +90,18 @@ try {
                     saveTextes($_POST, $user);
                     $_SESSION['flash'] = 'Textes enregistrés. Ils partiront sur le site avec la prochaine publication.';
                     redirect('textes');
+                case 'save_page':
+                    $id = savePageDraft($_POST, $user);
+                    $_SESSION['flash'] = 'Brouillon enregistré. La dernière version validée est conservée.';
+                    redirect('page_edit', ['id' => $id]);
+                case 'validate_page':
+                    $id = validatePage($_POST, $user);
+                    $_SESSION['flash'] = 'Versions française et anglaise validées pour la prochaine publication.';
+                    redirect('page_edit', ['id' => $id]);
+                case 'restore_page':
+                    $id = restorePage($_POST, $user);
+                    $_SESSION['flash'] = 'Le brouillon reprend la dernière version validée. Le site reste inchangé.';
+                    redirect('page_edit', ['id' => $id]);
                 case 'delete_media':
                     deleteMedia($_POST, $user);
                     $_SESSION['flash'] = 'Image supprimée de la médiathèque.';
@@ -153,23 +166,25 @@ try {
     $publication = null;
     $product = null;
     $coordonnees = null;
-    $textes = null;
     $version = 0;
-    if ($page === 'textes') {
-        $saved = setting('textes');
-        $posted = $error && ($_POST['action'] ?? '') === 'save_textes';
-        $textes = [];
-        foreach ($saved as $group => $entries) {
-            foreach ($entries as $key => $entry) {
-                $sent = $posted && is_array($_POST[$group][$key] ?? null) ? $_POST[$group][$key] : [];
-                $textes[$group][$key] = [
-                    'title' => is_string($sent['title'] ?? null) ? $sent['title'] : $entry['title'],
-                    'description' => is_string($sent['description'] ?? null) ? $sent['description'] : $entry['description'],
-                ];
+    $pageModel = null;
+    $pageState = null;
+    $pageValues = [];
+    $pagePosted = false;
+    if ($page === 'page_edit') {
+        $pageId = is_string($_GET['id'] ?? null) ? $_GET['id'] : '';
+        if (!isset(pageModels()[$pageId])) { http_response_code(404); $page = 'missing'; }
+        else {
+            $pageModel = pageModel($pageId);
+            $pageState = pageState($pageId);
+            $pageValues = $pageState['draft'];
+            $pagePosted = $error && ($_POST['action'] ?? '') === 'save_page';
+            $version = $pagePosted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : $pageState['version'];
+            if ($pagePosted) foreach ($pageModel['fields'] as $key => $field) foreach (['fr', 'en'] as $language) {
+                $sent = $_POST['fields'][$key][$language] ?? null;
+                if (is_string($sent)) $pageValues[$key][$language] = $sent;
             }
         }
-        // Après un conflit, garder la version envoyée : un renvoi doit échouer de nouveau.
-        $version = $posted ? (int) filter_var($_POST['version'] ?? 0, FILTER_VALIDATE_INT) : settingVersion('textes');
     }
     if ($page === 'coordonnees') {
         $coordonnees = $error && ($_POST['action'] ?? '') === 'save_coordonnees'

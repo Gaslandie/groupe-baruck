@@ -1,4 +1,4 @@
-import { translate as t } from "../../lib/language.ts";
+import { pageMetadata } from "@/lib/page-metadata";
 
 import type { Metadata } from "next";
 
@@ -10,9 +10,9 @@ import { routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: t("Médiathèque"),
+  title: pageMetadata("mediatheque").title,
   description:
-    t("Médiathèque du Groupe Baruck — galeries des éditions de la JECA et du Studio Photo Baruck."),
+    pageMetadata("mediatheque").description,
   alternates: pageAlternates(site.url + routes.media.slice(1)),
   openGraph: socialMetadata(jecaGalleries[2].photos[0]),
 };

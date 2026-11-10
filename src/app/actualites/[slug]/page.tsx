@@ -1,5 +1,3 @@
-import { translate as t } from "../../../lib/language.ts";
-
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -13,7 +11,7 @@ import { NewsCarousel } from "@/components/actualites/NewsCarousel";
 import { NewsEmpty } from "@/components/actualites/NewsEmpty";
 import { NewsHero } from "@/components/actualites/NewsHero";
 import { PageShell } from "@/components/layout/PageShell";
-import { newsDescription } from "@/data/actualites";
+import { pageMetadata } from "@/lib/page-metadata";
 import { site } from "@/data/site";
 import {
   getAdjacentArticles,
@@ -40,8 +38,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const { slug } = await params;
   if (slug === placeholderSlug) {
     return {
-      title: t("Actualités"),
-      description: newsDescription,
+      title: pageMetadata("actualites").title,
+      description: pageMetadata("actualites").description,
       alternates: pageAlternates(site.url + "actualites/"),
     };
   }

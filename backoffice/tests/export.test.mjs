@@ -7,6 +7,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import { importExport } from '../bin/import-export.mjs';
 import matter from 'gray-matter';
+import { pageModels, pageSource, pageTexts, validatePageValues } from '../bin/pages.mjs';
 
 const article = { slug: 'actualite-test', title: 'Titre : "test"', date: '2026-09-06', category: 'groupe', excerpt: 'Résumé de recette', body: 'Contenu de recette.', gallery: [] };
 const product = { id: 'article-test', name: 'Article de recette', category: 'sacs', images: [{ src: '/images/marque-baruck/sac-main-noir.jpg', alt: 'Sac de recette' }] };
@@ -68,6 +69,42 @@ test('refuse des textes incomplets ou non textuels', async (t) => {
     await assert.rejects(importExport(file, out));
     await assert.rejects(fs.stat(out), { code: 'ENOENT' });
   }
+});
+test('pages bilingues : modèles du site, publication et source unique de l’accueil', async (t) => {
+  const models = pageModels();
+  assert.equal(Object.keys(models).length, 12);
+  const values = Object.fromEntries(Object.entries(models.home.fields).map(([key, field]) => [key, structuredClone(field.initial)]));
+  assert.deepEqual(validatePageValues(models.home, values), values);
+  values['meta.title'] = { fr: 'Accueil validé', en: 'Approved home' };
+  values['heroSlides.guinee.title'] = { fr: 'Titre français validé', en: 'Approved English title' };
+  const { file, out } = await fixture(t, input => { input.pages = { home: values }; });
+  await importExport(file, out);
+  const result = JSON.parse(await fs.readFile(path.join(out, 'content/pages.json'), 'utf8'));
+  assert.deepEqual(result.home.values, values);
+  assert.equal(result.home.route, pageSource.home.route, 'les routes restent gérées dans le code');
+  assert.deepEqual(result.contact, pageSource.contact, 'les pages absentes gardent les contenus du dépôt');
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(out, 'content/textes.json'), 'utf8')), pageTexts(values), 'les anciens champs dérivent du même contenu validé');
+});
+test('pages : compatibilité des anciens exports, anglais complet et champs autorisés seulement', async (t) => {
+  const bare = await fixture(t);
+  await importExport(bare.file, bare.out);
+  await assert.rejects(fs.stat(path.join(bare.out, 'content/pages.json')), { code: 'ENOENT' });
+  const values = Object.fromEntries(Object.entries(pageModels().contact.fields).map(([key, field]) => [key, structuredClone(field.initial)]));
+  const changes = [
+    input => { input.pages = []; },
+    input => { input.pages = { inconnue: values }; },
+    input => { delete input.pages.contact['meta.title']; },
+    input => { input.pages.contact.route = { fr: '/intrus/', en: '/intrus/' }; },
+    input => { input.pages.contact['meta.title'].de = 'Forgé'; },
+    ...['', 'x'.repeat(241), '<img src=x onerror=alert(1)>', 'Titre\nforgé', '\uD800', ['Forgé']].map(value => input => { input.pages.contact['meta.title'].en = value; }),
+  ];
+  for (const change of changes) {
+    const { file, out } = await fixture(t, input => { input.pages = { contact: structuredClone(values) }; change(input); });
+    await assert.rejects(importExport(file, out));
+    await assert.rejects(fs.stat(out), { code: 'ENOENT' });
+  }
+  values['meta.title'].en = '';
+  assert.doesNotThrow(() => validatePageValues(pageModels().contact, values, false), 'saisie incomplète permise seulement en brouillon');
 });
 test('refuse des coordonnées incomplètes ou des liens détournés', async (t) => {
   const changes = [

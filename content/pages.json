@@ -1,0 +1,170 @@
+{
+  "home": {
+    "label": "Accueil",
+    "route": "/",
+    "values": {
+      "meta.title": {
+        "fr": "Groupe Baruck — Vision, excellence, impact",
+        "en": "Groupe Baruck — Vision, excellence, impact"
+      },
+      "meta.description": {
+        "fr": "Groupe Baruck — Un groupe multisectoriel porté par une vision entrepreneuriale, créative et engagée.",
+        "en": "Groupe Baruck — A multisector group driven by an entrepreneurial, creative and committed vision."
+      }
+    }
+  },
+  "groupe": {
+    "label": "Le Groupe",
+    "route": "/groupe/",
+    "values": {
+      "meta.title": {
+        "fr": "Le Groupe",
+        "en": "The Group"
+      },
+      "meta.description": {
+        "fr": "Le Groupe Baruck — la direction, les fonctions et les engagements de MR Djoro Joël Shaloom Krasso, PDG du Groupe Baruck, président de la JECA et de l’ONG Espoir de Vie.",
+        "en": "Groupe Baruck — the leadership, roles and commitments of MR Djoro Joël Shaloom Krasso, CEO of Groupe Baruck, President of JECA and the NGO Espoir de Vie."
+      }
+    }
+  },
+  "jeca": {
+    "label": "JECA",
+    "route": "/jeca/",
+    "values": {
+      "meta.title": {
+        "fr": "JECA — Vision, engagement et forums",
+        "en": "JECA — Vision, commitment and forums"
+      },
+      "meta.description": {
+        "fr": "Découvrez la JECA, créée en 2019, sa vision pour l’investissement en Afrique et les trois éditions de son forum.",
+        "en": "Discover JECA, founded in 2019, its vision for investment in Africa and the three editions of its forum."
+      }
+    }
+  },
+  "espoir-de-vie": {
+    "label": "Espoir de Vie",
+    "route": "/espoir-de-vie/",
+    "values": {
+      "meta.title": {
+        "fr": "Espoir de Vie — Protéger, accompagner, redonner espoir",
+        "en": "Espoir de Vie — Protect, support, restore hope"
+      },
+      "meta.description": {
+        "fr": "Découvrez Espoir de Vie, ses actions en faveur des enfants, des familles et des personnes vulnérables en Côte d’Ivoire, en Guinée et au Burkina Faso.",
+        "en": "Discover Espoir de Vie and its work supporting children, families and vulnerable people in Côte d’Ivoire, Guinea and Burkina Faso."
+      }
+    }
+  },
+  "studio-photo": {
+    "label": "Studio photo",
+    "route": "/studio-photo/",
+    "values": {
+      "meta.title": {
+        "fr": "Studio Photo Baruck la Prospérité",
+        "en": "Studio Photo Baruck la Prospérité"
+      },
+      "meta.description": {
+        "fr": "Studio Photo Baruck la Prospérité à Kobayah, Conakry — deux studios équipés, ouverts à tous 24h/24 et 7j/7 : mariages, baptêmes, anniversaires, conférences, shootings, photos d’identité et spots publicitaires.",
+        "en": "Studio Photo Baruck la Prospérité in Kobayah, Conakry — two equipped studios, open to everyone 24/7: weddings, christenings, birthdays, conferences, photo shoots, ID photos and advertising spots."
+      }
+    }
+  },
+  "hotesses-evenementielles": {
+    "label": "Hôtesses événementielles",
+    "route": "/hotesses-evenementielles/",
+    "values": {
+      "meta.title": {
+        "fr": "Hôtesses événementielles",
+        "en": "Event hostesses"
+      },
+      "meta.description": {
+        "fr": "Hôtesses événementielles Baruck Communication Guinée — une équipe élégante, professionnelle et dynamique pour vos événements.",
+        "en": "Baruck Communication Guinea event hostesses — an elegant, professional and dynamic team for your events."
+      }
+    }
+  },
+  "marque-baruck": {
+    "label": "Marque Baruck",
+    "route": "/marque-baruck/",
+    "values": {
+      "meta.title": {
+        "fr": "La marque Baruck — L’élégance, notre affaire",
+        "en": "The Baruck brand — Elegance is our business"
+      },
+      "meta.description": {
+        "fr": "Découvrez la marque Baruck : vêtements, sacs, chaussures, parfums et accessoires. Parcourez la collection et préparez votre commande par WhatsApp.",
+        "en": "Discover the Baruck brand: clothing, bags, shoes, fragrances and accessories. Browse the collection and prepare your order on WhatsApp."
+      }
+    }
+  },
+  "actualites": {
+    "label": "Actualités",
+    "route": "/actualites/",
+    "values": {
+      "meta.title": {
+        "fr": "Actualités",
+        "en": "News"
+      },
+      "meta.description": {
+        "fr": "Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.",
+        "en": "News from Groupe Baruck — announcements, events and statements from the Group, JECA and Espoir de Vie."
+      }
+    }
+  },
+  "mediatheque": {
+    "label": "Médiathèque",
+    "route": "/mediatheque/",
+    "values": {
+      "meta.title": {
+        "fr": "Médiathèque",
+        "en": "Media library"
+      },
+      "meta.description": {
+        "fr": "Médiathèque du Groupe Baruck — galeries des éditions de la JECA et du Studio Photo Baruck.",
+        "en": "Groupe Baruck media library — galleries from JECA editions and Studio Photo Baruck."
+      }
+    }
+  },
+  "contact": {
+    "label": "Contact",
+    "route": "/contact/",
+    "values": {
+      "meta.title": {
+        "fr": "Contact",
+        "en": "Contact"
+      },
+      "meta.description": {
+        "fr": "Contactez le Groupe Baruck — WhatsApp, téléphone, e-mail et formulaire : Studio photo, Hôtesses événementielles, JECA, Espoir de Vie, partenariats.",
+        "en": "Contact Groupe Baruck — WhatsApp, telephone, email and contact form: photography studio, event hostesses, JECA, Espoir de Vie, partnerships."
+      }
+    }
+  },
+  "projets-realisations": {
+    "label": "Projets & Réalisations",
+    "route": "/projets-realisations/",
+    "values": {
+      "meta.title": {
+        "fr": "Projets & Réalisations",
+        "en": "Projects & Achievements"
+      },
+      "meta.description": {
+        "fr": "Projets et réalisations du Groupe Baruck — page en cours de construction.",
+        "en": "Groupe Baruck projects and achievements — page under construction."
+      }
+    }
+  },
+  "mentions-legales": {
+    "label": "Mentions légales",
+    "route": "/mentions-legales/",
+    "values": {
+      "meta.title": {
+        "fr": "Mentions légales et confidentialité",
+        "en": "Legal notice and privacy"
+      },
+      "meta.description": {
+        "fr": "Mentions légales, hébergement, confidentialité, formulaire de contact et crédits photographiques du site Groupe Baruck.",
+        "en": "Legal notice, hosting, privacy, contact form and photographic credits for the Groupe Baruck website."
+      }
+    }
+  }
+}

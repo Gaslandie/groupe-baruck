@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/page-metadata";
+
 import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata } from "next";
@@ -12,9 +14,9 @@ import { routes, site } from "@/data/site";
 import { pageAlternates } from "@/lib/metadata";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: pageMetadata("contact").title,
   description:
-    t("Contactez le Groupe Baruck — WhatsApp, téléphone, e-mail et formulaire : Studio photo, Hôtesses événementielles, JECA, Espoir de Vie, partenariats."),
+    pageMetadata("contact").description,
   alternates: pageAlternates(site.url + routes.contact.slice(1)),
 };
 

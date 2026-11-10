@@ -83,8 +83,5 @@ export type ArticleSummary = Pick<
 /** Ancre de la liste filtrable sur /actualites/ (cible des liens de filtre). */
 export const newsListId = "liste-actualites";
 
-/** Titre et description du flux et de la page Actualités : source unique. */
+/** Titre du flux RSS. */
 export const newsFeedTitle = t("Actualités — Groupe Baruck");
-
-export const newsDescription =
-  t("Actualités du Groupe Baruck — annonces, événements et communiqués du Groupe, de la JECA et d’Espoir de Vie.");

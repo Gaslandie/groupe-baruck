@@ -37,5 +37,6 @@ function validateTextes(array $input): array
 
 function saveTextes(array $input, array $user): void
 {
-    saveSetting('textes', validateTextes($input), $input['version'] ?? 0, $user, 'Textes de l’accueil modifiés', 'Page d’accueil');
+    requireAdmin($user);
+    throw new ValidationError('Les textes d’accueil se modifient maintenant dans Pages, puis Accueil. Rechargez cette page pour conserver vos deux versions.');
 }

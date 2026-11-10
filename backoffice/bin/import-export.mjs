@@ -5,6 +5,7 @@ import os from 'node:os';
 import { pathToFileURL } from 'node:url';
 import { imageSize } from 'image-size';
 import matter from 'gray-matter';
+import { pageModels, pageSource, pageTexts, validatePageValues } from './pages.mjs';
 
 export async function importExport(file, destination) {
   const info = await fs.stat(file);
@@ -168,6 +169,19 @@ export async function importExport(file, destination) {
         }
       }
       await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(clean, null, 2) + '\n');
+    }
+    if (source.pages !== undefined) {
+      if (!source.pages || typeof source.pages !== 'object' || Array.isArray(source.pages)) throw new Error('Pages exportées invalides.');
+      const models = pageModels();
+      const published = structuredClone(pageSource);
+      for (const [id, input] of Object.entries(source.pages)) {
+        if (!Object.hasOwn(models, id)) throw new Error('Page exportée inconnue.');
+        const values = validatePageValues(models[id], input);
+        published[id].values = values;
+        // Les anciens champs d’accueil sont une projection du même contenu validé.
+        if (id === 'home') await fs.writeFile(path.join(destination, 'content/textes.json'), JSON.stringify(pageTexts(values), null, 2) + '\n');
+      }
+      await fs.writeFile(path.join(destination, 'content/pages.json'), JSON.stringify(published, null, 2) + '\n');
     }
     return { articles: slugs.size, images: images.size, products: products.length, contacts: Boolean(contacts), texts: Boolean(texts) };
   } catch (error) {

@@ -1,7 +1,8 @@
 import { isEnglish } from "./language.ts";
 
-import { categoryLabels, newsDescription, newsFeedTitle, type Article } from "@/data/actualites";
+import { categoryLabels, newsFeedTitle, type Article } from "@/data/actualites";
 import { routes, site } from "@/data/site";
+import { pageMetadata } from "@/lib/page-metadata";
 
 /** Échappement XML des cinq caractères réservés. Ni CDATA, ni bibliothèque. */
 export function escapeXml(value: string): string {
@@ -39,7 +40,7 @@ export function renderRssFeed(articles: Article[]): string {
     "  <channel>",
     `    <title>${escapeXml(newsFeedTitle)}</title>`,
     `    <link>${escapeXml(newsUrl)}</link>`,
-    `    <description>${escapeXml(newsDescription)}</description>`,
+    `    <description>${escapeXml(pageMetadata("actualites").description)}</description>`,
     `    <language>${isEnglish ? "en-GB" : "fr-FR"}</language>`,
     `    <atom:link href="${escapeXml(feedUrl)}" rel="self" type="application/rss+xml"/>`,
     ...items,

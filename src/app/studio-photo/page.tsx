@@ -1,3 +1,5 @@
+import { pageMetadata } from "@/lib/page-metadata";
+
 import { translate as t } from "../../lib/language.ts";
 
 import type { Metadata } from "next";
@@ -18,9 +20,9 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: "Studio Photo Baruck la Prospérité",
+  title: pageMetadata("studio-photo").title,
   description:
-    t("Studio Photo Baruck la Prospérité à Kobayah, Conakry — deux studios équipés, ouverts à tous 24h/24 et 7j/7 : mariages, baptêmes, anniversaires, conférences, shootings, photos d’identité et spots publicitaires."),
+    pageMetadata("studio-photo").description,
   alternates: pageAlternates(site.url + routes.studio.slice(1)),
   openGraph: socialMetadata(studioHero),
 };
