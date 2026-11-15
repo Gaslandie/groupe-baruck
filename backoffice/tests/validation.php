@@ -176,7 +176,8 @@ check(!accepts(fn() => Baruck\validateTextes($emptyText)), 'texte vide refusé')
 check(array_keys(Baruck\textGroups()) === ['heroSlides', 'activities'], 'groupes de textes déclarés');
 
 // Pages : même contrat strict dans le formulaire et dans la publication.
-check(count(Baruck\pageModels()) === 12, 'les douze pages existantes sont proposées');
+check(count(Baruck\pageModels()) === 11, 'les onze pages existantes sont proposées');
+check(!accepts(fn() => Baruck\pageModel('projets-realisations')), 'la page Projets supprimée est refusée côté serveur');
 foreach (Baruck\pageModels() as $id => $model) {
     $values = array_map(fn($field) => $field['initial'], $model['fields']);
     check(Baruck\validatePageValues($model, $values, true) === $values, 'contenus initiaux bilingues : ' . $id);
@@ -262,7 +263,7 @@ check(Baruck\decodePageFields(['page_fields_json'=>'{"titre":{"fr":"Texte","en":
 foreach ([['page_fields_json'=>'{'],['page_fields_json'=>[]],['page_fields_json'=>'{}','fields'=>[]],['page_fields_json'=>str_repeat('x',2000001)]] as $bad) check(!accepts(fn()=>Baruck\decodePageFields($bad)), 'transport de formulaire invalide refusé');
 
 // Étape 5 : formulaires restants et repères de coordonnées, sans HTML ni destinations libres.
-foreach (['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'] as $id) {
+foreach (['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','mentions-legales'] as $id) {
     $model = Baruck\pageModel($id);
     $values = array_map(fn($field) => $field['initial'], $model['fields']);
     check(accepts(fn() => Baruck\validatePageValues($model,$values,true)), $id . ' : contenu initial complet');

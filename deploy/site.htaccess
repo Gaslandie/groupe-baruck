@@ -18,6 +18,9 @@ RewriteCond %{HTTP_HOST} ^www\.__SITE_DOMAIN_RE__$ [NC]
 RewriteRule ^ https://__SITE_DOMAIN__%{REQUEST_URI} [R=301,L]
 # <<< https
 
+# Page abandonnée : refuser aussi les anciens fichiers éventuellement encore présents.
+RewriteRule ^(?:en/)?projets-realisations(?:\.html|/.*)?$ - [R=404,L]
+
 # La vidéo ne doit pas être lue depuis un autre site (affichage sur une autre page,
 # partage du lien direct dans une iframe). Un referer vide reste accepté : certains
 # navigateurs n'en envoient pas, et les bloquer casserait la lecture normale.

@@ -15,7 +15,6 @@ export type RouteKey =
   | "jeca"
   | "edv"
   | "news"
-  | "projects"
   | "contact"
   | "legal"
   | "media";
@@ -71,7 +70,6 @@ export const routes: Record<RouteKey, string> = {
   jeca: "/jeca/",
   edv: "/espoir-de-vie/",
   news: "/actualites/",
-  projects: "/projets-realisations/",
   contact: "/contact/",
   legal: "/mentions-legales/",
   media: "/mediatheque/",

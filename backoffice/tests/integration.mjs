@@ -531,7 +531,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
   };
   const pageExport = async () => JSON.parse((await admin.post('/?page=publication', { action: 'export' })).html);
   const pageRecord = id => JSON.parse(Buffer.from(sql(`SELECT HEX(payload) FROM ${database}.settings WHERE name='page:${id}'`).split('\n')[1], 'hex').toString('utf8'));
-  await t.test('Pages : douze formulaires bilingues, droits serveur et anciens liens', async () => {
+  await t.test('Pages : onze formulaires bilingues, droits serveur et anciens liens', async () => {
     assert.match((await anonymous.request('/?page=pages')).html, /Connectez-vous/);
     for (const page of ['pages', 'page_edit&id=home', 'textes']) assert.equal((await editor.request('/?page=' + page)).status, 403);
     const csrf = (await editor.request('/')).csrf;
@@ -540,7 +540,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal((await admin.post('/', { action: 'save_textes', version: '0' })).status, 422, 'ancienne écriture ne contourne pas la validation bilingue');
     const listing = await admin.request('/?page=pages');
     assert.equal(listing.status, 200);
-    assert.equal((listing.html.match(/Modifier cette page/g) || []).length, 12);
+    assert.equal((listing.html.match(/Modifier cette page/g) || []).length, 11);
     for (const id of Object.keys(pageModels())) {
       const form = await admin.request('/?page=page_edit&id=' + id);
       assert.equal(form.status, 200, id);
@@ -550,6 +550,8 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     }
     assert.equal(sql(`SELECT COUNT(*) FROM ${database}.settings WHERE name LIKE 'page:%'`).split('\n')[1], '0', 'consulter ne crée aucune ligne');
     assert.equal((await admin.request('/?page=page_edit&id=inconnue')).status, 404);
+    assert.equal((await admin.request('/?page=page_edit&id=projets-realisations')).status, 404);
+    assert.equal((await admin.post('/', { action: 'validate_page', id: 'projets-realisations', version: '0', english_reviewed: 'yes' })).status, 422);
     assert.equal((await admin.post('/', { action: 'validate_page', id: 'inconnue', version: '0', english_reviewed: 'yes' })).status, 422);
   });
   await t.test('Pages : anciennes saisies conservées, brouillon privé et anglais obligatoire', async () => {
@@ -759,8 +761,8 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     }
     assert.equal((await pageExport()).pageSchema,5);
   });
-  await t.test('Étape 5 : huit contenus, traductions, listes et formulaires réels', async () => {
-    const ids=['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'];
+  await t.test('Étape 5 : sept contenus, traductions, listes et formulaires réels', async () => {
+    const ids=['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','mentions-legales'];
     const sections=[];
     for(const id of ids){
       const model=pageModels()[id], state=pageRecord(id);
@@ -937,7 +939,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.equal(claimed.headers.get('x-baruck-claimed'), 'yes');
     assert.equal(JSON.parse(claimed.body).articles.find(item => item.slug === 'publication-automatique').title, 'Avant la demande', 'l’envoi reste une copie fixe');
     const snapshot = JSON.parse(claimed.body);
-    assert.equal(Object.keys(snapshot.pages).length, 12, 'toutes les pages validées suivent le même envoi');
+    assert.equal(Object.keys(snapshot.pages).length, 11, 'toutes les pages validées suivent le même envoi');
     assert.equal(snapshot.articles.find(item => item.slug === 'article-bilingue-recette').translations.en.title, 'Approved English title');
     assert.equal(snapshot.products.find(item => item.name === 'Produit bilingue validé').translations.en.name, 'Approved bilingual product');
     assert.doesNotMatch(claimed.body, /PRIVATE ENGLISH DRAFT|BROUILLON PRODUIT PRIVE|SAISIE NAVIGATEUR PRIVEE/);

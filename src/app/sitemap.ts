@@ -10,9 +10,9 @@ export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   if (!seoConfiguration().indexable) return [];
-  // Les ancres et la page encore provisoire ne sont pas proposées à l'indexation.
+  // Une ancre de l’accueil ne constitue pas une page distincte.
   const pages = Object.entries(routes)
-    .filter(([key]) => key !== "services" && key !== "projects")
+    .filter(([key]) => key !== "services")
     .map(([, path]) => ({
       url: path === "/" ? site.url : site.url + path.slice(1),
       hasEnglishTranslation: true,

@@ -72,7 +72,7 @@ test('refuse des textes incomplets ou non textuels', async (t) => {
 });
 test('pages bilingues : modèles du site, publication et source unique de l’accueil', async (t) => {
   const models = pageModels();
-  assert.equal(Object.keys(models).length, 12);
+  assert.equal(Object.keys(models).length, 11);
   const values = Object.fromEntries(Object.entries(models.home.fields).map(([key, field]) => [key, structuredClone(field.initial)]));
   assert.deepEqual(validatePageValues(models.home, values), values);
   values['meta.title'] = { fr: 'Accueil validé', en: 'Approved home' };
@@ -323,10 +323,28 @@ test('vérifie le contenu et le hash des médias avant écriture', async (t) => 
   await assert.rejects(importExport(other.file, other.out), /Média/);
 });
 
-test('les huit pages restantes : export bilingue strict et migration additive du format 4', async t => {
+test('une ancienne publication ne recrée pas la page Projets supprimée', async t => {
+  assert.equal(pageModels()['projets-realisations'], undefined);
+  assert.ok(!pageLinkTargets().includes('/projets-realisations/'));
+  const models = pageModels();
+  const contact = Object.fromEntries(Object.entries(models.contact.fields).map(([key, field]) => [key, structuredClone(field.initial)]));
+  contact['meta.description'] = { fr: 'Description déjà validée par le client.', en: 'Description already approved by the client.' };
+  const old = await fixture(t, input => {
+    input.pageSchema = 5;
+    input.pages = { contact, 'projets-realisations': { 'meta.title': { fr: 'Ancienne page', en: 'Old page' } } };
+  });
+  await importExport(old.file, old.out);
+  const published = JSON.parse(await fs.readFile(path.join(old.out, 'content/pages.json'), 'utf8'));
+  assert.equal(published['projets-realisations'], undefined);
+  assert.deepEqual(published.contact.values, contact, 'les autres contenus validés sont conservés');
+  const unknown = await fixture(t, input => { input.pages = { 'page-inventee': {} }; });
+  await assert.rejects(importExport(unknown.file, unknown.out), /Page exportée inconnue/);
+});
+
+test('les sept pages restantes : export bilingue strict et migration additive du format 4', async t => {
   assert.ok(pageLinkTargets().includes('/contact/#questions-frequentes'));
   assert.ok(pageLinkTargets().includes('/marque-baruck/#commander'));
-  const ids=['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales'];
+  const ids=['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','mentions-legales'];
   const models=pageModels();
   const pages=Object.fromEntries(ids.map(id=>[id,Object.fromEntries(Object.entries(models[id].fields).map(([key,field])=>[key,structuredClone(field.initial)]))]));
   for(const id of ids){

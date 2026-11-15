@@ -10,7 +10,7 @@ const COLLECT_DAILY_LIMIT = 400;
 
 function pageNames(): array
 {
-    return ['/' => 'Accueil', '/groupe/' => 'Le Groupe', '/actualites/' => 'Actualités', '/contact/' => 'Contact', '/jeca/' => 'JECA', '/espoir-de-vie/' => 'Espoir de Vie', '/studio-photo/' => 'Studio photo', '/hotesses-evenementielles/' => 'Hôtesses événementielles', '/mediatheque/' => 'Médiathèque', '/projets-realisations/' => 'Projets & réalisations', '/mentions-legales/' => 'Mentions légales', '/marque-baruck/' => 'La marque'];
+    return ['/' => 'Accueil', '/groupe/' => 'Le Groupe', '/actualites/' => 'Actualités', '/contact/' => 'Contact', '/jeca/' => 'JECA', '/espoir-de-vie/' => 'Espoir de Vie', '/studio-photo/' => 'Studio photo', '/hotesses-evenementielles/' => 'Hôtesses événementielles', '/mediatheque/' => 'Médiathèque', '/mentions-legales/' => 'Mentions légales', '/marque-baruck/' => 'La marque'];
 }
 
 function sourceNames(): array

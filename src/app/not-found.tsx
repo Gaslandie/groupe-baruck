@@ -2,7 +2,7 @@ import { translate as t } from "../lib/language.ts";
 
 import type { Metadata } from "next";
 
-import { ConstructionPage } from "@/components/ui/ConstructionPage";
+import { NotFoundPage } from "@/components/ui/NotFoundPage";
 
 export const metadata: Metadata = {
   title: t("Page introuvable"),
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <ConstructionPage
+    <NotFoundPage
       index="404"
       eyebrow={t("Page introuvable")}
       title={t("Cette page")}

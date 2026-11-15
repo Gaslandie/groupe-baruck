@@ -159,7 +159,7 @@ export async function checkPublishedPages({send,load,origin,session}) {
       assert.equal(await evaluate('(async()=>{await new Promise(resolve=>setTimeout(resolve,50));return document.querySelector("[role=tab][aria-selected=true]").id})()'),tabs[1]);
       assert.equal(await evaluate('document.activeElement.id'),tabs[1]);
     }
-    for(const route of ['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','projets-realisations','mentions-legales']){
+    for(const route of ['studio-photo','hotesses-evenementielles','marque-baruck','actualites','mediatheque','contact','mentions-legales']){
       ready=load();await send('Page.navigate',{url:origin+(session.basePath??'')+language+'/'+route+'/'});await ready;
       assert.equal(await evaluate('document.querySelectorAll("h1").length'),1,route+' : titre présent après construction');
       for(const width of [390,768,1280]){
@@ -179,7 +179,7 @@ export async function checkPublishedPages({send,load,origin,session}) {
       if(route==='contact')assert.equal(await evaluate('document.querySelectorAll("iframe[src*=google]").length'),0,'aucune carte sans consentement');
     }
   }
-  console.log('Publication Chrome FR/EN : huit pages à trois largeurs, filtres, consentement carte, galeries et clavier');
+  console.log('Publication Chrome FR/EN : sept pages à trois largeurs, filtres, consentement carte, galeries et clavier');
 }
 
 export async function checkRemainingPages({send,load,origin,session}) {
@@ -207,5 +207,5 @@ export async function checkRemainingPages({send,load,origin,session}) {
   await evaluate(`const nested=document.querySelector('[data-list-items] [data-page-list]');nested.querySelector('[data-list-down]').click();nested.querySelector(':scope > [data-list-add]').click();nested.querySelector('[data-list-items]').lastElementChild.querySelector('[data-list-remove]').click();`);
   ready=load();await evaluate('document.querySelector("#page-draft-form").requestSubmit()');await ready;
   assert.notEqual(await evaluate('document.querySelector("[data-list-items] [data-list-items] [lang=fr]").value'),first);
-  console.log('Étape 5 Chrome : huit formulaires enregistrés et rechargés, trois largeurs, tarifs imbriqués et brouillons privés');
+  console.log('Étape 5 Chrome : sept formulaires enregistrés et rechargés, trois largeurs, tarifs imbriqués et brouillons privés');
 }

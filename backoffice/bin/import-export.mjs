@@ -184,6 +184,8 @@ export async function importExport(file, destination) {
       // Conserver les adresses connues du dépôt ; refuser toute adresse inventée.
       const articleSlugs = [...slugs, ...(await fs.readdir('content/actualites')).map(file => file.replace(/\.md$/, ''))];
       for (const [id, input] of Object.entries(source.pages)) {
+        // Page supprimée du site : un ancien instantané ne doit pas la recréer.
+        if (id === 'projets-realisations') continue;
         if (!Object.hasOwn(models, id)) throw new Error('Page exportée inconnue.');
         if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('Champs de page invalides.');
         const required = Object.keys(models[id].fields).filter(key => source.pageSchema === 5 || source.pageSchema >= 3 && (models[id].fields[key].since ?? 3) <= source.pageSchema || /^(?:meta\.|heroSlides\.|activities\.)/.test(key));
