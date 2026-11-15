@@ -1,5 +1,8 @@
 import { pageText } from "@/lib/page-content";
-import { pageMetadata } from "@/lib/page-metadata";
+import { servicePageMetadata } from "@/lib/page-metadata";
+import { hqMap } from "@/data/coordonnees";
+import { ServiceBooking } from "@/components/services/ServiceBooking";
+import { ServiceNews } from "@/components/services/ServiceNews";
 
 
 import type { Metadata } from "next";
@@ -11,15 +14,13 @@ import { ServiceContact } from "@/components/services/ServiceContact";
 import { ServiceHero } from "@/components/services/ServiceHero";
 import { ServiceIntro } from "@/components/services/ServiceIntro";
 import { hostessesHero } from "@/data/media";
-import { hostessTags } from "@/data/services";
-import { contacts, hqAddress, routes, site, whatsappRequests } from "@/data/site";
+import { hostessTags, serviceBookings } from "@/data/services";
+import { contacts, hqAddress, routes, site } from "@/data/site";
 import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: pageMetadata("hotesses-evenementielles").title,
-  description:
-    pageMetadata("hotesses-evenementielles").description,
+  ...servicePageMetadata("hotesses-evenementielles"),
   alternates: pageAlternates(site.url + routes.hostesses.slice(1)),
   openGraph: socialMetadata(hostessesHero),
 };
@@ -52,11 +53,12 @@ export default function HostessesPage() {
         eyebrow={pageText("hotesses-evenementielles", "copy.page.4")}
         title={pageText("hotesses-evenementielles", "copy.page.5")}
         emphasis={pageText("hotesses-evenementielles", "copy.page.6")}
+        location={hqMap.label}
         text={pageText("hotesses-evenementielles", "copy.page.7")}
         actions={
           <>
             <a
-              href={whatsappRequests.hostessBooking}
+              href={serviceBookings.hotesses.href}
               target="_blank"
               rel="noreferrer"
               className="button button-accent"
@@ -86,7 +88,10 @@ export default function HostessesPage() {
         }
         emphasis={pageText("hotesses-evenementielles", "copy.page.16")}
         details={contactDetails}
-      />
+      >
+        <ServiceBooking service="hotesses" />
+        <ServiceNews category="hotesses" />
+      </ServiceContact>
     </PageShell>
   );
 }

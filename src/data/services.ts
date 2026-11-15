@@ -1,7 +1,8 @@
 import { formatPageText } from "@/lib/page-format";
 import { pageValue, pageText } from "@/lib/page-content";
 
-import { hqAddress } from "./site";
+import { hqAddress, whatsappRequests } from "./site";
+import { translate as t } from "../lib/language.ts";
 
 // Les visuels temp-*.jpg seront remplacés par les photos réelles du studio.
 
@@ -87,3 +88,23 @@ export type HostessProcessStep = {
 
 /** Parcours de réservation. */
 export const hostessProcess: HostessProcessStep[] = pageValue<Omit<HostessProcessStep, "number">[]>("hotesses-evenementielles", "data.hostessProcess").map((value,index) => ({...value,number:String(index+1).padStart(2,"0")}));
+
+/** Un message préparé, à compléter par le visiteur dans WhatsApp ; aucun envoi automatique. */
+function requestWithDetails(href: string, details: string): string {
+  const url = new URL(href);
+  url.searchParams.set("text", `${url.searchParams.get("text") ?? ""}\n\n${details}`);
+  return url.href;
+}
+
+export const serviceBookings = {
+  "studio-photo": {
+    label: t("Écrire au studio sur WhatsApp"),
+    instructions: t("Pour préparer votre demande, indiquez la prestation souhaitée, la date et le lieu : au studio ou en extérieur."),
+    href: requestWithDetails(whatsappRequests.studioPrices, t("Prestation souhaitée :\nDate :\nLieu (studio ou extérieur) :")),
+  },
+  hotesses: {
+    label: t("Demander un devis sur WhatsApp"),
+    instructions: hostessProcess[0]?.text ?? "",
+    href: requestWithDetails(whatsappRequests.hostessBooking, t("Date de l’événement :\nLieu :\nNombre d’hôtesses souhaité :")),
+  },
+} as const;

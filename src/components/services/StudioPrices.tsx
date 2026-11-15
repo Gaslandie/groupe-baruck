@@ -1,6 +1,8 @@
 import { pageText } from "@/lib/page-content";
 
 import { studioPriceGroups } from "@/data/services";
+import { translate as t } from "@/lib/language";
+import { Icon } from "@/components/ui/Icon";
 
 export function StudioPrices() {
   return (
@@ -51,6 +53,9 @@ export function StudioPrices() {
         ))}
       </div>
       <p className="mb-0 mt-[2.2rem] max-w-[620px] text-caption leading-[1.7] text-[rgba(255,255,255,.5)]">{pageText("studio-photo", "copy.StudioPrices.5")}</p>
+      <a href="#reservation" className="button button-accent mt-6">
+        {t("Préparer ma demande")}<span><Icon name="arrow-down" /></span>
+      </a>
     </section>
   );
 }

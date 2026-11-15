@@ -1,4 +1,4 @@
-import { translateContent } from "../lib/language.ts";
+import { translate, translateContent } from "../lib/language.ts";
 
 import source from "@content/coordonnees.json" with { type: "json" };
 
@@ -34,6 +34,7 @@ const mapQuery = encodeURIComponent(coordonnees.mapQuery).replaceAll("%20", "+")
 
 export const hqMap = {
   query: coordonnees.mapQuery,
+  label: translate(coordonnees.mapQuery),
   embedUrl: `https://www.google.com/maps?q=${mapQuery}&z=15&output=embed`,
   directionsUrl: `https://www.google.com/maps/search/?api=1&query=${mapQuery}`,
 } as const;

@@ -10,6 +10,7 @@ type ServiceHeroProps = {
   eyebrow: string;
   title: string;
   emphasis: string;
+  location?: string;
   text: string;
   badge?: string;
   actions: ReactNode;
@@ -22,6 +23,7 @@ export function ServiceHero({
   eyebrow,
   title,
   emphasis,
+  location,
   text,
   badge,
   actions,
@@ -50,8 +52,9 @@ export function ServiceHero({
         <h1
           className={`${titleSize} mb-6 mt-[.7rem] text-balance font-display font-normal leading-[.85] tracking-[-.055em]`}
         >
-          {title}
+          {title}{" "}
           <em className="block font-normal text-accent">{emphasis}</em>
+          {location ? <> <span className="mt-5 block font-sans text-lead font-normal leading-[1.5] tracking-normal">{location}</span></> : null}
         </h1>
         <p className="my-[1em] max-w-[670px] text-lead leading-[1.65] text-[rgba(255,255,255,.76)]">
           {text}

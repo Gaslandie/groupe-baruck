@@ -1,5 +1,8 @@
 import { pageText, pageValue } from "@/lib/page-content";
-import { pageMetadata } from "@/lib/page-metadata";
+import { servicePageMetadata } from "@/lib/page-metadata";
+import { hqMap } from "@/data/coordonnees";
+import { ServiceBooking } from "@/components/services/ServiceBooking";
+import { ServiceNews } from "@/components/services/ServiceNews";
 
 
 import type { Metadata } from "next";
@@ -20,9 +23,7 @@ import { pageAlternates, socialMetadata } from "@/lib/metadata";
 import { Icon } from "@/components/ui/Icon";
 
 export const metadata: Metadata = {
-  title: pageMetadata("studio-photo").title,
-  description:
-    pageMetadata("studio-photo").description,
+  ...servicePageMetadata("studio-photo"),
   alternates: pageAlternates(site.url + routes.studio.slice(1)),
   openGraph: socialMetadata(studioHero),
 };
@@ -59,6 +60,7 @@ export default function StudioPhotoPage() {
         eyebrow={pageText("studio-photo", "copy.page.6")}
         title={pageText("studio-photo", "copy.page.7")}
         emphasis={pageText("studio-photo", "copy.page.8")}
+        location={hqMap.label}
         text={pageText("studio-photo", "copy.page.9")}
         badge={pageText("studio-photo", "copy.page.10")}
         actions={
@@ -97,7 +99,10 @@ export default function StudioPhotoPage() {
         }
         emphasis={pageText("studio-photo", "copy.page.22")}
         details={contactDetails}
-      />
+      >
+        <ServiceBooking service="studio-photo" />
+        <ServiceNews category="studio-photo" />
+      </ServiceContact>
     </PageShell>
   );
 }

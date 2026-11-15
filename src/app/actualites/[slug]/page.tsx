@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { translate as t } from "@/lib/language";
+import { routes } from "@/data/site";
+import { Icon } from "@/components/ui/Icon";
 
 import { ArticleBody } from "@/components/actualites/ArticleBody";
 import { ArticleCover } from "@/components/actualites/ArticleCover";
@@ -103,6 +107,14 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           title={article.title}
           url={`${site.url}actualites/${article.slug}/`}
         />
+        {article.category === "studio-photo" || article.category === "hotesses" ? (
+          <div className="mx-auto mt-8 max-w-[720px] border-t border-line pt-6">
+            <Link href={article.category === "studio-photo" ? routes.studio : routes.hostesses} className="text-link">
+              {article.category === "studio-photo" ? t("Découvrir le studio et ses tarifs") : t("Découvrir nos prestations d’hôtesses")}
+              {" "}<span><Icon name="arrow-up-right" /></span>
+            </Link>
+          </div>
+        ) : null}
         <ArticleNavigation previous={previous} next={next} />
       </section>
     </PageShell>
