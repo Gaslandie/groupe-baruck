@@ -1,4 +1,4 @@
-import { isEnglish, hasEnglishMarkdown, translateContent, translateMarkdown } from "./language.ts";
+import { isEnglish, hasEnglishText, hasEnglishMarkdown, translateContent, translateMarkdown } from "./language.ts";
 import {editorialEnglish, applyEnglish} from "./editorial-translations.ts";
 
 import fs from "node:fs";
@@ -253,7 +253,12 @@ function parseArticle(filename: string): Article | undefined {
   }
   const parsed = matter(source, { language: "yaml" });
   const explicitEnglish = editorialEnglish({...parsed.data, body:parsed.content.trim()}, "article");
-  const translationPending = isEnglish && !explicitEnglish && !hasEnglishMarkdown(parsed.content);
+  const hasEnglishTranslation = Boolean(explicitEnglish) || (
+    typeof parsed.data.title === "string" && hasEnglishText(parsed.data.title) &&
+    typeof parsed.data.excerpt === "string" && hasEnglishText(parsed.data.excerpt) &&
+    hasEnglishMarkdown(parsed.content)
+  );
+  const translationPending = isEnglish && !hasEnglishTranslation;
   const data = isEnglish && explicitEnglish ? applyEnglish(parsed.data, explicitEnglish) : translationPending ? parsed.data : translateContent(parsed.data);
   const content = isEnglish && explicitEnglish ? explicitEnglish.body as string : translationPending ? parsed.content : translateMarkdown(parsed.content);
   const frontmatter = parsed.matter;
@@ -293,6 +298,7 @@ function parseArticle(filename: string): Article | undefined {
 
   return {
     slug,
+    hasEnglishTranslation,
     ...(translationPending ? { translationPending: true } : {}),
     title: requiredString(data.title, "title", filename),
     date: parseDate(data.date, filename, frontmatter),

@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     return {
       title: pageMetadata("actualites").title,
       description: pageMetadata("actualites").description,
+      robots: { index: false, follow: true },
       alternates: pageAlternates(site.url + "actualites/"),
     };
   }
@@ -52,7 +53,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     description: article.excerpt,
     alternates: article.translationPending
       ? { canonical: `${site.url.replace(/\/en\//, "/")}actualites/${article.slug}/` }
-      : pageAlternates(`${site.url}actualites/${article.slug}/`),
+      : pageAlternates(`${site.url}actualites/${article.slug}/`, article.hasEnglishTranslation),
     ...(article.translationPending ? { robots: { index: false, follow: true } } : {}),
     // Clé omise sans couverture, pour ne pas écraser l’héritage du layout.
     ...(article.cover ? { openGraph: socialMetadata(article.cover) } : {}),

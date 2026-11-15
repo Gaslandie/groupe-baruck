@@ -9,6 +9,7 @@ import { routes, site } from "@/data/site";
 import { pageAlternates } from "@/lib/metadata";
 
 export const metadata: Metadata = {
+  robots: { index: false, follow: true },
   title: pageMetadata("projets-realisations").title,
   description: pageMetadata("projets-realisations").description,
   alternates: pageAlternates(site.url + routes.projects.slice(1)),

@@ -10,6 +10,7 @@ import { NavigationTransitions } from "@/components/layout/NavigationTransitions
 import { brandLogo } from "@/data/media";
 import { site } from "@/data/site";
 import { socialMetadata } from "@/lib/metadata";
+import { seoConfiguration } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -50,6 +51,7 @@ const montserrat = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
+  robots: { index: seoConfiguration().indexable, follow: true },
   title: {
     default: pageMetadata("home").title,
     template: "%s — Groupe Baruck",

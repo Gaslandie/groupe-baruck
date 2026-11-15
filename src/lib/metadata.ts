@@ -6,14 +6,14 @@ import { newsFeedTitle } from "@/data/actualites";
 import { site } from "@/data/site";
 
 /** Canonical de la page, plus l'autodécouverte du flux RSS des actualités. */
-export function pageAlternates(canonical: string): Metadata["alternates"] {
+export function pageAlternates(canonical: string, hasEnglishTranslation = true): Metadata["alternates"] {
   return {
     canonical,
-    languages: {
+    languages: hasEnglishTranslation ? {
       fr: isEnglish ? canonical.replace(/\/en\//, "/") : canonical,
       en: isEnglish ? canonical : canonical.replace(site.url, site.url + "en/"),
       "x-default": isEnglish ? canonical.replace(/\/en\//, "/") : canonical,
-    },
+    } : undefined,
     types: {
       "application/rss+xml": [{ url: site.url + "feed.xml", title: newsFeedTitle }],
     },

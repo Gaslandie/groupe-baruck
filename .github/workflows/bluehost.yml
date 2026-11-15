@@ -107,6 +107,7 @@ jobs:
         if: ${{ !inputs.publication || steps.pending.outputs.pending == 'true' }}
         env:
           NEXT_PUBLIC_SITE_URL: https://${{ env.SITE_DOMAIN }}/
+          BARUCK_SEO_MODE: production
           NEXT_PUBLIC_BASE_PATH: ""
           NEXT_PUBLIC_AUDIENCE_URL: https://${{ env.ADMIN_DOMAIN }}/collect.php
           NEXT_PUBLIC_CONTACT_URL: https://${{ env.SITE_DOMAIN }}/contact.php

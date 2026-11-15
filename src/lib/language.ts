@@ -36,11 +36,15 @@ export function translateMarkdown(value: string): string {
 }
 
 /** Une publication nouvelle reste explicitement en français jusqu'à traduction. */
+export function hasEnglishText(value: string): boolean {
+  return Object.hasOwn(dictionary, key(value));
+}
+
 export function hasEnglishMarkdown(value: string): boolean {
   return value.trim().split(/\n\s*\n/).every((block) => {
     const heading = block.match(/^#{1,6} (.+)$/);
     const link = block.match(/^\[([^\]]+)\]\([^)]+\)$/);
-    return Object.hasOwn(dictionary, key(heading?.[1] ?? link?.[1] ?? block));
+    return hasEnglishText(heading?.[1] ?? link?.[1] ?? block);
   });
 }
 

@@ -2,11 +2,13 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import { spawn } from 'node:child_process';
+import { seoConfiguration } from '../src/lib/seo.ts';
 
 const root = process.cwd();
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 if (base && !/^\/[a-zA-Z0-9/_-]+$/.test(base)) throw new Error('Chemin public invalide.');
 const site = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gaslandie.github.io/groupe-baruck/').replace(/\/?$/, '/');
+seoConfiguration(process.env.BARUCK_SEO_MODE, site);
 const temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'baruck-bilingual-'));
 async function build(language) {
   const child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build', ...process.argv.slice(2)], {

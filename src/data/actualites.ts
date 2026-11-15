@@ -58,6 +58,7 @@ export type NewsGroup = {
 
 export type Article = {
   slug: string;
+  hasEnglishTranslation: boolean;
   translationPending?: boolean;
   title: string;
   date: string;
