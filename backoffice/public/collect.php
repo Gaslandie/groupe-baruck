@@ -23,8 +23,13 @@ try {
         http_response_code(204); exit;
     }
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Allow: POST, OPTIONS'); http_response_code(405); exit; }
-    $input = json_decode((string) file_get_contents('php://input', false, null, 0, 2048), true);
-    if (is_array($input)) recordView($input, $_SERVER, gmdate('Y-m-d'));
+    $raw = (string) file_get_contents('php://input', false, null, 0, 2049);
+    if (strlen($raw) > 2048) { http_response_code(413); exit; }
+    $input = json_decode($raw, true, 8);
+    if (is_array($input) && !array_is_list($input)) {
+        if (array_key_exists('e', $input)) recordContactEvent($input, $_SERVER);
+        else recordView($input, $_SERVER, gmdate('Y-m-d'));
+    }
     http_response_code(204);
 } catch (\Throwable $exception) {
     error_log('Baruck collect: ' . get_class($exception));

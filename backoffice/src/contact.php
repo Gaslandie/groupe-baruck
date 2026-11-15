@@ -48,7 +48,8 @@ function sendContact(array $input, array $server): void
     $to = contactMailbox($settings['to'] ?? 'jokrasso2@gmail.com');
     // Paramètre de l'enveloppe strictement limité, sans donnée du visiteur.
     if (!preg_match('/^[a-zA-Z0-9._+-]+@groupebaruck\.com$/D', $from)) throw new ContactError('Envoi indisponible.', 503);
-    if (array_diff(array_keys($input), ['name', 'email', 'phone', 'objet', 'message', 'botcheck'])) throw new ContactError('Champs invalides.', 422);
+    if (array_diff(array_keys($input), ['name', 'email', 'phone', 'objet', 'message', 'botcheck', 'measure'])) throw new ContactError('Champs invalides.', 422);
+    if (!is_bool($input['measure'] ?? false)) throw new ContactError('Mesure invalide.', 422);
     if (($input['botcheck'] ?? false) !== false) throw new ContactError('Envoi refusé.', 422);
     $values = [];
     foreach (['name' => 120, 'email' => 190, 'phone' => 40, 'objet' => 80, 'message' => 5000] as $field => $max) {
@@ -73,5 +74,17 @@ function sendContact(array $input, array $server): void
         'Content-Type' => 'text/plain; charset=UTF-8', 'Content-Transfer-Encoding' => 'quoted-printable'];
     if (!mail($to, $subject, quoted_printable_encode(str_replace(["\r\n", "\r", "\n"], ["\n", "\n", "\r\n"], $body)), $headers, '-f' . $from)) {
         throw new ContactError('Envoi indisponible.', 503);
+    }
+    // Seulement après acceptation par mail(), jamais à partir d'un événement public.
+    // Une base de statistiques indisponible ne transforme pas un envoi réussi en échec.
+    if (($input['measure'] ?? false) === true) {
+        try {
+            $activity = match ($values['objet']) {
+                'Studio photo', 'Photography studio' => 'studio-photo',
+                'Hôtesses événementielles', 'Event hostesses' => 'hotesses-evenementielles',
+                'JECA' => 'jeca', 'Espoir de Vie' => 'espoir-de-vie', default => 'groupe',
+            };
+            recordContactEvent(['e' => 'form_accepted', 'p' => '/contact/', 'a' => $activity], $server, $reference);
+        } catch (\Throwable $error) { error_log('Baruck contact measurement: ' . get_class($error)); }
     }
 }

@@ -15523,8 +15523,8 @@
         "en": "Cookies and external services"
       },
       "copy.LegalContent.21": {
-        "fr": "Le code du site ne dépose aucun cookie propre et n’intègre aucun outil d’analyse.",
-        "en": "The website code sets no cookies of its own and includes no analytics tool."
+        "fr": "La mesure d’audience interne, lorsqu’elle est activée, compte les pages vues et les clics WhatsApp, téléphone et e-mail. Elle compte séparément les formulaires acceptés par le serveur. Aucun cookie de suivi n’est déposé. L’adresse IP et les informations du navigateur servent à produire une empreinte renouvelée chaque jour ; elles ne sont pas conservées en clair dans les statistiques. Les événements de contact contiennent uniquement la page, le type d’action, l’activité, la date et cette empreinte. Ni les coordonnées ni les messages des prospects ne sont transmis à la mesure. Les événements de plus de 365 jours sont supprimés lors de la collecte suivante.",
+        "en": "When enabled, internal audience measurement counts page views and clicks on WhatsApp, phone and email links. Forms accepted by the server are counted separately. No tracking cookie is set. The IP address and browser information are used to create a fingerprint renewed each day; they are not stored in plain text in the statistics. Contact events contain only the page, action type, activity, date and this fingerprint. Prospects’ contact details and messages are not sent to analytics. Events older than 365 days are deleted on the next collection."
       },
       "copy.LegalContent.22": {
         "fr": "L’assistant automatique du site répond avec des textes prédéfinis, sans intelligence artificielle ni service tiers ; la recherche sur une question saisie se fait dans le navigateur. Lorsqu’il est ouvert, le fil de la conversation (sujets choisis, questions saisies) reste dans le stockage de session du navigateur, n’est transmis à personne et est effacé à la fermeture de l’onglet. Le message prérempli proposé pour WhatsApp ou l’e-mail reste modifiable avant tout envoi.",
@@ -15705,9 +15705,9 @@
         "since": 5
       },
       "copy.LegalContent.21": {
-        "label": "Le code du site ne dépose aucun cookie propre et n’intègre aucun outil d’analyse.",
+        "label": "Audience et actions de contact",
         "kind": "text",
-        "max": 240,
+        "max": 1000,
         "since": 5
       },
       "copy.LegalContent.22": {

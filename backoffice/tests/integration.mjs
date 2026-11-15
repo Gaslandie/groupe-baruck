@@ -118,10 +118,29 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     docker(['exec', container, 'php', 'bin/install.php', 'init']);
     assert.equal(counts(), before);
   });
+  await t.test('contacts : sauvegarde restaurable puis migration additive rejouable sur copie', async () => {
+    const copy = database + '_restore';
+    const state = dbName => sql(`SELECT id,slug,title,status,version FROM ${dbName}.articles ORDER BY id; SELECT name,payload,version FROM ${dbName}.settings ORDER BY name; SELECT * FROM ${dbName}.page_views ORDER BY id;`);
+    sql(`DROP TABLE ${database}.contact_events; DELETE FROM ${database}.schema_migrations WHERE name='backoffice-schema-20261115-contacts';`);
+    const before = state(database);
+    const dump = docker(['exec','baruck-admin-mysql','sh','-c','MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqldump -uroot --single-transaction --no-tablespaces --set-gtid-purged=OFF "$1"','sh',database]);
+    assert.ok(dump.includes('CREATE TABLE `page_views`') && !dump.includes('CREATE TABLE `contact_events`'));
+    const backup = path.join(folder,'pre-contacts.sql'); await fs.writeFile(backup,dump,{mode:0o600});
+    assert.equal(await fs.readFile(backup,'utf8'),dump,'la sauvegarde est relue avant restauration');
+    sql(`CREATE DATABASE ${copy}; GRANT ALL ON ${copy}.* TO 'baruck'@'%';`);
+    try {
+      sql(`USE ${copy};\n`+await fs.readFile(backup,'utf8'));
+      assert.equal(state(copy),before,'la copie restaurée contient exactement les données de départ');
+      const script=`require 'src/bootstrap.php'; $c=require getenv('BARUCK_CONFIG'); $c['database']['dsn']=str_replace('dbname=${database};','dbname=${copy};',$c['database']['dsn']); file_put_contents('/tmp/migration-copy.php','<?php return '.var_export($c,true).';'); putenv('BARUCK_CONFIG=/tmp/migration-copy.php'); Baruck\\ensureEditorialSchema(); Baruck\\ensureEditorialSchema(); echo Baruck\\query('SELECT COUNT(*) FROM contact_events')->fetchColumn();`;
+      assert.equal(docker(['exec',container,'php','-r',script]),'0');
+      assert.equal(state(copy),before,'la migration et sa répétition conservent les contenus et visites');
+    } finally { sql(`DROP DATABASE ${copy};`); await fs.rm(backup); }
+    docker(['exec',container,'php','-r',`require 'src/bootstrap.php'; Baruck\\ensureEditorialSchema();`]);
+  });
   await t.test('livraison : les nouvelles tables se créent sans changer les contenus ni réimporter les retraits', () => {
     const state = () => docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; $s=[]; foreach(["users","articles","products","settings","article_revisions","article_publications"] as $t)$s[$t]=Baruck\\query("SELECT * FROM ".$t." ORDER BY 1")->fetchAll(); echo hash("sha256",Baruck\\json($s));']);
     const before = state();
-    sql(`DROP TABLE ${database}.login_challenges; DROP TABLE ${database}.product_publications; DELETE FROM ${database}.schema_migrations WHERE name IN ('product-snapshots-v1','backoffice-schema-20261110');`);
+    sql(`DROP TABLE ${database}.login_challenges; DROP TABLE ${database}.product_publications; DELETE FROM ${database}.schema_migrations WHERE name IN ('product-snapshots-v1','backoffice-schema-20261115-contacts');`);
     for (let i=0; i<2; i++) docker(['exec', container, 'php', '-r', 'require "src/bootstrap.php"; Baruck\\ensureEditorialSchema();']);
     assert.equal(state(), before, 'les lignes déjà présentes sont identiques après la mise à jour et sa répétition');
     assert.equal(sql(`SELECT COUNT(*) FROM ${database}.product_publications;`).split('\n')[1], '39');
@@ -1017,7 +1036,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     for (const query of ['', '&days=7', '&days=365']) {
       const empty = await admin.request('/?page=stats' + query);
       assert.equal(empty.status, 200, 'statistiques lisibles sans aucune visite' + query);
-      assert.match(empty.html, /Mesure d’audience non active/);
+      assert.match(empty.html, /Aucune page vue mesurée/);
       assert.doesNotMatch(empty.html, /headers already sent|\/app\/|Warning<\/b>|indisponible/, 'ni avertissement PHP ni chemin serveur dans la page');
     }
     for (const [p, r, agent] of [['/', 'https://l.facebook.com/l.php?u=1', phone], ['/actualites/recette-mysql/', 'https://groupebaruck.com/', phone], ['/actualites/recette-mysql', '', 'Mozilla/5.0 (X11; Linux x86_64) Firefox/130.0']]) {
@@ -1046,6 +1065,64 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.match((await admin.request('/?page=articles')).html, /Vues · 30 j/);
     const dashboard = await admin.request('/');
     for (const expected of [/À faire/, /Visiteurs par jour/, /brouillons? attend(?:ent)? une validation/, /Dernières modifications/]) assert.match(dashboard.html, expected);
+  });
+  await t.test('contacts : événements séparés, refus, doublons, limites et droits', async () => {
+    const payload = {e:'whatsapp',p:'/studio-photo/',a:'studio-photo'};
+    const collect = (body, headers = {}) => fetch(origin + '/collect.php', {method:'POST',headers:{Origin:'https://groupebaruck.com','User-Agent':'Mozilla/5.0 contact-test',...headers},body:JSON.stringify(body)});
+    const count = table => Number(sql(`SELECT COUNT(*) FROM ${database}.${table}`).split('\n')[1]);
+    const views = count('page_views');
+    for (const body of [
+      {...payload,e:'form_accepted'}, {...payload,e:'invented'}, {...payload,e:null},
+      {...payload,a:'groupe'}, {...payload,a:[]}, {...payload,p:'/private/'},
+      {...payload,p:'/studio-photo/?email=private'}, {...payload,email:'private@example.test'},
+      {...payload,p:'/actualites/unpublished-private-test/',a:'groupe'},
+    ]) assert.equal((await collect(body)).status,204);
+    assert.equal((await collect(payload, {Origin:'https://hostile.example'})).status,403);
+    assert.equal((await collect(payload, {'User-Agent':'Googlebot'})).status,204);
+    assert.equal((await collect({...payload,extra:'x'.repeat(2049)})).status,413);
+    assert.equal(count('contact_events'),0);
+    const accepted = await collect(payload);
+    assert.equal(accepted.status,204);
+    assert.equal(accepted.headers.get('set-cookie'),null);
+    await Promise.all(Array.from({length:6},()=>collect(payload)));
+    assert.equal(count('contact_events'),1,'les clics répétés sont fusionnés');
+    await collect({...payload,e:'phone'});
+    assert.equal(count('contact_events'),2);
+    assert.equal(count('page_views'),views,'les contacts ne gonflent pas les visites');
+    const stored = sql(`SELECT * FROM ${database}.contact_events`);
+    assert.doesNotMatch(stored,/Mozilla|127\.0\.0\.1|@|private/);
+    const page = await admin.request('/?page=stats&days=7');
+    assert.equal(page.status,200);
+    assert.match(page.html,/Actions de contact/);
+    assert.match(page.html,/Clics WhatsApp/);
+    assert.match(page.html,/Un clic ne prouve pas un échange/);
+    assert.match((await editor.request('/?page=stats')).html,/Actions de contact/);
+    assert.doesNotMatch((await anonymous.request('/?page=stats')).html,/Actions de contact/);
+    const csv = await admin.post('/?page=stats',{action:'export_stats',days:'7'});
+    assert.match(csv.html,/contacts indicatifs/);
+    assert.match(csv.html,/actions_periode_precedente/);
+    // Le serveur d'envoi est exercé avec un transport fictif local, sans courrier externe.
+    const php = `namespace Baruck; function mail(...$args) { return !($GLOBALS['rejectMail'] ?? false); } require 'src/bootstrap.php'; require 'src/contact.php'; $configuration = require getenv('BARUCK_CONFIG'); $configuration['contact_mail']=['from'=>'contact@groupebaruck.com','to'=>'test@example.test']; file_put_contents('/tmp/contact-config.php','<?php return '.var_export($configuration,true).';'); putenv('BARUCK_CONFIG=/tmp/contact-config.php'); $input=['name'=>'Test','email'=>'private@example.test','phone'=>'600000000','objet'=>'Photography studio','message'=>'A private message that must not be stored.','botcheck'=>false,'measure'=>true]; $server=['REMOTE_ADDR'=>'127.0.0.2','HTTP_USER_AGENT'=>'Mozilla/5.0 form-test']; $GLOBALS['rejectMail']=true; try { sendContact($input,$server); } catch (ContactError $e) {} echo query('SELECT COUNT(*) FROM contact_events WHERE action=?',['form_accepted'])->fetchColumn().'|'; $GLOBALS['rejectMail']=false; sendContact($input,$server); echo query('SELECT COUNT(*) FROM contact_events WHERE action=? AND activity=?',['form_accepted','studio-photo'])->fetchColumn();`;
+    assert.equal(docker(['exec',container,'php','-r',php]),'0|1');
+    assert.equal(count('page_views'),views);
+    assert.doesNotMatch(sql(`SELECT * FROM ${database}.contact_events`),/private|600000000|Mozilla|127\.0\.0\.2/);
+    // Référence serveur stable : une même acceptation ne peut pas être ajoutée deux fois.
+    const direct = `require 'src/bootstrap.php'; $i=['e'=>'form_accepted','p'=>'/contact/','a'=>'groupe']; $s=['REMOTE_ADDR'=>'127.0.0.3','HTTP_USER_AGENT'=>'Mozilla/5.0 limits']; $n=0; for($k=0;$k<55;$k++)$n+=(int)Baruck\\recordContactEvent($i,$s,'local-test-'.$k); echo $n.'|'.(int)Baruck\\recordContactEvent($i,$s,'local-test-0');`;
+    assert.equal(docker(['exec',container,'php','-r',direct]),'50|0');
+    const globalVisitor='00000000000000000000000000000000';
+    sql(`INSERT INTO ${database}.contact_events(id,day,path,action,activity,visitor,occurred_at) WITH RECURSIVE seq(n) AS (SELECT 1 UNION ALL SELECT n+1 FROM seq WHERE n<100) SELECT MD5(CONCAT('cap-',a.n,'-',b.n)),DATE_FORMAT(UTC_DATE(),'%Y-%m-%d'),'/contact/','email','groupe','${globalVisitor}',UNIX_TIMESTAMP() FROM seq a CROSS JOIN seq b;`);
+    const capped = count('contact_events');
+    await collect({...payload,e:'email'},{'User-Agent':'Mozilla/5.0 new visitor'});
+    assert.equal(count('contact_events'),capped,'le plafond global limite aussi un nouveau visiteur');
+    sql(`DELETE FROM ${database}.contact_events WHERE visitor='${globalVisitor}'`);
+    const visitor = sql(`SELECT visitor FROM ${database}.contact_events WHERE action='whatsapp' LIMIT 1`).split('\n')[1];
+    sql(`UPDATE ${database}.contact_events SET day=DATE_FORMAT(UTC_DATE()-INTERVAL 8 DAY,'%Y-%m-%d'),occurred_at=0 WHERE action='whatsapp'`);
+    const summary = JSON.parse(docker(['exec',container,'php','-r',`require 'src/bootstrap.php'; echo json_encode(Baruck\\contactSummary(7,gmdate('Y-m-d')));`]));
+    const whatsapp = summary.rows.find(row=>row.activity==='Studio photo' && row.action==='Clics WhatsApp');
+    assert.equal(whatsapp.current,0); assert.equal(whatsapp.previous,1);
+    sql(`UPDATE ${database}.contact_events SET day='2020-01-01',occurred_at=0 WHERE visitor='${visitor}'`);
+    await collect({...payload,e:'email'});
+    assert.equal(sql(`SELECT COUNT(*) FROM ${database}.contact_events WHERE day='2020-01-01'`).split('\n')[1],'0');
   });
   await t.test('suppression confirmée : brouillon jamais publié et image inutilisée, refus sinon', async () => {
     const draftId = (await admin.request('/?page=articles&q=Brouillon')).html.match(/page=edit&amp;id=([a-f0-9]{32})/)?.[1];
@@ -1112,6 +1189,7 @@ test('recette PHP 8.2 / MySQL 8 : comptes, droits, articles, médias et export',
     assert.ok(editorId);
     assert.equal((await admin.post('/?page=users', { action: 'toggle_user', id: editorId })).status, 303);
     assert.match((await editor.request('/?page=articles')).html, /Connectez-vous/);
+    assert.doesNotMatch((await editor.request('/?page=stats')).html, /Actions de contact/);
     const other = new Browser(origin, mailbox);
     assert.equal((await other.login('/', { action: 'login', email: adminEmail, password })).status, 303);
     assert.equal((await admin.post('/?page=account', { action: 'change_password', current_password: password, password: password + '2' })).status, 303);

@@ -74,6 +74,7 @@ export function ContactForm({ id = "contact-form", className, showTitle = false 
           objet,
           message,
           botcheck,
+          measure: Boolean(process.env.NEXT_PUBLIC_AUDIENCE_URL),
         }),
       });
       const result = (await response.json()) as { success?: boolean };

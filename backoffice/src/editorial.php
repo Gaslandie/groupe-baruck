@@ -86,7 +86,7 @@ function migrateEditorial(): void
 /** Mise à jour du code en production : ajouts seulement, sans import initial. */
 function ensureEditorialSchema(): void
 {
-    $name = 'backoffice-schema-20261110';
+    $name = 'backoffice-schema-20261115-contacts';
     $current = static function () use ($name): bool {
         try { return (bool) query('SELECT name FROM schema_migrations WHERE name=?', [$name])->fetch(); }
         catch (\PDOException $error) { if ($error->getCode() !== '42S02') throw $error; return false; }

@@ -8,6 +8,82 @@ const AUDIENCE_PERIODS = [7 => '7 jours', 30 => '30 jours', 90 => '90 jours', 36
 /** Vues acceptées par visiteur et par jour : au-delà, la mesure cesse de croire ce qu’on lui envoie. */
 const COLLECT_DAILY_LIMIT = 400;
 
+const CONTACT_DAILY_LIMIT = 50;
+const CONTACT_GLOBAL_DAILY_LIMIT = 10000;
+
+function contactActionNames(): array
+{
+    return ['whatsapp' => 'Clics WhatsApp', 'phone' => 'Clics téléphone', 'email' => 'Clics e-mail', 'form_accepted' => 'Formulaires acceptés'];
+}
+
+function contactActivityNames(): array
+{
+    return ['studio-photo' => 'Studio photo', 'hotesses-evenementielles' => 'Hôtesses événementielles', 'groupe' => 'Groupe / non précisé', 'jeca' => 'JECA', 'espoir-de-vie' => 'Espoir de Vie', 'marque-baruck' => 'La marque'];
+}
+
+/** $formReference ne provient que du traitement serveur d'un formulaire accepté. */
+function recordContactEvent(array $input, array $server, ?string $formReference = null): bool
+{
+    if (array_diff(array_keys($input), ['e', 'p', 'a'])) return false;
+    foreach (['e', 'p', 'a'] as $key) if (!is_string($input[$key] ?? null)) return false;
+    $action = $input['e'];
+    if (!isset(contactActionNames()[$action], contactActivityNames()[$input['a']])) return false;
+    if (($action === 'form_accepted') !== ($formReference !== null)) return false;
+    $path = normalizePath($input['p']);
+    if ($path === null || $path !== $input['p']) return false;
+    if (!isset(pageNames()[$path])) {
+        if (!preg_match('~^/actualites/([a-z0-9-]+)/$~D', $path, $match)) return false;
+        if (!query('SELECT a.id FROM articles a JOIN article_publications p ON p.article_id=a.id WHERE a.slug=?', [$match[1]])->fetch()) return false;
+    }
+    $expected = explode('/', $path)[1];
+    $expected = isset(contactActivityNames()[$expected]) ? $expected : 'groupe';
+    if ($formReference === null && $input['a'] !== $expected) return false;
+    $agent = is_string($server['HTTP_USER_AGENT'] ?? null) ? $server['HTTP_USER_AGENT'] : '';
+    if ($formReference === null && isBot($agent)) return false;
+    $time = time();
+    $day = gmdate('Y-m-d', $time);
+    $visitor = substr(hash('sha256', visitorSalt($day) . '|' . ($server['REMOTE_ADDR'] ?? '') . '|' . $agent), 0, 32);
+    // Un verrou commun à cette base rend les plafonds et l'anti-doublon atomiques.
+    $lock = 'baruck-contacts-' . substr(hash('sha256', query('SELECT DATABASE()')->fetchColumn()), 0, 32);
+    if ((int) query('SELECT GET_LOCK(?,1)', [$lock])->fetchColumn() !== 1) return false;
+    try {
+        if ((int) query('SELECT COUNT(*) FROM contact_events WHERE day=?', [$day])->fetchColumn() >= CONTACT_GLOBAL_DAILY_LIMIT) return false;
+        if ((int) query('SELECT COUNT(*) FROM contact_events WHERE day=? AND visitor=?', [$day, $visitor])->fetchColumn() >= CONTACT_DAILY_LIMIT) return false;
+        if ($formReference === null && query('SELECT id FROM contact_events WHERE visitor=? AND path=? AND action=? AND occurred_at>? LIMIT 1', [$visitor, $path, $action, $time - 10])->fetch()) return false;
+        $id = $formReference === null ? id() : substr(hash('sha256', 'form|' . $formReference), 0, 32);
+        if (query('SELECT id FROM contact_events WHERE id=?', [$id])->fetch()) return false;
+        query('INSERT INTO contact_events (id,day,path,action,activity,visitor,occurred_at) VALUES (?,?,?,?,?,?,?)', [$id, $day, $path, $action, $input['a'], $visitor, $time]);
+        query('DELETE FROM contact_events WHERE day < ?', [shiftDay($day, -364)]);
+        return true;
+    } finally { query('SELECT RELEASE_LOCK(?)', [$lock]); }
+}
+
+function contactSummary(int $days, string $today): array
+{
+    $days = isset(AUDIENCE_PERIODS[$days]) ? $days : 30;
+    $start = shiftDay($today, -($days - 1));
+    $previousStart = shiftDay($today, -(2 * $days - 1));
+    $previousEnd = shiftDay($today, -$days);
+    $rows = [];
+    foreach (contactActivityNames() as $activity => $label) {
+        foreach (contactActionNames() as $action => $actionLabel) {
+            $rows[$activity . ':' . $action] = ['activity' => $label, 'action' => $actionLabel, 'current' => 0, 'previous' => 0];
+        }
+    }
+    $available = true;
+    try {
+        $measured = query('SELECT activity,action,SUM(day>=?) AS current,SUM(day BETWEEN ? AND ?) AS previous FROM contact_events WHERE day BETWEEN ? AND ? GROUP BY activity,action', [$start, $previousStart, $previousEnd, $previousStart, $today])->fetchAll();
+        foreach ($measured as $row) {
+            $key = $row['activity'] . ':' . $row['action'];
+            if (isset($rows[$key])) $rows[$key] = [...$rows[$key], 'current' => (int) $row['current'], 'previous' => (int) $row['previous']];
+        }
+    } catch (\PDOException $error) {
+        if ($error->getCode() !== '42S02') throw $error;
+        $available = false;
+    }
+    return ['available' => $available, 'rows' => array_values($rows), 'previousStart' => $previousStart, 'previousEnd' => $previousEnd, 'previousComplete' => $days * 2 <= 365];
+}
+
 function pageNames(): array
 {
     return ['/' => 'Accueil', '/groupe/' => 'Le Groupe', '/actualites/' => 'Actualités', '/contact/' => 'Contact', '/jeca/' => 'JECA', '/espoir-de-vie/' => 'Espoir de Vie', '/studio-photo/' => 'Studio photo', '/hotesses-evenementielles/' => 'Hôtesses événementielles', '/mediatheque/' => 'Médiathèque', '/mentions-legales/' => 'Mentions légales', '/marque-baruck/' => 'La marque'];
@@ -166,6 +242,7 @@ function audienceSummary(int $days, string $today): array
         'previousViews' => $before['views'], 'previousVisitors' => $before['visitors'],
         'series' => $series, 'pages' => $pages, 'sources' => $sources, 'devices' => $devices,
         'categoryViews' => $categories, 'articleViews' => $articleViews,
+        'contacts' => contactSummary($days, $today),
     ];
 }
 
@@ -305,7 +382,7 @@ function csvCell(mixed $value): string
 
 function statsCsv(array $audience, array $editorial): string
 {
-    $lines = [['section', 'libelle', 'vues', 'visiteurs']];
+    $lines = [['section', 'libelle', 'vues', 'visiteurs', 'actions', 'actions_periode_precedente']];
     $lines[] = ['periode', $audience['start'] . ' au ' . $audience['end'], $audience['views'], $audience['visitors']];
     $lines[] = ['periode precedente', '', $audience['previousViews'], $audience['previousVisitors']];
     foreach ($audience['series'] as $point) $lines[] = ['evolution', $point['label'], $point['views'], $point['visitors']];
@@ -314,9 +391,10 @@ function statsCsv(array $audience, array $editorial): string
     foreach ($audience['devices'] as $device => $visitors) $lines[] = ['appareils', deviceNames()[$device] ?? $device, '', $visitors];
     foreach (categories() as $key => $label) $lines[] = ['categories', $label . ' (' . $editorial['byCategory'][$key] . ' validee(s))', $audience['categoryViews'][$key], ''];
     foreach ($editorial['months'] as $month) $lines[] = ['actualites validees par mois', $month['label'], $month['value'], ''];
+    foreach ($audience['contacts']['rows'] ?? [] as $row) $lines[] = ['contacts indicatifs', $row['activity'] . ' · ' . $row['action'], '', '', $row['current'], ($audience['contacts']['previousComplete'] ?? false) ? $row['previous'] : 'indisponible'];
     $output = fopen('php://memory', 'r+');
     fwrite($output, "\u{FEFF}");
-    foreach ($lines as $line) fputcsv($output, array_map(csvCell(...), $line), ';', '"', '\\', "\r\n");
+    foreach ($lines as $line) fputcsv($output, array_map(csvCell(...), array_pad($line, 6, '')), ';', '"', '\\', "\r\n");
     rewind($output);
     return stream_get_contents($output);
 }

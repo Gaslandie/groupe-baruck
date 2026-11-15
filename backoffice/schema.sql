@@ -106,6 +106,18 @@ CREATE TABLE IF NOT EXISTS products (
     KEY boutique_order (status, position)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS contact_events (
+    id CHAR(32) PRIMARY KEY,
+    day CHAR(10) NOT NULL,
+    path VARCHAR(255) NOT NULL,
+    action VARCHAR(20) NOT NULL,
+    activity VARCHAR(32) NOT NULL,
+    visitor CHAR(32) NOT NULL,
+    occurred_at BIGINT NOT NULL,
+    KEY day_activity (day, activity, action),
+    KEY visitor_time (visitor, occurred_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS settings (
     name VARCHAR(64) PRIMARY KEY,
     payload MEDIUMTEXT NOT NULL,

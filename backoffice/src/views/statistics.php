@@ -24,7 +24,7 @@ function statsTable(string $title, array $rows, string $unit, int $total, int $m
     <form method="post"><?= csrfField() ?><input type="hidden" name="action" value="export_stats"><input type="hidden" name="days" value="<?= (int) $audience['days'] ?>"><button class="<?= $secondaryClass ?>">Télécharger en CSV</button></form>
 </div>
 <?php if (!$audience['active']): ?>
-<section class="mb-8 <?= $cardClass ?> p-6"><h2 class="font-display text-2xl">Mesure d’audience non active</h2><p class="mt-3 max-w-2xl text-sm leading-relaxed text-ink/65">Le site public ne transmet aucune visite pour l’instant. La mesure ne pose aucun cookie et ne conserve aucune adresse IP.</p><?php if ($user['role'] === 'admin'): ?><p class="mt-3 max-w-2xl text-sm leading-relaxed text-ink/65">Pour l’activer, la personne qui construit le site renseigne l’adresse de collecte lors du build :</p><pre class="mt-3 overflow-x-auto rounded-lg bg-paper p-4 text-caption">NEXT_PUBLIC_AUDIENCE_URL=<?= e(config()['origin']) ?>/collect.php</pre><?php endif; ?></section>
+<section class="mb-8 <?= $cardClass ?> p-6"><h2 class="font-display text-2xl">Aucune page vue mesurée</h2><p class="mt-3 max-w-2xl text-sm leading-relaxed text-ink/65">Aucune page vue n’a encore été enregistrée. La mesure ne pose aucun cookie et ne conserve aucune adresse IP en clair.</p><?php if ($user['role'] === 'admin'): ?><p class="mt-3 max-w-2xl text-sm leading-relaxed text-ink/65">Pour l’activer, la personne qui construit le site renseigne l’adresse de collecte lors du build :</p><pre class="mt-3 overflow-x-auto rounded-lg bg-paper p-4 text-caption">NEXT_PUBLIC_AUDIENCE_URL=<?= e(config()['origin']) ?>/collect.php</pre><?php endif; ?></section>
 <?php endif; ?>
 <section class="mb-8"><h2 class="mb-4 font-display text-2xl">Ce que disent les chiffres</h2><?php adviceList($advice, 'Rien de particulier à signaler pour cette période.'); ?></section>
 <div class="grid gap-4 tablet:grid-cols-2 wide:grid-cols-4">
@@ -34,6 +34,28 @@ function statsTable(string $title, array $rows, string $unit, int $total, int $m
     <?php kpi('Part du mobile', $deviceTotal > 0 ? percent($audience['devices']['mobile'] ?? 0, $deviceTotal) . ' %' : '—', 'des visiteurs'); ?>
 </div>
 <section class="mt-6 <?= $cardClass ?> p-6"><h2 class="font-display text-2xl">Visiteurs par <?= $audience['days'] > 90 ? 'mois' : 'jour' ?></h2><p class="mt-1 text-caption text-ink/60">Du <?= e(frenchDate($audience['start'], true)) ?> au <?= e(frenchDate($audience['end'], true)) ?>. Survolez une barre pour lire sa valeur.</p><div class="mt-4"><?= barChart($audience['series'], 'visitors', 'visiteurs') ?></div></section>
+<section class="mt-6 <?= $cardClass ?> p-6" aria-labelledby="contacts-title">
+    <h2 id="contacts-title" class="font-display text-title">Actions de contact · <?= e($period) ?></h2>
+    <p class="mt-3 text-small">Un clic ne prouve pas un échange. Un formulaire accepté par le serveur ne prouve pas sa réception en boîte mail. Ces actions ne sont pas ajoutées aux visites.</p>
+    <p class="mt-2 text-caption text-ink/60">L’activité correspond à la page du clic ou au sujet du formulaire. Les demandes qualifiées et réservations sont à suivre séparément par l’équipe. Ces compteurs publics peuvent contenir du bruit ; ils ne prouvent pas une origine SEO.</p>
+    <?php $contacts = $audience['contacts']; $contactRows = array_filter($contacts['rows'], fn($row) => $row['current'] > 0 || $row['previous'] > 0); ?>
+    <?php if (!$contacts['available']): ?>
+        <p class="mt-4 text-small">Le suivi des contacts attend la mise à jour du stockage.</p>
+    <?php elseif (!$contactRows): ?>
+        <p class="mt-4 text-small">Aucune action mesurée sur ces périodes. Cela ne signifie pas qu’aucune demande n’a été reçue.</p>
+    <?php else: ?>
+        <p class="mt-3 text-caption">Période actuelle : <?= e(frenchDate($audience['start'], true)) ?> au <?= e(frenchDate($audience['end'], true)) ?>. Précédente : <?= e(frenchDate($contacts['previousStart'], true)) ?> au <?= e(frenchDate($contacts['previousEnd'], true)) ?>. Les périodes antérieures à l’activation ne sont pas renseignées.</p>
+        <?php if (!$contacts['previousComplete']): ?><p class="mt-2 text-caption">La comparaison sur douze mois est indisponible : les événements sont conservés au maximum 365 jours.</p><?php endif; ?>
+        <div class="mt-4 overflow-x-auto"><table class="w-full text-small">
+            <caption class="sr-only">Actions de contact par activité et période</caption>
+            <thead><tr><th scope="col" class="p-2 text-left">Activité / action</th><th scope="col" class="p-2 text-right">Actuelle</th><th scope="col" class="p-2 text-right">Précédente</th></tr></thead>
+            <tbody class="divide-y divide-line"><?php foreach ($contactRows as $row): ?><tr>
+                <th scope="row" class="p-2 text-left font-normal"><?= e($row['activity']) ?><span class="block text-caption text-ink/60"><?= e($row['action']) ?></span></th>
+                <td class="p-2 text-right tabular-nums"><?= $row['current'] ?></td><td class="p-2 text-right tabular-nums"><?= $contacts['previousComplete'] ? $row['previous'] : '—' ?></td>
+            </tr><?php endforeach; ?></tbody>
+        </table></div>
+    <?php endif; ?>
+</section>
 <div class="mt-6 grid gap-6 wide:grid-cols-2">
     <?php statsTable('Pages les plus vues', array_map(fn($row) => ['label' => $row['label'], 'value' => $row['views']], $audience['pages']), 'Vues', max(1, $audience['views']), $topViews, 'Aucune page vue sur cette période.'); ?>
     <?php statsTable('D’où viennent les visiteurs', array_map(fn($row) => ['label' => $row['label'], 'value' => $row['visitors']], $audience['sources']), 'Visiteurs', max(1, $sourceTotal), topValue(array_column($audience['sources'], 'visitors')), 'Aucune visite sur cette période.'); ?>

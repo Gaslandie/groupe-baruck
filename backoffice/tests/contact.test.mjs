@@ -83,6 +83,7 @@ test('envoi interne : destinataire imposé, validation, transport et limites', a
       { ...data, objet: 'Objet inventé' }, { ...data, phone: '\0' },
       { ...data, to: 'autre@example.com' }, { ...data, from: 'autre@example.com' },
       { ...data, botcheck: true }, { ...data, botcheck: 'false' },
+      { ...data, measure: 'true' }, { ...data, measure: {} },
     ]) assert.equal((await request(body)).status, 422, JSON.stringify(body).slice(0,100));
     await assert.rejects(fs.stat(capture), { code: 'ENOENT' });
   });
@@ -102,6 +103,13 @@ test('envoi interne : destinataire imposé, validation, transport et limites', a
   await t.test('sujets anglais et caractères accentués acceptés', async () => {
     assert.equal((await request({ ...data, objet: 'Partnership or collaboration' })).status, 200);
     assert.equal((await request({ ...data, objet: 'Event hostesses' })).status, 200);
+  });
+  await t.test('une panne de statistiques ne bloque pas un formulaire accepté', async () => {
+    await reset();
+    // Cette configuration ne contient volontairement aucune base de statistiques.
+    const r = await request({ ...data, measure: true });
+    assert.equal(r.status, 200);
+    assert.deepEqual(await r.json(), { success: true });
   });
   await t.test('sixième envoi refusé, même avec une adresse réseau annoncée différente', async () => {
     await reset();
