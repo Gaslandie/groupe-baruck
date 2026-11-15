@@ -5,6 +5,10 @@ import { facebookPages } from "@/data/contact";
 import { jecaEditions, type JecaEdition } from "@/data/jeca";
 import { brandLogo, edvLogo } from "@/data/media";
 import { contacts, routes, site } from "@/data/site";
+import { hqMap } from "@/data/coordonnees";
+import { pageText } from "./page-content";
+import { primarySiteUrl } from "./seo";
+import { asset } from "./asset";
 
 import type { SocialImage } from "./metadata";
 
@@ -27,7 +31,7 @@ function imageObject(image: SocialImage) {
   };
 }
 
-const organizationId = `${site.url}#organization`;
+const organizationId = `${primarySiteUrl}#organization`;
 
 const organizationLogo = imageObject({ ...brandLogo, alt: site.name });
 
@@ -37,7 +41,7 @@ export const organizationSchema = {
   "@type": "Organization",
   "@id": organizationId,
   name: site.name,
-  url: site.url,
+  url: primarySiteUrl,
   description: site.description,
   logo: organizationLogo,
   sameAs: facebookPages.map((page) => page.href),
@@ -60,7 +64,7 @@ const publisher = {
   "@type": "Organization",
   "@id": organizationId,
   name: site.name,
-  url: site.url,
+  url: primarySiteUrl,
   logo: organizationLogo,
 };
 
@@ -71,7 +75,7 @@ export function espoirDeVieSchema(description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "@id": `${espoirDeVieUrl}#organization`,
+    "@id": `${primarySiteUrl}${routes.edv.slice(1)}#organization`,
     name: "Espoir de Vie",
     url: espoirDeVieUrl,
     description,
@@ -86,6 +90,39 @@ export function espoirDeVieSchema(description: string) {
 
 const articleUrl = (slug: string) => `${site.url}actualites/${slug}/`;
 
+export type BreadcrumbItem = { name: string; href: string };
+
+/** Les mêmes éléments alimentent le chemin visible et sa description JSON-LD. */
+export function breadcrumbSchema(items: readonly BreadcrumbItem[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map(({ name, href }, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name,
+      item: absolute(href),
+    })),
+  };
+}
+
+export type ServicePage = "studio-photo" | "hotesses-evenementielles";
+
+export function serviceSchema(page: ServicePage) {
+  const route = page === "studio-photo" ? routes.studio : routes.hostesses;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${primarySiteUrl}${route.slice(1)}#service`,
+    name: pageText(page, "meta.title"),
+    description: pageText(page, page === "studio-photo" ? "copy.page.16" : "copy.page.13"),
+    url: absolute(route),
+    provider: publisher,
+    // Reprise de la zone affichée, sans déduire une couverture nationale du pays.
+    areaServed: hqMap.label,
+  };
+}
+
 function newsArticleNode(article: Article) {
   const url = articleUrl(article.slug);
 
@@ -96,21 +133,18 @@ function newsArticleNode(article: Article) {
     mainEntityOfPage: url,
     headline: article.title,
     description: article.excerpt,
-    datePublished: article.date,
+    // `date` décrit les faits racontés. L'auteur et la date de publication
+    // ne sont pas renseignés dans les contenus : ne pas les inventer.
     publisher,
     ...(article.cover ? { image: imageObject(article.cover) } : {}),
   };
 }
 
-const eventPlaces: Record<JecaEdition["place"], { addressLocality: string; addressCountry: string }> = {
-  "Dakar · Sénégal": { addressLocality: "Dakar", addressCountry: "SN" },
-  "Conakry · Guinée": { addressLocality: "Conakry", addressCountry: "GN" },
-};
-
-/** Édition JECA correspondant exactement à la date de l'article, sinon undefined. */
+/** Une date commune ne suffit pas : l'article doit aussi citer cette édition. */
 function matchingEdition(article: Article): JecaEdition | undefined {
-  if (article.category !== "jeca") return undefined;
-  return jecaEditions.find((edition) => edition.date.iso === article.date);
+  if (article.category !== "jeca" || article.datePrecision === "year") return undefined;
+  return jecaEditions.find((edition) => edition.date.iso === article.date &&
+    article.html.includes(`href="${asset(`/jeca/#${edition.id}`)}"`));
 }
 
 function jecaEventNode(article: Article, edition: JecaEdition) {
@@ -124,11 +158,10 @@ function jecaEventNode(article: Article, edition: JecaEdition) {
     description: article.excerpt,
     startDate: edition.date.iso,
     endDate: edition.date.endIso,
-    // EventScheduled couvre aussi un événement qui a eu lieu comme prévu.
-    eventStatus: "https://schema.org/EventScheduled",
+    // Le statut et l'adresse précise du lieu ne sont pas documentés.
     location: {
       "@type": "Place",
-      address: { "@type": "PostalAddress", ...eventPlaces[edition.place] },
+      name: edition.place,
     },
     organizer: {
       "@type": "Organization",

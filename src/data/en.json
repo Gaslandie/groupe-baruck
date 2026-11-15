@@ -1,4 +1,5 @@
 {
+  "Fil d’Ariane": "Breadcrumb",
   "Essai local réussi": "Local test successful",
   "Votre message de test a été reçu sur cet ordinateur. Aucun e-mail n’a été envoyé au client.": "Your test message was received on this computer. No email was sent to the client.",
   "Mode essai local : le message reste sur cet ordinateur, sans envoi au client.": "Local test mode: the message stays on this computer. Nothing is sent to the client.",

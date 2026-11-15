@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import type { ImageAsset } from "@/data/media";
 import { asset } from "@/lib/asset";
+import type { BreadcrumbItem } from "@/lib/structured-data";
+import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 
 type ServiceHeroProps = {
   image: ImageAsset;
@@ -14,6 +16,7 @@ type ServiceHeroProps = {
   text: string;
   badge?: string;
   actions: ReactNode;
+  breadcrumbs?: readonly BreadcrumbItem[];
 };
 
 export function ServiceHero({
@@ -27,6 +30,7 @@ export function ServiceHero({
   text,
   badge,
   actions,
+  breadcrumbs,
 }: ServiceHeroProps) {
   const titleSize =
     size === "studio"
@@ -48,6 +52,7 @@ export function ServiceHero({
         className="absolute inset-0 z-[-1] bg-[linear-gradient(90deg,rgba(5,6,7,.94),rgba(5,6,7,.58)_48%,rgba(5,6,7,.16)),linear-gradient(180deg,rgba(5,6,7,.1),rgba(5,6,7,.78))] max-tablet:bg-[linear-gradient(180deg,rgba(5,6,7,.12),rgba(5,6,7,.92)_70%)]"
       />
       <div className="hero-in max-w-[830px]">
+        {breadcrumbs ? <Breadcrumbs items={breadcrumbs} /> : null}
         <p className="eyebrow light">{eyebrow}</p>
         <h1
           className={`${titleSize} mb-6 mt-[.7rem] text-balance font-display font-normal leading-[.85] tracking-[-.055em]`}

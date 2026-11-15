@@ -3,6 +3,8 @@ import { servicePageMetadata } from "@/lib/page-metadata";
 import { hqMap } from "@/data/coordonnees";
 import { ServiceBooking } from "@/components/services/ServiceBooking";
 import { ServiceNews } from "@/components/services/ServiceNews";
+import { StructuredData } from "@/components/ui/StructuredData";
+import { serviceSchema } from "@/lib/structured-data";
 
 
 import type { Metadata } from "next";
@@ -46,7 +48,12 @@ const contactDetails = [
 export default function HostessesPage() {
   return (
     <PageShell variant="service" current="hostesses" footer="service">
+      <StructuredData data={serviceSchema("hotesses-evenementielles")} />
       <ServiceHero
+        breadcrumbs={[
+          { name: pageText("home", "common.site.9"), href: routes.home },
+          { name: pageText("hotesses-evenementielles", "meta.title"), href: routes.hostesses },
+        ]}
         image={hostessesHero}
         position="center 38%"
         size="hostesses"

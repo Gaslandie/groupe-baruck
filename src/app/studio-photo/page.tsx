@@ -3,6 +3,8 @@ import { servicePageMetadata } from "@/lib/page-metadata";
 import { hqMap } from "@/data/coordonnees";
 import { ServiceBooking } from "@/components/services/ServiceBooking";
 import { ServiceNews } from "@/components/services/ServiceNews";
+import { StructuredData } from "@/components/ui/StructuredData";
+import { serviceSchema } from "@/lib/structured-data";
 
 
 import type { Metadata } from "next";
@@ -53,7 +55,12 @@ const contactDetails = [
 export default function StudioPhotoPage() {
   return (
     <PageShell variant="service" current="studio" footer="service">
+      <StructuredData data={serviceSchema("studio-photo")} />
       <ServiceHero
+        breadcrumbs={[
+          { name: pageText("home", "common.site.9"), href: routes.home },
+          { name: pageText("studio-photo", "meta.title"), href: routes.studio },
+        ]}
         image={studioHero}
         position="center"
         size="studio"
