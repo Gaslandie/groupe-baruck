@@ -3,9 +3,9 @@ import { translate as t } from "./language.ts";
 import type { Article } from "@/data/actualites";
 import { facebookPages } from "@/data/contact";
 import { jecaEditions, type JecaEdition } from "@/data/jeca";
-import { brandLogo, edvLogo } from "@/data/media";
+import { brandLogo, edvLogo, studioHero } from "@/data/media";
 import { contacts, routes, site } from "@/data/site";
-import { hqMap } from "@/data/coordonnees";
+import { hqAddress, hqMap } from "@/data/coordonnees";
 import { pageText } from "./page-content";
 import { primarySiteUrl } from "./seo";
 import { asset } from "./asset";
@@ -108,6 +108,31 @@ export function breadcrumbSchema(items: readonly BreadcrumbItem[]) {
 
 export type ServicePage = "studio-photo" | "hotesses-evenementielles";
 
+/** Établissement décrit sur la page Studio, avec les mêmes sources de contenu. */
+function studioBusinessNode() {
+  return {
+    "@type": "LocalBusiness",
+    "@id": `${primarySiteUrl}${routes.studio.slice(1)}#business`,
+    name: pageText("studio-photo", "meta.title"),
+    url: absolute(routes.studio),
+    description: pageText("studio-photo", "copy.page.16"),
+    image: imageObject(studioHero),
+    address: {
+      "@type": "PostalAddress",
+      name: hqMap.label,
+      streetAddress: hqAddress,
+    },
+    telephone: phoneNumber(contacts.landline.href),
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: phoneNumber(contacts.whatsappHq.href),
+      url: contacts.whatsappHq.href,
+    },
+    parentOrganization: publisher,
+    // Pas de coordonnées GPS, d'avis ni d'horaires du siège attribués au studio.
+  };
+}
+
 export function serviceSchema(page: ServicePage) {
   const route = page === "studio-photo" ? routes.studio : routes.hostesses;
   return {
@@ -117,7 +142,7 @@ export function serviceSchema(page: ServicePage) {
     name: pageText(page, "meta.title"),
     description: pageText(page, page === "studio-photo" ? "copy.page.16" : "copy.page.13"),
     url: absolute(route),
-    provider: publisher,
+    provider: page === "studio-photo" ? studioBusinessNode() : publisher,
     // Reprise de la zone affichée, sans déduire une couverture nationale du pays.
     areaServed: hqMap.label,
   };

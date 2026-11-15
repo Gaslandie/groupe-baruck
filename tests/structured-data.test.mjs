@@ -31,12 +31,17 @@ function readSchemas(language, preview = false) {
     });
     const { organizationSchema, serviceSchema, breadcrumbSchema, articleSchema, espoirDeVieSchema } = await import('./src/lib/structured-data.ts');
     const { getAllArticles } = await import('./src/lib/actualites.ts');
+    const { hqAddress, hqMap } = await import('./src/data/coordonnees.ts');
+    const { contacts } = await import('./src/data/site.ts');
+    const { pageText } = await import('./src/lib/page-content.ts');
     const { StructuredData } = await import('./src/components/ui/StructuredData.tsx');
     const articles = getAllArticles().filter(a => !a.draft);
     const jeca = articles.find(a => a.slug === 'jeca-2022-dakar');
     const hostile = { '@type': 'Service', name: '</script><script>alert(1)</script>' };
     console.log(JSON.stringify({
       organization: organizationSchema,
+      studioSource: { name: pageText('studio-photo', 'meta.title'), address: hqAddress, locality: hqMap.label,
+        telephone: contacts.landline.href.slice(4), whatsapp: contacts.whatsappHq.href },
       services: ['studio-photo', 'hotesses-evenementielles'].map(serviceSchema),
       edv: espoirDeVieSchema('Description de test'),
       breadcrumbs: breadcrumbSchema([{name: 'Home', href: '/'}, {name: 'Studio', href: '/studio-photo/'}]),
@@ -72,7 +77,24 @@ for (const preview of [false, true]) {
         assert.equal(service["@type"], "Service");
         assert.equal(service["@id"], `https://groupebaruck.com/${path}#service`);
         assert.equal(service.url, localizedRoot + path);
-        assert.equal(service.provider["@id"], organizationId);
+        if (index === 0) {
+          const studio = service.provider;
+          assert.equal(studio["@type"], "LocalBusiness");
+          assert.equal(studio["@id"], "https://groupebaruck.com/studio-photo/#business");
+          assert.equal(studio.name, data.studioSource.name);
+          assert.deepEqual(studio.address, { "@type": "PostalAddress", name: data.studioSource.locality, streetAddress: data.studioSource.address });
+          assert.equal(studio.telephone, data.studioSource.telephone);
+          assert.equal(studio.contactPoint.url, data.studioSource.whatsapp);
+          assert.equal(studio.url, service.url);
+          assert.ok(studio.image.url.startsWith(localizedRoot));
+          assert.equal(studio.parentOrganization["@id"], organizationId);
+          for (const unknown of ["geo", "aggregateRating", "review", "openingHours", "openingHoursSpecification"]) {
+            assert.ok(!(unknown in studio), `Pas de ${unknown} déduit des données du siège ou de sources externes.`);
+          }
+        } else {
+          assert.equal(service.provider["@type"], "Organization");
+          assert.equal(service.provider["@id"], organizationId);
+        }
         assert.equal(service.areaServed, language === "en" ? "Kobayah, Conakry, Guinea" : "Kobayah, Conakry, Guinée");
         assert.ok(service.name && service.description);
         assert.ok(!("openingHours" in service) && !("aggregateRating" in service));
